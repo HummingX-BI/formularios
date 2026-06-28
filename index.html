@@ -383,7 +383,8 @@
   </div>
 
   <div class="review-actions">
-    <button class="btn-gold" id="copyBtn">Copiar resumen</button>
+    <button class="btn-gold" id="whatsappBtn" style="background:#25D366; color:#fff; border-color:#25D366; font-weight:600; display:inline-flex; align-items:center; justify-content:center; gap:8px;">📲 Enviar por WhatsApp</button>
+    <button class="btn-ghost" id="copyBtn">Copiar resumen</button>
     <button class="btn-ghost" id="downloadBtn">Descargar resumen (.txt)</button>
     <button class="btn-ghost" id="backToFormBtn">← Volver a editar</button>
   </div>
@@ -393,7 +394,8 @@
   <div class="cover-rule"></div>
   <p class="eyebrow">Diagnóstico cerrado</p>
   <h1 class="cover-h1" style="font-size:1.9rem;">Listo. Quedó registrado.</h1>
-  <p class="cover-p" style="margin:0 auto;">Envía este resumen por WhatsApp o correo a tu contacto en HummingX·BI para comenzar el diseño con base en tus respuestas.</p>
+  <p class="cover-p" style="margin:0 auto 24px;">Envía este resumen por WhatsApp directamente al teléfono 55 1980 2943 para comenzar el diseño con base en tus respuestas.</p>
+  <button class="btn-gold" id="whatsappDoneBtn" style="background:#25D366; color:#fff; border-color:#25D366; font-weight:600; display:inline-flex; align-items:center; justify-content:center; gap:8px; margin:0 auto;">📲 Enviar por WhatsApp al 55 1980 2943</button>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -908,6 +910,25 @@ document.getElementById('downloadBtn').addEventListener('click', ()=>{
   document.body.appendChild(a); a.click(); a.remove();
   finishDiagnostic();
 });
+
+const sendToWsp = async () => {
+  const text = buildSummaryText();
+  try{ await navigator.clipboard.writeText(text); }catch(e){}
+  const url = `https://wa.me/525519802943?text=${encodeURIComponent(text)}`;
+  window.open(url, '_blank');
+  showToast('Abriendo WhatsApp... ✓');
+};
+
+document.getElementById('whatsappBtn').addEventListener('click', async ()=>{
+  if(!document.getElementById('conformityCheck').checked){
+    showToast('Marca la casilla de conformidad antes de enviar el diagnóstico.');
+    return;
+  }
+  await sendToWsp();
+  finishDiagnostic();
+});
+
+document.getElementById('whatsappDoneBtn').addEventListener('click', sendToWsp);
 
 function finishDiagnostic(){
   setTimeout(()=>{
