@@ -225,7 +225,7 @@
     margin-top:1px;
   }
   label.opt.is-selected .optletter{ background:var(--gold); color:var(--ink); border-color:var(--gold); }
-  .optlabel{ font-size:.92rem; line-height:1.45; color:var(--parchment-dim); padding-top:1px; }
+  .optlabel{ font-size:.92rem; line-height:1.45; color:var(--parchment-dim); padding-top:1px; flex:1; width:100%; }
   label.opt.is-selected .optlabel{ color:var(--parchment); }
 
   .text-input{
@@ -445,17 +445,21 @@ const PARTS = [
     subtitle:'Comparar contra ejemplos reales evita interpretaciones abstractas.',
     questions:[
       { id:'q13', text:'De estos enfoques, ¿cuál se parece más a lo que imaginas para Eden?', type:'single',
-        options:['Cinépolis (lobby) — dinámico, cortes frecuentes, motion graphics vibrantes',
-                 'McDonald\'s / KFC — bloques de combos, color saturado, jerarquía de precio agresiva',
-                 'Starbucks — fotografía cálida, tipografía elegante, ritmo pausado',
-                 'Spa / wellness — minimalista, espacio en blanco, ritmo contemplativo',
-                 'Apple Store — ultra minimalista, el producto como único protagonista'] },
+         options:[
+           '<strong style="color:var(--parchment); display:block; margin-bottom:3px; font-size:0.98rem;">Cinépolis (lobby) — Alta energía y movimiento constante</strong><span style="font-size:0.86rem; opacity:0.85; display:block; line-height:1.4;">Pantallas vibrantes con transiciones rápidas en 3D, videos promocionales cortados dinámicamente y combos deslizándose de forma continua para captar atención desde lejos.</span>',
+           '<strong style="color:var(--parchment); display:block; margin-bottom:3px; font-size:0.98rem;">McDonald\'s / KFC — Enfoque agresivo en venta y precio</strong><span style="font-size:0.86rem; opacity:0.85; display:block; line-height:1.4;">Bloques grandes de colores llamativos y saturados, fotografías gigantes de hamburguesas/paquetes, números de precio de gran tamaño y ofertas parpadeando en bucle.</span>',
+           '<strong style="color:var(--parchment); display:block; margin-bottom:3px; font-size:0.98rem;">Starbucks — Ambiente acogedor, cálido y sofisticado</strong><span style="font-size:0.86rem; opacity:0.85; display:block; line-height:1.4;">Fotografía editorial con texturas de madera y tonos café, tipografía fina y elegante, animaciones lentas y suaves de vapor o ingredientes cayendo con ritmo pausado.</span>',
+           '<strong style="color:var(--parchment); display:block; margin-bottom:3px; font-size:0.98rem;">Spa / Wellness — Atmósfera de paz, salud y contemplación</strong><span style="font-size:0.86rem; opacity:0.85; display:block; line-height:1.4;">Abundante espacio en blanco, tonos pasteles o tierra, transiciones ultrasuaves (fade in/out), videos relajantes de naturaleza/agua y textos breves muy ligeros.</span>',
+           '<strong style="color:var(--parchment); display:block; margin-bottom:3px; font-size:0.98rem;">Apple Store — Ultra minimalismo arquitectónico</strong><span style="font-size:0.86rem; opacity:0.85; display:block; line-height:1.4;">El platillo o bebida flota como único protagonista sobre un fondo neutro inmaculado, con animaciones milimétricas y una jerarquía tipográfica impecable.</span>'
+         ] },
       { id:'q14', text:'De esos mismos enfoques, ¿cuál es el que menos quieres que se parezca tu pantalla?', type:'single',
-        options:['Cinépolis (lobby) — dinámico, cortes frecuentes, motion graphics vibrantes',
-                 'McDonald\'s / KFC — bloques de combos, color saturado, jerarquía de precio agresiva',
-                 'Starbucks — fotografía cálida, tipografía elegante, ritmo pausado',
-                 'Spa / wellness — minimalista, espacio en blanco, ritmo contemplativo',
-                 'Apple Store — ultra minimalista, el producto como único protagonista'] },
+         options:[
+           '<strong style="color:var(--parchment); display:block; margin-bottom:3px; font-size:0.98rem;">Cinépolis (lobby) — Alta energía y movimiento constante</strong><span style="font-size:0.86rem; opacity:0.85; display:block; line-height:1.4;">Pantallas vibrantes con transiciones rápidas en 3D, videos promocionales cortados dinámicamente y combos deslizándose de forma continua para captar atención desde lejos.</span>',
+           '<strong style="color:var(--parchment); display:block; margin-bottom:3px; font-size:0.98rem;">McDonald\'s / KFC — Enfoque agresivo en venta y precio</strong><span style="font-size:0.86rem; opacity:0.85; display:block; line-height:1.4;">Bloques grandes de colores llamativos y saturados, fotografías gigantes de hamburguesas/paquetes, números de precio de gran tamaño y ofertas parpadeando en bucle.</span>',
+           '<strong style="color:var(--parchment); display:block; margin-bottom:3px; font-size:0.98rem;">Starbucks — Ambiente acogedor, cálido y sofisticado</strong><span style="font-size:0.86rem; opacity:0.85; display:block; line-height:1.4;">Fotografía editorial con texturas de madera y tonos café, tipografía fina y elegante, animaciones lentas y suaves de vapor o ingredientes cayendo con ritmo pausado.</span>',
+           '<strong style="color:var(--parchment); display:block; margin-bottom:3px; font-size:0.98rem;">Spa / Wellness — Atmósfera de paz, salud y contemplación</strong><span style="font-size:0.86rem; opacity:0.85; display:block; line-height:1.4;">Abundante espacio en blanco, tonos pasteles o tierra, transiciones ultrasuaves (fade in/out), videos relajantes de naturaleza/agua y textos breves muy ligeros.</span>',
+           '<strong style="color:var(--parchment); display:block; margin-bottom:3px; font-size:0.98rem;">Apple Store — Ultra minimalismo arquitectónico</strong><span style="font-size:0.86rem; opacity:0.85; display:block; line-height:1.4;">El platillo o bebida flota como único protagonista sobre un fondo neutro inmaculado, con animaciones milimétricas y una jerarquía tipográfica impecable.</span>'
+         ] },
     ]},
   { letter:'F', title:'Proyección de marca',
     subtitle:'El corazón del diagnóstico — no preguntamos qué color quieres, preguntamos qué sientes.',
@@ -481,7 +485,12 @@ const PARTS = [
     subtitle:'La letra es la voz silenciosa de la marca en pantalla.',
     questions:[
       { id:'q21', text:'¿Qué tipo de letra representa mejor a Eden?', type:'single',
-        options:['Serif elegante — sensación premium y orgánica','Sans-serif minimalista y moderna','Manuscrita u orgánica — sensación artesanal','Redondeada y amigable — sensación accesible'] },
+        options:[
+          '<span style="font-family:\'Georgia\',\'Times New Roman\',serif; font-size:1.08rem; color:var(--parchment); display:block; margin-bottom:3px;">Serif elegante (Ej. Garamond / Playfair)</span><span style="font-size:0.86rem; opacity:0.85; display:block; line-height:1.4;">Letras tradicionales con remates finos. Proyecta alta cocina, sofisticación, estatus premium y un toque orgánico clásico.</span>',
+          '<span style="font-family:\'Helvetica Neue\',\'Arial\',sans-serif; font-weight:600; font-size:1.02rem; color:var(--parchment); display:block; margin-bottom:3px; letter-spacing:0.5px;">Sans-serif minimalista (Ej. Montserrat / Futura)</span><span style="font-size:0.86rem; opacity:0.85; display:block; line-height:1.4;">Trazos limpios, geométricos y sin adornos. Proyecta máxima claridad, modernidad, vanguardia y legibilidad instantánea en pantalla.</span>',
+          '<span style="font-family:\'Brush Script MT\',\'Caveat\',\'Segoe Print\',cursive; font-size:1.18rem; color:var(--parchment); display:block; margin-bottom:3px;">Manuscrita u orgánica (Ej. Caveat / Pacifico)</span><span style="font-size:0.86rem; opacity:0.85; display:block; line-height:1.4;">Trazos fluidos con aspecto de escritura a mano o caligrafía libre. Proyecta calidez artesanal, ingredientes hechos en casa y cercanía humana.</span>',
+          '<span style="font-family:\'Trebuchet MS\',\'Verdana\',sans-serif; font-weight:600; font-size:1.02rem; color:var(--parchment); display:block; margin-bottom:3px; background:rgba(255,255,255,0.06); padding:2px 8px; border-radius:12px; width:fit-content;">Redondeada y amigable (Ej. Quicksand / Comfortaa)</span><span style="font-size:0.86rem; opacity:0.85; display:block; line-height:1.4;">Letras con terminaciones curvas y suaves. Proyecta un ambiente relajado, accesible, jovial, saludable y sin pretensiones.</span>'
+        ] },
       { id:'q22', text:'¿Los textos del menú deben sentirse…?', type:'single',
         options:['Informativos y directos','Descriptivos y evocadores, casi narrativos'] },
     ]},
@@ -489,7 +498,12 @@ const PARTS = [
     subtitle:'Confirmación dirigida sobre el espíritu "jardín del Edén" que ya manejan.',
     questions:[
       { id:'q23', text:'¿Cuál de estas paletas se siente más Eden?', type:'single',
-        options:['Verde sage + crema + dorado suave','Verde bosque profundo + blanco hueso + terracota','Verde menta pastel + lavanda suave + blanco','Verde oliva + arena + madera clara'] },
+        options:[
+          '<div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:4px;"><strong style="color:var(--parchment); font-size:0.96rem;">Verde sage + crema + dorado suave</strong><span style="display:inline-flex; align-items:center; gap:6px;"><span style="width:22px; height:22px; border-radius:50%; background:#8A9A86; border:1px solid rgba(255,255,255,0.3); box-shadow:0 2px 4px rgba(0,0,0,0.3);" title="Verde sage"></span><span style="width:22px; height:22px; border-radius:50%; background:#FFFDD0; border:1px solid rgba(0,0,0,0.2); box-shadow:0 2px 4px rgba(0,0,0,0.3);" title="Crema"></span><span style="width:22px; height:22px; border-radius:50%; background:#D4AF37; border:1px solid rgba(255,255,255,0.3); box-shadow:0 2px 4px rgba(0,0,0,0.3);" title="Dorado suave"></span></span></div><span style="font-size:0.86rem; opacity:0.85; display:block; line-height:1.4;">Un equilibrio orgánico, moderno y sutil con destellos de elegancia premium.</span>',
+          '<div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:4px;"><strong style="color:var(--parchment); font-size:0.96rem;">Verde bosque profundo + blanco hueso + terracota</strong><span style="display:inline-flex; align-items:center; gap:6px;"><span style="width:22px; height:22px; border-radius:50%; background:#1E3F20; border:1px solid rgba(255,255,255,0.3); box-shadow:0 2px 4px rgba(0,0,0,0.3);" title="Verde bosque"></span><span style="width:22px; height:22px; border-radius:50%; background:#F9F6F0; border:1px solid rgba(0,0,0,0.2); box-shadow:0 2px 4px rgba(0,0,0,0.3);" title="Blanco hueso"></span><span style="width:22px; height:22px; border-radius:50%; background:#E2725B; border:1px solid rgba(255,255,255,0.3); box-shadow:0 2px 4px rgba(0,0,0,0.3);" title="Terracota"></span></span></div><span style="font-size:0.86rem; opacity:0.85; display:block; line-height:1.4;">Tierra, naturaleza exuberante y calidez rústica con un contraste muy sólido en pantalla.</span>',
+          '<div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:4px;"><strong style="color:var(--parchment); font-size:0.96rem;">Verde menta pastel + lavanda suave + blanco</strong><span style="display:inline-flex; align-items:center; gap:6px;"><span style="width:22px; height:22px; border-radius:50%; background:#A2E8DD; border:1px solid rgba(255,255,255,0.3); box-shadow:0 2px 4px rgba(0,0,0,0.3);" title="Verde menta"></span><span style="width:22px; height:22px; border-radius:50%; background:#E6E6FA; border:1px solid rgba(0,0,0,0.2); box-shadow:0 2px 4px rgba(0,0,0,0.3);" title="Lavanda"></span><span style="width:22px; height:22px; border-radius:50%; background:#FFFFFF; border:1px solid rgba(0,0,0,0.2); box-shadow:0 2px 4px rgba(0,0,0,0.3);" title="Blanco"></span></span></div><span style="font-size:0.86rem; opacity:0.85; display:block; line-height:1.4;">Frescura ligera, juventud, limpieza absoluta y una vibra muy relajante tipo wellness.</span>',
+          '<div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:4px;"><strong style="color:var(--parchment); font-size:0.96rem;">Verde oliva + arena + madera clara</strong><span style="display:inline-flex; align-items:center; gap:6px;"><span style="width:22px; height:22px; border-radius:50%; background:#556B2F; border:1px solid rgba(255,255,255,0.3); box-shadow:0 2px 4px rgba(0,0,0,0.3);" title="Verde oliva"></span><span style="width:22px; height:22px; border-radius:50%; background:#E6C8A0; border:1px solid rgba(0,0,0,0.2); box-shadow:0 2px 4px rgba(0,0,0,0.3);" title="Arena"></span><span style="width:22px; height:22px; border-radius:50%; background:#DEB887; border:1px solid rgba(255,255,255,0.3); box-shadow:0 2px 4px rgba(0,0,0,0.3);" title="Madera clara"></span></span></div><span style="font-size:0.86rem; opacity:0.85; display:block; line-height:1.4;">Tonalidades mediterráneas y artesanales que evocan ingredientes naturales y de origen orgánico.</span>'
+        ] },
       { id:'q24', text:'¿Hay algún color que definitivamente no quieras ver en tu pantalla?', type:'text', required:false, placeholder:'Opcional — escribe aquí si aplica' },
     ]},
   { letter:'J', title:'Música y audio',
@@ -799,6 +813,10 @@ function renderReview(){
   window.scrollTo(0,0);
 }
 
+function stripHtmlTags(str) {
+  return str ? str.replace(/<[^>]*>?/gm, '').replace(/\s+/g, ' ').trim() : '';
+}
+
 function buildSummaryText(){
   let out = `DIAGNÓSTICO DE IDENTIDAD VISUAL — DIGITAL SIGNAGE EDEN\n`;
   out += `Preparado para HummingX·BI · ${fmtDate()}\n`;
@@ -811,8 +829,8 @@ function buildSummaryText(){
       const v = state.answers[q.id];
       let ans = '— Sin respuesta —';
       if(q.type==='text'){ ans = (v && v.trim()) ? v.trim() : ans; }
-      else if(q.type==='multi'){ ans = (Array.isArray(v)&&v.length) ? v.map(i=>q.options[i]).join(' · ') : ans; }
-      else { ans = (v!==undefined) ? q.options[v] : ans; }
+      else if(q.type==='multi'){ ans = (Array.isArray(v)&&v.length) ? v.map(i=>stripHtmlTags(q.options[i])).join(' · ') : ans; }
+      else { ans = (v!==undefined) ? stripHtmlTags(q.options[v]) : ans; }
       out += `${num}. ${q.text}\n   → ${ans}\n`;
     });
     out += `\n`;
