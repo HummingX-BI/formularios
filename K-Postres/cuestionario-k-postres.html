@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>K Postres — Cuestionario de Identidad Visual</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Prata&family=Jost:wght@300;400;500;600&family=Quicksand:wght@500;600&display=swap');
+
+    :root {
+      --cream: #FBF5F1;
+      --cream-deep: #F3E7E1;
+      --wine: #4A1229;
+      --wine-deep: #33081B;
+      --pink-soft: #F3D4DC;
+      --pink-mid: #E8A9BE;
+      --pink-deep: #9B2F52;
+      --gold: #C9A15A;
+      --gold-soft: #E4CE9C;
+      --ink: #3A1620;
+      --ink-soft: #6E4453;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .progress-rail {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      height: 3px;
+      width: 100%;
+      background: rgba(155, 47, 82, 0.12);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--pink-deep), var(--gold));
+      transition: width .4s ease;
+    }
+
+    .hero {
+      position: relative;
+      background: radial-gradient(120% 140% at 50% 0%, var(--wine) 0%, var(--wine-deep) 60%, #24040F 100%);
+      color: var(--cream);
+      padding: 72px 24px 96px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232, 169, 190, 0.28), transparent 70%);
+      filter: blur(10px);
+    }
+
+    .hero::before {
+      top: -160px;
+      left: -140px;
+    }
+
+    .hero::after {
+      bottom: -180px;
+      right: -160px;
+    }
+
+    .eyebrow {
+      font-family: 'Jost', sans-serif;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      font-size: 11px;
+      color: var(--gold-soft);
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .brandname {
+      font-family: 'Prata', serif;
+      font-size: clamp(40px, 7vw, 64px);
+      margin: 0;
+      position: relative;
+      z-index: 2;
+      letter-spacing: .01em;
+    }
+
+    .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(18px, 2.6vw, 22px);
+      color: var(--pink-soft);
+      margin-top: 14px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .berry-divider {
+      margin: 34px auto 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .intro {
+      margin-top: -46px;
+      position: relative;
+      z-index: 3;
+      background: var(--cream);
+      border-radius: 22px;
+      padding: 38px 34px;
+      box-shadow: 0 30px 60px -30px rgba(74, 18, 41, 0.35);
+      border: 1px solid var(--cream-deep);
+    }
+
+    .intro p {
+      margin: 0 0 12px;
+      font-size: 15.5px;
+      color: var(--ink-soft);
+    }
+
+    .intro p:last-child {
+      margin-bottom: 0;
+    }
+
+    .intro strong {
+      color: var(--wine);
+      font-weight: 500;
+    }
+
+    .chapter {
+      margin-top: 58px;
+    }
+
+    .chapter-head {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 26px;
+    }
+
+    .chapter-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 600;
+      font-size: 34px;
+      color: var(--pink-deep);
+      line-height: 1;
+    }
+
+    .chapter-title {
+      font-family: 'Prata', serif;
+      font-size: 22px;
+      color: var(--wine);
+      margin: 0;
+    }
+
+    .chapter-sub {
+      font-size: 13.5px;
+      color: var(--ink-soft);
+      margin: 4px 0 0;
+      font-style: italic;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .question {
+      margin-bottom: 34px;
+    }
+
+    .q-text {
+      font-size: 16.5px;
+      color: var(--ink);
+      margin: 0 0 6px;
+      font-weight: 500;
+    }
+
+    .q-hint {
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      margin: 0 0 14px;
+      font-style: italic;
+    }
+
+    .options {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width:560px) {
+      .options {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .opt {
+      position: relative;
+    }
+
+    .opt input {
+      position: absolute;
+      opacity: 0;
+      inset: 0;
+      margin: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .opt label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      border: 1px solid var(--cream-deep);
+      background: #fff;
+      border-radius: 14px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: all .2s ease;
+    }
+
+    .opt .opt-title {
+      font-size: 14px;
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .opt .opt-desc {
+      font-size: 12px;
+      color: var(--ink-soft);
+    }
+
+    .opt label:hover {
+      border-color: var(--pink-mid);
+      background: var(--cream-deep);
+    }
+
+    .opt input:checked+label {
+      border-color: var(--pink-deep);
+      background: linear-gradient(135deg, var(--pink-soft), #fff);
+      box-shadow: 0 8px 20px -12px rgba(155, 47, 82, 0.5);
+    }
+
+    .opt input:checked+label .opt-title {
+      color: var(--wine);
+    }
+
+    .opt input:checked+label::after {
+      content: "✓";
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      color: var(--pink-deep);
+      font-size: 12px;
+    }
+
+    .opt.wide {
+      grid-column: 1 / -1;
+    }
+
+    /* visual demos inside options */
+    .swatch-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .swatch {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      flex-shrink: 0;
+    }
+
+    .font-preview {
+      font-size: 19px;
+      line-height: 1;
+      margin-bottom: 6px;
+      color: var(--wine);
+    }
+
+    .gradient-bar {
+      width: 100%;
+      height: 24px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+
+    .style-icon {
+      width: 38px;
+      height: 24px;
+      margin-bottom: 8px;
+    }
+
+    .mini-grid {
+      display: flex;
+      gap: 3px;
+      margin-bottom: 8px;
+      height: 20px;
+      align-items: flex-end;
+    }
+
+    .mini-grid .cell {
+      background: var(--pink-mid);
+      border-radius: 3px;
+      flex: 1;
+    }
+
+    .mini-grid .cell.big {
+      height: 20px;
+      background: var(--pink-deep);
+    }
+
+    .mini-grid .cell.small {
+      height: 11px;
+    }
+
+    .mini-grid .cell.ghost {
+      height: 20px;
+      background: repeating-linear-gradient(45deg, var(--pink-mid), var(--pink-mid) 3px, transparent 3px, transparent 6px);
+    }
+
+    .motion-track {
+      position: relative;
+      width: 100%;
+      height: 14px;
+      background: var(--cream-deep);
+      border-radius: 20px;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+
+    .motion-dot {
+      position: absolute;
+      top: 2px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--pink-deep);
+      left: 2%;
+    }
+
+    .motion-dot.slow {
+      animation: moveDot 3.4s ease-in-out infinite;
+    }
+
+    .motion-dot.fast {
+      animation: moveDot 0.9s linear infinite;
+    }
+
+    .motion-dot.mixed {
+      animation: moveDot 2s cubic-bezier(.25, .85, .35, 1) infinite;
+    }
+
+    .motion-dot.still {
+      left: 44%;
+      background: var(--gold);
+    }
+
+    @keyframes moveDot {
+      0% {
+        left: 2%;
+      }
+
+      50% {
+        left: 80%;
+      }
+
+      100% {
+        left: 2%;
+      }
+    }
+
+    textarea.freeform {
+      width: 100%;
+      border: 1px solid var(--cream-deep);
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      color: var(--ink);
+      resize: vertical;
+      min-height: 70px;
+      background: #fff;
+    }
+
+    textarea.freeform:focus {
+      outline: none;
+      border-color: var(--pink-mid);
+    }
+
+    .summary-block {
+      margin-top: 70px;
+      background: var(--wine);
+      color: var(--cream);
+      border-radius: 22px;
+      padding: 40px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .summary-block::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(80% 120% at 100% 0%, rgba(232, 169, 190, 0.18), transparent 60%);
+    }
+
+    .summary-block h3 {
+      font-family: 'Prata', serif;
+      margin: 0 0 6px;
+      font-size: 22px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .summary-block .sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--pink-soft);
+      margin: 0 0 22px;
+      position: relative;
+      z-index: 1;
+    }
+
+    #summaryText {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(232, 169, 190, 0.25);
+      border-radius: 14px;
+      padding: 18px;
+      font-size: 13.5px;
+      white-space: pre-wrap;
+      position: relative;
+      z-index: 1;
+      max-height: 320px;
+      overflow-y: auto;
+      font-family: 'Jost', sans-serif;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    button.primary {
+      background: linear-gradient(135deg, var(--gold), #B98A45);
+      color: var(--wine-deep);
+      border: none;
+      padding: 13px 26px;
+      border-radius: 30px;
+      font-family: 'Jost', sans-serif;
+      font-weight: 600;
+      font-size: 13.5px;
+      cursor: pointer;
+      letter-spacing: .03em;
+      transition: transform .15s ease;
+    }
+
+    button.primary:hover {
+      transform: translateY(-2px);
+    }
+
+    button.ghost {
+      background: transparent;
+      border: 1px solid rgba(243, 245, 241, 0.35);
+      color: var(--cream);
+      padding: 13px 22px;
+      border-radius: 30px;
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    button.whatsapp-btn {
+      border-color: rgba(150, 220, 180, 0.45);
+      background: rgba(150, 220, 180, 0.08);
+    }
+
+    button.whatsapp-btn:hover {
+      background: rgba(150, 220, 180, 0.16);
+    }
+
+    .pending {
+      font-size: 12.5px;
+      color: var(--pink-soft);
+      margin-top: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .signoff {
+      text-align: center;
+      margin-top: 56px;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--ink-soft);
+      font-size: 14px;
+    }
+
+    .signoff b {
+      color: var(--wine);
+      font-style: normal;
+      font-family: 'Prata', serif;
+    }
+
+    .footer-hummingx {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 30px;
+    }
+
+    .footer-logo {
+      height: 22px;
+      width: auto;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .footer-divider {
+      width: 1px;
+      height: 24px;
+      background-color: var(--ink-soft);
+      opacity: 0.35;
+    }
+
+    .footer-link {
+      font-family: 'Jost', sans-serif;
+      font-size: 13.5px;
+      color: var(--ink-soft);
+      letter-spacing: 0.05em;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="progress-rail">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">Cuestionario privado de marca</div>
+    <h1 class="brandname">K Postres</h1>
+    <p class="subtitle">Definiendo la identidad visual de tu Digital Signage</p>
+    <svg class="berry-divider" width="120" height="28" viewBox="0 0 120 28" fill="none">
+      <line x1="0" y1="14" x2="42" y2="14" stroke="#E4CE9C" stroke-width="1" />
+      <g transform="translate(52,3)">
+        <path d="M11 6C11 6 4 9 4 15C4 19.5 7 22 11 22C15 22 18 19.5 18 15C18 9 11 6 11 6Z" fill="#E8A9BE"
+          stroke="#C9A15A" stroke-width="0.8" />
+        <path d="M8 3L11 6L14 3" stroke="#9BC49B" stroke-width="1.1" fill="none" stroke-linecap="round" />
+        <circle cx="8.5" cy="12" r="0.7" fill="#9B2F52" />
+        <circle cx="13" cy="11" r="0.7" fill="#9B2F52" />
+        <circle cx="10.5" cy="16" r="0.7" fill="#9B2F52" />
+        <circle cx="14" cy="15.5" r="0.7" fill="#9B2F52" />
+      </g>
+      <line x1="78" y1="14" x2="120" y2="14" stroke="#E4CE9C" stroke-width="1" />
+    </svg>
+  </div>
+
+  <div class="wrap">
+
+    <div class="intro">
+      <p><strong>Hola, un placer conocerte.</strong> Antes de crear tus pantallas y videos, queremos entender tu marca a
+        un nivel más profundo — no solo lo que vendes, sino lo que <em>K Postres</em> hace sentir a quien lo prueba.</p>
+      <p>Este cuestionario es sencillo: solo elige la opción que más se identifique contigo. No hay respuestas correctas
+        — cada elección nos ayuda a diseñar algo que se sienta completamente <strong>tuyo</strong>.</p>
+      <p>Tómate tu tiempo. Al final podrás copiar tu resumen y enviárnoslo. 🍓</p>
+    </div>
+
+    <div class="chapter">
+      <div class="chapter-head">
+        <span class="chapter-num">I</span>
+        <div>
+          <p class="chapter-title">La personalidad de tu marca</p>
+          <p class="chapter-sub">¿Cómo quieres que la gente sienta a K Postres?</p>
+        </div>
+      </div>
+
+      <div class="question" data-title="Personalidad de marca">
+        <p class="q-text">Si K Postres fuera una persona, ¿cuál describe mejor su forma de tratar a los demás?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="q1" id="q1a"><label for="q1a"><span class="opt-title">La amiga que
+                te consiente</span><span class="opt-desc">Cercana, cálida, como estar en casa</span></label></div>
+          <div class="opt"><input type="radio" name="q1" id="q1b"><label for="q1b"><span class="opt-title">La experta
+                gourmet</span><span class="opt-desc">Sofisticada, exclusiva, con autoridad</span></label></div>
+          <div class="opt"><input type="radio" name="q1" id="q1c"><label for="q1c"><span class="opt-title">La
+                celebración</span><span class="opt-desc">Festiva, especial, para ocasiones que importan</span></label>
+          </div>
+          <div class="opt"><input type="radio" name="q1" id="q1d"><label for="q1d"><span class="opt-title">El lujo
+                accesible</span><span class="opt-desc">Se siente premium, pero cercano y de todos los
+                días</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Si fuera un lugar">
+        <p class="q-text">Si K Postres fuera un lugar al que la gente pudiera entrar, ¿cuál sería?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="q2" id="q2a"><label for="q2a"><span class="opt-title">Una
+                pastelería parisina</span><span class="opt-desc">Vitrinas doradas, elegancia clásica</span></label>
+          </div>
+          <div class="opt"><input type="radio" name="q2" id="q2b"><label for="q2b"><span class="opt-title">Un jardín de
+                fresas al atardecer</span><span class="opt-desc">Cálido, romántico, natural</span></label></div>
+          <div class="opt"><input type="radio" name="q2" id="q2c"><label for="q2c"><span class="opt-title">Un salón de
+                té elegante</span><span class="opt-desc">Tranquilo, refinado, íntimo</span></label></div>
+          <div class="opt"><input type="radio" name="q2" id="q2d"><label for="q2d"><span class="opt-title">Un rincón
+                acogedor de casa</span><span class="opt-desc">Sencillo, familiar, sin pretensiones</span></label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chapter">
+      <div class="chapter-head">
+        <span class="chapter-num">II</span>
+        <div>
+          <p class="chapter-title">Paleta y estética</p>
+          <p class="chapter-sub">Los colores y texturas que te representan</p>
+        </div>
+      </div>
+
+      <div class="question" data-title="Estilo visual general">
+        <p class="q-text">¿Cuál de estos estilos se siente más como K Postres?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="q3" id="q3a"><label for="q3a">
+              <svg class="style-icon" viewBox="0 0 40 24">
+                <line x1="2" y1="6" x2="38" y2="6" stroke="#9B2F52" stroke-width="1" />
+                <line x1="2" y1="12" x2="28" y2="12" stroke="#9B2F52" stroke-width="1" />
+                <line x1="2" y1="18" x2="34" y2="18" stroke="#9B2F52" stroke-width="1" />
+              </svg>
+              <span class="opt-title">Elegante y minimalista</span><span class="opt-desc">Líneas limpias, espacios
+                amplios, tipografía fina</span></label></div>
+          <div class="opt"><input type="radio" name="q3" id="q3b"><label for="q3b">
+              <svg class="style-icon" viewBox="0 0 40 24">
+                <circle cx="9" cy="14" r="7" fill="#E8A9BE" />
+                <circle cx="22" cy="9" r="5" fill="#C9A15A" />
+                <circle cx="32" cy="15" r="4" fill="#9B2F52" />
+              </svg>
+              <span class="opt-title">Vibrante y juguetón</span><span class="opt-desc">Colores vivos, formas
+                redondeadas, mucho movimiento</span></label></div>
+          <div class="opt"><input type="radio" name="q3" id="q3c"><label for="q3c">
+              <svg class="style-icon" viewBox="0 0 40 24">
+                <rect x="4" y="4" width="32" height="16" rx="2" fill="none" stroke="#C9A15A" stroke-width="1.2" />
+                <path d="M20 8L23 12L20 16L17 12Z" fill="#C9A15A" />
+              </svg>
+              <span class="opt-title">Lujoso y sofisticado</span><span class="opt-desc">Toques dorados, tipografía
+                cursiva, sensación premium</span></label></div>
+          <div class="opt"><input type="radio" name="q3" id="q3d"><label for="q3d">
+              <svg class="style-icon" viewBox="0 0 40 24">
+                <path d="M6 18C4 12 8 6 16 6C24 6 28 10 30 6C32 10 34 16 30 18C24 22 12 22 6 18Z" fill="#D9B88A"
+                  stroke="#9B6B3A" stroke-width="0.5" />
+              </svg>
+              <span class="opt-title">Cálido y artesanal</span><span class="opt-desc">Texturas naturales, sensación
+                "hecho a mano"</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Paleta de colores">
+        <p class="q-text">De estas combinaciones, ¿cuál se acerca más a lo que quieres ver en tus pantallas?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="q4" id="q4a"><label for="q4a">
+              <div class="swatch-row"><span class="swatch" style="background:#FBEDE7"></span><span class="swatch"
+                  style="background:#F3C9D3"></span><span class="swatch" style="background:#F8E1E6"></span></div>
+              <span class="opt-title">Rosas suaves y pastel</span><span class="opt-desc">Como fresas con crema —
+                delicado y ligero</span>
+            </label></div>
+          <div class="opt"><input type="radio" name="q4" id="q4b"><label for="q4b">
+              <div class="swatch-row"><span class="swatch" style="background:#9B2F52"></span><span class="swatch"
+                  style="background:#6E1A38"></span><span class="swatch" style="background:#4A1229"></span></div>
+              <span class="opt-title">Rosas intensos y profundos</span><span class="opt-desc">Como vino o cereza — con
+                más carácter</span>
+            </label></div>
+          <div class="opt"><input type="radio" name="q4" id="q4c"><label for="q4c">
+              <div class="swatch-row"><span class="swatch" style="background:#E8A9BE"></span><span class="swatch"
+                  style="background:#C9A15A"></span><span class="swatch" style="background:#F3D4DC"></span></div>
+              <span class="opt-title">Rosa con toques dorados</span><span class="opt-desc">Un guiño de lujo dentro de lo
+                dulce</span>
+            </label></div>
+          <div class="opt"><input type="radio" name="q4" id="q4d"><label for="q4d">
+              <div class="swatch-row"><span class="swatch" style="background:#E8A9BE"></span><span class="swatch"
+                  style="background:#1A0A10"></span><span class="swatch" style="background:#33081B"></span></div>
+              <span class="opt-title">Rosa contra tonos oscuros</span><span class="opt-desc">Casi negro de fondo —
+                elegante y dramático</span>
+            </label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Tipografía">
+        <p class="q-text">Cuando imaginas el texto de tu menú en pantalla, ¿qué "voz" tiene?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="q5" id="q5a"><label for="q5a">
+              <div class="font-preview"
+                style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:500;">K Postres</div>
+              <span class="opt-title">Fina, con toques cursivos</span><span class="opt-desc">Como una invitación de
+                boda</span>
+            </label></div>
+          <div class="opt"><input type="radio" name="q5" id="q5b"><label for="q5b">
+              <div class="font-preview" style="font-family:'Jost',sans-serif; font-weight:500;">K Postres</div>
+              <span class="opt-title">Moderna y limpia</span><span class="opt-desc">Fácil de leer al instante</span>
+            </label></div>
+          <div class="opt"><input type="radio" name="q5" id="q5c"><label for="q5c">
+              <div class="font-preview" style="font-family:'Quicksand',sans-serif; font-weight:600;">K Postres</div>
+              <span class="opt-title">Redondeada y amigable</span><span class="opt-desc">Como una etiqueta hecha a
+                mano</span>
+            </label></div>
+          <div class="opt"><input type="radio" name="q5" id="q5d"><label for="q5d">
+              <div class="font-preview" style="font-family:'Prata',serif;">K Postres</div>
+              <span class="opt-title">Clásica y con carácter</span><span class="opt-desc">Como una repostería de toda la
+                vida</span>
+            </label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chapter">
+      <div class="chapter-head">
+        <span class="chapter-num">III</span>
+        <div>
+          <p class="chapter-title">Atmósfera y emoción</p>
+          <p class="chapter-sub">Lo que tus videos deben hacer sentir</p>
+        </div>
+      </div>
+
+      <div class="question" data-title="Atmósfera de los videos">
+        <p class="q-text">Si tus videos tuvieran una "luz" de fondo, ¿cuál sería?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="q6" id="q6a"><label for="q6a">
+              <div class="gradient-bar" style="background:linear-gradient(90deg,#FCE9C9,#F7B8A0,#F0DDEA)"></div>
+              <span class="opt-title">Un amanecer</span><span class="opt-desc">Energía fresca, ligereza, inicio del
+                día</span>
+            </label></div>
+          <div class="opt"><input type="radio" name="q6" id="q6b"><label for="q6b">
+              <div class="gradient-bar" style="background:linear-gradient(90deg,#F3924B,#C9557B,#6E2450)"></div>
+              <span class="opt-title">Un atardecer</span><span class="opt-desc">Calidez, romance, un momento para
+                disfrutar</span>
+            </label></div>
+          <div class="opt"><input type="radio" name="q6" id="q6c"><label for="q6c">
+              <div class="gradient-bar" style="background:linear-gradient(90deg,#2C0E1E,#4A1229,#C9A15A)"></div>
+              <span class="opt-title">Una noche elegante</span><span class="opt-desc">Antojo nocturno, algo para
+                consentirse</span>
+            </label></div>
+          <div class="opt"><input type="radio" name="q6" id="q6d"><label for="q6d">
+              <div class="gradient-bar" style="background:linear-gradient(90deg,#E7DED9,#D8CFC9,#C9BEB7)"></div>
+              <span class="opt-title">Ninguna en particular</span><span class="opt-desc">Prefiero algo neutro, centrado
+                solo en el producto</span>
+            </label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Sensación al ver el menú">
+        <p class="q-text">Cuando alguien vea tu menú en pantalla, ¿qué quieres que sienta primero?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="q7" id="q7a"><label for="q7a"><span class="opt-title">Antojo
+                inmediato</span><span class="opt-desc">Que se le haga agua la boca al instante</span></label></div>
+          <div class="opt"><input type="radio" name="q7" id="q7b"><label for="q7b"><span class="opt-title">Confianza y
+                calidad</span><span class="opt-desc">Que sienta que es un producto premium</span></label></div>
+          <div class="opt"><input type="radio" name="q7" id="q7c"><label for="q7c"><span class="opt-title">Ternura y
+                calidez</span><span class="opt-desc">Como un gusto que se da a sí mismo</span></label></div>
+          <div class="opt"><input type="radio" name="q7" id="q7d"><label for="q7d"><span
+                class="opt-title">Curiosidad</span><span class="opt-desc">Que quiera explorar todas las
+                opciones</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Lo que NO quieres proyectar">
+        <p class="q-text">Y algo igual de importante: ¿qué NO quieres que se sienta jamás en tu marca?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="q8" id="q8a"><label for="q8a"><span class="opt-title">Nada "barato"
+                o genérico</span><span class="opt-desc">Como un puesto sin identidad propia</span></label></div>
+          <div class="opt"><input type="radio" name="q8" id="q8b"><label for="q8b"><span class="opt-title">Nada infantil
+                o caricaturesco</span><span class="opt-desc">Aunque sea dulce, no quiero que se vea "de
+                niños"</span></label></div>
+          <div class="opt"><input type="radio" name="q8" id="q8c"><label for="q8c"><span class="opt-title">Nada frío o
+                corporativo</span><span class="opt-desc">Sin calidez, como una empresa sin alma</span></label></div>
+          <div class="opt"><input type="radio" name="q8" id="q8d"><label for="q8d"><span class="opt-title">Nada saturado
+                o desordenado</span><span class="opt-desc">Demasiada información compitiendo a la vez</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chapter">
+      <div class="chapter-head">
+        <span class="chapter-num">IV</span>
+        <div>
+          <p class="chapter-title">Movimiento y presentación</p>
+          <p class="chapter-sub">Cómo se mueve y se organiza tu menú en pantalla</p>
+        </div>
+      </div>
+
+      <div class="question" data-title="Ritmo de las animaciones">
+        <p class="q-text">¿Cómo prefieres que se muevan tus videos?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="q9" id="q9a"><label for="q9a">
+              <div class="motion-track"><span class="motion-dot slow"></span></div>
+              <span class="opt-title">Suaves y pausadas</span><span class="opt-desc">Para disfrutar cada platillo con
+                calma</span>
+            </label></div>
+          <div class="opt"><input type="radio" name="q9" id="q9b"><label for="q9b">
+              <div class="motion-track"><span class="motion-dot fast"></span></div>
+              <span class="opt-title">Dinámicas y rápidas</span><span class="opt-desc">Para captar la atención al
+                instante</span>
+            </label></div>
+          <div class="opt"><input type="radio" name="q9" id="q9c"><label for="q9c">
+              <div class="motion-track"><span class="motion-dot mixed"></span></div>
+              <span class="opt-title">Un equilibrio</span><span class="opt-desc">Empieza con energía y se calma en los
+                detalles</span>
+            </label></div>
+          <div class="opt"><input type="radio" name="q9" id="q9d"><label for="q9d">
+              <div class="motion-track"><span class="motion-dot still"></span></div>
+              <span class="opt-title">Casi estáticas</span><span class="opt-desc">Sobrias y elegantes, sin distraer del
+                menú</span>
+            </label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Cantidad de platillos por pantalla">
+        <p class="q-text">¿Cuántos productos prefieres mostrar a la vez?</p>
+        <div class="options">
+          <div class="opt wide"><input type="radio" name="q10" id="q10a"><label for="q10a">
+              <div class="mini-grid"><span class="cell big"></span><span class="cell big"></span><span
+                  class="cell big"></span></div>
+              <span class="opt-title">Pocos, muy destacados</span><span class="opt-desc">3-4 productos — sensación
+                exclusiva, "menos es más"</span>
+            </label></div>
+          <div class="opt wide"><input type="radio" name="q10" id="q10b"><label for="q10b">
+              <div class="mini-grid"><span class="cell small"></span><span class="cell small"></span><span
+                  class="cell small"></span><span class="cell small"></span><span class="cell small"></span><span
+                  class="cell small"></span><span class="cell small"></span></div>
+              <span class="opt-title">Catálogo completo visible</span><span class="opt-desc">Que se note toda la
+                variedad de una vez</span>
+            </label></div>
+          <div class="opt wide"><input type="radio" name="q10" id="q10c"><label for="q10c">
+              <div class="mini-grid"><span class="cell big"></span><span class="cell ghost"></span><span
+                  class="cell ghost"></span></div>
+              <span class="opt-title">Rotación por categorías</span><span class="opt-desc">Un tiempo dedicado a cada
+                tipo de postre — las demás aparecen después</span>
+            </label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Momento de consumo">
+        <p class="q-text">¿En qué momento imaginas que alguien antoja uno de tus postres?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="q11" id="q11a"><label for="q11a"><span class="opt-title">A media
+                tarde</span><span class="opt-desc">Un gusto rápido entre actividades</span></label></div>
+          <div class="opt"><input type="radio" name="q11" id="q11b"><label for="q11b"><span class="opt-title">Después de
+                comer</span><span class="opt-desc">El postre que cierra el día bien</span></label></div>
+          <div class="opt"><input type="radio" name="q11" id="q11c"><label for="q11c"><span class="opt-title">En una
+                celebración</span><span class="opt-desc">Algo para compartir en un momento especial</span></label></div>
+          <div class="opt"><input type="radio" name="q11" id="q11d"><label for="q11d"><span class="opt-title">Un regalo
+                para sí mismo</span><span class="opt-desc">"Hoy me lo merezco"</span></label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chapter">
+      <div class="chapter-head">
+        <span class="chapter-num">V</span>
+        <div>
+          <p class="chapter-title">Un último toque</p>
+          <p class="chapter-sub">Cuéntanos algo que solo tú sabes de tu marca</p>
+        </div>
+      </div>
+
+      <div class="question" data-title="Inspiración o referencia">
+        <p class="q-text">¿Hay alguna marca, cuenta de Instagram o lugar que admires y que te gustaría que inspire tu
+          estilo? (opcional)</p>
+        <textarea class="freeform" id="q12"
+          placeholder="Por ejemplo: una pastelería, una cafetería, una marca de postres que te encante..."></textarea>
+      </div>
+
+      <div class="question" data-title="Algo más que quiera compartir">
+        <p class="q-text">¿Hay algo más que quieras que sepamos antes de diseñar tu identidad? (opcional)</p>
+        <textarea class="freeform" id="q13" placeholder="Cuéntanos lo que quieras..."></textarea>
+      </div>
+    </div>
+
+    <div class="summary-block">
+      <h3>Tu resumen de identidad</h3>
+      <p class="sub">Así quedará registrado tu estilo, listo para compartir con nosotros</p>
+      <div id="summaryText">Responde las preguntas de arriba y presiona "Generar resumen" para verlo aquí.</div>
+      <div class="btn-row">
+        <button class="primary" onclick="generateSummary()">Generar resumen</button>
+        <button class="ghost" onclick="copySummary()">Copiar resumen</button>
+        <button class="ghost whatsapp-btn" onclick="sendWhatsApp()">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"
+            style="vertical-align:-2px; margin-right:6px;">
+            <path
+              d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.87.5 3.62 1.44 5.15L2 22l5.14-1.55a9.8 9.8 0 0 0 4.9 1.32h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm5.78 14.02c-.24.68-1.42 1.32-1.96 1.4-.5.08-1.14.11-1.84-.12-.42-.14-.96-.31-1.65-.6-2.9-1.25-4.79-4.15-4.94-4.35-.15-.2-1.17-1.56-1.17-2.97 0-1.41.74-2.1 1-2.39.26-.29.57-.36.76-.36.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.58.82 2 .89 2.14.07.15.12.32.02.51-.1.19-.15.31-.29.48-.14.17-.3.38-.43.51-.14.14-.29.29-.13.57.17.29.75 1.23 1.61 1.99 1.11.98 2.05 1.29 2.34 1.43.29.14.46.12.63-.07.17-.19.71-.83.9-1.11.19-.29.38-.24.63-.14.26.1 1.66.78 1.94.92.29.14.47.21.55.33.07.12.07.68-.17 1.36Z" />
+          </svg>
+          Enviar por WhatsApp
+        </button>
+      </div>
+      <p class="pending" id="pendingNote"></p>
+    </div>
+
+    <p class="signoff"><br><b>HummingX BI</b> — Impulsando tu vuelo</p>
+
+    <div class="footer-hummingx">
+      <a href="https://hummingxbi.com" target="_blank" style="display:flex; align-items:center;">
+        <img src="../logoclaro.png" alt="HummingX BI Logo" class="footer-logo">
+      </a>
+      <span class="footer-divider"></span>
+      <a href="https://hummingxbi.com" target="_blank" class="footer-link">hummingxbi.com</a>
+    </div>
+
+  </div>
+
+  <script>
+    const radioGroups = ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10", "q11"];
+
+    function updateProgress() {
+      const total = radioGroups.length;
+      let answered = 0;
+      radioGroups.forEach(name => {
+        if (document.querySelector('input[name="' + name + '"]:checked')) answered++;
+      });
+      document.getElementById('progressFill').style.width = Math.round((answered / total) * 100) + '%';
+    }
+
+    document.querySelectorAll('input[type="radio"]').forEach(el => {
+      el.addEventListener('change', updateProgress);
+    });
+
+    function getSelectedLabel(name) {
+      const checked = document.querySelector('input[name="' + name + '"]:checked');
+      if (!checked) return null;
+      const titleEl = checked.parentElement.querySelector('.opt-title');
+      return titleEl ? titleEl.textContent.trim() : null;
+    }
+
+    function generateSummary() {
+      const questions = document.querySelectorAll('.question');
+      let lines = [];
+      let missing = 0;
+
+      questions.forEach(q => {
+        const title = q.getAttribute('data-title');
+        const radio = q.querySelector('input[type="radio"]');
+        const textarea = q.querySelector('textarea');
+        if (radio) {
+          const name = radio.getAttribute('name');
+          const val = getSelectedLabel(name);
+          if (val) {
+            lines.push('• ' + title + ': ' + val);
+          } else {
+            missing++;
+          }
+        } else if (textarea) {
+          const val = textarea.value.trim();
+          if (val) {
+            lines.push('• ' + title + ': ' + val);
+          }
+        }
+      });
+
+      const header = 'RESUMEN DE IDENTIDAD — K POSTRES\n' + '—'.repeat(30) + '\n\n';
+      document.getElementById('summaryText').textContent = header + lines.join('\n');
+
+      const note = document.getElementById('pendingNote');
+      note.textContent = missing > 0
+        ? 'Aún tienes ' + missing + ' pregunta(s) sin responder. Puedes generar el resumen igual y completarlas después.'
+        : '¡Completaste todo! Tu resumen está listo para copiar.';
+    }
+
+    function copySummary() {
+      const text = document.getElementById('summaryText').textContent;
+      if (!text || text.includes('Responde las preguntas')) {
+        generateSummary();
+      }
+      const finalText = document.getElementById('summaryText').textContent;
+      navigator.clipboard.writeText(finalText).then(() => {
+        const note = document.getElementById('pendingNote');
+        note.textContent = 'Resumen copiado — ya puedes pegarlo y enviarlo. 🍓';
+      }).catch(() => {
+        const note = document.getElementById('pendingNote');
+        note.textContent = 'No se pudo copiar automáticamente. Selecciona el texto manualmente.';
+      });
+    }
+
+    function sendWhatsApp() {
+      const textEl = document.getElementById('summaryText');
+      if (!textEl.textContent || textEl.textContent.includes('Responde las preguntas')) {
+        generateSummary();
+      }
+      const finalText = document.getElementById('summaryText').textContent;
+      const encoded = encodeURIComponent(finalText);
+      window.open('https://wa.me/525519802943?text=' + encoded, '_blank');
+    }
+
+    updateProgress();
+  </script>
+
+</body>
+
+</html>
