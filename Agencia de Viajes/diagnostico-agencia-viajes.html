@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnóstico de tu Agencia de Viajes — HummingX BI</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Prata&family=Jost:wght@300;400;500;600&display=swap');
+
+    :root {
+      --cream: #FAF7F1;
+      --cream-deep: #F1E8D9;
+      --navy: #0F2038;
+      --navy-deep: #081422;
+      --gold-soft: #E8D6AE;
+      --gold-mid: #C7A15C;
+      --gold-deep: #9C7A3D;
+      --ink: #1B2430;
+      --ink-soft: #5B6472;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .progress-rail {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      height: 3px;
+      width: 100%;
+      background: rgba(156, 122, 61, 0.14);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--gold-deep), var(--gold-mid));
+      transition: width .4s ease;
+    }
+
+    .hero {
+      position: relative;
+      background: radial-gradient(120% 140% at 50% 0%, var(--navy) 0%, var(--navy-deep) 65%, #050B14 100%);
+      color: var(--cream);
+      padding: 76px 24px 96px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(199, 161, 92, 0.16), transparent 70%);
+      filter: blur(10px);
+    }
+
+    .hero::before {
+      top: -160px;
+      left: -140px;
+    }
+
+    .hero::after {
+      bottom: -180px;
+      right: -160px;
+    }
+
+    .eyebrow {
+      font-family: 'Jost', sans-serif;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      font-size: 11px;
+      color: var(--gold-soft);
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .brandname {
+      font-family: 'Prata', serif;
+      font-size: clamp(34px, 6.4vw, 54px);
+      margin: 0;
+      position: relative;
+      z-index: 2;
+      letter-spacing: .01em;
+      line-height: 1.18;
+    }
+
+    .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(17px, 2.4vw, 21px);
+      color: var(--gold-soft);
+      margin-top: 16px;
+      position: relative;
+      z-index: 2;
+      max-width: 46ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .divider {
+      margin: 34px auto 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .intro {
+      margin-top: -46px;
+      position: relative;
+      z-index: 3;
+      background: var(--cream);
+      border-radius: 22px;
+      padding: 38px 34px;
+      box-shadow: 0 30px 60px -30px rgba(15, 32, 56, 0.35);
+      border: 1px solid var(--cream-deep);
+    }
+
+    .intro p {
+      margin: 0 0 12px;
+      font-size: 15.5px;
+      color: var(--ink-soft);
+    }
+
+    .intro p:last-child {
+      margin-bottom: 0;
+    }
+
+    .intro strong {
+      color: var(--navy);
+      font-weight: 500;
+    }
+
+    .chapter {
+      margin-top: 58px;
+    }
+
+    .chapter-head {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 26px;
+    }
+
+    .chapter-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 600;
+      font-size: 34px;
+      color: var(--gold-deep);
+      line-height: 1;
+    }
+
+    .chapter-title {
+      font-family: 'Prata', serif;
+      font-size: 22px;
+      color: var(--navy);
+      margin: 0;
+    }
+
+    .chapter-sub {
+      font-size: 13.5px;
+      color: var(--ink-soft);
+      margin: 4px 0 0;
+      font-style: italic;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .question {
+      margin-bottom: 34px;
+    }
+
+    .q-text {
+      font-size: 16.5px;
+      color: var(--ink);
+      margin: 0 0 6px;
+      font-weight: 500;
+    }
+
+    .q-hint {
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      margin: 0 0 14px;
+      font-style: italic;
+    }
+
+    .options {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width:560px) {
+      .options {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .opt {
+      position: relative;
+    }
+
+    .opt input {
+      position: absolute;
+      opacity: 0;
+      inset: 0;
+      margin: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .opt label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      border: 1px solid var(--cream-deep);
+      background: #fff;
+      border-radius: 14px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: all .2s ease;
+      height: 100%;
+    }
+
+    .opt .opt-title {
+      font-size: 14px;
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .opt .opt-desc {
+      font-size: 12px;
+      color: var(--ink-soft);
+    }
+
+    .opt label:hover {
+      border-color: var(--gold-mid);
+      background: var(--cream-deep);
+    }
+
+    .opt input:checked+label {
+      border-color: var(--gold-deep);
+      background: linear-gradient(135deg, var(--gold-soft), #fff);
+      box-shadow: 0 8px 20px -12px rgba(156, 122, 61, 0.5);
+    }
+
+    .opt input:checked+label .opt-title {
+      color: var(--navy);
+    }
+
+    .opt input:checked+label::after {
+      content: "✓";
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      color: var(--gold-deep);
+      font-size: 12px;
+    }
+
+    .opt.wide {
+      grid-column: 1 / -1;
+    }
+
+    .swatch-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .swatch {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      flex-shrink: 0;
+    }
+
+    .style-icon {
+      width: 38px;
+      height: 24px;
+      margin-bottom: 8px;
+    }
+
+    textarea.freeform {
+      width: 100%;
+      border: 1px solid var(--cream-deep);
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      color: var(--ink);
+      resize: vertical;
+      min-height: 70px;
+      background: #fff;
+    }
+
+    textarea.freeform:focus {
+      outline: none;
+      border-color: var(--gold-mid);
+    }
+
+    .summary-block {
+      margin-top: 70px;
+      background: var(--navy);
+      color: var(--cream);
+      border-radius: 22px;
+      padding: 40px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .summary-block::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(80% 120% at 100% 0%, rgba(199, 161, 92, 0.16), transparent 60%);
+    }
+
+    .summary-block h3 {
+      font-family: 'Prata', serif;
+      margin: 0 0 6px;
+      font-size: 22px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .summary-block .sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--gold-soft);
+      margin: 0 0 22px;
+      position: relative;
+      z-index: 1;
+    }
+
+    #summaryText {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(199, 161, 92, 0.25);
+      border-radius: 14px;
+      padding: 18px;
+      font-size: 13.5px;
+      white-space: pre-wrap;
+      position: relative;
+      z-index: 1;
+      max-height: 320px;
+      overflow-y: auto;
+      font-family: 'Jost', sans-serif;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    button.primary {
+      background: linear-gradient(135deg, var(--gold-mid), var(--gold-deep));
+      color: var(--navy-deep);
+      border: none;
+      padding: 13px 26px;
+      border-radius: 30px;
+      font-family: 'Jost', sans-serif;
+      font-weight: 600;
+      font-size: 13.5px;
+      cursor: pointer;
+      letter-spacing: .03em;
+      transition: transform .15s ease;
+    }
+
+    button.primary:hover {
+      transform: translateY(-2px);
+    }
+
+    button.ghost {
+      background: transparent;
+      border: 1px solid rgba(250, 247, 241, 0.35);
+      color: var(--cream);
+      padding: 13px 22px;
+      border-radius: 30px;
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    button.whatsapp-btn {
+      border-color: rgba(150, 220, 180, 0.45);
+      background: rgba(150, 220, 180, 0.08);
+    }
+
+    button.whatsapp-btn:hover {
+      background: rgba(150, 220, 180, 0.16);
+    }
+
+    .pending {
+      font-size: 12.5px;
+      color: var(--gold-soft);
+      margin-top: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .signoff {
+      text-align: center;
+      margin-top: 56px;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--ink-soft);
+      font-size: 14px;
+    }
+
+    .signoff b {
+      color: var(--navy);
+      font-style: normal;
+      font-family: 'Prata', serif;
+    }
+
+    .footer-hummingx {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 26px;
+    }
+
+    .footer-mark {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .footer-divider {
+      width: 1px;
+      height: 24px;
+      background-color: var(--ink-soft);
+      opacity: 0.35;
+    }
+
+    .footer-link {
+      font-family: 'Jost', sans-serif;
+      font-size: 13.5px;
+      color: var(--ink-soft);
+      letter-spacing: 0.05em;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="progress-rail">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">Cuestionario diagnóstico privado · HummingX BI</div>
+    <h1 class="brandname">Diagnóstico de tu<br>Agencia de Viajes</h1>
+    <p class="subtitle">Antes de diseñar tu marca y tu página web, queremos conocer hacia dónde quieres llevar tu
+      negocio</p>
+    <svg class="divider" width="120" height="28" viewBox="0 0 120 28" fill="none">
+      <line x1="0" y1="14" x2="42" y2="14" stroke="#E8D6AE" stroke-width="1" />
+      <g transform="translate(50,3)">
+        <circle cx="10" cy="11" r="9.5" fill="none" stroke="#C7A15C" stroke-width="1" />
+        <path d="M10 3V19M2 11H18" stroke="#C7A15C" stroke-width="0.7" />
+        <path d="M10 4L12 9L10 18L8 9Z" fill="#C7A15C" />
+      </g>
+      <line x1="78" y1="14" x2="120" y2="14" stroke="#E8D6AE" stroke-width="1" />
+    </svg>
+  </div>
+
+  <div class="wrap">
+
+    <div class="intro">
+      <p><strong>Hola, un gusto conocerte.</strong> Antes de diseñar tu marca y tu página web, queremos entender tu
+        proyecto a fondo — en qué punto estás, qué tipo de viajero quieres atraer, y qué quieres que tu agencia proyecte
+        desde el primer clic.</p>
+      <p>Este cuestionario es sencillo: solo elige la opción que más se identifique contigo. No hay respuestas correctas
+        ni incorrectas — cada elección nos ayuda a construir algo que se sienta completamente <strong>tuyo</strong>,
+        incluso si apenas estás comenzando.</p>
+      <p>Tómate tu tiempo. Al final podrás enviarnos tu resumen directo por WhatsApp. ✈️</p>
+    </div>
+
+    <div class="chapter">
+      <div class="chapter-head">
+        <span class="chapter-num">I</span>
+        <div>
+          <p class="chapter-title">Tu agencia</p>
+          <p class="chapter-sub">Los datos base de tu proyecto</p>
+        </div>
+      </div>
+
+      <div class="question" data-title="Nombre de la agencia">
+        <p class="q-text">¿Tu agencia de viajes ya tiene nombre definido?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="q1" id="q1a"><label for="q1a"><span class="opt-title">Sí, ya tengo
+                nombre</span></label></div>
+          <div class="opt"><input type="radio" name="q1" id="q1b"><label for="q1b"><span class="opt-title">Tengo una
+                idea, pero no estoy 100% seguro</span></label></div>
+          <div class="opt"><input type="radio" name="q1" id="q1c"><label for="q1c"><span class="opt-title">Aún no tengo
+                nombre</span></label></div>
+          <div class="opt"><input type="radio" name="q1" id="q1d"><label for="q1d"><span class="opt-title">Tengo varias
+                opciones y no me decido</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Redes sociales">
+        <p class="q-text">¿Ya tienes redes sociales o algo publicado de tu agencia?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="q2" id="q2a"><label for="q2a"><span class="opt-title">Sí, ya tengo
+                Instagram/Facebook activos</span></label></div>
+          <div class="opt"><input type="radio" name="q2" id="q2b"><label for="q2b"><span class="opt-title">Tengo cuenta
+                creada pero sin contenido</span></label></div>
+          <div class="opt"><input type="radio" name="q2" id="q2c"><label for="q2c"><span class="opt-title">Aún no tengo
+                nada</span></label></div>
+          <div class="opt"><input type="radio" name="q2" id="q2d"><label for="q2d"><span class="opt-title">Tengo página
+                en otra plataforma</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Situación legal">
+        <p class="q-text">¿Tu agencia ya está dada de alta legalmente (RFC, razón social)?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="q3" id="q3a"><label for="q3a"><span class="opt-title">Sí, ya está
+                constituida</span></label></div>
+          <div class="opt"><input type="radio" name="q3" id="q3b"><label for="q3b"><span class="opt-title">Está en
+                trámite</span></label></div>
+          <div class="opt"><input type="radio" name="q3" id="q3c"><label for="q3c"><span class="opt-title">Aún no, opero
+                de manera independiente</span></label></div>
+          <div class="opt"><input type="radio" name="q3" id="q3d"><label for="q3d"><span class="opt-title">No lo sé /
+                necesito orientación</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Contacto preferido">
+        <p class="q-text">¿Cómo prefieres que te contactemos para dar seguimiento?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="q4" id="q4a"><label for="q4a"><span
+                class="opt-title">WhatsApp</span></label></div>
+          <div class="opt"><input type="radio" name="q4" id="q4b"><label for="q4b"><span class="opt-title">Llamada
+                telefónica</span></label></div>
+          <div class="opt"><input type="radio" name="q4" id="q4c"><label for="q4c"><span class="opt-title">Correo
+                electrónico</span></label></div>
+          <div class="opt"><input type="radio" name="q4" id="q4d"><label for="q4d"><span class="opt-title">Cualquiera
+                está bien</span></label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chapter">
+      <div class="chapter-head">
+        <span class="chapter-num">II</span>
+        <div>
+          <p class="chapter-title">Tu momento actual</p>
+          <p class="chapter-sub">En qué etapa se encuentra tu negocio hoy</p>
+        </div>
+      </div>
+
+      <div class="question" data-title="Etapa del negocio">
+        <p class="q-text">¿Cómo describirías el momento actual de tu agencia?</p>
+        <div class="options">
+          <div class="opt wide"><input type="radio" name="q5" id="q5a"><label for="q5a"><span class="opt-title">Es una
+                idea que quiero convertir en negocio</span></label></div>
+          <div class="opt wide"><input type="radio" name="q5" id="q5b"><label for="q5b"><span class="opt-title">Ya tengo
+                algunos clientes, de manera informal</span></label></div>
+          <div class="opt wide"><input type="radio" name="q5" id="q5c"><label for="q5c"><span class="opt-title">Ya vendo
+                activamente pero sin marca definida</span></label></div>
+          <div class="opt wide"><input type="radio" name="q5" id="q5d"><label for="q5d"><span class="opt-title">Ya tengo
+                una operación establecida y quiero renovar mi imagen</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Método de cotización actual">
+        <p class="q-text">Hoy, ¿cómo cotizas o armas un viaje para un cliente?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="q6" id="q6a"><label for="q6a"><span class="opt-title">A mano / en
+                una libreta</span></label></div>
+          <div class="opt"><input type="radio" name="q6" id="q6b"><label for="q6b"><span class="opt-title">Por WhatsApp,
+                mensaje por mensaje</span></label></div>
+          <div class="opt"><input type="radio" name="q6" id="q6c"><label for="q6c"><span class="opt-title">En Excel o
+                Word</span></label></div>
+          <div class="opt"><input type="radio" name="q6" id="q6d"><label for="q6d"><span class="opt-title">Aún no he
+                cotizado ningún viaje</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Relación con mayoristas">
+        <p class="q-text">¿Ya trabajas con algún mayorista u operador (Best Day, Nexus, Mega Travel, etc.)?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="q7" id="q7a"><label for="q7a"><span class="opt-title">Sí, ya tengo
+                convenio con uno o varios</span></label></div>
+          <div class="opt"><input type="radio" name="q7" id="q7b"><label for="q7b"><span class="opt-title">Estoy en
+                proceso de darme de alta</span></label></div>
+          <div class="opt"><input type="radio" name="q7" id="q7c"><label for="q7c"><span class="opt-title">Aún no, pero
+                es mi plan</span></label></div>
+          <div class="opt"><input type="radio" name="q7" id="q7d"><label for="q7d"><span class="opt-title">No lo sé
+                todavía, necesito orientación</span></label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chapter">
+      <div class="chapter-head">
+        <span class="chapter-num">III</span>
+        <div>
+          <p class="chapter-title">Tu estilo e identidad</p>
+          <p class="chapter-sub">Cómo quieres que se sienta tu marca</p>
+        </div>
+      </div>
+
+      <div class="question" data-title="Si tu agencia fuera un lugar">
+        <p class="q-text">Si tu agencia fuera un lugar, ¿cuál se parece más a lo que imaginas?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="q8" id="q8a"><label for="q8a">
+              <svg class="style-icon" viewBox="0 0 40 24">
+                <path d="M4 15L34 9L36 12L14 16Z" fill="none" stroke="#C7A15C" stroke-width="1" />
+                <path d="M14 16L10 20M18 15L20 20" stroke="#C7A15C" stroke-width="1" />
+              </svg>
+              <span class="opt-title">Un lounge de aeropuerto</span><span class="opt-desc">Lujo y
+                exclusividad</span></label></div>
+          <div class="opt"><input type="radio" name="q8" id="q8b"><label for="q8b">
+              <svg class="style-icon" viewBox="0 0 40 24">
+                <path d="M8 20V11L20 4L32 11V20Z" fill="none" stroke="#C7A15C" stroke-width="1" />
+                <rect x="17" y="14" width="6" height="6" fill="#C7A15C" />
+              </svg>
+              <span class="opt-title">Una agencia de barrio de confianza</span><span class="opt-desc">Cercanía y
+                calidez</span></label></div>
+          <div class="opt"><input type="radio" name="q8" id="q8c"><label for="q8c">
+              <svg class="style-icon" viewBox="0 0 40 24">
+                <rect x="12" y="3" width="16" height="18" rx="3" fill="none" stroke="#C7A15C" stroke-width="1" />
+                <circle cx="20" cy="17" r="1.2" fill="#C7A15C" />
+              </svg>
+              <span class="opt-title">Una app moderna de viajes</span><span class="opt-desc">Rápido, digital,
+                joven</span></label></div>
+          <div class="opt"><input type="radio" name="q8" id="q8d"><label for="q8d">
+              <svg class="style-icon" viewBox="0 0 40 24">
+                <rect x="8" y="9" width="24" height="12" rx="1" fill="none" stroke="#C7A15C" stroke-width="1" />
+                <path d="M15 9V6H25V9" fill="none" stroke="#C7A15C" stroke-width="1" />
+              </svg>
+              <span class="opt-title">Una oficina corporativa seria</span><span class="opt-desc">Formalidad y
+                experiencia</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Especialidad de viajes">
+        <p class="q-text">¿Qué tipo de viajes quieres que sea tu especialidad principal?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="q9" id="q9a"><label for="q9a"><span class="opt-title">Viajes
+                internacionales</span><span class="opt-desc">Europa, Asia, Medio Oriente...</span></label></div>
+          <div class="opt"><input type="radio" name="q9" id="q9b"><label for="q9b"><span class="opt-title">Turismo
+                nacional</span><span class="opt-desc">Destinos dentro de México</span></label></div>
+          <div class="opt"><input type="radio" name="q9" id="q9c"><label for="q9c"><span class="opt-title">Ambos, sin
+                especializarme aún</span></label></div>
+          <div class="opt"><input type="radio" name="q9" id="q9d"><label for="q9d"><span class="opt-title">Viajes de
+                nicho</span><span class="opt-desc">Religiosos, bodas, grupos, corporativo</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Paleta de color">
+        <p class="q-text">¿Qué paleta se acerca más a lo que imaginas para tu marca?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="q10" id="q10a"><label for="q10a">
+              <div class="swatch-row"><span class="swatch" style="background:#0F2038"></span><span class="swatch"
+                  style="background:#C7A15C"></span><span class="swatch" style="background:#E8D6AE"></span></div>
+              <span class="opt-title">Dorados y azul marino</span><span class="opt-desc">Elegante, aspiracional</span>
+            </label></div>
+          <div class="opt"><input type="radio" name="q10" id="q10b"><label for="q10b">
+              <div class="swatch-row"><span class="swatch" style="background:#10ABC3"></span><span class="swatch"
+                  style="background:#E8734A"></span><span class="swatch" style="background:#9AD9DE"></span></div>
+              <span class="opt-title">Turquesa y coral</span><span class="opt-desc">Playero, vibrante</span>
+            </label></div>
+          <div class="opt"><input type="radio" name="q10" id="q10c"><label for="q10c">
+              <div class="swatch-row"><span class="swatch" style="background:#4B6B4E"></span><span class="swatch"
+                  style="background:#C9B084"></span><span class="swatch" style="background:#EDE3CC"></span></div>
+              <span class="opt-title">Verde y tierra</span><span class="opt-desc">Natural, cercano</span>
+            </label></div>
+          <div class="opt"><input type="radio" name="q10" id="q10d"><label for="q10d">
+              <div class="swatch-row"><span class="swatch" style="background:#B9B9B9"></span><span class="swatch"
+                  style="background:#DADADA"></span><span class="swatch" style="background:#EFEFEF"></span></div>
+              <span class="opt-title">Sin preferencia</span><span class="opt-desc">Confío en su propuesta</span>
+            </label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Lo que le gustó de Mega Travel">
+        <p class="q-text">En Mega Travel, la referencia que nos compartiste, ¿qué fue lo que más te gustó?</p>
+        <div class="options">
+          <div class="opt wide"><input type="radio" name="q11" id="q11a"><label for="q11a"><span class="opt-title">Que
+                se ve como una marca grande y confiable</span></label></div>
+          <div class="opt wide"><input type="radio" name="q11" id="q11b"><label for="q11b"><span class="opt-title">Los
+                videos y el catálogo de destinos</span></label></div>
+          <div class="opt wide"><input type="radio" name="q11" id="q11c"><label for="q11c"><span class="opt-title">Que
+                puedes cotizar directo por WhatsApp desde cada paquete</span></label></div>
+          <div class="opt wide"><input type="radio" name="q11" id="q11d"><label for="q11d"><span class="opt-title">Todo
+                en general, quiero algo similar</span></label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chapter">
+      <div class="chapter-head">
+        <span class="chapter-num">IV</span>
+        <div>
+          <p class="chapter-title">Tu página web</p>
+          <p class="chapter-sub">Lo que nos pediste directamente</p>
+        </div>
+      </div>
+
+      <div class="question" data-title="Prioridad de la web">
+        <p class="q-text">¿Qué es lo más importante que debe hacer tu página web?</p>
+        <div class="options">
+          <div class="opt wide"><input type="radio" name="q12" id="q12a"><label for="q12a"><span class="opt-title">Verse
+                profesional y dar confianza, aunque apenas empiece</span></label></div>
+          <div class="opt wide"><input type="radio" name="q12" id="q12b"><label for="q12b"><span
+                class="opt-title">Mostrar destinos y paquetes como catálogo</span></label></div>
+          <div class="opt wide"><input type="radio" name="q12" id="q12c"><label for="q12c"><span class="opt-title">Que
+                el cliente pueda cotizar fácil por WhatsApp</span></label></div>
+          <div class="opt wide"><input type="radio" name="q12" id="q12d"><label for="q12d"><span class="opt-title">No lo
+                sé bien, quiero que ustedes me guíen</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Paquetes y destinos definidos">
+        <p class="q-text">¿Ya tienes paquetes o destinos definidos para mostrar en la web?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="q13" id="q13a"><label for="q13a"><span class="opt-title">Sí, ya
+                tengo varios armados</span></label></div>
+          <div class="opt"><input type="radio" name="q13" id="q13b"><label for="q13b"><span class="opt-title">Tengo
+                algunas ideas pero nada formal</span></label></div>
+          <div class="opt"><input type="radio" name="q13" id="q13c"><label for="q13c"><span class="opt-title">Aún no,
+                estoy viendo con qué operador trabajar</span></label></div>
+          <div class="opt"><input type="radio" name="q13" id="q13d"><label for="q13d"><span class="opt-title">Prefiero
+                que la web sea general mientras defino esto</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Material visual disponible">
+        <p class="q-text">¿Tienes fotos o videos propios, o usamos material de referencia mientras arrancas?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="q14" id="q14a"><label for="q14a"><span class="opt-title">Tengo
+                fotos/videos propios</span></label></div>
+          <div class="opt"><input type="radio" name="q14" id="q14b"><label for="q14b"><span class="opt-title">No tengo,
+                pero puedo conseguir algo</span></label></div>
+          <div class="opt"><input type="radio" name="q14" id="q14c"><label for="q14c"><span class="opt-title">Prefiero
+                que usen material profesional mientras arranco</span></label></div>
+          <div class="opt"><input type="radio" name="q14" id="q14d"><label for="q14d"><span class="opt-title">No lo
+                había pensado</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Urgencia">
+        <p class="q-text">¿Qué tan urgente es tener la página lista?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="q15" id="q15a"><label for="q15a"><span class="opt-title">Es
+                urgente, ya tengo clientes esperando</span></label></div>
+          <div class="opt"><input type="radio" name="q15" id="q15b"><label for="q15b"><span class="opt-title">Me
+                gustaría tenerla en las próximas semanas</span></label></div>
+          <div class="opt"><input type="radio" name="q15" id="q15c"><label for="q15c"><span class="opt-title">No hay
+                prisa, quiero hacerlo bien aunque tome tiempo</span></label></div>
+          <div class="opt"><input type="radio" name="q15" id="q15d"><label for="q15d"><span class="opt-title">Aún estoy
+                explorando opciones y presupuesto</span></label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chapter">
+      <div class="chapter-head">
+        <span class="chapter-num">V</span>
+        <div>
+          <p class="chapter-title">Un último toque</p>
+          <p class="chapter-sub">Cuéntanos algo que solo tú sabes de tu proyecto</p>
+        </div>
+      </div>
+
+      <div class="question" data-title="Otras referencias">
+        <p class="q-text">¿Hay alguna otra agencia, marca o cuenta que admires y que te gustaría que inspire tu estilo?
+          (opcional)</p>
+        <textarea class="freeform" id="q16"
+          placeholder="Por ejemplo: una agencia, una aerolínea, una marca de viajes que te encante..."></textarea>
+      </div>
+
+      <div class="question" data-title="Algo más que quiera compartir">
+        <p class="q-text">¿Hay algo más que quieras que sepamos antes de armar tu propuesta? (opcional)</p>
+        <textarea class="freeform" id="q17" placeholder="Cuéntanos lo que quieras..."></textarea>
+      </div>
+    </div>
+
+    <div class="summary-block">
+      <h3>Tu resumen de diagnóstico</h3>
+      <p class="sub">Así quedará registrado tu proyecto, listo para compartir con nosotros</p>
+      <div id="summaryText">Responde las preguntas de arriba y presiona "Generar resumen" para verlo aquí.</div>
+      <div class="btn-row">
+        <button class="primary" onclick="generateSummary()">Generar resumen</button>
+        <button class="ghost" onclick="copySummary()">Copiar resumen</button>
+        <button class="ghost whatsapp-btn" onclick="sendWhatsApp()">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"
+            style="vertical-align:-2px; margin-right:6px;">
+            <path
+              d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.87.5 3.62 1.44 5.15L2 22l5.14-1.55a9.8 9.8 0 0 0 4.9 1.32h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm5.78 14.02c-.24.68-1.42 1.32-1.96 1.4-.5.08-1.14.11-1.84-.12-.42-.14-.96-.31-1.65-.6-2.9-1.25-4.79-4.15-4.94-4.35-.15-.2-1.17-1.56-1.17-2.97 0-1.41.74-2.1 1-2.39.26-.29.57-.36.76-.36.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.58.82 2 .89 2.14.07.15.12.32.02.51-.1.19-.15.31-.29.48-.14.17-.3.38-.43.51-.14.14-.29.29-.13.57.17.29.75 1.23 1.61 1.99 1.11.98 2.05 1.29 2.34 1.43.29.14.46.12.63-.07.17-.19.71-.83.9-1.11.19-.29.38-.24.63-.14.26.1 1.66.78 1.94.92.29.14.47.21.55.33.07.12.07.68-.17 1.36Z" />
+          </svg>
+          Enviar por WhatsApp
+        </button>
+      </div>
+      <p class="pending" id="pendingNote"></p>
+    </div>
+
+    <p class="signoff"><b>HummingX BI</b> — Impulsando tu vuelo</p>
+
+    <div class="footer-hummingx">
+      <a href="https://hummingxbi.com" target="_blank" class="footer-mark" style="text-decoration:none;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M4 14C4 14 8 6 14 6C18 6 20 9 20 9C20 9 17 8 15 10C15 10 19 11 19 15C19 15 15 13 12 14C12 14 15 16 14 19C14 19 11 16 8 16C6 16 4 18 4 18C4 18 5 15 4 14Z"
+            fill="#E8D6AE" />
+        </svg>
+      </a>
+      <span class="footer-divider"></span>
+      <a href="https://hummingxbi.com" target="_blank" class="footer-link">hummingxbi.com</a>
+    </div>
+
+  </div>
+
+  <script>
+    /* ======= CONFIGURA AQUÍ EL NÚMERO DE WHATSAPP DE HUMMINGX BI ======= */
+    const WHATSAPP_NUMBER = "525500000000"; // reemplaza por el número real (52 + 10 dígitos, sin espacios ni +)
+    /* ==================================================================== */
+
+    const radioGroups = ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10", "q11", "q12", "q13", "q14", "q15"];
+
+    function updateProgress() {
+      const total = radioGroups.length;
+      let answered = 0;
+      radioGroups.forEach(name => {
+        if (document.querySelector('input[name="' + name + '"]:checked')) answered++;
+      });
+      document.getElementById('progressFill').style.width = Math.round((answered / total) * 100) + '%';
+    }
+
+    document.querySelectorAll('input[type="radio"]').forEach(el => {
+      el.addEventListener('change', updateProgress);
+    });
+
+    function getSelectedLabel(name) {
+      const checked = document.querySelector('input[name="' + name + '"]:checked');
+      if (!checked) return null;
+      const titleEl = checked.parentElement.querySelector('.opt-title');
+      return titleEl ? titleEl.textContent.trim() : null;
+    }
+
+    function generateSummary() {
+      const questions = document.querySelectorAll('.question');
+      let lines = [];
+      let missing = 0;
+
+      questions.forEach(q => {
+        const title = q.getAttribute('data-title');
+        const radio = q.querySelector('input[type="radio"]');
+        const textarea = q.querySelector('textarea');
+        if (radio) {
+          const name = radio.getAttribute('name');
+          const val = getSelectedLabel(name);
+          if (val) {
+            lines.push('• ' + title + ': ' + val);
+          } else {
+            missing++;
+          }
+        } else if (textarea) {
+          const val = textarea.value.trim();
+          if (val) {
+            lines.push('• ' + title + ': ' + val);
+          }
+        }
+      });
+
+      const header = 'DIAGNÓSTICO — AGENCIA DE VIAJES\n' + '—'.repeat(30) + '\n\n';
+      document.getElementById('summaryText').textContent = header + lines.join('\n');
+
+      const note = document.getElementById('pendingNote');
+      note.textContent = missing > 0
+        ? 'Aún tienes ' + missing + ' pregunta(s) sin responder. Puedes generar el resumen igual y completarlas después.'
+        : '¡Completaste todo! Tu resumen está listo para enviar.';
+    }
+
+    function copySummary() {
+      const text = document.getElementById('summaryText').textContent;
+      if (!text || text.includes('Responde las preguntas')) {
+        generateSummary();
+      }
+      const finalText = document.getElementById('summaryText').textContent;
+      navigator.clipboard.writeText(finalText).then(() => {
+        const note = document.getElementById('pendingNote');
+        note.textContent = 'Resumen copiado — ya puedes pegarlo y enviarlo. ✈️';
+      }).catch(() => {
+        const note = document.getElementById('pendingNote');
+        note.textContent = 'No se pudo copiar automáticamente. Selecciona el texto manualmente.';
+      });
+    }
+
+    function sendWhatsApp() {
+      const textEl = document.getElementById('summaryText');
+      if (!textEl.textContent || textEl.textContent.includes('Responde las preguntas')) {
+        generateSummary();
+      }
+      const finalText = document.getElementById('summaryText').textContent;
+      const encoded = encodeURIComponent(finalText);
+      window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encoded, '_blank');
+    }
+
+    updateProgress();
+  </script>
+
+</body>
+
+</html>
