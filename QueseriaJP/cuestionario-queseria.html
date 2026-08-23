@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnóstico de su Quesería — HummingX BI</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Karla:wght@300;400;500;600&display=swap');
+
+    :root {
+      --wax: #8A2B22;
+      --wax-deep: #5E1A14;
+      --wax-dark: #3B0F0B;
+      --butter: #E3A93C;
+      --butter-soft: #F5DFAE;
+      --ivory: #FCF9F1;
+      --ivory-2: #F2EADA;
+      --ink: #2B221B;
+      --ink-soft: #6E6155;
+      --rind: #C98A3E;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--ivory);
+      color: var(--ink);
+      font-family: 'Karla', system-ui, sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---------- Barra fija con la rueda de queso ---------- */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 60;
+      background: rgba(252, 249, 241, 0.94);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--ivory-2);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 20px;
+    }
+
+    .wheel {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: conic-gradient(var(--butter) 0deg, var(--butter) 0deg, var(--ivory-2) 0deg);
+      border: 2px solid var(--rind);
+      position: relative;
+      transition: background .45s ease;
+    }
+
+    .wheel::after {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border-radius: 50%;
+      background: var(--ivory);
+      border: 1px solid rgba(201, 138, 62, .35);
+    }
+
+    .topbar-text {
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      letter-spacing: .04em;
+    }
+
+    .topbar-text b {
+      color: var(--wax);
+      font-weight: 600;
+    }
+
+    /* ---------- Portada ---------- */
+    .hero {
+      background: radial-gradient(130% 150% at 20% 0%, var(--wax) 0%, var(--wax-deep) 58%, var(--wax-dark) 100%);
+      color: var(--ivory);
+      padding: 72px 24px 92px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 480px;
+      height: 480px;
+      top: -220px;
+      right: -180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(227, 169, 60, .18), transparent 68%);
+    }
+
+    .eyebrow {
+      font-size: 10.5px;
+      letter-spacing: .26em;
+      text-transform: uppercase;
+      color: var(--butter-soft);
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 600;
+      font-size: clamp(32px, 6.6vw, 52px);
+      line-height: 1.12;
+      margin: 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero .lede {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(16px, 2.4vw, 20px);
+      color: var(--butter-soft);
+      max-width: 44ch;
+      margin: 18px auto 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-mark {
+      margin: 32px auto 0;
+      display: block;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ---------- Contenedor ---------- */
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 20px 90px;
+    }
+
+    .intro {
+      margin-top: -48px;
+      position: relative;
+      z-index: 5;
+      background: #fff;
+      border: 1px solid var(--ivory-2);
+      border-radius: 18px;
+      padding: 34px 30px;
+      box-shadow: 0 28px 55px -32px rgba(59, 15, 11, .42);
+    }
+
+    .intro p {
+      margin: 0 0 12px;
+      font-size: 15.5px;
+      color: var(--ink-soft);
+    }
+
+    .intro p:last-child {
+      margin-bottom: 0;
+    }
+
+    .intro strong {
+      color: var(--wax);
+      font-weight: 600;
+    }
+
+    /* ---------- Secciones ---------- */
+    .section {
+      margin-top: 56px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--ivory-2);
+      margin-bottom: 26px;
+    }
+
+    .section-num {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--butter);
+      background: var(--wax);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    .section-title {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 600;
+      font-size: 21px;
+      color: var(--wax-deep);
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    .section-sub {
+      font-size: 13px;
+      color: var(--ink-soft);
+      margin: 2px 0 0;
+    }
+
+    /* ---------- Preguntas ---------- */
+    .question {
+      margin-bottom: 30px;
+    }
+
+    .q-text {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 0 0 5px;
+    }
+
+    .q-hint {
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      margin: 0 0 12px;
+      font-style: italic;
+    }
+
+    .options {
+      display: grid;
+      gap: 9px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 560px) {
+      .options {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .opt {
+      position: relative;
+    }
+
+    .opt input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .opt label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      border: 1px solid var(--ivory-2);
+      background: #fff;
+      border-radius: 12px;
+      padding: 13px 15px;
+      cursor: pointer;
+      height: 100%;
+      transition: border-color .18s ease, background .18s ease;
+    }
+
+    .opt-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .opt-desc {
+      font-size: 12px;
+      color: var(--ink-soft);
+      line-height: 1.45;
+    }
+
+    .opt label:hover {
+      border-color: var(--rind);
+      background: var(--ivory);
+    }
+
+    .opt input:focus-visible+label {
+      outline: 2px solid var(--wax);
+      outline-offset: 2px;
+    }
+
+    .opt input:checked+label {
+      border-color: var(--wax);
+      background: linear-gradient(140deg, var(--butter-soft), #fff 78%);
+    }
+
+    .opt input:checked+label .opt-title {
+      color: var(--wax-deep);
+      font-weight: 600;
+    }
+
+    .opt input:checked+label::after {
+      content: "✓";
+      position: absolute;
+      top: 9px;
+      right: 12px;
+      font-size: 12px;
+      color: var(--wax);
+      font-weight: 700;
+    }
+
+    .opt.wide {
+      grid-column: 1 / -1;
+    }
+
+    input.short,
+    textarea.freeform {
+      width: 100%;
+      border: 1px solid var(--ivory-2);
+      border-radius: 12px;
+      padding: 13px 15px;
+      font-family: 'Karla', sans-serif;
+      font-size: 14.5px;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    textarea.freeform {
+      min-height: 74px;
+      resize: vertical;
+    }
+
+    input.short:focus,
+    textarea.freeform:focus {
+      outline: none;
+      border-color: var(--rind);
+    }
+
+    /* ---------- Fotos ---------- */
+    .photo-note {
+      background: var(--ivory-2);
+      border-radius: 14px;
+      padding: 18px 20px;
+      font-size: 14px;
+      color: var(--ink-soft);
+      margin-bottom: 18px;
+    }
+
+    .photo-note b {
+      color: var(--wax-deep);
+    }
+
+    /* ---------- Resumen ---------- */
+    .summary {
+      margin-top: 64px;
+      background: radial-gradient(120% 140% at 100% 0%, var(--wax) 0%, var(--wax-deep) 70%);
+      color: var(--ivory);
+      border-radius: 20px;
+      padding: 36px 30px;
+    }
+
+    .summary h3 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 600;
+      font-size: 22px;
+      margin: 0 0 4px;
+    }
+
+    .summary .sub {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      color: var(--butter-soft);
+      margin: 0 0 20px;
+      font-size: 15px;
+    }
+
+    #summaryText {
+      background: rgba(255, 255, 255, .07);
+      border: 1px solid rgba(227, 169, 60, .3);
+      border-radius: 13px;
+      padding: 17px;
+      font-size: 13.2px;
+      line-height: 1.62;
+      white-space: pre-wrap;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    button {
+      font-family: 'Karla', sans-serif;
+      cursor: pointer;
+      border-radius: 28px;
+      font-size: 13.5px;
+      padding: 12px 24px;
+      transition: transform .15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+    }
+
+    button:focus-visible {
+      outline: 2px solid var(--butter-soft);
+      outline-offset: 3px;
+    }
+
+    button.primary {
+      background: linear-gradient(135deg, var(--butter), var(--rind));
+      color: var(--wax-dark);
+      border: none;
+      font-weight: 600;
+    }
+
+    button.ghost {
+      background: transparent;
+      border: 1px solid rgba(252, 249, 241, .38);
+      color: var(--ivory);
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    button.ghost:hover {
+      background: rgba(252, 249, 241, .08);
+    }
+
+    .status {
+      font-size: 12.5px;
+      color: var(--butter-soft);
+      margin: 14px 0 0;
+      min-height: 18px;
+    }
+
+    /* ---------- Cierre ---------- */
+    .signoff {
+      text-align: center;
+      margin-top: 48px;
+      font-size: 14px;
+      color: var(--ink-soft);
+    }
+
+    .signoff b {
+      display: block;
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 600;
+      font-size: 17px;
+      color: var(--wax-deep);
+      margin-bottom: 3px;
+    }
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 13px;
+      margin-top: 22px;
+    }
+
+    .footer a {
+      font-size: 13px;
+      color: var(--ink-soft);
+      text-decoration: none;
+      letter-spacing: .04em;
+    }
+
+    .footer a:hover {
+      color: var(--wax);
+    }
+
+    .footer-sep {
+      width: 1px;
+      height: 20px;
+      background: var(--ivory-2);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition: none !important;
+      }
+
+      button:hover {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="topbar">
+    <div class="wheel" id="wheel" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+      aria-label="Avance del cuestionario"></div>
+    <div class="topbar-text"><b id="countText">0 de 35</b> preguntas contestadas</div>
+  </div>
+
+  <header class="hero">
+    <p class="eyebrow">Cuestionario de diagnóstico · HummingX BI</p>
+    <h1>Diagnóstico de<br>su quesería</h1>
+    <p class="lede">Para entender cómo trabajan hoy y armarle una propuesta a la medida, sin cobrarle por cosas que no
+      necesita</p>
+    <svg class="hero-mark" width="128" height="30" viewBox="0 0 128 30" fill="none" aria-hidden="true">
+      <line x1="0" y1="15" x2="44" y2="15" stroke="#F5DFAE" stroke-width="1" opacity=".55" />
+      <g transform="translate(50,2)">
+        <path d="M14 2 L26 20 L2 20 Z" fill="none" stroke="#E3A93C" stroke-width="1.2" stroke-linejoin="round" />
+        <circle cx="10" cy="15" r="1.6" fill="#E3A93C" />
+        <circle cx="17" cy="16" r="1.1" fill="#E3A93C" />
+        <circle cx="14" cy="10" r="1.3" fill="#E3A93C" />
+      </g>
+      <line x1="84" y1="15" x2="128" y2="15" stroke="#F5DFAE" stroke-width="1" opacity=".55" />
+    </svg>
+  </header>
+
+  <main class="wrap">
+
+    <div class="intro">
+      <p><strong>Buen día.</strong> Gracias por darse el tiempo. Estas preguntas son para entender bien cómo trabajan
+        hoy en la tienda, qué sistema tienen instalado y en dónde se les está yendo el tiempo.</p>
+      <p>Casi todo es de tocar una opción, así que se contesta rápido desde el celular. <strong>Si alguna no la
+          sabe</strong>, escoja "no sé" y nosotros lo averiguamos de nuestro lado — para eso también le pedimos unas
+        fotos al final.</p>
+      <p>Al terminar, presione <strong>Enviar por WhatsApp</strong> y sus respuestas me llegan directo. Si prefiere
+        contestarme por audio, también funciona.</p>
+    </div>
+
+    <!-- ===== 1 ===== -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">1</span>
+        <div>
+          <p class="section-title">Su sistema actual</p>
+          <p class="section-sub">Lo que ya tienen instalado en la caja</p>
+        </div>
+      </div>
+
+      <div class="question" data-title="Nombre del sistema">
+        <p class="q-text">¿Cómo se llama el sistema o programa que usan hoy en la caja?</p>
+        <p class="q-hint">Normalmente aparece en la pantalla al encenderlo, o hasta abajo del ticket.</p>
+        <input class="short" type="text" id="p1" placeholder="Escriba el nombre, o 'no sé'">
+      </div>
+
+      <div class="question" data-title="Quién lo instaló">
+        <p class="q-text">¿Quién se lo instaló?</p>
+        <input class="short" type="text" id="p2" placeholder="Nombre de la empresa o persona, o 'no recuerdo'">
+      </div>
+
+      <div class="question" data-title="Antigüedad del sistema">
+        <p class="q-text">¿Hace cuánto tiempo lo tienen?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p3" id="p3a"><label for="p3a"><span class="opt-title">Menos de un
+                año</span></label></div>
+          <div class="opt"><input type="radio" name="p3" id="p3b"><label for="p3b"><span class="opt-title">Entre 1 y 3
+                años</span></label></div>
+          <div class="opt"><input type="radio" name="p3" id="p3c"><label for="p3c"><span class="opt-title">Más de 5
+                años</span></label></div>
+          <div class="opt"><input type="radio" name="p3" id="p3d"><label for="p3d"><span class="opt-title">No
+                recuerdo</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Pagos por el sistema">
+        <p class="q-text">¿Sigue pagando algo por ese sistema?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p4" id="p4a"><label for="p4a"><span class="opt-title">Sí, pago
+                mensual</span></label></div>
+          <div class="opt"><input type="radio" name="p4" id="p4b"><label for="p4b"><span class="opt-title">Sí, pago cada
+                año</span></label></div>
+          <div class="opt"><input type="radio" name="p4" id="p4c"><label for="p4c"><span class="opt-title">No, fue un
+                pago único</span></label></div>
+          <div class="opt"><input type="radio" name="p4" id="p4d"><label for="p4d"><span class="opt-title">No
+                sé</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Funciona sin internet">
+        <p class="q-text">Si se va el internet, ¿pueden seguir cobrando normal?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p5" id="p5a"><label for="p5a"><span class="opt-title">Sí, sigue
+                funcionando igual</span></label></div>
+          <div class="opt"><input type="radio" name="p5" id="p5b"><label for="p5b"><span class="opt-title">No, se
+                detiene todo</span></label></div>
+          <div class="opt"><input type="radio" name="p5" id="p5c"><label for="p5c"><span class="opt-title">Funciona a
+                medias</span><span class="opt-desc">Cobramos, pero algo deja de servir</span></label></div>
+          <div class="opt"><input type="radio" name="p5" id="p5d"><label for="p5d"><span class="opt-title">No sé / no ha
+                pasado</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Computadoras con el sistema">
+        <p class="q-text">¿En cuántas computadoras está instalado?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p6" id="p6a"><label for="p6a"><span class="opt-title">Solo en
+                una</span></label></div>
+          <div class="opt"><input type="radio" name="p6" id="p6b"><label for="p6b"><span class="opt-title">En
+                dos</span></label></div>
+          <div class="opt"><input type="radio" name="p6" id="p6c"><label for="p6c"><span class="opt-title">En tres o
+                más</span></label></div>
+          <div class="opt"><input type="radio" name="p6" id="p6d"><label for="p6d"><span class="opt-title">No
+                sé</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Reportes del sistema">
+        <p class="q-text">¿El sistema le permite sacar reportes de ventas o pasarlos a Excel?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p7" id="p7a"><label for="p7a"><span class="opt-title">Sí, y los
+                reviso</span></label></div>
+          <div class="opt"><input type="radio" name="p7" id="p7b"><label for="p7b"><span class="opt-title">Sí, pero casi
+                no los uso</span></label></div>
+          <div class="opt"><input type="radio" name="p7" id="p7c"><label for="p7c"><span class="opt-title">No se
+                puede</span></label></div>
+          <div class="opt"><input type="radio" name="p7" id="p7d"><label for="p7d"><span class="opt-title">No
+                sé</span></label></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 2 ===== -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">2</span>
+        <div>
+          <p class="section-title">Cómo cobran hoy</p>
+          <p class="section-sub">El momento exacto en que se va el tiempo</p>
+        </div>
+      </div>
+
+      <div class="question" data-title="Captura del peso en caja">
+        <p class="q-text">Cuando la cajera va a cobrar un queso, ¿qué pasa con el peso?</p>
+        <div class="options">
+          <div class="opt wide"><input type="radio" name="p8" id="p8a"><label for="p8a"><span class="opt-title">Lo
+                teclea a mano</span></label></div>
+          <div class="opt wide"><input type="radio" name="p8" id="p8b"><label for="p8b"><span class="opt-title">Vuelve a
+                pesar el queso ahí en la caja</span></label></div>
+          <div class="opt wide"><input type="radio" name="p8" id="p8c"><label for="p8c"><span class="opt-title">La
+                báscula se lo manda sola al sistema</span></label></div>
+          <div class="opt wide"><input type="radio" name="p8" id="p8d"><label for="p8d"><span class="opt-title">No
+                sé</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Identificar el queso en caja">
+        <p class="q-text">¿La cajera tiene que buscar qué queso es antes de cobrarlo?</p>
+        <div class="options">
+          <div class="opt wide"><input type="radio" name="p9" id="p9a"><label for="p9a"><span class="opt-title">Sí, lo
+                busca en una lista o en la pantalla</span></label></div>
+          <div class="opt wide"><input type="radio" name="p9" id="p9b"><label for="p9b"><span class="opt-title">A veces
+                sí, según el queso</span></label></div>
+          <div class="opt wide"><input type="radio" name="p9" id="p9c"><label for="p9c"><span class="opt-title">No,
+                escanea un código y ya</span></label></div>
+          <div class="opt wide"><input type="radio" name="p9" id="p9d"><label for="p9d"><span class="opt-title">Le
+                pregunta al del mostrador</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Terminal de tarjeta">
+        <p class="q-text">¿Cómo es su terminal de tarjeta?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p10" id="p10a"><label for="p10a"><span class="opt-title">Un aparato
+                aparte del banco</span></label></div>
+          <div class="opt"><input type="radio" name="p10" id="p10b"><label for="p10b"><span class="opt-title">Está
+                conectada a la computadora</span></label></div>
+          <div class="opt"><input type="radio" name="p10" id="p10c"><label for="p10c"><span class="opt-title">Tenemos
+                varias</span></label></div>
+          <div class="opt"><input type="radio" name="p10" id="p10d"><label for="p10d"><span class="opt-title">No
+                sé</span></label></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 3 ===== -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">3</span>
+        <div>
+          <p class="section-title">Facturas</p>
+          <p class="section-sub">Para saber qué no debemos mover</p>
+        </div>
+      </div>
+
+      <div class="question" data-title="Frecuencia de facturas">
+        <p class="q-text">¿Le piden facturas sus clientes?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p11" id="p11a"><label for="p11a"><span class="opt-title">Sí,
+                seguido</span><span class="opt-desc">Varias por semana</span></label></div>
+          <div class="opt"><input type="radio" name="p11" id="p11b"><label for="p11b"><span class="opt-title">De vez en
+                cuando</span></label></div>
+          <div class="opt"><input type="radio" name="p11" id="p11c"><label for="p11c"><span class="opt-title">Casi
+                nunca</span></label></div>
+          <div class="opt"><input type="radio" name="p11" id="p11d"><label for="p11d"><span class="opt-title">Nunca
+                facturamos</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Dónde hace las facturas">
+        <p class="q-text">Si le piden factura, ¿dónde la hace?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p12" id="p12a"><label for="p12a"><span class="opt-title">Desde el
+                mismo sistema de la caja</span></label></div>
+          <div class="opt"><input type="radio" name="p12" id="p12b"><label for="p12b"><span class="opt-title">En una
+                página aparte</span></label></div>
+          <div class="opt"><input type="radio" name="p12" id="p12c"><label for="p12c"><span class="opt-title">Me las
+                hace mi contador</span></label></div>
+          <div class="opt"><input type="radio" name="p12" id="p12d"><label for="p12d"><span class="opt-title">No
+                aplica</span></label></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 4 ===== -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">4</span>
+        <div>
+          <p class="section-title">El mostrador</p>
+          <p class="section-sub">Donde empieza todo el proceso</p>
+        </div>
+      </div>
+
+      <div class="question" data-title="Cuántas básculas">
+        <p class="q-text">¿Cuántas básculas tienen en el mostrador?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p13" id="p13a"><label for="p13a"><span
+                class="opt-title">Una</span></label></div>
+          <div class="opt"><input type="radio" name="p13" id="p13b"><label for="p13b"><span
+                class="opt-title">Dos</span></label></div>
+          <div class="opt"><input type="radio" name="p13" id="p13c"><label for="p13c"><span class="opt-title">Tres o
+                más</span></label></div>
+          <div class="opt"><input type="radio" name="p13" id="p13d"><label for="p13d"><span class="opt-title">También
+                hay una en caja</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Marca de las básculas">
+        <p class="q-text">¿De qué marca son?</p>
+        <p class="q-hint">Si no la ve de frente, viene en una etiqueta por detrás.</p>
+        <input class="short" type="text" id="p14" placeholder="Por ejemplo: Torrey, Rhino... o 'no sé'">
+      </div>
+
+      <div class="question" data-title="La báscula imprime">
+        <p class="q-text">¿Alguna de esas básculas imprime papelitos o etiquetas?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p15" id="p15a"><label for="p15a"><span class="opt-title">Sí,
+                imprime etiqueta</span></label></div>
+          <div class="opt"><input type="radio" name="p15" id="p15b"><label for="p15b"><span class="opt-title">No, solo
+                muestra el peso</span></label></div>
+          <div class="opt"><input type="radio" name="p15" id="p15c"><label for="p15c"><span class="opt-title">Una sí y
+                otra no</span></label></div>
+          <div class="opt"><input type="radio" name="p15" id="p15d"><label for="p15d"><span class="opt-title">No
+                sé</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Personas despachando en hora pico">
+        <p class="q-text">En su hora más pesada, ¿cuántas personas están despachando en el mostrador?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p16" id="p16a"><label for="p16a"><span
+                class="opt-title">Una</span></label></div>
+          <div class="opt"><input type="radio" name="p16" id="p16b"><label for="p16b"><span
+                class="opt-title">Dos</span></label></div>
+          <div class="opt"><input type="radio" name="p16" id="p16c"><label for="p16c"><span
+                class="opt-title">Tres</span></label></div>
+          <div class="opt"><input type="radio" name="p16" id="p16d"><label for="p16d"><span class="opt-title">Cuatro o
+                más</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Cajas abiertas en hora pico">
+        <p class="q-text">¿Y cuántas cajas están cobrando al mismo tiempo?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p17" id="p17a"><label for="p17a"><span
+                class="opt-title">Una</span></label></div>
+          <div class="opt"><input type="radio" name="p17" id="p17b"><label for="p17b"><span
+                class="opt-title">Dos</span></label></div>
+          <div class="opt"><input type="radio" name="p17" id="p17c"><label for="p17c"><span class="opt-title">Tres o
+                más</span></label></div>
+          <div class="opt"><input type="radio" name="p17" id="p17d"><label for="p17d"><span class="opt-title">Depende
+                del día</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Luz e internet en el mostrador">
+        <p class="q-text">En la zona del mostrador, ¿hay contactos de luz y llega bien el internet?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p18" id="p18a"><label for="p18a"><span class="opt-title">Sí, las
+                dos cosas</span></label></div>
+          <div class="opt"><input type="radio" name="p18" id="p18b"><label for="p18b"><span class="opt-title">Hay luz,
+                pero el internet falla</span></label></div>
+          <div class="opt"><input type="radio" name="p18" id="p18c"><label for="p18c"><span class="opt-title">No hay
+                contacto cerca</span></label></div>
+          <div class="opt"><input type="radio" name="p18" id="p18d"><label for="p18d"><span class="opt-title">No
+                sé</span></label></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 5 ===== -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">5</span>
+        <div>
+          <p class="section-title">Sus productos</p>
+          <p class="section-sub">Qué tan grande es el catálogo que hay que cargar</p>
+        </div>
+      </div>
+
+      <div class="question" data-title="Cuántos productos distintos">
+        <p class="q-text">Más o menos, ¿cuántos productos diferentes manejan?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p19" id="p19a"><label for="p19a"><span class="opt-title">Menos de
+                50</span></label></div>
+          <div class="opt"><input type="radio" name="p19" id="p19b"><label for="p19b"><span class="opt-title">Entre 50 y
+                150</span></label></div>
+          <div class="opt"><input type="radio" name="p19" id="p19c"><label for="p19c"><span class="opt-title">Entre 150
+                y 300</span></label></div>
+          <div class="opt"><input type="radio" name="p19" id="p19d"><label for="p19d"><span class="opt-title">Más de
+                300</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Qué más venden">
+        <p class="q-text">Además de queso, ¿qué otras cosas venden?</p>
+        <p class="q-hint">Puede marcar varias.</p>
+        <div class="options">
+          <div class="opt"><input type="checkbox" name="p20" id="p20a"><label for="p20a"><span class="opt-title">Crema y
+                mantequilla</span></label></div>
+          <div class="opt"><input type="checkbox" name="p20" id="p20b"><label for="p20b"><span class="opt-title">Jamones
+                y embutidos</span></label></div>
+          <div class="opt"><input type="checkbox" name="p20" id="p20c"><label for="p20c"><span
+                class="opt-title">Abarrotes en general</span></label></div>
+          <div class="opt"><input type="checkbox" name="p20" id="p20d"><label for="p20d"><span class="opt-title">Vinos o
+                bebidas</span></label></div>
+          <div class="opt"><input type="checkbox" name="p20" id="p20e"><label for="p20e"><span
+                class="opt-title">Productos preparados</span></label></div>
+          <div class="opt"><input type="checkbox" name="p20" id="p20f"><label for="p20f"><span class="opt-title">Solo
+                queso y lácteos</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Peso contra empaquetado">
+        <p class="q-text">De todo lo que venden, ¿qué tanto se vende por peso?</p>
+        <div class="options">
+          <div class="opt wide"><input type="radio" name="p21" id="p21a"><label for="p21a"><span class="opt-title">Casi
+                todo se pesa al momento</span></label></div>
+          <div class="opt wide"><input type="radio" name="p21" id="p21b"><label for="p21b"><span class="opt-title">Mitad
+                y mitad</span></label></div>
+          <div class="opt wide"><input type="radio" name="p21" id="p21c"><label for="p21c"><span class="opt-title">Casi
+                todo ya viene empaquetado con su precio</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Quién cambia los precios">
+        <p class="q-text">¿Quién cambia los precios cuando le suben los proveedores?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p22" id="p22a"><label for="p22a"><span class="opt-title">Yo
+                misma</span></label></div>
+          <div class="opt"><input type="radio" name="p22" id="p22b"><label for="p22b"><span class="opt-title">Un
+                encargado</span></label></div>
+          <div class="opt"><input type="radio" name="p22" id="p22c"><label for="p22c"><span class="opt-title">La persona
+                de la caja</span></label></div>
+          <div class="opt"><input type="radio" name="p22" id="p22d"><label for="p22d"><span class="opt-title">Otra
+                persona</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Cada cuánto cambian precios">
+        <p class="q-text">¿Cada cuánto le toca cambiarlos?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p23" id="p23a"><label for="p23a"><span class="opt-title">Cada
+                semana</span></label></div>
+          <div class="opt"><input type="radio" name="p23" id="p23b"><label for="p23b"><span class="opt-title">Cada
+                mes</span></label></div>
+          <div class="opt"><input type="radio" name="p23" id="p23c"><label for="p23c"><span class="opt-title">Cada
+                varios meses</span></label></div>
+          <div class="opt"><input type="radio" name="p23" id="p23d"><label for="p23d"><span class="opt-title">Cuando
+                avisa el proveedor</span></label></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 6 ===== -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">6</span>
+        <div>
+          <p class="section-title">Inventario y control</p>
+          <p class="section-sub">Lo que entra contra lo que sale</p>
+        </div>
+      </div>
+
+      <div class="question" data-title="Cómo sabe qué le queda">
+        <p class="q-text">Hoy, ¿cómo sabe cuánto queso le queda de cada tipo?</p>
+        <div class="options">
+          <div class="opt wide"><input type="radio" name="p24" id="p24a"><label for="p24a"><span class="opt-title">A
+                ojo, por experiencia</span></label></div>
+          <div class="opt wide"><input type="radio" name="p24" id="p24b"><label for="p24b"><span class="opt-title">Lo
+                anotamos en una libreta</span></label></div>
+          <div class="opt wide"><input type="radio" name="p24" id="p24c"><label for="p24c"><span class="opt-title">El
+                sistema me lo dice</span></label></div>
+          <div class="opt wide"><input type="radio" name="p24" id="p24d"><label for="p24d"><span class="opt-title">No
+                llevamos ese control</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Frecuencia de conteo">
+        <p class="q-text">¿Hacen conteo de inventario? ¿Cada cuánto?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p25" id="p25a"><label for="p25a"><span class="opt-title">Cada
+                semana</span></label></div>
+          <div class="opt"><input type="radio" name="p25" id="p25b"><label for="p25b"><span class="opt-title">Cada
+                mes</span></label></div>
+          <div class="opt"><input type="radio" name="p25" id="p25c"><label for="p25c"><span class="opt-title">Cada
+                varios meses</span></label></div>
+          <div class="opt"><input type="radio" name="p25" id="p25d"><label for="p25d"><span class="opt-title">No hacemos
+                conteo</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Cuánto tarda el conteo">
+        <p class="q-text">Cuando lo hacen, ¿cuánto tiempo les toma?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p26" id="p26a"><label for="p26a"><span class="opt-title">Un par de
+                horas</span></label></div>
+          <div class="opt"><input type="radio" name="p26" id="p26b"><label for="p26b"><span class="opt-title">Casi todo
+                un día</span></label></div>
+          <div class="opt"><input type="radio" name="p26" id="p26c"><label for="p26c"><span class="opt-title">Más de un
+                día</span></label></div>
+          <div class="opt"><input type="radio" name="p26" id="p26d"><label for="p26d"><span class="opt-title">No
+                aplica</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Diferencias entre compra y venta">
+        <p class="q-text">¿Ha notado diferencias entre lo que compra y lo que termina vendiendo?</p>
+        <div class="options">
+          <div class="opt wide"><input type="radio" name="p27" id="p27a"><label for="p27a"><span class="opt-title">Sí, y
+                son notorias</span></label></div>
+          <div class="opt wide"><input type="radio" name="p27" id="p27b"><label for="p27b"><span class="opt-title">Sí,
+                pero son pequeñas</span></label></div>
+          <div class="opt wide"><input type="radio" name="p27" id="p27c"><label for="p27c"><span class="opt-title">No he
+                notado nada raro</span></label></div>
+          <div class="opt wide"><input type="radio" name="p27" id="p27d"><label for="p27d"><span class="opt-title">No
+                tengo forma de saberlo</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Producto echado a perder el mes pasado">
+        <p class="q-text">El mes pasado, ¿se le echó a perder o se le pasó de fecha algún producto?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p28" id="p28a"><label for="p28a"><span class="opt-title">Sí,
+                bastante</span></label></div>
+          <div class="opt"><input type="radio" name="p28" id="p28b"><label for="p28b"><span class="opt-title">Sí, un
+                poco</span></label></div>
+          <div class="opt"><input type="radio" name="p28" id="p28c"><label for="p28c"><span class="opt-title">No,
+                nada</span></label></div>
+          <div class="opt"><input type="radio" name="p28" id="p28d"><label for="p28d"><span class="opt-title">No lo
+                llevo contado</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Qué hacen con los recortes">
+        <p class="q-text">¿Qué hacen con los recortes y las orillas que quedan al cortar?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p29" id="p29a"><label for="p29a"><span class="opt-title">Se venden
+                más barato</span></label></div>
+          <div class="opt"><input type="radio" name="p29" id="p29b"><label for="p29b"><span class="opt-title">Se los
+                queda el personal</span></label></div>
+          <div class="opt"><input type="radio" name="p29" id="p29c"><label for="p29c"><span class="opt-title">Se
+                tiran</span></label></div>
+          <div class="opt"><input type="radio" name="p29" id="p29d"><label for="p29d"><span class="opt-title">Se usan
+                para otra cosa</span></label></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 7 ===== -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">7</span>
+        <div>
+          <p class="section-title">Su volumen</p>
+          <p class="section-sub">Para dimensionar bien el equipo y el sistema</p>
+        </div>
+      </div>
+
+      <div class="question" data-title="Tickets por día">
+        <p class="q-text">¿Cuántos tickets salen en un día normal, más o menos?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p30" id="p30a"><label for="p30a"><span class="opt-title">Menos de
+                50</span></label></div>
+          <div class="opt"><input type="radio" name="p30" id="p30b"><label for="p30b"><span class="opt-title">Entre 50 y
+                150</span></label></div>
+          <div class="opt"><input type="radio" name="p30" id="p30c"><label for="p30c"><span class="opt-title">Entre 150
+                y 300</span></label></div>
+          <div class="opt"><input type="radio" name="p30" id="p30d"><label for="p30d"><span class="opt-title">Más de
+                300</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Sábado contra entre semana">
+        <p class="q-text">¿Qué tanto cambia un sábado comparado con un día entre semana?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p31" id="p31a"><label for="p31a"><span class="opt-title">Es casi
+                igual</span></label></div>
+          <div class="opt"><input type="radio" name="p31" id="p31b"><label for="p31b"><span class="opt-title">Se vende
+                como el doble</span></label></div>
+          <div class="opt"><input type="radio" name="p31" id="p31c"><label for="p31c"><span class="opt-title">Mucho más
+                del doble</span></label></div>
+          <div class="opt"><input type="radio" name="p31" id="p31d"><label for="p31d"><span class="opt-title">Depende de
+                la temporada</span></label></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 8 ===== -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">8</span>
+        <div>
+          <p class="section-title">Su equipo de trabajo</p>
+          <p class="section-sub">Quiénes van a usar esto todos los días</p>
+        </div>
+      </div>
+
+      <div class="question" data-title="Cuántas personas trabajan">
+        <p class="q-text">¿Cuántas personas trabajan en la tienda?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p32" id="p32a"><label for="p32a"><span class="opt-title">1 o
+                2</span></label></div>
+          <div class="opt"><input type="radio" name="p32" id="p32b"><label for="p32b"><span class="opt-title">Entre 3 y
+                5</span></label></div>
+          <div class="opt"><input type="radio" name="p32" id="p32c"><label for="p32c"><span class="opt-title">Entre 6 y
+                10</span></label></div>
+          <div class="opt"><input type="radio" name="p32" id="p32d"><label for="p32d"><span class="opt-title">Más de
+                10</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Antigüedad del personal">
+        <p class="q-text">¿Cuánto tiempo llevan con usted, en general?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p33" id="p33a"><label for="p33a"><span class="opt-title">Varios
+                años, casi no cambian</span></label></div>
+          <div class="opt"><input type="radio" name="p33" id="p33b"><label for="p33b"><span class="opt-title">Alrededor
+                de un año</span></label></div>
+          <div class="opt"><input type="radio" name="p33" id="p33c"><label for="p33c"><span class="opt-title">Cambian
+                seguido</span></label></div>
+          <div class="opt"><input type="radio" name="p33" id="p33d"><label for="p33d"><span class="opt-title">Unos sí y
+                otros no</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Facilidad con la tecnología">
+        <p class="q-text">¿Se les facilita usar aparatos nuevos?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p34" id="p34a"><label for="p34a"><span class="opt-title">Sí,
+                aprenden rápido</span></label></div>
+          <div class="opt"><input type="radio" name="p34" id="p34b"><label for="p34b"><span class="opt-title">Algunos
+                sí, otros batallan</span></label></div>
+          <div class="opt"><input type="radio" name="p34" id="p34c"><label for="p34c"><span class="opt-title">Sí
+                batallan bastante</span></label></div>
+          <div class="opt"><input type="radio" name="p34" id="p34d"><label for="p34d"><span class="opt-title">No sabría
+                decirle</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Responsable del sistema">
+        <p class="q-text">Si echamos a andar esto, ¿quién sería la persona encargada del sistema?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p35" id="p35a"><label for="p35a"><span class="opt-title">Yo
+                misma</span></label></div>
+          <div class="opt"><input type="radio" name="p35" id="p35b"><label for="p35b"><span class="opt-title">Un
+                encargado</span></label></div>
+          <div class="opt"><input type="radio" name="p35" id="p35c"><label for="p35c"><span class="opt-title">La persona
+                de la caja</span></label></div>
+          <div class="opt"><input type="radio" name="p35" id="p35d"><label for="p35d"><span class="opt-title">Todavía no
+                lo sé</span></label></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 9 ===== -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">9</span>
+        <div>
+          <p class="section-title">Lo que a usted le interesa</p>
+          <p class="section-sub">Aquí es donde nos dice hacia dónde apuntar</p>
+        </div>
+      </div>
+
+      <div class="question" data-title="Decisiones que toma al tanteo">
+        <p class="q-text">¿Qué decisiones toma hoy "al tanteo" y le gustaría tomar con números en la mano?</p>
+        <p class="q-hint">Puede marcar varias.</p>
+        <div class="options">
+          <div class="opt"><input type="checkbox" name="p36" id="p36a"><label for="p36a"><span class="opt-title">Cuánto
+                pedir de cada queso</span></label></div>
+          <div class="opt"><input type="checkbox" name="p36" id="p36b"><label for="p36b"><span class="opt-title">Qué
+                precio ponerle a cada cosa</span></label></div>
+          <div class="opt"><input type="checkbox" name="p36" id="p36c"><label for="p36c"><span class="opt-title">Qué
+                productos quitar de la vitrina</span></label></div>
+          <div class="opt"><input type="checkbox" name="p36" id="p36d"><label for="p36d"><span class="opt-title">Cuánta
+                gente necesito cada día</span></label></div>
+          <div class="opt"><input type="checkbox" name="p36" id="p36e"><label for="p36e"><span class="opt-title">Qué
+                producto me deja más ganancia</span></label></div>
+          <div class="opt"><input type="checkbox" name="p36" id="p36f"><label for="p36f"><span class="opt-title">Cuándo
+                hacer promociones</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Qué le gustaría ver de su negocio">
+        <p class="q-text">¿Qué le gustaría saber de su negocio que hoy no puede ver?</p>
+        <textarea class="freeform" id="p37"
+          placeholder="Escríbalo con sus palabras, no hay respuesta incorrecta..."></textarea>
+      </div>
+
+      <div class="question" data-title="Número de tiendas">
+        <p class="q-text">¿Tiene una sola tienda o más?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p38" id="p38a"><label for="p38a"><span class="opt-title">Una
+                sola</span></label></div>
+          <div class="opt"><input type="radio" name="p38" id="p38b"><label for="p38b"><span class="opt-title">Una, pero
+                pienso abrir otra</span></label></div>
+          <div class="opt"><input type="radio" name="p38" id="p38c"><label for="p38c"><span
+                class="opt-title">Dos</span></label></div>
+          <div class="opt"><input type="radio" name="p38" id="p38d"><label for="p38d"><span class="opt-title">Tres o
+                más</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Quién más decide">
+        <p class="q-text">Además de usted, ¿alguien más participa en la decisión de contratar esto?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p39" id="p39a"><label for="p39a"><span class="opt-title">Solo yo
+                decido</span></label></div>
+          <div class="opt"><input type="radio" name="p39" id="p39b"><label for="p39b"><span class="opt-title">Lo decido
+                con mi familia o socio</span></label></div>
+          <div class="opt"><input type="radio" name="p39" id="p39c"><label for="p39c"><span class="opt-title">Lo
+                consulto con mi contador</span></label></div>
+          <div class="opt"><input type="radio" name="p39" id="p39d"><label for="p39d"><span class="opt-title">Con otra
+                persona</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Fecha en mente">
+        <p class="q-text">¿Tiene alguna fecha en mente para tener esto funcionando?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p40" id="p40a"><label for="p40a"><span class="opt-title">Lo antes
+                posible</span></label></div>
+          <div class="opt"><input type="radio" name="p40" id="p40b"><label for="p40b"><span class="opt-title">En uno o
+                dos meses</span></label></div>
+          <div class="opt"><input type="radio" name="p40" id="p40c"><label for="p40c"><span class="opt-title">En tres a
+                seis meses</span></label></div>
+          <div class="opt"><input type="radio" name="p40" id="p40d"><label for="p40d"><span class="opt-title">Sin prisa,
+                primero quiero ver</span></label></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 10 ===== -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">10</span>
+        <div>
+          <p class="section-title">Horarios</p>
+          <p class="section-sub">Para instalar y capacitar sin interrumpirle la venta</p>
+        </div>
+      </div>
+
+      <div class="question" data-title="Día más tranquilo">
+        <p class="q-text">¿Cuál es su día más tranquilo?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p41" id="p41a"><label for="p41a"><span class="opt-title">Lunes o
+                martes</span></label></div>
+          <div class="opt"><input type="radio" name="p41" id="p41b"><label for="p41b"><span class="opt-title">Miércoles
+                o jueves</span></label></div>
+          <div class="opt"><input type="radio" name="p41" id="p41c"><label for="p41c"><span
+                class="opt-title">Viernes</span></label></div>
+          <div class="opt"><input type="radio" name="p41" id="p41d"><label for="p41d"><span class="opt-title">Depende de
+                la semana</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Horario más tranquilo">
+        <p class="q-text">¿Y a qué hora del día hay menos gente?</p>
+        <div class="options">
+          <div class="opt"><input type="radio" name="p42" id="p42a"><label for="p42a"><span class="opt-title">Temprano,
+                al abrir</span></label></div>
+          <div class="opt"><input type="radio" name="p42" id="p42b"><label for="p42b"><span class="opt-title">A media
+                mañana</span></label></div>
+          <div class="opt"><input type="radio" name="p42" id="p42c"><label for="p42c"><span class="opt-title">Media
+                tarde</span></label></div>
+          <div class="opt"><input type="radio" name="p42" id="p42d"><label for="p42d"><span class="opt-title">Antes de
+                cerrar</span></label></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 11 ===== -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">11</span>
+        <div>
+          <p class="section-title">Unas fotos y terminamos</p>
+          <p class="section-sub">Con esto hacemos el análisis técnico de nuestro lado</p>
+        </div>
+      </div>
+
+      <div class="photo-note">
+        Con estas cinco fotos <b>usted ya no tiene que averiguar nada más</b>. Márquelas conforme las vaya tomando y
+        mándemelas por WhatsApp en el mismo chat, junto con sus respuestas.
+      </div>
+
+      <div class="question" data-title="Fotos tomadas">
+        <p class="q-text">¿Cuáles ya tiene?</p>
+        <div class="options">
+          <div class="opt wide"><input type="checkbox" name="p43" id="p43a"><label for="p43a"><span class="opt-title">La
+                pantalla del sistema mientras cobran</span></label></div>
+          <div class="opt wide"><input type="checkbox" name="p43" id="p43b"><label for="p43b"><span class="opt-title">Un
+                ticket completo de una venta</span></label></div>
+          <div class="opt wide"><input type="checkbox" name="p43" id="p43c"><label for="p43c"><span class="opt-title">La
+                báscula, de frente y por detrás</span><span class="opt-desc">Atrás viene el modelo</span></label></div>
+          <div class="opt wide"><input type="checkbox" name="p43" id="p43d"><label for="p43d"><span class="opt-title">El
+                mostrador de los quesos</span></label></div>
+          <div class="opt wide"><input type="checkbox" name="p43" id="p43e"><label for="p43e"><span class="opt-title">La
+                terminal de la tarjeta</span></label></div>
+        </div>
+      </div>
+
+      <div class="question" data-title="Algo más que quiera contarnos">
+        <p class="q-text">¿Algo más que quiera que sepamos antes de armarle la propuesta? <span
+            style="font-weight:400;color:var(--ink-soft)">(opcional)</span></p>
+        <textarea class="freeform" id="p44" placeholder="Lo que se le ocurra..."></textarea>
+      </div>
+    </section>
+
+    <!-- ===== Resumen ===== -->
+    <div class="summary">
+      <h3>Sus respuestas</h3>
+      <p class="sub">Revise que todo esté bien y mándemelas por WhatsApp</p>
+      <div id="summaryText">Conteste las preguntas de arriba y presione "Ver mis respuestas".</div>
+      <div class="btn-row">
+        <button class="primary" onclick="buildSummary(true)">Ver mis respuestas</button>
+        <button class="ghost" onclick="copySummary()">Copiar</button>
+        <button class="ghost" onclick="sendWhatsApp()">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
+            <path
+              d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.87.5 3.62 1.44 5.15L2 22l5.14-1.55a9.8 9.8 0 0 0 4.9 1.32h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm5.78 14.02c-.24.68-1.42 1.32-1.96 1.4-.5.08-1.14.11-1.84-.12-.42-.14-.96-.31-1.65-.6-2.9-1.25-4.79-4.15-4.94-4.35-.15-.2-1.17-1.56-1.17-2.97 0-1.41.74-2.1 1-2.39.26-.29.57-.36.76-.36.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.58.82 2 .89 2.14.07.15.12.32.02.51-.1.19-.15.31-.29.48-.14.17-.3.38-.43.51-.14.14-.29.29-.13.57.17.29.75 1.23 1.61 1.99 1.11.98 2.05 1.29 2.34 1.43.29.14.46.12.63-.07.17-.19.71-.83.9-1.11.19-.29.38-.24.63-.14.26.1 1.66.78 1.94.92.29.14.47.21.55.33.07.12.07.68-.17 1.36Z" />
+          </svg>
+          Enviar por WhatsApp
+        </button>
+      </div>
+      <p class="status" id="status"></p>
+    </div>
+
+    <p class="signoff">
+      <b>Juan Pablo · HummingX BI</b>
+      Gracias por su tiempo. Con esto le preparo una propuesta clara, con opciones y costos reales.
+    </p>
+
+    <div class="footer">
+      <a href="https://hummingxbi.com" target="_blank" rel="noopener">hummingxbi.com</a>
+      <span class="footer-sep"></span>
+      <a href="https://hummingxbi.com" target="_blank" rel="noopener">HummingX BI</a>
+    </div>
+
+  </main>
+
+  <script>
+    /* ====== NÚMERO DE WHATSAPP (52 + 10 dígitos, sin espacios ni +) ====== */
+    const WHATSAPP_NUMBER = "525623589128";
+    /* ===================================================================== */
+
+    const TOTAL = 35;
+
+    function answeredCount() {
+      const groups = new Set();
+      document.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked')
+        .forEach(el => groups.add(el.name));
+      return groups.size;
+    }
+
+    function updateProgress() {
+      const done = Math.min(answeredCount(), TOTAL);
+      const pct = Math.round((done / TOTAL) * 100);
+      const deg = (pct / 100) * 360;
+      const wheel = document.getElementById('wheel');
+      wheel.style.background =
+        'conic-gradient(var(--butter) 0deg ' + deg + 'deg, var(--ivory-2) ' + deg + 'deg 360deg)';
+      wheel.setAttribute('aria-valuenow', pct);
+      document.getElementById('countText').textContent = done + ' de ' + TOTAL;
+    }
+
+    document.querySelectorAll('input[type="radio"], input[type="checkbox"]')
+      .forEach(el => el.addEventListener('change', updateProgress));
+
+    function labelFor(input) {
+      const lbl = input.parentElement.querySelector('.opt-title');
+      return lbl ? lbl.textContent.trim() : '';
+    }
+
+    function buildSummary(showStatus) {
+      const lines = [];
+      let missing = 0;
+
+      document.querySelectorAll('.question').forEach(q => {
+        const title = q.getAttribute('data-title');
+        const choice = q.querySelector('input[type="radio"], input[type="checkbox"]');
+        const field = q.querySelector('input.short, textarea.freeform');
+
+        if (choice) {
+          const name = choice.getAttribute('name');
+          const picked = [...q.querySelectorAll('input[name="' + name + '"]:checked')].map(labelFor);
+          if (picked.length) {
+            lines.push('• ' + title + ': ' + picked.join(', '));
+          } else {
+            missing++;
+          }
+        } else if (field) {
+          const val = field.value.trim();
+          if (val) {
+            lines.push('• ' + title + ': ' + val);
+          } else {
+            missing++;
+          }
+        }
+      });
+
+      const header = 'DIAGNÓSTICO — QUESERÍA\nPara HummingX BI\n' + '—'.repeat(26) + '\n\n';
+      const body = lines.length ? lines.join('\n') : 'Todavía no hay respuestas.';
+      document.getElementById('summaryText').textContent = header + body;
+
+      if (showStatus) {
+        document.getElementById('status').textContent = missing > 0
+          ? 'Le faltan ' + missing + ' pregunta(s). Puede enviarlo así y completarlas después.'
+          : 'Contestó todo. Ya puede enviarlo.';
+      }
+      return header + body;
+    }
+
+    function copySummary() {
+      const text = buildSummary(false);
+      navigator.clipboard.writeText(text).then(() => {
+        document.getElementById('status').textContent = 'Respuestas copiadas. Ya puede pegarlas donde guste.';
+      }).catch(() => {
+        document.getElementById('status').textContent = 'No se pudieron copiar. Seleccione el texto y cópielo a mano.';
+      });
+    }
+
+    function sendWhatsApp() {
+      const text = buildSummary(false);
+      window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(text), '_blank');
+      document.getElementById('status').textContent = 'Se abrió WhatsApp. No olvide adjuntar las fotos en el mismo chat.';
+    }
+
+    updateProgress();
+  </script>
+
+</body>
+
+</html>
