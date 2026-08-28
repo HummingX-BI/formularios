@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tahara Café · Design System Swatch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,600&family=IBM+Plex+Mono:wght@400&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       TAHARA CAFÉ — Sistema de Diseño
+       Archivo: swatch.html
+       Versión: 1.0 · Validación de paleta, tipo y componentes
+    ============================================================ */
+
+    :root {
+      /* — Turquesa — */
+      --tq-100: #DFF7F8;
+      --tq-300: #7DE0E4;
+      --tq-500: #0FC3C9;
+
+      --tq-600: #0DA8AD;
+
+      /* — Café / Madera — */
+      --cf-200: #C4A898;
+      --cf-500: #7A5548;
+      --cf-700: #5C3E33;
+      --cf-900: #3A2922;
+
+      /* — Crema / Fondo cálido — */
+      --cr-50: #FBF7F0;
+      --cr-100: #F3EBE0;
+      --cr-200: #E8DDD0;
+
+      /* — Dorado ancestral — */
+      --gd-300: #E4C98A;
+      --gd-400: #C9A15A;
+      --gd-600: #A07030;
+
+      /* — Tipografía — */
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'DM Sans', system-ui, sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+
+      /* — Espaciado — */
+      --sp-1: 4px;
+      --sp-2: 8px;
+      --sp-3: 12px;
+      --sp-4: 16px;
+      --sp-5: 24px;
+      --sp-6: 32px;
+      --sp-7: 48px;
+      --sp-8: 64px;
+
+      /* — Radios — */
+      --r-sm: 3px;
+      --r-md: 6px;
+      --r-lg: 10px;
+    }
+
+    /* ── Reset & Base ── */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+    }
+
+    body {
+      background-color: var(--cr-50);
+      /* Textura grano/papel via SVG noise */
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      color: var(--cf-900);
+      font-family: var(--font-sans);
+      font-weight: 400;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      padding: var(--sp-7) var(--sp-6);
+    }
+
+    /* ── Contenedor ── */
+    .ds-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    /* ── Encabezado del swatch ── */
+    .ds-header {
+      margin-bottom: var(--sp-8);
+    }
+
+    .ds-eyebrow {
+      font-family: var(--font-mono);
+      font-size: .68rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--tq-500);
+      display: block;
+      margin-bottom: var(--sp-2);
+    }
+
+    .ds-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 600;
+      line-height: 1.05;
+      color: var(--cf-900);
+      margin-bottom: var(--sp-2);
+    }
+
+    .ds-title em {
+      font-style: italic;
+      color: var(--tq-500);
+    }
+
+    .ds-subtitle {
+      font-size: .95rem;
+      color: var(--cf-500);
+      max-width: 480px;
+    }
+
+    /* ── Divisor con motivo triángulo ── */
+    .ds-divider {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-4);
+      margin: var(--sp-7) 0 var(--sp-6);
+    }
+
+    .ds-divider-line {
+      flex: 1;
+      height: 1px;
+      background: var(--cr-200);
+    }
+
+    .ds-divider-motif {
+      display: flex;
+      gap: var(--sp-2);
+      align-items: center;
+    }
+
+    .tri {
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-bottom: 9px solid var(--tq-500);
+      opacity: .7;
+    }
+
+    .tri.gd {
+      border-bottom-color: var(--gd-400);
+    }
+
+    .tri.sm {
+      border-left-width: 3.5px;
+      border-right-width: 3.5px;
+      border-bottom-width: 6px;
+    }
+
+    .ds-divider-label {
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--cf-500);
+    }
+
+    /* ── Sección ── */
+    .ds-section {
+      margin-bottom: var(--sp-7);
+    }
+
+    .ds-section-title {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--cf-500);
+      margin-bottom: var(--sp-4);
+    }
+
+    /* ══ 1. PALETA DE COLOR ══ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: var(--sp-3);
+    }
+
+    .swatch-item {
+      border-radius: var(--r-md);
+      overflow: hidden;
+      border: 1px solid var(--cr-200);
+    }
+
+    .swatch-block {
+      height: 72px;
+      width: 100%;
+    }
+
+    .swatch-meta {
+      padding: var(--sp-2) var(--sp-3);
+      background: white;
+    }
+
+    .swatch-name {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: .6rem;
+      color: var(--cf-700);
+      margin-bottom: 1px;
+    }
+
+    .swatch-hex {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: .68rem;
+      font-weight: 400;
+      color: var(--cf-900);
+    }
+
+    /* ══ 2. TIPOGRAFÍA ══ */
+    .type-samples {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-5);
+    }
+
+    .type-row {
+      border-left: 2px solid var(--cr-200);
+      padding-left: var(--sp-4);
+    }
+
+    .type-meta {
+      font-family: var(--font-mono);
+      font-size: .6rem;
+      color: var(--cf-500);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: var(--sp-2);
+    }
+
+    .type-sample-h1 {
+      font-family: var(--font-serif);
+      font-size: 2.8rem;
+      font-weight: 600;
+      color: var(--cf-900);
+      line-height: 1.0;
+    }
+
+    .type-sample-h2 {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--cf-700);
+      line-height: 1.15;
+    }
+
+    .type-sample-h3 {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--tq-600);
+      line-height: 1.3;
+    }
+
+    .type-sample-body {
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--cf-700);
+      line-height: 1.65;
+      max-width: 440px;
+    }
+
+    .type-sample-price {
+      font-family: var(--font-sans);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--gd-600);
+    }
+
+    .type-sample-label {
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      color: var(--cf-500);
+      letter-spacing: .08em;
+    }
+
+    /* ══ 3. COMPONENTES ══ */
+    .comp-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-4);
+      align-items: flex-start;
+    }
+
+    /* Botón primario — con esquina cortada (triángulo del logo) */
+    .btn-primary {
+      font-family: var(--font-sans);
+      font-size: .9rem;
+      font-weight: 600;
+      color: white;
+      background: var(--tq-500);
+      border: none;
+      cursor: pointer;
+      padding: var(--sp-3) var(--sp-5);
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+      letter-spacing: .02em;
+      transition: background .18s;
+    }
+
+    .btn-primary:hover {
+      background: var(--tq-600);
+    }
+
+    /* Botón secundario */
+    .btn-outline {
+      font-family: var(--font-sans);
+      font-size: .9rem;
+      font-weight: 400;
+      color: var(--tq-600);
+      background: transparent;
+      border: 1.5px solid var(--tq-500);
+      cursor: pointer;
+      padding: var(--sp-3) var(--sp-5);
+      border-radius: var(--r-sm);
+      transition: background .18s, color .18s;
+    }
+
+    .btn-outline:hover {
+      background: var(--tq-100);
+    }
+
+    /* Botón ancestral dorado */
+    .btn-gold {
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      font-weight: 500;
+      font-style: italic;
+      color: var(--gd-600);
+      background: var(--gd-300);
+      border: 1px solid var(--gd-400);
+      cursor: pointer;
+      padding: var(--sp-3) var(--sp-5);
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+      transition: background .18s;
+    }
+
+    .btn-gold:hover {
+      background: var(--gd-400);
+    }
+
+    /* Tag / pill de categoría */
+    .tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: .62rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--tq-600);
+      background: var(--tq-100);
+      border: 1px solid var(--tq-300);
+      padding: var(--sp-1) var(--sp-2);
+      border-radius: var(--r-sm);
+    }
+
+    /* Tarjeta de producto — estilo del menú */
+    .card-preview {
+      background: var(--cr-100);
+      border: 1px solid var(--cr-200);
+      border-radius: var(--r-md);
+      padding: var(--sp-4);
+      max-width: 260px;
+      position: relative;
+    }
+
+    /* Marcador de precio con motivo dorado */
+    .card-price-badge {
+      position: absolute;
+      top: var(--sp-4);
+      right: var(--sp-4);
+      font-family: var(--font-sans);
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--gd-600);
+      background: var(--gd-300);
+      padding: var(--sp-1) var(--sp-2);
+      clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%);
+    }
+
+    .card-tag {
+      margin-bottom: var(--sp-2);
+    }
+
+    .card-name {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: var(--cf-900);
+      line-height: 1.2;
+      margin-bottom: var(--sp-2);
+      padding-right: 50px;
+      /* para no pisar badge */
+    }
+
+    .card-desc {
+      font-family: var(--font-sans);
+      font-size: .82rem;
+      color: var(--cf-500);
+      line-height: 1.55;
+    }
+
+    /* Separador de sección con espiral */
+    .spiral-sep {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-3);
+      margin: var(--sp-5) 0;
+    }
+
+    .spiral-sep svg {
+      flex-none;
+      opacity: .35;
+    }
+
+    .spiral-sep-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, var(--cr-200), transparent);
+    }
+
+    /* ══ 4. MOTIVO TRIÁNGULO ══ */
+    .tri-separator {
+      display: flex;
+      justify-content: center;
+      gap: var(--sp-2);
+      align-items: center;
+      padding: var(--sp-3) 0;
+    }
+
+    .tri-sep-item {
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 10px solid var(--tq-300);
+      opacity: .6;
+    }
+
+    .tri-sep-item:nth-child(2) {
+      opacity: 1;
+      border-bottom-color: var(--tq-500);
+      transform: scale(1.3);
+    }
+
+    .tri-sep-item:nth-child(even) {
+      border-bottom-color: var(--gd-400);
+    }
+
+    /* ══ Footer ══ */
+    .ds-footer {
+      margin-top: var(--sp-8);
+      padding-top: var(--sp-5);
+      border-top: 1px solid var(--cr-200);
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      color: var(--cf-200);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="ds-wrap">
+
+    <!-- ── Encabezado ── -->
+    <header class="ds-header">
+      <span class="ds-eyebrow">Sistema de diseño · Validación v1.0</span>
+      <h1 class="ds-title">Tahara Café<br><em>Design Swatch</em></h1>
+      <p class="ds-subtitle">Este documento valida la paleta, tipografía y componentes base antes de construir el menú
+        digital.</p>
+    </header>
+
+
+    <!-- ══ 1. PALETA ══ -->
+    <section class="ds-section">
+      <p class="ds-section-title">01 · Paleta de color</p>
+      <div class="palette-grid">
+        <!-- Turquesa -->
+        <div class="swatch-item">
+          <div class="swatch-block" style="background:#DFF7F8;"></div>
+          <div class="swatch-meta"><span class="swatch-name">--tq-100</span><span class="swatch-hex">#DFF7F8</span>
+          </div>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch-block" style="background:#7DE0E4;"></div>
+          <div class="swatch-meta"><span class="swatch-name">--tq-300</span><span class="swatch-hex">#7DE0E4</span>
+          </div>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch-block" style="background:#0FC3C9;"></div>
+          <div class="swatch-meta"><span class="swatch-name">--tq-500 ★</span><span class="swatch-hex">#0FC3C9</span>
+          </div>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch-block" style="background:#0DA8AD;"></div>
+          <div class="swatch-meta"><span class="swatch-name">--tq-600</span><span class="swatch-hex">#0DA8AD</span>
+          </div>
+        </div>
+        <!-- Café -->
+        <div class="swatch-item">
+          <div class="swatch-block" style="background:#C4A898;"></div>
+          <div class="swatch-meta"><span class="swatch-name">--cf-200</span><span class="swatch-hex">#C4A898</span>
+          </div>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch-block" style="background:#7A5548;"></div>
+          <div class="swatch-meta"><span class="swatch-name">--cf-500</span><span class="swatch-hex">#7A5548</span>
+          </div>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch-block" style="background:#5C3E33;"></div>
+          <div class="swatch-meta"><span class="swatch-name">--cf-700</span><span class="swatch-hex">#5C3E33</span>
+          </div>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch-block" style="background:#3A2922;"></div>
+          <div class="swatch-meta"><span class="swatch-name">--cf-900 ★</span><span class="swatch-hex">#3A2922</span>
+          </div>
+        </div>
+        <!-- Crema -->
+        <div class="swatch-item">
+          <div class="swatch-block" style="background:#FBF7F0; border-bottom:1px solid #E8DDD0;"></div>
+          <div class="swatch-meta"><span class="swatch-name">--cr-50 ★</span><span class="swatch-hex">#FBF7F0</span>
+          </div>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch-block" style="background:#F3EBE0;"></div>
+          <div class="swatch-meta"><span class="swatch-name">--cr-100</span><span class="swatch-hex">#F3EBE0</span>
+          </div>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch-block" style="background:#E8DDD0;"></div>
+          <div class="swatch-meta"><span class="swatch-name">--cr-200</span><span class="swatch-hex">#E8DDD0</span>
+          </div>
+        </div>
+        <!-- Dorado -->
+        <div class="swatch-item">
+          <div class="swatch-block" style="background:#E4C98A;"></div>
+          <div class="swatch-meta"><span class="swatch-name">--gd-300</span><span class="swatch-hex">#E4C98A</span>
+          </div>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch-block" style="background:#C9A15A;"></div>
+          <div class="swatch-meta"><span class="swatch-name">--gd-400 ★</span><span class="swatch-hex">#C9A15A</span>
+          </div>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch-block" style="background:#A07030;"></div>
+          <div class="swatch-meta"><span class="swatch-name">--gd-600</span><span class="swatch-hex">#A07030</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Divisor triángulo -->
+    <div class="ds-divider">
+      <div class="ds-divider-line"></div>
+      <div class="ds-divider-motif">
+        <div class="tri sm"></div>
+        <div class="tri"></div>
+        <div class="tri gd"></div>
+        <div class="tri"></div>
+        <div class="tri sm"></div>
+      </div>
+      <div class="ds-divider-line"></div>
+    </div>
+
+
+    <!-- ══ 2. TIPOGRAFÍA ══ -->
+    <section class="ds-section">
+      <p class="ds-section-title">02 · Tipografía</p>
+      <div class="type-samples">
+
+        <div class="type-row">
+          <p class="type-meta">Cormorant Garamond 600 · Heading principal</p>
+          <p class="type-sample-h1">Tascalate<br>& Pinole</p>
+        </div>
+
+        <div class="type-row">
+          <p class="type-meta">Cormorant Garamond 400 italic · Subtítulo / frase de sección</p>
+          <p class="type-sample-h2">Bebidas ancestrales con<br>cacao de Chiapas</p>
+        </div>
+
+        <div class="type-row">
+          <p class="type-meta">Cormorant Garamond 500 · Nombre de producto</p>
+          <p class="type-sample-h3">Latte de Tascalate con leche de coco</p>
+        </div>
+
+        <div class="type-row">
+          <p class="type-meta">DM Sans 400 · Descripción de producto</p>
+          <p class="type-sample-body">Mezcla de maíz tostado, cacao, achiote y canela, servida fría o caliente. Una
+            receta de raíces chiapanecas que lleva más de 400 años calentando hogares.</p>
+        </div>
+
+        <div class="type-row">
+          <p class="type-meta">DM Sans 600 · Precio en destaque</p>
+          <p class="type-sample-price">$78 MXN</p>
+        </div>
+
+        <div class="type-row">
+          <p class="type-meta">IBM Plex Mono 400 · Etiqueta / metadato</p>
+          <p class="type-sample-label">BEBIDAS CALIENTES · CARTA 2025</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Divisor espiral -->
+    <div class="spiral-sep">
+      <div class="spiral-sep-line"></div>
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M24 24 C24 24, 24 18, 18 18 C12 18, 12 24, 18 24 C24 24, 24 12, 12 12 C4 12, 4 24, 12 24 C24 24, 24 4, 8 4"
+          stroke="#0FC3C9" stroke-width="1.5" stroke-linecap="round" fill="none" />
+      </svg>
+      <div class="spiral-sep-line" style="background: linear-gradient(to left, var(--cr-200), transparent);"></div>
+    </div>
+
+
+    <!-- ══ 3. COMPONENTES ══ -->
+    <section class="ds-section">
+      <p class="ds-section-title">03 · Componentes base</p>
+
+      <p class="type-meta" style="margin-bottom: var(--sp-3);">Botones</p>
+      <div class="comp-row" style="margin-bottom: var(--sp-5);">
+        <button class="btn-primary">Ver menú completo</button>
+        <button class="btn-outline">Más información</button>
+        <button class="btn-gold">Bebidas ancestrales →</button>
+      </div>
+
+      <p class="type-meta" style="margin-bottom: var(--sp-3);">Tags / Etiquetas de categoría</p>
+      <div class="comp-row" style="margin-bottom: var(--sp-5);">
+        <span class="tag">☕ Caliente</span>
+        <span class="tag">🌿 Frío</span>
+        <span class="tag">🌽 Ancestral</span>
+        <span class="tag">🥐 Pan del día</span>
+      </div>
+
+      <p class="type-meta" style="margin-bottom: var(--sp-3);">Tarjeta de producto (preview)</p>
+      <div class="comp-row">
+        <div class="card-preview">
+          <div class="card-price-badge">$78</div>
+          <div class="card-tag"><span class="tag">Ancestral</span></div>
+          <p class="card-name">Tascalate Frío</p>
+          <p class="card-desc">Cacao, maíz tostado, achiote y canela. Base de raíces chiapanecas, servido con hielo y
+            leche de coco.</p>
+        </div>
+        <div class="card-preview">
+          <div class="card-price-badge">$65</div>
+          <div class="card-tag"><span class="tag">Caliente</span></div>
+          <p class="card-name">Pinole de Temporada</p>
+          <p class="card-desc">Maíz azul tostado, piloncillo y especias de la casa. Nutrición ancestral en cada sorbo.
+          </p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ══ 4. MOTIVO TRIÁNGULO ══ -->
+    <section class="ds-section">
+      <p class="ds-section-title">04 · Motivo gráfico — Triángulo & Separadores</p>
+
+      <!-- Separador de sección triángulo -->
+      <div
+        style="background: var(--cr-100); border-radius: var(--r-lg); padding: var(--sp-5); margin-bottom: var(--sp-4);">
+        <div class="tri-separator">
+          <div class="tri-sep-item"></div>
+          <div class="tri-sep-item"></div>
+          <div class="tri-sep-item"></div>
+          <div class="tri-sep-item"></div>
+          <div class="tri-sep-item"></div>
+          <div class="tri-sep-item"></div>
+          <div class="tri-sep-item"></div>
+        </div>
+        <p
+          style="text-align:center; font-family: var(--font-serif); font-style:italic; color: var(--cf-500); font-size:.9rem; margin-top: var(--sp-2);">
+          Separador de sección con motivo de triángulo</p>
+      </div>
+
+      <!-- Esquina cortada como tarjeta destacada -->
+      <div
+        style="background: var(--tq-100); border: 1.5px solid var(--tq-300); padding: var(--sp-5); clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);">
+        <p style="font-family: var(--font-serif); font-size: 1.1rem; font-weight:500; color: var(--tq-600);">Esquina
+          cortada — remite al triángulo del logo</p>
+        <p style="font-family: var(--font-sans); font-size: .85rem; color: var(--cf-700); margin-top: var(--sp-2);">Este
+          clip-path se usa en tarjetas de producto destacado, el botón primario, y badges de precio.</p>
+      </div>
+    </section>
+
+
+    <!-- ══ Footer ══ -->
+    <footer class="ds-footer">
+      Tahara Café · Sistema de Diseño v1.0 · HummingX BI
+    </footer>
+
+  </div>
+</body>
+
+</html>
