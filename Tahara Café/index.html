@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuestionario estratégico — Tahara Café</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#0f1c24;
+    --forest-2:#172b36;
+    --forest-3:#244254;
+    --moss:#0b9a6d;
+    --matcha:#8be4f0;
+    --parchment:#e6f4f8;
+    --paper:#ffffff;
+    --coffee:#172b36;
+    --clay:#00c5df;
+    --rose:#d96b1e;
+    --line:rgba(230,244,248,.16);
+    --line-strong:rgba(230,244,248,.32);
+    --muted:#a3b8c2;
+    --faint:#718c99;
+    --warn:#fde047;
+    --radius:6px;
+    --serif:'Fraunces', Georgia, serif;
+    --sans:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono:'IBM Plex Mono', 'SF Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--forest);
+    color:var(--parchment);
+    font-family:var(--sans);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  button,input,textarea{font-family:inherit;}
+  .hidden{display:none!important;}
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:.68rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--matcha);
+  }
+  .brandmark{
+    font-family:var(--mono);
+    font-size:.76rem;
+    letter-spacing:.16em;
+    color:var(--parchment);
+  }
+  .brandmark span{color:var(--clay);}
+  .brandmark-wrap{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .logo-humming-top{
+    height:28px;
+    width:auto;
+    object-fit:contain;
+  }
+  .cover-client-brand{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:6px;
+  }
+  .logo-tahara-top{
+    height:34px;
+    width:auto;
+    object-fit:contain;
+  }
+  .hero-logo-tahara{
+    display:block;
+    max-height:80px;
+    width:auto;
+    object-fit:contain;
+    margin-bottom:22px;
+    filter:drop-shadow(0 6px 16px rgba(0,197,223,.22));
+  }
+  .sidebar-brand-logos{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .sidebar-logo-humming{
+    height:22px;
+    width:auto;
+    object-fit:contain;
+  }
+  .done-thanks-card{
+    margin-top:36px;
+    padding:28px 24px;
+    background:rgba(23,43,54,.55);
+    border:1px solid var(--line-strong);
+    border-radius:12px;
+    box-shadow:0 12px 32px rgba(0,0,0,.25);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:12px;
+  }
+  .done-logo-humming{
+    max-height:48px;
+    width:auto;
+    object-fit:contain;
+    margin-bottom:4px;
+  }
+  .done-thanks-title{
+    font-family:var(--serif);
+    font-size:1.3rem;
+    font-weight:500;
+    color:var(--paper);
+    margin:0;
+  }
+  .done-thanks-text{
+    font-size:.92rem;
+    line-height:1.65;
+    color:var(--muted);
+    max-width:440px;
+    margin:0;
+  }
+  .done-brand-badge{
+    margin-top:6px;
+    font-family:var(--mono);
+    font-size:.66rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--matcha);
+    background:rgba(0,197,223,.1);
+    padding:5px 14px;
+    border-radius:20px;
+    border:1px solid rgba(0,197,223,.22);
+  }
+
+  #cover{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    padding:44px 56px;
+    background:
+      linear-gradient(180deg, rgba(23,43,54,.28), rgba(23,43,54,.96)),
+      radial-gradient(circle at 15% 18%, rgba(139,228,240,.12), transparent 34%),
+      radial-gradient(circle at 82% 14%, rgba(0,197,223,.12), transparent 30%),
+      repeating-linear-gradient(90deg, rgba(230,244,248,.025) 0 1px, transparent 1px 84px),
+      var(--forest);
+  }
+  .cover-top,.cover-bottom{display:flex;justify-content:space-between;gap:24px;}
+  .cover-doc-tag,.cover-bottom{
+    font-family:var(--mono);
+    font-size:.68rem;
+    color:var(--faint);
+    line-height:1.65;
+  }
+  .cover-doc-tag{text-align:right;}
+  .cover-center{max-width:780px;margin:0 auto;padding:58px 0;}
+  .cover-rule{width:48px;height:1px;background:var(--clay);margin-bottom:24px;}
+  .cover-h1{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:clamp(2.45rem,5.6vw,4.5rem);
+    line-height:1.02;
+    margin:0 0 14px;
+    color:var(--paper);
+  }
+  .cover-h2{
+    font-family:var(--serif);
+    font-style:italic;
+    font-weight:400;
+    font-size:clamp(1.15rem,2.4vw,1.55rem);
+    color:var(--matcha);
+    margin:0 0 30px;
+  }
+  .cover-p{
+    max-width:600px;
+    color:var(--muted);
+    line-height:1.75;
+    font-size:1rem;
+    margin:0 0 34px;
+  }
+  .cover-meta{
+    margin-top:18px;
+    color:var(--faint);
+    font-family:var(--mono);
+    font-size:.72rem;
+  }
+  .btn-primary,.btn-gold,.btn-ghost,.btn-icon{
+    border-radius:var(--radius);
+    cursor:pointer;
+    transition:background .18s,border-color .18s,color .18s,opacity .18s,transform .18s;
+  }
+  .btn-primary,.btn-gold{
+    border:1px solid var(--clay);
+    background:var(--clay);
+    color:#17110d;
+    font-family:var(--mono);
+    font-size:.8rem;
+    letter-spacing:.06em;
+    padding:13px 25px;
+    font-weight:500;
+  }
+  .btn-primary:hover,.btn-gold:hover{background:#00a8bd;border-color:#00a8bd;transform:translateY(-1px);}
+  .btn-ghost,.btn-icon{
+    background:transparent;
+    border:1px solid var(--line-strong);
+    color:var(--muted);
+    font-family:var(--mono);
+    font-size:.76rem;
+    padding:11px 20px;
+  }
+  .btn-ghost:hover,.btn-icon:hover{border-color:var(--muted);color:var(--paper);}
+  .btn-gold:disabled,.btn-ghost:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+
+  #formview{display:grid;grid-template-columns:294px 1fr;min-height:100vh;}
+  aside.sidebar{
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow-y:auto;
+    background:var(--forest-2);
+    border-right:1px solid var(--line);
+    padding:30px 0 24px;
+    display:flex;
+    flex-direction:column;
+  }
+  .sidebar-brand{padding:0 28px 24px;border-bottom:1px solid var(--line);margin-bottom:8px;}
+  .navlist{list-style:none;margin:0;padding:8px 0;flex:1;}
+  .navitem{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding:10px 28px;
+    border-left:2px solid transparent;
+    color:var(--muted);
+    font-size:.84rem;
+    cursor:pointer;
+  }
+  .navitem:hover:not(.is-locked){background:rgba(230,244,248,.04);color:var(--paper);}
+  .navitem.is-current{border-left-color:var(--clay);background:rgba(0,197,223,.09);color:var(--paper);}
+  .navitem.is-done .navletter{background:var(--moss);border-color:var(--moss);color:#121b16;}
+  .navitem.is-locked{opacity:.42;cursor:not-allowed;}
+  .navletter{
+    width:22px;
+    height:22px;
+    border:1px solid var(--line-strong);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex:none;
+    font-family:var(--mono);
+    font-size:.68rem;
+  }
+  .navitem.is-current .navletter{background:var(--clay);border-color:var(--clay);color:#17110d;}
+  .sidebar-foot{padding:18px 28px 0;border-top:1px solid var(--line);}
+  .progress-label{display:flex;justify-content:space-between;color:var(--faint);font-family:var(--mono);font-size:.66rem;margin-bottom:7px;}
+  .progress-track{height:3px;background:var(--forest-3);overflow:hidden;border-radius:2px;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--matcha),var(--clay));transition:width .25s;}
+  .reset-link{
+    margin-top:13px;
+    background:none;
+    border:none;
+    color:var(--faint);
+    font-family:var(--mono);
+    font-size:.66rem;
+    padding:0;
+    text-decoration:underline;
+    cursor:pointer;
+  }
+  .reset-link:hover{color:var(--warn);}
+  .mobile-topbar{display:none;}
+  main.content{padding:56px 64px 82px;max-width:840px;}
+  .part-eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;color:var(--matcha);margin-bottom:10px;}
+  .part-title{font-family:var(--serif);font-weight:500;font-size:2rem;margin:0 0 10px;color:var(--paper);}
+  .part-subtitle{color:var(--muted);font-size:.95rem;line-height:1.6;max-width:620px;margin:0 0 38px;}
+  .info-block{
+    border-left:2px solid var(--moss);
+    background:rgba(11,154,109,.09);
+    padding:15px 20px;
+    color:var(--muted);
+    font-size:.86rem;
+    line-height:1.65;
+    margin-bottom:34px;
+  }
+  .info-block b{color:var(--paper);}
+  .group-label{
+    font-family:var(--mono);
+    font-size:.68rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--matcha);
+    margin:34px 0 14px;
+    padding-top:18px;
+    border-top:1px solid var(--line);
+  }
+  .group-label:first-of-type{border-top:none;padding-top:0;margin-top:0;}
+  .qcard{margin-bottom:32px;}
+  .qmeta{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .qnum{font-family:var(--mono);font-size:.72rem;color:var(--faint);}
+  .qtag-optional{font-family:var(--mono);font-size:.62rem;color:var(--faint);border:1px solid var(--line-strong);padding:1px 7px;border-radius:10px;text-transform:uppercase;}
+  .qtext{font-size:1.01rem;line-height:1.5;margin:0 0 15px;color:var(--paper);max-width:650px;}
+  .qhint{font-size:.78rem;line-height:1.5;color:var(--faint);margin:-6px 0 14px;}
+  .options{display:flex;flex-direction:column;gap:8px;}
+  label.opt{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    padding:13px 16px;
+    border:1px solid var(--line);
+    border-left:3px solid transparent;
+    border-radius:var(--radius);
+    cursor:pointer;
+    background:rgba(230,244,248,.018);
+  }
+  label.opt:hover{background:rgba(230,244,248,.04);border-color:var(--line-strong);}
+  label.opt.is-selected{border-color:var(--clay);border-left-color:var(--clay);background:rgba(0,197,223,.1);}
+  label.opt input{position:absolute;opacity:0;width:1px;height:1px;}
+  .optletter{
+    min-width:22px;
+    height:22px;
+    border:1px solid rgba(139,228,240,.55);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--matcha);
+    font-family:var(--mono);
+    font-size:.72rem;
+    margin-top:1px;
+  }
+  label.opt.is-selected .optletter{background:var(--clay);border-color:var(--clay);color:#17110d;}
+  .optlabel{color:var(--muted);font-size:.91rem;line-height:1.45;flex:1;}
+  label.opt.is-selected .optlabel{color:var(--paper);}
+  .swatches{display:flex;gap:7px;margin:2px 0 8px;}
+  .swatch{width:24px;height:24px;border-radius:50%;border:1px solid rgba(255,255,255,.28);box-shadow:0 2px 8px rgba(0,0,0,.25);}
+  .text-input,.text-area{
+    width:100%;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid var(--line-strong);
+    color:var(--paper);
+    font-size:.95rem;
+    padding:10px 2px;
+  }
+  .text-area{min-height:86px;resize:vertical;line-height:1.55;}
+  .text-input::placeholder,.text-area::placeholder{color:var(--faint);}
+  .text-input:focus,.text-area:focus{outline:none;border-bottom-color:var(--clay);}
+  .qwarn{display:none;color:var(--warn);font-family:var(--mono);font-size:.68rem;margin-top:8px;}
+  .qcard.show-warn .qwarn{display:block;}
+  .formnav{display:flex;justify-content:space-between;align-items:center;margin-top:48px;padding-top:24px;border-top:1px solid var(--line);}
+  #reviewview{max-width:860px;margin:0 auto;padding:64px 32px 100px;}
+  .review-block{margin-bottom:30px;padding-bottom:22px;border-bottom:1px solid var(--line);}
+  .review-block-title{font-family:var(--serif);font-size:1.22rem;margin:0 0 14px;color:var(--matcha);}
+  .review-q{font-size:.86rem;color:var(--faint);margin:0 0 3px;}
+  .review-a{font-size:.95rem;color:var(--paper);margin:0 0 14px;line-height:1.5;}
+  .review-a.empty{color:var(--faint);font-style:italic;}
+  .review-edit{font-family:var(--mono);font-size:.65rem;color:var(--clay);background:none;border:none;cursor:pointer;padding:0;margin-left:8px;}
+  .sign-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:36px 0 28px;}
+  .sign-field label{display:block;font-family:var(--mono);font-size:.68rem;color:var(--faint);margin-bottom:8px;letter-spacing:.06em;text-transform:uppercase;}
+  .conformity{display:flex;gap:14px;align-items:flex-start;border:1px solid var(--line-strong);border-radius:var(--radius);padding:20px;margin-bottom:30px;background:rgba(139,228,240,.05);}
+  .conformity input{margin-top:4px;width:16px;height:16px;accent-color:var(--clay);flex:none;}
+  .conformity p{font-size:.88rem;line-height:1.6;color:var(--muted);margin:0;}
+  .review-actions{display:flex;gap:12px;flex-wrap:wrap;}
+  .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--clay);color:#17110d;font-family:var(--mono);font-size:.8rem;padding:12px 22px;border-radius:var(--radius);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:100;}
+  .toast.is-shown{opacity:1;transform:translateX(-50%) translateY(0);}
+  #donescreen{max-width:560px;margin:18vh auto;text-align:center;padding:0 24px;}
+  #donescreen .cover-rule{margin:0 auto 28px;}
+  @media (max-width:880px){
+    #cover{padding:32px 24px;}
+    .cover-top,.cover-bottom{flex-direction:column;}
+    .cover-doc-tag{text-align:left;}
+    #formview{grid-template-columns:1fr;}
+    aside.sidebar{display:none;}
+    aside.sidebar.is-open{display:flex;position:fixed;inset:0;z-index:50;width:100%;height:100vh;}
+    .mobile-topbar{display:flex;justify-content:space-between;align-items:center;padding:18px 24px;border-bottom:1px solid var(--line);background:var(--forest-2);position:sticky;top:0;z-index:10;}
+    main.content{padding:36px 24px 64px;}
+    .sign-row{grid-template-columns:1fr;}
+    .formnav{gap:12px;}
+  }
+</style>
+</head>
+<body>
+<section id="cover">
+  <div class="cover-top">
+    <div class="brandmark-wrap">
+      <img src="Logo Humming.png" alt="HummingX BI" class="logo-humming-top" onerror="this.style.display='none'">
+      <div class="brandmark">HUMMINGX<span>.</span>BI</div>
+    </div>
+    <div class="cover-client-brand">
+      <img src="Logo Tahara.png" alt="Tahara Café" class="logo-tahara-top" onerror="this.style.display='none'">
+      <div class="cover-doc-tag">DOCUMENTO CONFIDENCIAL<br>PREPARADO PARA TAHARA CAFE</div>
+    </div>
+  </div>
+  <div class="cover-center">
+    <div class="cover-rule"></div>
+    <p class="eyebrow">Diagnostico estrategico · Pantallas · Menu digital · POS</p>
+    <h1 class="cover-h1">Tahara Café<br>en pantalla y sistema.</h1>
+    <h2 class="cover-h2">Bosque, cultura, café y operación diaria.</h2>
+    <p class="cover-p">Este cuestionario nos ayuda a convertir la esencia de Tahara en una propuesta clara: videos de menú, videos hero, página de lealtad, sistema de pedidos, punto de venta integrado, inventario y una app móvil para que el dueño pueda ver lo importante sin estar pegado a la caja.</p>
+    <button class="btn-primary" id="startBtn">Comenzar diagnostico</button>
+    <div class="cover-meta" id="coverMeta">12 secciones · 52 puntos · tus respuestas se guardan automaticamente</div>
+  </div>
+  <div class="cover-bottom">
+    <span>Tahara Cafe — Cafeteria, desayunos y talleres en Lindavista</span>
+    <span id="coverDate"></span>
+  </div>
+</section>
+
+<section id="formview" class="hidden">
+  <div class="mobile-topbar">
+    <div class="eyebrow" id="mobilePartLabel">PARTE A</div>
+    <button class="btn-icon" id="mobileNavToggle">Indice</button>
+  </div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-logos">
+        <img src="Logo Humming.png" alt="HummingX BI" class="sidebar-logo-humming" onerror="this.style.display='none'">
+        <div class="brandmark">HUMMINGX<span>.</span>BI</div>
+      </div>
+    </div>
+    <ul class="navlist" id="navlist"></ul>
+    <div class="sidebar-foot">
+      <div class="progress-label"><span>AVANCE</span><span id="progressPct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      <button class="reset-link" id="resetBtn">Borrar respuestas y empezar de nuevo</button>
+    </div>
+  </aside>
+  <main class="content" id="content"></main>
+</section>
+
+<section id="reviewview" class="hidden">
+  <p class="eyebrow">Revision final</p>
+  <h1 class="part-title">Confirma el diagnostico</h1>
+  <p class="part-subtitle">Revisa las respuestas antes de enviarlas. Este resumen sera la base para cotizar pantallas, menu digital, pedidos, lealtad, POS, inventario y app movil.</p>
+  <div id="reviewBody"></div>
+  <div class="sign-row">
+    <div class="sign-field">
+      <label for="signName">Nombre de quien responde</label>
+      <input class="text-input" id="signName" type="text" placeholder="Nombre completo">
+    </div>
+    <div class="sign-field">
+      <label for="signRole">Cargo / rol en Tahara</label>
+      <input class="text-input" id="signRole" type="text" placeholder="Ej. Dueño, gerente, socio">
+    </div>
+  </div>
+  <div class="conformity">
+    <input type="checkbox" id="conformityCheck">
+    <p>Confirmo que estas respuestas reflejan lo que Tahara busca para su sistema digital, y entiendo que HummingX BI las usara como base para preparar una propuesta formal y personalizada.</p>
+  </div>
+  <div class="review-actions">
+    <button class="btn-gold" id="whatsappBtn">Enviar por WhatsApp</button>
+    <button class="btn-ghost" id="copyBtn">Copiar resumen</button>
+    <button class="btn-ghost" id="downloadBtn">Descargar resumen</button>
+    <button class="btn-ghost" id="backToFormBtn">Volver a editar</button>
+  </div>
+</section>
+
+<div id="donescreen" class="hidden">
+  <div class="cover-rule"></div>
+  <p class="eyebrow">Diagnostico cerrado</p>
+  <h1 class="cover-h1" style="font-size:1.9rem;">Listo, quedo preparado.</h1>
+  <p class="cover-p" style="margin:0 auto 24px;">Envia el resumen a HummingX BI para preparar la cotizacion formal de Tahara.</p>
+  <button class="btn-gold" id="whatsappDoneBtn">Enviar por WhatsApp</button>
+
+  <div class="done-thanks-card">
+    <img src="Logo Humming.png" alt="HummingX BI" class="done-logo-humming" onerror="this.style.display='none'">
+    <h3 class="done-thanks-title">¡Gracias por confiar en HummingX BI!</h3>
+    <p class="done-thanks-text">Agradecemos tu preferencia, en breve recibirás una confirmación de recibimiento por parte de nuestro equipo.</p>
+    <div class="done-brand-badge">HummingX BI × Tahara Café</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const PARTS = [
+  { letter:'A', title:'Vision general de Tahara',
+    subtitle:'Primero queremos entender el papel que el sistema debe jugar dentro de la cafeteria.',
+    questions:[
+      { id:'q1', text:'¿Cuál es el objetivo principal que buscan lograr con este proyecto?', type:'single',
+        options:[
+          'Elevar la imagen de marca y modernizar la cafetería con pantallas dinámicas',
+          'Agilizar la atención en mostrador y aumentar ventas del menú',
+          'Fidelizar clientes y abrir pedidos con el menú web y programa de lealtad',
+          'Control total del negocio: POS, inventarios y ventas en tiempo real para el dueño',
+          'Una solución integral con todo conectado por etapas'
+        ] },
+      { id:'q2', text:'¿Que prioridad debe tener la primera version?', type:'single',
+        options:['Pantallas y videos para elevar la experiencia en tienda','Menu digital, lealtad y pedidos para clientes','POS e inventario para operar mejor','Un lanzamiento integral con todo conectado'] },
+      { id:'q3', text:'¿Que frase describe mejor la esencia de Tahara?', type:'single',
+        options:['Cafe de especialidad en un espacio tranquilo','Bosque y cultura en medio de Lindavista','Un lugar para desayunar, trabajar y quedarse','Una comunidad alrededor del cafe, el arte y los talleres','Otra vision que prefiero explicar'] },
+      { id:'q4', text:'Cuéntanos en una frase como imaginas a Tahara dentro de 12 meses.', type:'textarea', required:false, placeholder:'Ej. Un cafe cultural con pantallas elegantes, pedidos faciles y control total de ventas.' },
+    ]},
+  { letter:'B', title:'Pantallas en sucursal',
+    subtitle:'Esto define medidas, contenido y comportamiento del paquete de pantallas.',
+    questions:[
+      { id:'q5', text:'¿Cuantas pantallas imaginan instalar en esta etapa?', type:'single',
+        options:['Una pantalla principal','Dos pantallas: menu + contenido hero','Tres o mas pantallas con funciones distintas','Todavia no sabemos; queremos recomendacion'] },
+      { id:'q6', text:'¿Donde estaran ubicadas las pantallas?', type:'multi',
+        options:['Detras del mostrador','Zona de entrada o espera','Visible desde la calle','Area de talleres o eventos','Otra zona del cafe'] },
+      { id:'q7', text:'¿Que orientacion necesitan?', type:'single',
+        options:['Horizontal 16:9','Vertical 9:16','Ambas orientaciones','No estoy seguro'] },
+      { id:'q8', text:'¿Que deberia lograr la pantalla en horas de mayor flujo?', type:'single',
+        options:['Acelerar la decision del cliente','Promover combos o productos estrella','Mostrar eventos y talleres proximos','Dar una sensacion mas premium y ordenada'] },
+      { id:'q9', text:'¿Como es la luz donde ira la pantalla?', type:'single',
+        options:['Interior con luz controlada','Interior con ventanales o luz natural fuerte','Cerca de vitrina o sol directo','Aun no esta definida la ubicacion'] },
+    ]},
+  { letter:'C', title:'Menu digital en pantalla',
+    subtitle:'Aqui aterrizamos que informacion debe aparecer y con que jerarquia.',
+    questions:[
+      { id:'q10', text:'¿Que categorias deberia tener el menu en pantalla?', type:'multi',
+        options:['Cafe caliente','Cafe frio','Bebidas sin cafe','Desayunos','Pan y postres','Combos','Temporada / especiales','Talleres y eventos'] },
+      { id:'q11', text:'¿Cuantos productos deben mostrarse aproximadamente?', type:'single',
+        options:['1 a 12 productos','13 a 30 productos','31 a 60 productos','Mas de 60 productos'] },
+      { id:'q12', text:'¿Que dato es indispensable junto a cada producto?', type:'multi',
+        options:['Precio','Foto','Ingredientes clave','Tamaño o variante','Alérgenos','Recomendacion de maridaje','Tiempo de preparacion'] },
+      { id:'q13', text:'¿Como prefieres organizar el menu?', type:'single',
+        options:['Categorias separadas y muy claras','Recorrido continuo tipo carrusel','Menu fijo con promociones animadas','Pantalla minimalista con QR hacia menu completo'] },
+      { id:'q14', text:'¿Con que frecuencia cambian precios, productos o promociones?', type:'single',
+        options:['Cada semana','Cada mes','Por temporada','Casi nunca','Aun no hay proceso definido'] },
+    ]},
+  { letter:'D', title:'Videos hero promocionales',
+    subtitle:'Los videos hero son piezas cortas para antojar, presentar productos y elevar la marca.',
+    questions:[
+      { id:'q15', text:'¿Que producto deberia protagonizar el primer video hero?', type:'textarea', placeholder:'Ej. latte, croissant, desayuno estrella, bebida fria, pan de temporada.' },
+      { id:'q16', text:'¿Que tipo de toma se siente mas Tahara?', type:'single',
+        options:['Detalle macro de cafe, leche, pan y textura','Mesa completa con desayuno y ambiente','Persona disfrutando cafe en el espacio','Manos preparando el producto','Combinacion de producto, espacio y cultura'] },
+      { id:'q17', text:'¿Que energia debe tener el video?', type:'single',
+        options:['Calma, bosque y pausa','Calido y hogareño','Editorial, premium y sobrio','Dinamico para vender rapido','Cultural, artistico y comunitario'] },
+      { id:'q18', text:'¿El hero debe mostrar precio o solo construir deseo?', type:'single',
+        options:['Precio visible','Solo nombre del producto','Producto + frase corta','Versiones distintas segun objetivo'] },
+      { id:'q19', text:'¿Que llamados a la accion quieres probar en los videos?', type:'multi',
+        options:['Pide en mostrador','Escanea el menu','Unete al programa de lealtad','Pregunta por talleres','Prueba el especial de temporada','Reserva tu lugar en evento'] },
+    ]},
+  { letter:'E', title:'Estilo visual y paleta',
+    subtitle:'Tomamos como referencia el perfil: tonos bosque, cafe, crema y cultura visual.',
+    questions:[
+      { id:'q20', text:'¿Que paleta se acerca mas a lo que quieres ver?', type:'single',
+        options:[
+          '<span class="swatches"><span class="swatch" style="background:#00c5df"></span><span class="swatch" style="background:#172b36"></span><span class="swatch" style="background:#d96b1e"></span><span class="swatch" style="background:#fde047"></span></span><b>Cian, Azul oscuro, Naranja y Amarillo.</b> Fresca, vibrante y alineada con la identidad visual actual.',
+          '<span class="swatches"><span class="swatch" style="background:#16251d"></span><span class="swatch" style="background:#f4ede0"></span><span class="swatch" style="background:#b86f43"></span><span class="swatch" style="background:#7d8f62"></span></span><b>Bosque, crema, arcilla y musgo.</b> Calida, cultural y natural.',
+          '<span class="swatches"><span class="swatch" style="background:#23170f"></span><span class="swatch" style="background:#c99a63"></span><span class="swatch" style="background:#fff7e8"></span><span class="swatch" style="background:#5d3428"></span></span><b>Cafe tostado, caramelo y pan.</b> Mas apetecible y gastronomica.',
+          '<span class="swatches"><span class="swatch" style="background:#101816"></span><span class="swatch" style="background:#e8e0d1"></span><span class="swatch" style="background:#b5c08b"></span><span class="swatch" style="background:#b56b68"></span></span><b>Editorial cultural.</b> Sobria, elegante y con acentos para eventos.'
+        ] },
+      { id:'q21', text:'¿Que tan visible debe ser el concepto "bosque y cultura" en pantallas?', type:'single',
+        options:['Muy visible: que sea parte central del sistema','Sutil: que se sienta en colores, texturas y ritmo','Solo en piezas de eventos o marca','Prefiero enfocarme mas en cafe y menu'] },
+      { id:'q22', text:'¿Que estilo tipografico prefieres?', type:'single',
+        options:['Serif editorial, elegante y cultural','Sans-serif limpia y moderna','Letra organica con detalles artesanales','Combinacion: editorial para marca, limpia para menu'] },
+      { id:'q23', text:'¿Hay alguna cafetería, marca o app que tengan como referencia o inspiración de cómo imaginan que se vea su sistema?', type:'textarea', required:false, placeholder:'Ej. Nos gusta el estilo visual o la experiencia de alguna cafetería, app de pedidos, menú en pantallas o marca en específico.' },
+      { id:'q23b', text:'¿Hay colores, estilos o referencias que NO quieren que usemos?', type:'textarea', required:false, placeholder:'Opcional: marcas, estilos, colores o ejemplos que no representen a Tahara.' },
+    ]},
+  { letter:'F', title:'Menu web, pedidos y lealtad',
+    subtitle:'La pagina puede ser solo menu, programa de lealtad, pedidos o un ecosistema completo.',
+    questions:[
+      { id:'q24', text:'¿Que debe poder hacer un cliente desde su celular?', type:'multi',
+        options:['Ver menu completo','Registrarse al programa de lealtad','Acumular visitas o puntos','Hacer pedido para recoger','Pagar en linea','Reservar lugar en taller','Ver eventos proximos'] },
+      { id:'q25', text:'¿Como imaginas el programa de lealtad?', type:'single',
+        options:['Sellos por visita: compra X cafes y recibe uno','Puntos por consumo acumulado','Beneficios por niveles: frecuente, fan, comunidad','Recompensas por talleres/eventos ademas de consumo','Quiero que ustedes propongan el modelo'] },
+      { id:'q26', text:'¿Que datos deberia pedir el registro de lealtad?', type:'multi',
+        options:['Nombre','Telefono / WhatsApp','Correo','Cumpleaños','Bebida favorita','Consentimiento para promociones','Nada mas que lo indispensable'] },
+      { id:'q27', text:'¿Como deberia funcionar el pedido digital?', type:'single',
+        options:['Solo pedido para recoger y pagar en sucursal','Pedido + pago en linea','Pedido con horario programado','Primero menu/lealtad; pedidos despues'] },
+      { id:'q28', text:'¿Que promociones te gustaria activar desde la pagina?', type:'multi',
+        options:['Bebida de temporada','Combo desayuno','Pan del dia','Taller + bebida','Beneficio por cumpleaños','Promocion para clientes frecuentes'] },
+    ]},
+  { letter:'G', title:'Punto de venta',
+    subtitle:'Necesitamos mapear como cobran hoy y que tan integrado debe quedar.',
+    questions:[
+      { id:'q29', text:'¿Como cobran actualmente?', type:'multi',
+        options:['Efectivo','Tarjeta con terminal externa','Transferencia','QR / links de pago','Sistema POS actual','Notas manuales o Excel'] },
+      { id:'q30', text:'¿Cuantas cajas o dispositivos deben poder vender al mismo tiempo?', type:'single',
+        options:['Una caja','Dos cajas','Tres o mas','Caja + pedidos desde celular','No estoy seguro'] },
+      { id:'q31', text:'¿Que hardware ya tienen?', type:'multi',
+        options:['Computadora o laptop','Tablet','Impresora de tickets','Cajon de dinero','Lector de codigo de barras','Terminal bancaria','Nada definido'] },
+      { id:'q32', text:'¿Necesitan roles separados para empleados?', type:'single',
+        options:['Si: cajero, gerente y dueño','Solo cajero y dueño','Todos pueden hacer lo mismo','No lo se; quiero recomendacion'] },
+      { id:'q33', text:'¿Que debe pasar al cerrar caja?', type:'multi',
+        options:['Resumen por metodo de pago','Ventas por categoria','Ticket de corte','Diferencias de efectivo','Reporte enviado al dueño','Inventario actualizado automaticamente'] },
+    ]},
+  { letter:'H', title:'Inventario de cafeteria',
+    subtitle:'Un cafe no controla solo productos finales: tambien insumos, mermas y recetas.',
+    questions:[
+      { id:'q34', text:'¿Que tipo de inventario quieren controlar?', type:'multi',
+        options:['Producto final listo para venta','Ingredientes / insumos','Cafe por grano o kilo','Pan y perecederos','Material de empaque','Inventario para talleres/eventos'] },
+      { id:'q35', text:'¿Manejan recetas que descuenten insumos automaticamente?', type:'single',
+        options:['Si, lo queremos desde el inicio','Nos interesa, pero puede ser fase 2','No, solo conteo de producto terminado','No estoy seguro como deberia funcionar'] },
+      { id:'q36', text:'¿Que problemas de inventario quieren resolver primero?', type:'multi',
+        options:['Quedarnos sin insumos sin darnos cuenta','Merma de pan o perecederos','No saber que producto deja mas margen','Compras sin historial claro','Diferencias entre ventas e inventario','Control de proveedores'] },
+      { id:'q37', text:'¿Como reciben informacion de proveedores?', type:'single',
+        options:['Listas en PDF o imagen','Excel o Google Sheets','Mensajes por WhatsApp','Facturas / notas fisicas','No hay formato fijo'] },
+      { id:'q38', text:'¿Cada cuanto hacen conteo fisico?', type:'single',
+        options:['Diario','Semanal','Mensual','Solo cuando algo falta','No tenemos proceso'] },
+    ]},
+  { letter:'I', title:'App movil del dueño',
+    subtitle:'Esta parte es clave: queremos saber como se la imagina quien dirige el cafe.',
+    questions:[
+      { id:'q39', text:'Cuando abras la app en el celular, ¿que quieres ver primero?', type:'single',
+        options:['Ventas del dia en tiempo real','Productos mas vendidos','Alertas de inventario bajo','Pedidos pendientes','Agenda de talleres/eventos','Un tablero ejecutivo con todo resumido'] },
+      { id:'q40', text:'¿Que alertas deberia mandar la app?', type:'multi',
+        options:['Inventario bajo','Venta inusualmente alta o baja','Corte de caja cerrado','Pedido nuevo','Producto agotado','Evento/taller con cupo cercano al limite','Compra a proveedor pendiente'] },
+      { id:'q41', text:'¿Que decisiones quieres poder tomar desde el celular?', type:'multi',
+        options:['Cambiar precios','Activar promociones','Pausar productos agotados','Ver reportes','Autorizar descuentos','Revisar cortes','Consultar inventario'] },
+      { id:'q42', text:'¿Que periodo de reportes necesitas consultar rapido?', type:'multi',
+        options:['Hoy','Ayer','Semana actual','Mes actual','Comparativo contra semana anterior','Comparativo por horarios'] },
+      { id:'q43', text:'Describe con tus palabras la pantalla ideal de la app del dueño.', type:'textarea', required:false, placeholder:'Ej. Quiero abrirla y ver ventas, alertas de inventario, productos top y el corte del dia.' },
+    ]},
+  { letter:'J', title:'Eventos, talleres y comunidad',
+    subtitle:'Tahara no solo vende cafe: tambien comunica cultura y experiencias.',
+    questions:[
+      { id:'q44', text:'¿Como quieren mostrar talleres y eventos?', type:'single',
+        options:['En pantallas dentro del cafe','En la pagina web con calendario','En ambos: pantalla + web','Solo por redes sociales por ahora'] },
+      { id:'q45', text:'¿Los eventos necesitan registro o reserva?', type:'single',
+        options:['Si, con cupo limitado','Si, pero registro simple por WhatsApp','No, solo anuncio informativo','Depende del tipo de taller'] },
+      { id:'q46', text:'¿Que datos necesitan medir de los eventos?', type:'multi',
+        options:['Asistentes registrados','Pagos recibidos','Bebidas/platillos incluidos','Asistencia real','Clientes que regresan despues','Colaborador o tallerista'] },
+    ]},
+  { letter:'K', title:'Contenido, insumos y lanzamiento',
+    subtitle:'Esto evita que la propuesta prometa algo para lo que aun faltan archivos o procesos.',
+    questions:[
+      { id:'q47', text:'¿Que material visual tienen disponible?', type:'multi',
+        options:['Logo en buena calidad','Fotos profesionales de productos','Fotos del local','Videos existentes','Menu actualizado','Paleta o guia de marca','Nada formal todavia'] },
+      { id:'q49', text:'¿Hay una fecha ideal de lanzamiento de la plataforma?', type:'textarea', required:false, placeholder:'Ej. antes de un evento, inicio de mes, temporada nueva, aniversario.' },
+    ]},
+  { letter:'L', title:'Alcance y etapas',
+    subtitle:'Cerramos separando indispensable, deseable y futuro para cotizar con orden.',
+    info:'<b>Nota:</b> Prepararemos la cotización con desglose individual por módulo y una opción de paquete integral con beneficio especial.<br><br><b>Paquete de pantallas:</b> videos de menú y videos hero. <b>Menú digital:</b> página web con lealtad y pedidos. <b>POS integrado:</b> venta, inventario y reportes. <b>App del dueño:</b> control móvil en tiempo real e indicadores clave.',
+    questions:[
+      { id:'q51', text:'¿Que seria indispensable para decir "si" a la primera cotizacion?', type:'multi',
+        options:['Pantallas funcionando','Videos hero incluidos','Menu web publicado','Lealtad activa','Pedidos digitales','POS integrado','Inventario','App movil del dueño'] },
+      { id:'q52', text:'¿Que nivel de acompañamiento esperan despues de entregar?', type:'single',
+        options:['Solo entrega y capacitacion inicial','Soporte por un periodo corto','Soporte mensual recurrente','Aun no sabemos; queremos opciones'] },
+      { id:'q53', text:'¿Algo que debamos saber antes de preparar la propuesta formal?', type:'textarea', required:false, placeholder:'Restricciones, dudas, presupuesto, prioridades, preocupaciones o decisiones internas.' },
+    ]},
+];
+
+const FLAT = [];
+PARTS.forEach((part, pi)=>part.questions.forEach(q=>FLAT.push({...q, partIndex:pi, partLetter:part.letter})));
+const REQUIRED_TOTAL = FLAT.filter(q=>q.required!==false).length;
+const STORAGE_KEY = 'tahara-cafe-diagnostico-hummingx-v1';
+const WHATSAPP_NUMBER = '525519802943';
+let state = { partIndex:0, maxReached:0, answers:{}, meta:{name:'',role:''} };
+
+function qNumber(id){return 'Q'+String(FLAT.findIndex(f=>f.id===id)+1).padStart(2,'0');}
+function fmtDate(){
+  try{return new Intl.DateTimeFormat('es-MX',{day:'numeric',month:'long',year:'numeric'}).format(new Date());}
+  catch(e){return '';}
+}
+document.getElementById('coverDate').textContent = fmtDate();
+
+function saveState(){
+  try{localStorage.setItem(STORAGE_KEY, JSON.stringify(state));}
+  catch(e){}
+}
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){state = Object.assign(state, JSON.parse(raw)); return true;}
+  }catch(e){}
+  return false;
+}
+function isAnswered(id){
+  const v = state.answers[id];
+  if(v===undefined || v===null) return false;
+  if(Array.isArray(v)) return v.length>0;
+  if(typeof v==='string') return v.trim().length>0;
+  return true;
+}
+function updateProgress(){
+  const answered = FLAT.filter(q=>q.required!==false && isAnswered(q.id)).length;
+  const pct = Math.round((answered/REQUIRED_TOTAL)*100);
+  document.getElementById('progressPct').textContent = pct+'%';
+  document.getElementById('progressFill').style.width = pct+'%';
+}
+function renderSidebar(){
+  const nav = document.getElementById('navlist');
+  nav.innerHTML = '';
+  PARTS.forEach((part,i)=>{
+    const li = document.createElement('li');
+    li.className = 'navitem';
+    if(i===state.partIndex) li.classList.add('is-current');
+    if(i<state.maxReached) li.classList.add('is-done');
+    if(i>state.maxReached) li.classList.add('is-locked');
+    li.innerHTML = `<span class="navletter">${part.letter}</span><span class="navlabel">${part.title}</span>`;
+    if(i<=state.maxReached){
+      li.addEventListener('click',()=>{renderPart(i);closeMobileNav();});
+    }
+    nav.appendChild(li);
+  });
+  updateProgress();
+}
+function renderPart(i){
+  state.partIndex = i;
+  const part = PARTS[i];
+  const content = document.getElementById('content');
+  document.getElementById('mobilePartLabel').textContent = 'PARTE '+part.letter;
+  let html = `<div class="part-eyebrow">PARTE ${part.letter} · ${i+1} DE ${PARTS.length}</div><h1 class="part-title">${part.title}</h1><p class="part-subtitle">${part.subtitle}</p>`;
+  if(part.info) html += `<div class="info-block">${part.info}</div>`;
+  let lastGroup = null;
+  part.questions.forEach(q=>{
+    if(q.group && q.group!==lastGroup){
+      html += `<div class="group-label">${q.group}</div>`;
+      lastGroup = q.group;
+    } else if(!q.group){lastGroup = null;}
+    const optionalTag = q.required===false ? '<span class="qtag-optional">opcional</span>' : '';
+    const hint = q.hint ? `<p class="qhint">${q.hint}</p>` : '';
+    html += `<div class="qcard" id="card-${q.id}" data-required="${q.required!==false}">
+      <div class="qmeta"><span class="qnum">${qNumber(q.id)}</span>${optionalTag}</div>
+      <p class="qtext">${q.text}</p>${hint}
+      <div class="qbody" data-qid="${q.id}"></div>
+      <div class="qwarn">Esta pregunta es obligatoria para continuar.</div>
+    </div>`;
+  });
+  html += `<div class="formnav"><button class="btn-ghost" id="prevBtn" ${i===0?'disabled':''}>Anterior</button><button class="btn-gold" id="nextBtn">${i===PARTS.length-1?'Ir a revision final':'Siguiente'}</button></div>`;
+  content.innerHTML = html;
+  part.questions.forEach(q=>renderQuestionBody(q));
+  document.getElementById('prevBtn').addEventListener('click',()=>{if(i>0){renderPart(i-1);renderSidebar();window.scrollTo(0,0);}});
+  document.getElementById('nextBtn').addEventListener('click',()=>handleNext(i));
+  renderSidebar();
+  window.scrollTo(0,0);
+}
+function renderQuestionBody(q){
+  const el = document.querySelector(`.qbody[data-qid="${q.id}"]`);
+  const val = state.answers[q.id] || '';
+  if(q.type==='text' || q.type==='number'){
+    el.innerHTML = `<input class="text-input" type="${q.type==='number'?'number':'text'}" placeholder="${q.placeholder||''}" value="${escapeHtml(String(val))}">`;
+    el.querySelector('input').addEventListener('input', e=>{
+      state.answers[q.id] = e.target.value;
+      clearWarn(q.id); saveState(); updateProgress();
+    });
+    return;
+  }
+  if(q.type==='textarea'){
+    el.innerHTML = `<textarea class="text-area" placeholder="${q.placeholder||''}">${escapeHtml(String(val))}</textarea>`;
+    el.querySelector('textarea').addEventListener('input', e=>{
+      state.answers[q.id] = e.target.value;
+      clearWarn(q.id); saveState(); updateProgress();
+    });
+    return;
+  }
+  const wrap = document.createElement('div');
+  wrap.className = 'options';
+  q.options.forEach((label, idx)=>{
+    const letter = String.fromCharCode(65+idx);
+    const lab = document.createElement('label');
+    lab.className = 'opt';
+    const inputType = q.type==='multi' ? 'checkbox' : 'radio';
+    lab.innerHTML = `<input type="${inputType}" name="${q.id}" value="${idx}"><span class="optletter">${letter}</span><span class="optlabel">${label}</span>`;
+    wrap.appendChild(lab);
+    const input = lab.querySelector('input');
+    if(q.type==='single'){
+      input.checked = state.answers[q.id]===idx;
+      lab.classList.toggle('is-selected', input.checked);
+      input.addEventListener('change',()=>{
+        state.answers[q.id] = idx;
+        wrap.querySelectorAll('.opt').forEach(o=>o.classList.remove('is-selected'));
+        lab.classList.add('is-selected');
+        clearWarn(q.id); saveState(); updateProgress();
+      });
+    } else {
+      const arr = Array.isArray(state.answers[q.id]) ? state.answers[q.id] : [];
+      input.checked = arr.includes(idx);
+      lab.classList.toggle('is-selected', input.checked);
+      input.addEventListener('change',()=>{
+        let cur = Array.isArray(state.answers[q.id]) ? [...state.answers[q.id]] : [];
+        if(input.checked) cur.push(idx);
+        else cur = cur.filter(v=>v!==idx);
+        state.answers[q.id] = [...new Set(cur)];
+        wrap.querySelectorAll('input').forEach((inp,i2)=>inp.closest('.opt').classList.toggle('is-selected', state.answers[q.id].includes(i2)));
+        clearWarn(q.id); saveState(); updateProgress();
+      });
+    }
+  });
+  el.appendChild(wrap);
+}
+function clearWarn(id){document.getElementById('card-'+id)?.classList.remove('show-warn');}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function stripHtmlTags(str){return str ? str.replace(/<[^>]*>?/gm,'').replace(/\s+/g,' ').trim() : '';}
+function handleNext(i){
+  const part = PARTS[i];
+  let allOk = true;
+  part.questions.forEach(q=>{
+    if(q.required===false) return;
+    if(!isAnswered(q.id)){
+      allOk = false;
+      document.getElementById('card-'+q.id).classList.add('show-warn');
+    }
+  });
+  if(!allOk){showToast('Hay preguntas obligatorias sin responder en esta seccion.'); return;}
+  state.maxReached = Math.max(state.maxReached, i+1);
+  saveState();
+  if(i+1>=PARTS.length) renderReview();
+  else renderPart(i+1);
+}
+function renderReview(){
+  document.getElementById('formview').classList.add('hidden');
+  document.getElementById('reviewview').classList.remove('hidden');
+  const body = document.getElementById('reviewBody');
+  let html = '';
+  PARTS.forEach((part,pi)=>{
+    html += `<div class="review-block"><h3 class="review-block-title">Parte ${part.letter} · ${part.title} <button class="review-edit" data-jump="${pi}">editar</button></h3>`;
+    part.questions.forEach(q=>{
+      const v = state.answers[q.id];
+      let answerText = '<p class="review-a empty">Sin respuesta</p>';
+      if(q.type==='text' || q.type==='textarea' || q.type==='number'){
+        if(v && String(v).trim()) answerText = `<p class="review-a">${escapeHtml(String(v).trim())}</p>`;
+      } else if(q.type==='multi'){
+        if(Array.isArray(v) && v.length) answerText = `<p class="review-a">${v.map(idx=>q.options[idx]).join(' · ')}</p>`;
+      } else if(v!==undefined){
+        answerText = `<p class="review-a">${q.options[v]}</p>`;
+      }
+      html += `<p class="review-q">${qNumber(q.id)}. ${q.text}</p>${answerText}`;
+    });
+    html += '</div>';
+  });
+  body.innerHTML = html;
+  body.querySelectorAll('.review-edit').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.getElementById('reviewview').classList.add('hidden');
+      document.getElementById('formview').classList.remove('hidden');
+      renderPart(parseInt(btn.dataset.jump,10));
+    });
+  });
+  document.getElementById('signName').value = state.meta.name || '';
+  document.getElementById('signRole').value = state.meta.role || '';
+  window.scrollTo(0,0);
+}
+function buildSummaryText(){
+  let out = `CUESTIONARIO ESTRATEGICO — TAHARA CAFE\n`;
+  out += `Pantallas · Menu digital · Lealtad · Pedidos · POS · Inventario · App movil\n`;
+  out += `Preparado para HummingX BI · ${fmtDate()}\n`;
+  out += `Respondido por: ${state.meta.name||'—'} (${state.meta.role||'—'})\n`;
+  out += `${'='.repeat(64)}\n\n`;
+  PARTS.forEach(part=>{
+    out += `PARTE ${part.letter} — ${part.title.toUpperCase()}\n${'-'.repeat(44)}\n`;
+    part.questions.forEach(q=>{
+      const v = state.answers[q.id];
+      let ans = 'Sin respuesta';
+      if(q.type==='text' || q.type==='textarea' || q.type==='number') ans = (v && String(v).trim()) ? String(v).trim() : ans;
+      else if(q.type==='multi') ans = (Array.isArray(v) && v.length) ? v.map(i=>stripHtmlTags(q.options[i])).join(' · ') : ans;
+      else ans = (v!==undefined) ? stripHtmlTags(q.options[v]) : ans;
+      out += `${qNumber(q.id)}. ${q.text}\n   Respuesta: ${ans}\n`;
+    });
+    out += '\n';
+  });
+  return out;
+}
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('is-shown');
+  setTimeout(()=>t.classList.remove('is-shown'),2600);
+}
+function finishDiagnostic(){
+  setTimeout(()=>{
+    document.getElementById('reviewview').classList.add('hidden');
+    document.getElementById('donescreen').classList.remove('hidden');
+  },700);
+}
+async function sendToWsp(){
+  const text = buildSummaryText();
+  try{await navigator.clipboard.writeText(text);}catch(e){}
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`,'_blank');
+  showToast('Abriendo WhatsApp.');
+}
+
+document.getElementById('startBtn').addEventListener('click',()=>{
+  document.getElementById('cover').classList.add('hidden');
+  document.getElementById('formview').classList.remove('hidden');
+  renderPart(state.partIndex);
+});
+document.getElementById('resetBtn').addEventListener('click',()=>{
+  if(!confirm('¿Borrar todas las respuestas guardadas y empezar de nuevo?')) return;
+  state = { partIndex:0, maxReached:0, answers:{}, meta:{name:'',role:''} };
+  try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
+  renderPart(0);
+  showToast('Diagnostico reiniciado.');
+});
+document.getElementById('mobileNavToggle').addEventListener('click',()=>document.getElementById('sidebar').classList.toggle('is-open'));
+function closeMobileNav(){document.getElementById('sidebar').classList.remove('is-open');}
+document.getElementById('backToFormBtn').addEventListener('click',()=>{
+  document.getElementById('reviewview').classList.add('hidden');
+  document.getElementById('formview').classList.remove('hidden');
+  renderPart(PARTS.length-1);
+});
+document.getElementById('signName').addEventListener('input', e=>{state.meta.name=e.target.value;saveState();});
+document.getElementById('signRole').addEventListener('input', e=>{state.meta.role=e.target.value;saveState();});
+document.getElementById('copyBtn').addEventListener('click', async ()=>{
+  if(!document.getElementById('conformityCheck').checked){showToast('Marca la casilla de conformidad antes de copiar.');return;}
+  try{await navigator.clipboard.writeText(buildSummaryText());showToast('Resumen copiado.');}
+  catch(e){showToast('No se pudo copiar automaticamente.');}
+  finishDiagnostic();
+});
+document.getElementById('downloadBtn').addEventListener('click',()=>{
+  if(!document.getElementById('conformityCheck').checked){showToast('Marca la casilla de conformidad antes de descargar.');return;}
+  const blob = new Blob([buildSummaryText()], {type:'text/plain;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'cuestionario-tahara-cafe.txt';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  finishDiagnostic();
+});
+document.getElementById('whatsappBtn').addEventListener('click', async ()=>{
+  if(!document.getElementById('conformityCheck').checked){showToast('Marca la casilla de conformidad antes de enviar.');return;}
+  await sendToWsp();
+  finishDiagnostic();
+});
+document.getElementById('whatsappDoneBtn').addEventListener('click', sendToWsp);
+
+(function boot(){
+  const hadSaved = loadState();
+  if(hadSaved && Object.keys(state.answers || {}).length){
+    document.getElementById('startBtn').textContent = 'Continuar diagnostico';
+    document.getElementById('coverMeta').textContent = 'Tienes un diagnostico en progreso; se restaurara donde lo dejaste.';
+  }
+})();
+</script>
+</body>
+</html>
