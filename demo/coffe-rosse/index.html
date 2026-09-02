@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coffe Rosse — Menú Digital</title>
+  <meta name="description"
+    content="Menú digital de Coffe Rosse. Café, matcha, desayunos y más para tu momento favorito del día.">
+
+  <!-- OPEN GRAPH / METADATA PARA COMPARTIR EN WHATSAPP Y REDES -->
+  <meta property="og:title" content="Coffe Rosse — Menú Digital">
+  <meta property="og:description" content="Café, matcha, desayunos y postres en un solo lugar. Menú digital de Coffe Rosse.">
+  <!-- NOTA: Cuando subas esto a internet, asegúrate de poner aquí la URL completa (ej. https://tudominio.com/img/logo.png) -->
+  <meta property="og:image" content="img/logo.png">
+  <meta property="og:image:width" content="500">
+  <meta property="og:image:height" content="500">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Parisienne&family=Quicksand:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    /* ================================================================
+     COFFE ROSSE — Menú Digital v1.0
+     Estilo: coquette · rosa pastel + fucsia monocromático sobre blanco
+  ================================================================ */
+    :root {
+      --pk-50: #FFF8FB;
+      --pk-100: #FFEAF3;
+      --pk-200: #FFD3E7;
+      --pk-300: #FFACD3;
+      --pk-400: #FF7FB8;
+      --pk-500: #F2418F;
+      --pk-600: #D62C77;
+      --pk-700: #A81E5D;
+      --pk-800: #7A1449;
+      --pk-900: #4A0A2E;
+      --wh: #FFFFFF;
+      --ivory: #FFFDFC;
+      --line: #FBDCE9;
+      --font-script: 'Parisienne', cursive;
+      --font-sans: 'Quicksand', system-ui, sans-serif;
+      --sp-2: 8px;
+      --sp-3: 12px;
+      --sp-4: 16px;
+      --sp-5: 24px;
+      --sp-6: 32px;
+      --sp-7: 48px;
+      --sp-8: 64px;
+      --r-sm: 8px;
+      --r-md: 16px;
+      --r-lg: 26px;
+      --nav-h: 60px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      background: var(--ivory);
+      color: var(--pk-900);
+      font-family: var(--font-sans);
+      font-weight: 500;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    button {
+      cursor: pointer;
+      font-family: inherit;
+      border: none;
+      background: none;
+    }
+
+    /* ── LOADER ── */
+    #loader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(160deg, var(--pk-50) 0%, var(--pk-100) 100%);
+      transition: opacity .7s cubic-bezier(.4, 0, .2, 1), transform .7s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    #loader::before {
+      content: '';
+      position: absolute;
+      width: 460px;
+      height: 460px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(242, 65, 143, .12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    #loader.is-hiding {
+      opacity: 0;
+      transform: scale(1.04);
+      pointer-events: none;
+    }
+
+    .ldr-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 22px;
+      animation: fade-up .6s ease both;
+    }
+
+    .ldr-icon {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: var(--wh);
+      box-shadow: 0 20px 50px rgba(214, 44, 119, .18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 6px;
+    }
+
+    /* ESPACIO PARA IMAGEN: logo del cliente (idealmente PNG fondo transparente, cuadrado) */
+    .ldr-real-logo {
+      width: 98%;
+      height: 98%;
+      object-fit: cover;
+      border-radius: 50%;
+      opacity: 0;
+      clip-path: circle(0% at 50% 50%);
+      animation: iris-reveal 1.3s cubic-bezier(.6, 0, .2, 1) .1s forwards, spiral-bloom 2s cubic-bezier(.2, .8, .2, 1) forwards;
+    }
+
+    @keyframes iris-reveal {
+      0% {
+        clip-path: circle(0% at 50% 50%);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      100% {
+        clip-path: circle(100% at 50% 50%);
+        opacity: 1;
+      }
+    }
+
+    @keyframes spiral-bloom {
+      0% {
+        transform: rotate(-50deg) scale(.8);
+        filter: blur(6px);
+      }
+
+      100% {
+        transform: rotate(0deg) scale(1);
+        filter: blur(0);
+      }
+    }
+
+    .ldr-heart-ring {
+      position: absolute;
+      inset: -14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: ring-pulse 2.4s ease-in-out .4s infinite;
+    }
+
+    @keyframes ring-pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: .55;
+      }
+
+      50% {
+        transform: scale(1.05);
+        opacity: 1;
+      }
+    }
+
+    .ldr-heart-ring svg {
+      width: 100%;
+      height: 100%;
+      stroke: var(--pk-300);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-dasharray: 4 8;
+    }
+
+    .ldr-words {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      opacity: 0;
+      animation: fade-up .5s ease 1.3s both;
+    }
+
+    .ldr-logotype {
+      font-family: var(--font-script);
+      font-size: 3rem;
+      color: var(--pk-600);
+      line-height: 1;
+    }
+
+    .ldr-sub {
+      font-family: var(--font-sans);
+      font-weight: 500;
+      font-size: .8rem;
+      letter-spacing: .04em;
+      color: var(--pk-700);
+      opacity: .8;
+    }
+
+    .ldr-dots {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      opacity: 0;
+      animation: fade-up .4s ease 1.65s both;
+    }
+
+    .ldr-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--pk-300);
+      opacity: .55;
+    }
+
+    .ldr-dot.c {
+      background: var(--pk-500);
+      opacity: 1;
+      transform: scale(1.3);
+    }
+
+    .ldr-phrase {
+      opacity: 0;
+      animation: fade-up .5s ease 1.8s both;
+      text-align: center;
+    }
+
+    .ldr-phrase p {
+      font-size: .78rem;
+      color: var(--pk-700);
+      font-weight: 500;
+      letter-spacing: .02em;
+    }
+
+    .ldr-bar-wrap {
+      width: 110px;
+      height: 4px;
+      border-radius: 4px;
+      background: var(--pk-100);
+      overflow: hidden;
+      opacity: 0;
+      animation: fade-up .4s ease 1.9s both;
+    }
+
+    .ldr-bar {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--pk-400), var(--pk-600));
+      transform: scaleX(0);
+      transform-origin: left;
+      will-change: transform;
+      animation: bar-fill 2.0s cubic-bezier(.4, 0, .6, 1) .3s forwards;
+    }
+
+    @keyframes bar-fill {
+      0% {
+        transform: scaleX(0);
+      }
+
+      60% {
+        transform: scaleX(.68);
+      }
+
+      85% {
+        transform: scaleX(.88);
+      }
+
+      100% {
+        transform: scaleX(1);
+      }
+    }
+
+    @keyframes fade-up {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ── HERO FULLSCREEN CARRUSEL ── */
+    .hero-fullscreen {
+      position: relative;
+      height: 100dvh;
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: var(--pk-900);
+      text-align: center;
+    }
+
+    .hero-bg-carousel {
+      position: absolute;
+      inset: -5%;
+      width: 110%;
+      height: 110%;
+      z-index: 0;
+      /* ESPACIO PARA IMÁGENES: cada .hero-slide toma su fondo de img/hero1.webp .. hero4.webp */
+      background: linear-gradient(135deg, var(--pk-800), var(--pk-900));
+    }
+
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0;
+      will-change: transform, opacity, filter;
+      animation: cinematic-carousel 24s infinite;
+    }
+
+    .hero-slide:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .hero-slide:nth-child(2) {
+      animation-delay: 6s;
+    }
+
+    .hero-slide:nth-child(3) {
+      animation-delay: 12s;
+    }
+
+    .hero-slide:nth-child(4) {
+      animation-delay: 18s;
+    }
+
+    @keyframes cinematic-carousel {
+      0% {
+        opacity: 0;
+        transform: scale(1.1);
+        filter: blur(12px);
+      }
+
+      5% {
+        opacity: 1;
+        transform: scale(1.05);
+        filter: blur(0);
+      }
+
+      20% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+      }
+
+      25% {
+        opacity: 0;
+        transform: scale(0.98);
+        filter: blur(8px);
+      }
+
+      100% {
+        opacity: 0;
+        transform: scale(0.98);
+        filter: blur(8px);
+      }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: radial-gradient(circle at center, rgba(74, 10, 46, .35) 0%, rgba(58, 8, 36, .78) 100%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      width: 100%;
+      padding: clamp(6vh, 40px, 80px) 5vw clamp(12vh, 80px, 120px);
+    }
+
+    .hero-content-top,
+    .hero-content-middle,
+    .hero-content-bottom {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-content-middle {
+      flex: 1;
+      justify-content: center;
+    }
+
+    /* ESPACIO PARA IMAGEN: logo del cliente, versión clara/blanca para fondo oscuro */
+    .hero-logo-center {
+      height: 110px;
+      width: 110px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid rgba(255, 255, 255, 0.9);
+      filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.4));
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: .78rem;
+      color: var(--pk-200);
+      letter-spacing: .1em;
+      margin-bottom: 18px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    }
+
+    .hero-h1 {
+      font-family: var(--font-script);
+      font-size: clamp(3.4rem, 7vw, 6rem);
+      font-weight: 400;
+      line-height: 1.05;
+      color: #fff;
+      margin-bottom: 22px;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+    }
+
+    .hero-desc {
+      font-family: var(--font-sans);
+      font-weight: 500;
+      font-size: 1.05rem;
+      color: rgba(255, 255, 255, 0.92);
+      line-height: 1.6;
+      max-width: 460px;
+      margin-bottom: 44px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 1rem;
+      color: #fff;
+      text-decoration: none;
+      border: none;
+      background: none;
+      cursor: pointer;
+      padding: 0;
+      transition: gap .3s ease;
+    }
+
+    .hero-cta:hover {
+      gap: 22px;
+    }
+
+    .hero-cta-label {
+      border-bottom: 1px solid var(--pk-300);
+      padding-bottom: 4px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    }
+
+    .cta-arrow {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .3s, transform .3s;
+      flex: none;
+    }
+
+    .hero-cta:hover .cta-arrow {
+      background: var(--pk-500);
+      border-color: var(--pk-500);
+      transform: translateX(4px);
+    }
+
+    .cta-arrow svg {
+      width: 18px;
+      height: 18px;
+      stroke: #fff;
+    }
+
+    .hero-scroll-line {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.12);
+      z-index: 2;
+      overflow: hidden;
+    }
+
+    .hero-scroll-line-inner {
+      width: 100%;
+      height: 100%;
+      background: var(--pk-300);
+      transform: translateY(-100%);
+      animation: scroll-line 2.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    }
+
+    @keyframes scroll-line {
+      0% {
+        transform: translateY(-100%);
+      }
+
+      50% {
+        transform: translateY(0);
+      }
+
+      100% {
+        transform: translateY(100%);
+      }
+    }
+
+    /* ── NAV STICKY ── */
+    #cat-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 253, 252, .94);
+      backdrop-filter: blur(12px) saturate(1.4);
+      -webkit-backdrop-filter: blur(12px) saturate(1.4);
+      border-bottom: 1px solid var(--line);
+      height: var(--nav-h);
+      transition: box-shadow .2s;
+    }
+
+    #cat-nav.is-scrolled {
+      box-shadow: 0 4px 24px rgba(214, 44, 119, .08);
+    }
+
+    .cat-nav-inner {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      padding: 0 var(--sp-5);
+      overflow-x: auto;
+      gap: var(--sp-2);
+      scrollbar-width: none;
+    }
+
+    .cat-nav-inner::-webkit-scrollbar {
+      display: none;
+    }
+
+    .cat-pill {
+      flex: none;
+      font-family: var(--font-sans);
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--pk-700);
+      padding: var(--sp-2) var(--sp-4);
+      border-radius: 999px;
+      border: 1px solid transparent;
+      white-space: nowrap;
+      transition: color .18s, background .18s, border-color .18s;
+      cursor: pointer;
+      background: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 44px;
+    }
+
+    .cat-pill:hover {
+      color: var(--pk-600);
+      background: var(--pk-100);
+      border-color: var(--pk-200);
+    }
+
+    .cat-pill.is-active {
+      color: var(--wh);
+      background: linear-gradient(120deg, var(--pk-500), var(--pk-600));
+      border-color: transparent;
+    }
+
+    .pill-icon {
+      display: inline-flex;
+      align-items: center;
+      opacity: .65;
+      flex: none;
+    }
+
+    .cat-pill.is-active .pill-icon {
+      opacity: 1;
+    }
+
+    .section-icon {
+      display: inline-flex;
+      align-items: center;
+      opacity: .8;
+      color: var(--pk-500);
+    }
+
+    /* ── LAYOUT MENÚ ── */
+    #menu-body {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: var(--sp-7) var(--sp-6) var(--sp-8);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      gap: var(--sp-5);
+      margin-bottom: var(--sp-6);
+      padding-bottom: var(--sp-4);
+      border-bottom: 1px solid var(--line);
+      position: relative;
+    }
+
+    .section-header::before {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 56px;
+      height: 3px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--pk-400), var(--pk-600));
+    }
+
+    .section-header-text {
+      flex: 1;
+    }
+
+    .section-eyebrow {
+      font-family: var(--font-sans);
+      font-size: .72rem;
+      font-weight: 600;
+      color: var(--pk-500);
+      letter-spacing: .04em;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title {
+      font-family: var(--font-script);
+      font-size: clamp(2rem, 3.6vw, 2.8rem);
+      font-weight: 400;
+      color: var(--pk-800);
+      line-height: 1.05;
+    }
+
+    .section-subtitle {
+      font-family: var(--font-sans);
+      font-weight: 500;
+      font-size: .92rem;
+      color: var(--pk-700);
+      opacity: .75;
+      margin-top: 4px;
+    }
+
+    .menu-section {
+      margin-bottom: var(--sp-8);
+      scroll-margin-top: calc(var(--nav-h) + 32px);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: var(--sp-4);
+    }
+
+    /* ── PRODUCT CARD ── */
+    .card {
+      background: var(--wh);
+      border: 1px solid var(--line);
+      border-radius: var(--r-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform .22s cubic-bezier(.4, 0, .2, 1), box-shadow .22s, border-color .22s;
+      will-change: transform;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 34px rgba(214, 44, 119, .14);
+      border-color: var(--pk-200);
+    }
+
+    .card-img {
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, var(--pk-100) 0%, var(--pk-50) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      flex: none;
+    }
+
+    /* ESPACIO PARA IMAGEN: cuando exista una foto del platillo/bebida, cubre el placeholder */
+    .card-img img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .4s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .card:hover .card-img img {
+      transform: scale(1.04);
+    }
+
+    .card-img.has-img .card-img-icon {
+      display: none;
+    }
+
+    .card-img-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: .38;
+      pointer-events: none;
+    }
+
+    .card-img-icon svg {
+      width: 30px;
+      height: 30px;
+      stroke: var(--pk-500);
+    }
+
+    .card-img-label {
+      font-family: var(--font-sans);
+      font-size: .58rem;
+      font-weight: 700;
+      color: var(--pk-600);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .card-tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: var(--font-sans);
+      font-size: .58rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      color: var(--pk-600);
+      background: rgba(255, 234, 243, .92);
+      border: 1px solid var(--pk-200);
+      border-radius: var(--r-sm);
+      padding: 2px 8px;
+      backdrop-filter: blur(4px);
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-family: var(--font-sans);
+      font-size: .56rem;
+      font-weight: 700;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+      color: var(--wh);
+      background: linear-gradient(120deg, var(--pk-400), var(--pk-600));
+      border-radius: var(--r-sm);
+      padding: 3px 8px;
+    }
+
+    .card-body {
+      padding: var(--sp-3) var(--sp-4) var(--sp-4);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .card-name {
+      font-family: var(--font-sans);
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: var(--pk-900);
+      line-height: 1.2;
+    }
+
+    .card-desc {
+      font-family: var(--font-sans);
+      font-size: .78rem;
+      font-weight: 500;
+      color: var(--pk-700);
+      opacity: .78;
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .card-price-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 6px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--line);
+    }
+
+    .card-price-single {
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--pk-600);
+    }
+
+    .card-price-dual {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dp-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .dp-size {
+      font-family: var(--font-sans);
+      font-size: .55rem;
+      font-weight: 700;
+      color: var(--pk-700);
+      opacity: .65;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .dp-amount {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: .95rem;
+      color: var(--pk-600);
+    }
+
+    .dp-divider {
+      width: 1px;
+      height: 26px;
+      background: var(--line);
+    }
+
+    /* ── NOTA DE EXTRAS ── */
+    .extras-note {
+      font-family: var(--font-sans);
+      font-size: .85rem;
+      font-weight: 500;
+      color: var(--pk-700);
+      opacity: .8;
+      background: var(--pk-50);
+      border: 1px dashed var(--pk-200);
+      border-radius: var(--r-sm);
+      padding: var(--sp-3) var(--sp-4);
+      margin-top: var(--sp-4);
+    }
+
+    /* ── FOOTER ── */
+    #footer {
+      background: var(--pk-900);
+      padding: var(--sp-7) var(--sp-6);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer-inner {
+      position: relative;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .footer-logotype {
+      font-family: var(--font-script);
+      font-size: 2.6rem;
+      font-weight: 400;
+      color: var(--wh);
+      margin-bottom: 6px;
+    }
+
+    .footer-tagline {
+      font-family: var(--font-sans);
+      font-weight: 500;
+      font-size: .88rem;
+      color: var(--pk-200);
+      opacity: .8;
+      margin-bottom: var(--sp-5);
+    }
+
+    .footer-sep {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: var(--sp-5);
+    }
+
+    .footer-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--pk-400);
+      opacity: .5;
+    }
+
+    .footer-dot.c {
+      opacity: .9;
+      transform: scale(1.4);
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: var(--sp-5);
+      margin-bottom: var(--sp-4);
+      flex-wrap: wrap;
+    }
+
+    .footer-link {
+      font-family: var(--font-sans);
+      font-size: .68rem;
+      font-weight: 600;
+      color: var(--pk-200);
+      letter-spacing: .03em;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color .18s;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+
+    .footer-link:hover {
+      color: var(--wh);
+    }
+
+    .footer-link svg {
+      width: 15px;
+      height: 15px;
+      flex: none;
+    }
+
+    .footer-link.icon-only svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .footer-note {
+      font-size: .68rem;
+      color: var(--pk-200);
+      opacity: .6;
+      font-weight: 500;
+      line-height: 1.7;
+    }
+
+    /* ── RESPONSIVE — mobile first ── */
+    @media(max-width:780px) {
+      #menu-body {
+        padding: var(--sp-5) var(--sp-4) var(--sp-8);
+      }
+
+      .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+      }
+
+      .footer-links {
+        gap: var(--sp-3);
+      }
+    }
+
+    @media(max-width:480px) {
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-h1 {
+        font-size: 2.6rem;
+      }
+
+      .card-img {
+        aspect-ratio: 16/9;
+      }
+
+      .cat-pill {
+        font-size: .74rem;
+        padding: 6px 12px;
+      }
+    }
+
+    /* Reducir movimiento para usuarios que lo prefieren */
+    @media(prefers-reduced-motion:reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LOADER -->
+  <div id="loader" role="status" aria-label="Cargando Coffe Rosse">
+    <div class="ldr-brand">
+      <div class="ldr-icon">
+        <!-- ESPACIO PARA IMAGEN: logo del cliente (idealmente PNG/SVG cuadrado, fondo transparente) -->
+        <img src="img/logo.webp" alt="Coffe Rosse Logo" class="ldr-real-logo">
+        <div class="ldr-heart-ring" aria-hidden="true">
+          <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" /></svg>
+        </div>
+      </div>
+      <div class="ldr-words">
+        <p class="ldr-sub">Café · Dulzura · Buena vibra</p>
+      </div>
+      <div class="ldr-dots">
+        <div class="ldr-dot"></div>
+        <div class="ldr-dot c"></div>
+        <div class="ldr-dot"></div>
+        <div class="ldr-dot c"></div>
+        <div class="ldr-dot"></div>
+      </div>
+      <div class="ldr-phrase">
+        <p>Preparando tu rincón favorito&hellip;</p>
+      </div>
+      <div class="ldr-bar-wrap">
+        <div class="ldr-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO FULLSCREEN CARRUSEL -->
+  <header id="hero" class="hero-fullscreen">
+    <!-- Fondo de carrusel: ESPACIO PARA IMÁGENES en img/hero1.webp .. hero4.webp -->
+    <div class="hero-bg-carousel">
+      <div class="hero-slide" style="background-image: url('img/hero1.webp');"></div>
+      <div class="hero-slide" style="background-image: url('img/hero2.webp');"></div>
+      <div class="hero-slide" style="background-image: url('img/hero3.webp');"></div>
+      <div class="hero-slide" style="background-image: url('img/hero4.webp');"></div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="hero-overlay"></div>
+
+    <!-- Contenido -->
+    <div class="hero-content">
+      <div class="hero-content-top">
+        <!-- ESPACIO PARA IMAGEN: logo versión clara para fondo oscuro -->
+        <img src="img/logo-light.webp" alt="Coffe Rosse" class="hero-logo-center">
+      </div>
+
+      <div class="hero-content-middle">
+        <div class="hero-eyebrow">Café de especialidad &middot; Brunch &middot; Dulzura</div>
+        <h1 class="hero-h1">Tu momento<br>favorito del día</h1>
+        <p class="hero-desc">Café, matcha, desayunos y postres pensados para compartir. Un rincón dulce, moderno y
+          hecho para ti.</p>
+      </div>
+
+      <div class="hero-content-bottom">
+        <button class="hero-cta" onclick="document.getElementById('cat-nav').scrollIntoView({behavior:'smooth'})">
+          <span class="hero-cta-label">Ver el menú</span>
+          <span class="cta-arrow">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M3 8h10M9 4l4 4-4 4" />
+            </svg>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Indicador de scroll -->
+    <div class="hero-scroll-line" aria-hidden="true">
+      <div class="hero-scroll-line-inner"></div>
+    </div>
+  </header>
+
+  <!-- NAV STICKY -->
+  <nav id="cat-nav" aria-label="Categorías del menú">
+    <div class="cat-nav-inner" id="catNavInner"></div>
+  </nav>
+
+  <!-- CUERPO DEL MENÚ -->
+  <main id="menu-body">
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <div class="footer-inner">
+      <p class="footer-logotype">Coffe Rosse</p>
+      <p class="footer-tagline">Café &middot; Dulzura &middot; Buena vibra</p>
+      <div class="footer-sep">
+        <div class="footer-dot"></div>
+        <div class="footer-dot c"></div>
+        <div class="footer-dot"></div>
+        <div class="footer-dot c"></div>
+        <div class="footer-dot"></div>
+      </div>
+      <!-- Links: reemplazar los href con URLs reales del cliente -->
+      <div class="footer-links">
+        <a href="#" target="_blank" rel="noopener noreferrer" class="footer-link icon-only"
+          aria-label="Ubicación en Google Maps">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+        </a>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="footer-link icon-only" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+          </svg>
+        </a>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="footer-link icon-only" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+          </svg>
+        </a>
+      </div>
+      <p class="footer-note">Precios en MXN, IVA incluido &nbsp;&middot;&nbsp;
+        WEB DEMOSTRATIVA, REPRESENTA ENTRE EL 3 Y 5% DE UN PROYECTO COMPLETO</p>
+    </div>
+  </footer>
+
+  <script>
+    /* Iconos SVG inline (sin emojis, coherentes con el sistema visual) */
+    const ICONS = {
+      coffee: '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M3 4h8v5a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V4z"/><path d="M11 5h1a2 2 0 0 1 0 4h-1"/><path d="M5 1.5c0 0 .5 1 0 2M7.5 1.5c0 0 .5 1 0 2"/></svg>',
+      tea: '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 5h8l-1 6H3L2 5z"/><path d="M10 6h1.5a1.5 1.5 0 0 1 0 3H10"/><path d="M5 3V1M7 3V1"/></svg>',
+      matcha: '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M3 6h8l-.8 5.5a1 1 0 0 1-1 .5H4.8a1 1 0 0 1-1-.5L3 6z"/><path d="M4 6c0-2 1.5-3.5 3-4.5"/><path d="M6 6c.3-1.5 1.2-2.5 2.3-3.2"/></svg>',
+      cold: '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 1v12M1 7h12M3.5 3.5l7 7M10.5 3.5l-7 7"/></svg>',
+      egg: '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 12.5c3 0 4.5-2.2 4.5-5C11.5 4 9.2 1.5 7 1.5S2.5 4 2.5 7.5c0 2.8 1.5 5 4.5 5z"/></svg>',
+      plate: '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><circle cx="7" cy="7" r="2.4"/></svg>',
+      sandwich: '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 6.5h11L11 11.5H3L1.5 6.5z"/><path d="M2.5 6.5c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5"/></svg>',
+      crepe: '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 7A5.5 3 0 1 0 12.5 7"/><path d="M1.5 7A5.5 3 0 1 1 12.5 7"/></svg>',
+      dessert: '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 6h10l-1 5.5H3L2 6z"/><path d="M4 6c0-2.5 1.3-4.5 3-4.5s3 2 3 4.5"/></svg>',
+      extra: '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 2C7 2 3 6.5 3 9a4 4 0 0 0 8 0C11 6.5 7 2 7 2z"/></svg>',
+    };
+
+    const MENU_DATA = [
+      {
+        id: 'barra-cafe', label: 'Barra de Café', icon: 'coffee', subtitle: 'Clásicos de espresso y firmas de la casa', products: [
+          { name: 'Espresso', desc: 'Shot de espresso, intenso y directo.', prices: [{ l: 'Único', v: 45 }], img: 'espresso.webp' },
+          { name: 'Cold Brew', desc: 'Café filtrado en frío, suave y sin acidez.', prices: [{ l: 'Único', v: 50 }], img: 'cold-brew.webp' },
+          { name: 'Affogato', desc: 'Helado de vainilla bañado con un shot de espresso.', prices: [{ l: 'Único', v: 95 }], img: 'affogato.webp' },
+          { name: 'Americano', desc: 'Espresso alargado con agua caliente.', prices: [{ l: 'M', v: 50 }, { l: 'G', v: 55 }], img: 'americano.webp' },
+          { name: 'Capuchino Rosa', desc: 'Espresso, leche vaporizada y espuma sedosa con un toque rosa.', prices: [{ l: 'M', v: 65 }, { l: 'G', v: 75 }], img: 'capuchino-rosa.webp', badge: 'Firma' },
+          { name: 'Caramel Macchiato', desc: 'Espresso, leche vaporizada y caramelo en capas.', prices: [{ l: 'M', v: 75 }, { l: 'G', v: 85 }], img: 'caramel-macchiato.webp' },
+          { name: 'Flat White', desc: 'Ristretto doble con microespuma cremosa.', prices: [{ l: 'M', v: 80 }, { l: 'G', v: 90 }], img: 'flat-white.webp' },
+        ]
+      },
+      {
+        id: 'sin-cafe-tes', label: 'Sin Café & Tés', icon: 'tea', subtitle: 'Infusiones y blends de la casa', products: [
+          { name: 'Chai', desc: 'Especias cálidas en un blend cremoso.', prices: [{ l: 'M', v: 65 }, { l: 'G', v: 75 }] },
+          { name: 'Taro', desc: 'Bebida cremosa a base de taro, dulce y suave.', prices: [{ l: 'M', v: 65 }, { l: 'G', v: 75 }], img: 'taro.webp' },
+          { name: 'Matcha Azul', desc: 'Té mariposa y un toque cítrico, color llamativo.', prices: [{ l: 'M', v: 65 }, { l: 'G', v: 75 }], badge: 'Instagrameable' },
+          { name: 'Fresa Rosse', desc: 'Bebida de fresa natural, fresca y ligera.', prices: [{ l: 'M', v: 65 }, { l: 'G', v: 75 }] },
+          { name: 'Té Gourmet', desc: 'Selección de tés de hoja suelta.', prices: [{ l: 'Único', v: 45 }] },
+          { name: 'Tisanas', desc: 'Infusiones de frutos y flores, sin cafeína.', prices: [{ l: 'M', v: 70 }, { l: 'G', v: 80 }] },
+        ]
+      },
+      {
+        id: 'matcha-bar', label: 'Matcha Bar', icon: 'matcha', subtitle: 'Matcha ceremonial en distintas presentaciones', products: [
+          { name: 'Matcha Latte', desc: 'Matcha ceremonial con leche vaporizada.', prices: [{ l: 'M', v: 70 }, { l: 'G', v: 80 }], img: 'matcha-latte.webp' },
+          { name: 'Strawberry Matcha', desc: 'Capas de matcha y fresa, fresco y colorido.', prices: [{ l: 'M', v: 90 }, { l: 'G', v: 95 }], badge: 'Favorito' },
+          { name: 'Coconut Matcha', desc: 'Matcha con leche de coco, suave y tropical.', prices: [{ l: 'M', v: 90 }, { l: 'G', v: 95 }] },
+          { name: 'Yakult Matcha', desc: 'Matcha con Yakult, dulce y ligeramente ácido.', prices: [{ l: 'M', v: 90 }, { l: 'G', v: 95 }] },
+        ]
+      },
+      {
+        id: 'frias-especiales', label: 'Frías & Especiales', icon: 'cold', subtitle: 'Para refrescar y consentirte', products: [
+          { name: 'Limonada Pink', desc: 'Limonada natural con un toque frutal rosa.', prices: [{ l: 'M', v: 65 }, { l: 'G', v: 75 }], img: 'limonada-pink.webp' },
+          { name: 'Smoothies', desc: 'Fruta natural licuada, cremosa y fría.', prices: [{ l: 'Único', v: 90 }] },
+          { name: 'Soda Italiana', desc: 'Agua mineral con jarabe saborizado a elegir.', prices: [{ l: 'M', v: 70 }, { l: 'G', v: 80 }] },
+          { name: 'Frappé', desc: 'Base fría y cremosa, sabor a elegir.', prices: [{ l: 'M', v: 80 }, { l: 'G', v: 90 }] },
+          { name: 'Bubble Tea', desc: 'Té frío con perlas de tapioca masticables.', prices: [{ l: 'Único', v: 100 }] },
+          { name: 'Malteadas', desc: 'Cremosa, generosa y lista para compartir.', prices: [{ l: 'Único', v: 130 }] },
+        ]
+      },
+      {
+        id: 'huevos-omelettes', label: 'Huevos & Omelettes', icon: 'egg', subtitle: 'Para empezar bien el día', products: [
+          { name: 'Huevos', desc: 'A elegir: con jamón, a la mexicana, con espinaca o divorciados.', prices: [{ l: 'Plato', v: 90 }], img: 'huevos.webp' },
+          { name: 'Omelette', desc: 'A elegir: jamón con queso, champiñones o vegetariano.', prices: [{ l: 'Plato', v: 95 }] },
+        ]
+      },
+      {
+        id: 'chilaquiles', label: 'Chilaquiles', icon: 'plate', subtitle: 'Clásicos mexicanos de la casa', products: [
+          { name: 'Chilaquiles Sencillos', desc: 'Totopos bañados en salsa, con los toques de siempre.', prices: [{ l: 'Plato', v: 100 }], img: 'chilaquiles.webp' },
+          { name: 'Chilaquiles Suizos', desc: 'Bañados en salsa verde con crema y queso gratinado.', prices: [{ l: 'Plato', v: 110 }] },
+          { name: 'Chilaquiles con Arrachera', desc: 'La versión completa, con arrachera a la plancha.', prices: [{ l: 'Plato', v: 160 }], badge: 'Completo' },
+        ]
+      },
+      {
+        id: 'clasicos-light', label: 'Clásicos & Light', icon: 'plate', subtitle: 'Opciones dulces y ligeras', products: [
+          { name: 'Hot Cakes Rosse', desc: 'Esponjosos, con el toque dulce de la casa.', prices: [{ l: 'Plato', v: 120 }], img: 'hotcakes-rosse.webp' },
+          { name: 'Tacos Ahogados', desc: 'Bañados en su salsa, jugosos y con mucho sabor.', prices: [{ l: 'Plato', v: 95 }] },
+          { name: 'Pan Francés', desc: 'Pan brioche capeado, dorado y dulce.', prices: [{ l: 'Plato', v: 115 }] },
+          { name: 'Claras de Huevo', desc: 'Opción ligera y proteica para empezar el día.', prices: [{ l: 'Plato', v: 100 }] },
+          { name: 'Machaca de Pollo', desc: 'Pollo deshebrado guisado, servido con lo esencial.', prices: [{ l: 'Plato', v: 100 }] },
+          { name: 'Frutas', desc: 'Selección de fruta fresca de temporada.', prices: [{ l: 'Plato', v: 80 }] },
+        ]
+      },
+      {
+        id: 'entrepanes', label: 'Entrepanes', icon: 'sandwich', subtitle: 'Para un antojo rápido y satisfactorio', products: [
+          { name: 'Club Sándwich', desc: 'Triple capa con los rellenos clásicos.', prices: [{ l: 'Único', v: 105 }], img: 'club-sandwich.webp' },
+          { name: 'Chapata de Arrachera', desc: 'Pan chapata con arrachera a la plancha.', prices: [{ l: 'Único', v: 120 }] },
+          { name: 'Avo Toast', desc: 'Pan tostado con aguacate y toques de sazón.', prices: [{ l: 'Único', v: 110 }] },
+        ]
+      },
+      {
+        id: 'sandwiches-fuertes', label: 'Sándwiches & Fuertes', icon: 'sandwich', subtitle: 'Para el antojo más fuerte del día', products: [
+          { name: 'Grilled Cheese', desc: 'Pan tostado con una mezcla generosa de quesos.', prices: [{ l: 'Único', v: 115 }], img: 'grilled-cheese.webp' },
+          { name: 'Panini de Arrachera', desc: 'Pan panini prensado, relleno de arrachera.', prices: [{ l: 'Único', v: 100 }] },
+          { name: 'Hamburguesa Pink', desc: 'La hamburguesa firma de la casa, con su toque rosa.', prices: [{ l: 'Único', v: 145 }], badge: 'Firma' },
+          { name: 'Sincronizadas', desc: 'Tortillas de harina con jamón y queso derretido.', prices: [{ l: 'Único', v: 70 }] },
+        ]
+      },
+      {
+        id: 'crepas', label: 'Crepas', icon: 'crepe', subtitle: 'Dulces o saladas, armadas a tu gusto', products: [
+          { name: 'Crepa Dulce — Arma tu Crepa', desc: 'Elige tus toppings dulces favoritos.', prices: [{ l: 'Única', v: 70 }], img: 'crepa-dulce.webp' },
+          { name: 'Crepa Hawaiana', desc: 'Jamón y piña con queso derretido.', prices: [{ l: 'Única', v: 100 }] },
+          { name: 'Crepa Peperoni', desc: 'Peperoni y queso, estilo pizza.', prices: [{ l: 'Única', v: 100 }] },
+          { name: 'Crepa 3 Quesos', desc: 'Mezcla de tres quesos derretidos. Con champiñón +$30.', prices: [{ l: 'Única', v: 100 }] },
+          { name: 'Crepa Jamón + 2 Quesos', desc: 'Jamón con doble queso derretido.', prices: [{ l: 'Única', v: 100 }] },
+        ]
+      },
+      {
+        id: 'postres-dulces', label: 'Postres & Dulces', icon: 'dessert', subtitle: 'El final perfecto', products: [
+          { name: 'Mini Hot Cakes o Waffles', desc: 'Arma tu propia versión con tus toppings favoritos.', prices: [{ l: 'Único', v: 70 }], img: 'mini-hotcakes.webp' },
+          { name: 'Brownie con Helado', desc: 'Brownie tibio con bola de helado.', prices: [{ l: 'Único', v: 105 }] },
+          { name: 'Fresas con Crema', desc: 'Fresas frescas con crema batida.', prices: [{ l: 'M', v: 90 }, { l: 'G', v: 140 }] },
+        ]
+      },
+    ];
+
+    const EXTRAS_NOTE = 'Extras disponibles: leche vegetal +$15, carga extra de café +$20, porción adicional de arrachera o huevo (pregunta a tu barista por el precio).';
+
+    function renderNav() {
+      const wrap = document.getElementById('catNavInner');
+      MENU_DATA.forEach((cat, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'cat-pill' + (i === 0 ? ' is-active' : '');
+        btn.dataset.target = cat.id;
+        btn.innerHTML = '<span class="pill-icon" aria-hidden="true">' + (ICONS[cat.icon] || '') + '</span><span>' + cat.label + '</span>';
+        btn.setAttribute('aria-label', cat.label);
+        btn.addEventListener('click', () => document.getElementById(cat.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+        wrap.appendChild(btn);
+      });
+    }
+
+    function renderCard(p, catLabel, catIcon) {
+      const card = document.createElement('article');
+      card.className = 'card';
+      let priceHTML = p.prices.length === 1
+        ? '<span class="card-price-single">$' + p.prices[0].v + '</span>'
+        : '<div class="card-price-dual"><div class="dp-item"><span class="dp-size">' + p.prices[0].l + '</span><span class="dp-amount">$' + p.prices[0].v + '</span></div><div class="dp-divider"></div><div class="dp-item"><span class="dp-size">' + p.prices[1].l + '</span><span class="dp-amount">$' + p.prices[1].v + '</span></div></div>';
+      const badgeHTML = p.badge ? '<span class="card-badge">' + p.badge + '</span>' : '';
+      const descHTML = p.desc ? '<p class="card-desc">' + p.desc + '</p>' : '';
+      /* ESPACIO PARA IMAGEN: si el producto tiene .img se muestra la foto real; si no, placeholder con icono de la categoría */
+      const imgClass = p.img ? ' has-img' : '';
+      const imgHTML = p.img
+        ? '<img src="img/' + p.img + '" alt="' + p.name + '" loading="lazy">'
+        : '<div class="card-img-icon">' + (ICONS[catIcon] || '') + '<span class="card-img-label">' + catLabel + '</span></div>';
+      card.innerHTML =
+        '<div class="card-img' + imgClass + '" role="img" aria-label="' + p.name + '">'
+        + '<!-- imagen: ' + p.name + ' -->'
+        + imgHTML
+        + badgeHTML + '</div>'
+        + '<div class="card-body"><p class="card-name">' + p.name + '</p>' + descHTML
+        + '<div class="card-price-row">' + priceHTML + '</div></div>';
+      return card;
+    }
+
+    function renderMenu() {
+      const body = document.getElementById('menu-body');
+      MENU_DATA.forEach((cat, idx) => {
+        const section = document.createElement('section');
+        section.className = 'menu-section';
+        section.id = cat.id;
+        section.innerHTML =
+          '<div class="section-header">'
+          + '<div class="section-header-text">'
+          + '<div class="section-eyebrow"><span class="section-icon" aria-hidden="true">' + (ICONS[cat.icon] || '') + '</span>' + cat.label + '</div>'
+          + '<h2 class="section-title">' + cat.label + '</h2>'
+          + (cat.subtitle ? '<p class="section-subtitle">' + cat.subtitle + '</p>' : '')
+          + '</div></div>';
+        const grid = document.createElement('div');
+        grid.className = 'cards-grid';
+        cat.products.forEach(p => grid.appendChild(renderCard(p, cat.label, cat.icon)));
+        section.appendChild(grid);
+        if (cat.id === 'sandwiches-fuertes') {
+          const note = document.createElement('p');
+          note.className = 'extras-note';
+          note.textContent = EXTRAS_NOTE;
+          section.appendChild(note);
+        }
+        body.appendChild(section);
+      });
+    }
+
+    function initObserver() {
+      const pills = document.querySelectorAll('.cat-pill');
+      const sections = document.querySelectorAll('.menu-section');
+      const nav = document.getElementById('cat-nav');
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            pills.forEach(p => p.classList.toggle('is-active', p.dataset.target === id));
+            document.querySelector('.cat-pill[data-target="' + id + '"]')?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          }
+        });
+      }, { rootMargin: '-' + (60 + 24) + 'px 0px -60% 0px' });
+      sections.forEach(s => obs.observe(s));
+      window.addEventListener('scroll', () => nav.classList.toggle('is-scrolled', window.scrollY > 60), { passive: true });
+    }
+
+    function initLoader() {
+      const loader = document.getElementById('loader');
+      document.body.style.overflow = 'hidden';
+      const hide = () => {
+        loader.classList.add('is-hiding');
+        loader.addEventListener('transitionend', () => { loader.remove(); document.body.style.overflow = ''; }, { once: true });
+      };
+      const timer = setTimeout(hide, 4200);
+      window.addEventListener('load', () => { if (performance.now() >= 4200) { clearTimeout(timer); hide(); } });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderNav();
+      renderMenu();
+      initObserver();
+      initLoader();
+    });
+  </script>
+</body>
+
+</html>
