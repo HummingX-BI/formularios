@@ -849,7 +849,8 @@
 
       <div class="final-actions">
         <button class="btn btn-primary btn-block" onclick="sendWhatsApp()">Enviar respuestas por WhatsApp →</button>
-        <button class="btn btn-block" onclick="copyAnswers()">Copiar respuestas</button>
+        <button class="btn btn-block" onclick="copyAnswers()">Solo copiar respuestas</button>
+        <button class="btn btn-block" onclick="downloadAnswers()">Descargar archivo de texto</button>
         <div class="copy-note" id="copyNote"></div>
       </div>
 
@@ -1027,8 +1028,21 @@
   }
 
   function sendWhatsApp(){
-    const text = encodeURIComponent(buildMessage());
-    window.open(`https://wa.me/525575084267?text=${text}`, '_blank');
+    const fullText = buildMessage();
+    const negocio = state['nombre_negocio'] || 'la vidriería';
+    
+    // Texto corto para evitar que WhatsApp lo corte por límite de caracteres en la URL
+    const shortText = encodeURIComponent(`¡Hola HummingX BI! Ya completé el diagnóstico para ${negocio}.\n\n(Tengo las respuestas completas copiadas, las pego a continuación...)`);
+    
+    // 1. Intentamos copiar el texto completo al portapapeles automáticamente
+    navigator.clipboard.writeText(fullText).then(() => {
+      document.getElementById('copyNote').textContent = 'Se han copiado todas tus respuestas al portapapeles para que las pegues en WhatsApp.';
+    }).catch(() => {
+      console.log("No se pudo auto-copiar al portapapeles");
+    });
+
+    // 2. Abrimos WhatsApp con el mensaje corto
+    window.open(`https://wa.me/525575084267?text=${shortText}`, '_blank');
     
     // Mostrar pantalla de despedida (donescreen)
     const panel = document.querySelector('.step[data-step="8"] .panel');
@@ -1036,7 +1050,10 @@
       <div style="text-align: center; padding: 40px 10px;">
         <img src="Logo HummingX BI png.png" alt="HummingX BI" style="max-height: 60px; margin-bottom: 24px;">
         <h3 style="font-family:'Zilla Slab', serif; font-size: 26px; font-weight:600; color: var(--text); margin: 0 0 14px;">¡Gracias por confiar en HummingX BI!</h3>
-        <p style="color: var(--text-muted); line-height: 1.65; font-size: 15.5px; max-width: 440px; margin: 0 auto;">Agradecemos tu preferencia y el tiempo para llenar este diagnóstico. En breve recibirás una confirmación por parte de nuestro equipo para continuar con el diseño de tu punto de venta a medida.</p>
+        <p style="color: var(--text-muted); line-height: 1.65; font-size: 15.5px; max-width: 440px; margin: 0 auto; margin-bottom: 16px;">
+          Agradecemos tu preferencia. Por favor <b>Pega (Ctrl+V o mantener presionado)</b> tus respuestas en el chat de WhatsApp que se acaba de abrir.
+        </p>
+        <button class="btn btn-block" onclick="downloadAnswers()" style="max-width: 280px; margin: 0 auto;">Por si acaso: Descargar texto</button>
       </div>
     `;
   }
@@ -1046,6 +1063,21 @@
     navigator.clipboard.writeText(text).then(() => {
       document.getElementById('copyNote').textContent = 'Copiado — ya lo puedes pegar donde quieras.';
     });
+  }
+
+  function downloadAnswers() {
+    const text = buildMessage();
+    const negocio = state['nombre_negocio'] ? state['nombre_negocio'].replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'vidrieria';
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `respuestas_diagnostico_${negocio}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    document.getElementById('copyNote').textContent = 'Archivo descargado.';
   }
 </script>
 
