@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuestionario — Vidriería · HummingX BI</title>
+<meta name="description" content="Cuestionario confidencial para diseñar tu punto de venta a medida. HummingX BI.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #14181c;
+    --bg-panel: #1a1f25;
+    --bg-panel-raised: #22282f;
+    --hairline: #2e3540;
+    --teal: #4db3c8;
+    --teal-soft: rgba(77,179,200,0.15);
+    --teal-soft-strong: rgba(77,179,200,0.30);
+    --slate: #5c7a8a;
+    --slate-soft: rgba(92,122,138,0.18);
+    --text: #dde8ed;
+    --text-muted: #8fa8b5;
+    --text-faint: #5a7180;
+    --danger: #a15c4a;
+    --radius: 3px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin:0; padding:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding: 0 0 60px;
+    overflow-x:hidden;
+  }
+
+  /* ---------- grain texture ---------- */
+  .grain{
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+    opacity:0.04; mix-blend-mode:overlay;
+    background-image: radial-gradient(circle at 1px 1px, #fff 1px, transparent 0);
+    background-size: 3px 3px;
+  }
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    width:100%;
+    position:sticky; top:0; z-index:20;
+    background: rgba(20,24,28,0.93);
+    backdrop-filter: blur(8px);
+    border-bottom:1px solid var(--hairline);
+  }
+  .topbar-inner{
+    max-width:720px; margin:0 auto;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 14px 24px;
+  }
+  .brand{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px; letter-spacing:0.14em; text-transform:uppercase;
+    color: var(--teal);
+  }
+  .brand span{ color: var(--text-muted); }
+
+  .gauge{
+    display:flex; align-items:center; gap:6px;
+  }
+  .gauge-tick{
+    width:22px; height:5px;
+    background: var(--hairline);
+    border-radius: 1px;
+    transition: background .35s ease;
+  }
+  .gauge-tick.done{ background: var(--teal); }
+
+  /* ---------- shell ---------- */
+  .shell{
+    width:100%; max-width:720px;
+    padding: 0 24px;
+    position:relative; z-index:1;
+  }
+
+  /* ---------- panel ---------- */
+  .panel{
+    position:relative;
+    background: var(--bg-panel);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius);
+    padding: 44px 40px 36px;
+    margin-top: 34px;
+    animation: rise .5s cubic-bezier(.22,.68,0,1);
+    overflow:hidden;
+  }
+  @keyframes rise{
+    from{ opacity:0; transform: translateY(14px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  /* stamp */
+  .stamp{
+    position:absolute; top:18px; right:-34px;
+    transform: rotate(9deg);
+    border: 1.5px solid var(--teal-soft-strong);
+    color: var(--teal);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:9.5px; letter-spacing:0.16em; text-transform:uppercase;
+    padding: 5px 40px;
+    text-align:center;
+    opacity:0.65;
+    pointer-events:none;
+  }
+  .stamp small{ display:block; color: var(--text-faint); font-size:8px; letter-spacing:0.1em; margin-top:2px; }
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; letter-spacing:0.16em; text-transform:uppercase;
+    color: var(--slate);
+    margin: 0 0 10px;
+  }
+
+  h1.display{
+    font-family:'Zilla Slab', serif;
+    font-weight:600;
+    font-size: 40px;
+    line-height:1.08;
+    margin: 0 0 14px;
+    color: var(--text);
+  }
+  h2.display{
+    font-family:'Zilla Slab', serif;
+    font-weight:600;
+    font-size: 26px;
+    line-height:1.15;
+    margin: 0 0 6px;
+    color: var(--text);
+  }
+  .lede{
+    font-size:15.5px; line-height:1.65;
+    color: var(--text-muted);
+    max-width:520px;
+    margin: 0 0 6px;
+  }
+
+  .section-tag{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; color:var(--text-faint);
+    margin-bottom:20px;
+  }
+  .section-tag .num{
+    width:20px; height:20px;
+    border:1px solid var(--teal-soft-strong);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--teal); font-size:10px;
+  }
+
+  /* ---------- questions ---------- */
+  .q{ margin-top:30px; padding-top:24px; border-top:1px solid var(--hairline); }
+  .q:first-of-type{ margin-top:26px; }
+  .q-label{
+    font-size:15.5px; font-weight:500; color: var(--text);
+    margin-bottom:12px; line-height:1.45;
+  }
+  .q-hint{ font-size:12.5px; color: var(--text-faint); margin: -6px 0 12px; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:10px; }
+  .chip{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:13.5px;
+    padding:9px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--hairline);
+    background: var(--bg-panel-raised);
+    color: var(--text-muted);
+    cursor:pointer;
+    transition: all .18s ease;
+    user-select:none;
+  }
+  .chip:hover{ border-color: var(--teal-soft-strong); color: var(--text); }
+  .chip:active{ transform: scale(0.95); }
+  .btn:active{ transform: scale(0.97); }
+
+  .chip.selected{
+    background: var(--teal-soft);
+    border-color: var(--teal);
+    color: var(--text);
+  }
+  .chip.selected::before{ content:"✓  "; color: var(--teal); }
+
+  textarea, input[type="text"], input[type="number"]{
+    width:100%;
+    background: transparent;
+    border:none;
+    border-bottom: 1px solid var(--hairline);
+    color: var(--text);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:14.5px;
+    padding: 8px 2px 10px;
+    resize:none;
+    transition: border-color .2s ease;
+  }
+  textarea:focus, input:focus{ outline:none; border-bottom-color: var(--teal); }
+  textarea::placeholder, input::placeholder{ color: var(--text-faint); }
+
+  .conditional{
+    margin-top:16px;
+    padding-left:16px;
+    border-left: 2px solid var(--slate-soft);
+    display:none;
+  }
+  .conditional.show{ display:block; animation: slidein .3s ease; }
+  @keyframes slidein{ from{opacity:0; transform:translateX(-4px);} to{opacity:1; transform:translateX(0);} }
+
+  /* ---------- nav buttons ---------- */
+  .nav{ display:flex; justify-content:space-between; align-items:center; margin-top:38px; }
+  .btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px; letter-spacing:0.06em; text-transform:uppercase;
+    padding:13px 26px;
+    border-radius: var(--radius);
+    cursor:pointer;
+    border:1px solid var(--hairline);
+    background: transparent;
+    color: var(--text-muted);
+    transition: all .18s ease;
+  }
+  .btn:hover{ border-color: var(--text-muted); color: var(--text); }
+  .btn-primary{
+    background: var(--teal);
+    border-color: var(--teal);
+    color: #0e1a1f;
+    font-weight:500;
+  }
+  .btn-primary:hover{ background:#5ec5da; border-color:#5ec5da; color:#0e1a1f; }
+  .btn-ghost{ border-color:transparent; padding-left:4px; }
+
+  .step{ display:none; opacity:0; }
+  .step.active{ display:block; animation: fadeSlide .4s cubic-bezier(.22,.68,0,1) forwards; }
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- intro badge ---------- */
+  .intro-badge{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; letter-spacing:0.18em; text-transform:uppercase;
+    color: var(--teal);
+    border: 1px solid var(--teal-soft-strong);
+    display:inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom:22px;
+  }
+  .meta-row{ display:flex; gap:22px; margin-top:26px; }
+  .meta-item{ font-size:12px; color:var(--text-faint); font-family:'IBM Plex Mono', monospace; }
+  .meta-item b{ color:var(--text-muted); display:block; font-size:15px; font-family:'Zilla Slab',serif; margin-bottom:2px; }
+
+  /* ---------- summary ---------- */
+  .summary-block{ margin-top:22px; }
+  .summary-item{ padding:10px 0; border-bottom:1px solid var(--hairline); font-size:13.5px; }
+  .summary-item .k{ color: var(--text-faint); display:block; font-size:11.5px; font-family:'IBM Plex Mono',monospace; letter-spacing:.04em; margin-bottom:3px; }
+  .summary-item .v{ color: var(--text); }
+
+  .final-actions{ display:flex; flex-direction:column; gap:12px; margin-top:30px; }
+  .btn-block{ width:100%; text-align:center; padding:16px; font-size:13px; }
+  .copy-note{ font-size:12px; color:var(--text-faint); text-align:center; margin-top:-2px; }
+
+  footer{
+    max-width:720px; width:100%; padding: 30px 24px 0;
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px; color: var(--text-faint); letter-spacing:0.04em;
+  }
+
+  @media (max-width: 600px){
+    .panel{ padding:32px 22px 28px; }
+    h1.display{ font-size:30px; }
+    .stamp{ display:none; }
+    .meta-row{ flex-direction:column; gap:12px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .panel, .conditional.show{ animation:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">HummingX<span> · BI</span></div>
+    <div class="gauge" id="gauge"></div>
+  </div>
+</div>
+
+<div class="shell">
+
+  <!-- STEP 0 — INTRO -->
+  <div class="step active" data-step="0">
+    <div class="panel">
+      <div class="stamp">Confidencial<small>Uso exclusivo</small></div>
+      <img src="Logo HummingX BI png.png" alt="HummingX BI" style="max-height: 48px; margin-bottom: 24px; display: block;">
+      <div class="intro-badge">Diagnóstico · Punto de Venta Vidriería</div>
+      <h1 class="display">Antes de construir tu sistema,<br>necesitamos conocer tu negocio.</h1>
+      <p class="lede">Este cuestionario nos permite entender cómo trabajas hoy — desde cómo cortas y vendes el vidrio hasta el equipo que ya tienes — para que el sistema que te entregemos sea exactamente lo que tu vidriería necesita, sin módulos que estorben ni funciones que falten.</p>
+      <div class="meta-row">
+        <div class="meta-item"><b>~8 min</b>tiempo estimado</div>
+        <div class="meta-item"><b>7</b>secciones cortas</div>
+        <div class="meta-item"><b>1</b>envío por WhatsApp</div>
+      </div>
+      <div class="nav" style="justify-content:flex-end;">
+        <button class="btn btn-primary" onclick="goTo(1)">Comenzar →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 1 — OPERACIÓN GENERAL -->
+  <div class="step" data-step="1">
+    <div class="panel">
+      <div class="stamp">Confidencial<small>Uso exclusivo</small></div>
+      <div class="section-tag"><span class="num">1</span> OPERACIÓN GENERAL</div>
+      <h2 class="display">Cómo operan hoy</h2>
+      <p class="lede">Para entender el ritmo real del negocio y cuántas personas trabajan en él.</p>
+
+      <div class="q">
+        <div class="q-label">¿Cuántos años llevan operando la vidriería?</div>
+        <input type="text" placeholder="Ej. 5 años, acabo de abrir, más de 10 años…" data-key="anos_operando">
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Cuentan con un sistema de punto de venta actualmente, o llevan las ventas de otra forma?</div>
+        <div class="chips" data-group="sistema_actual">
+          <div class="chip" data-value="Sí, tenemos un sistema de POS">Sí, tenemos un POS</div>
+          <div class="chip" data-value="Usamos Excel o cuaderno">Excel o cuaderno</div>
+          <div class="chip" data-value="Nada formal, solo de memoria">Nada formal</div>
+          <div class="chip" data-value="Otro">Otro</div>
+        </div>
+        <div class="conditional" data-show-if="sistema_actual=Otro">
+          <input type="text" placeholder="¿Cómo llevan las ventas hoy?" data-key="sistema_actual_otro">
+        </div>
+        <div class="conditional" data-show-if="sistema_actual=Sí, tenemos un sistema de POS">
+          <input type="text" placeholder="¿Cuál sistema usan y cuál es el problema con él?" data-key="sistema_actual_cual" style="margin-top:14px;">
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Cuántas personas trabajan en el negocio en total?</div>
+        <input type="number" min="1" placeholder="Ej. 3" data-key="total_empleados">
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Cuántas personas atienden en mostrador / cobran a clientes?</div>
+        <input type="number" min="1" placeholder="Ej. 2" data-key="personas_mostrador">
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Cuántas computadoras o cajas necesitan funcionar al mismo tiempo?</div>
+        <div class="chips" data-group="cajas_simultaneas">
+          <div class="chip" data-value="Solo 1">Solo 1</div>
+          <div class="chip" data-value="2">2</div>
+          <div class="chip" data-value="3 o más">3 o más</div>
+          <div class="chip" data-value="No estoy seguro">No estoy seguro</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Tienen sucursales, o es un solo local?</div>
+        <div class="chips" data-group="sucursales">
+          <div class="chip" data-value="Solo un local">Solo un local</div>
+          <div class="chip" data-value="Dos o más sucursales">Dos o más sucursales</div>
+          <div class="chip" data-value="Planes de abrir más adelante">Solo uno por ahora, pero planeo crecer</div>
+        </div>
+        <div class="conditional" data-show-if="sucursales=Dos o más sucursales">
+          <input type="text" placeholder="¿Cuántas sucursales y en qué ciudades?" data-key="sucursales_detalle" style="margin-top:14px;">
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Con qué proveedor de internet trabajan y qué tan estable es?</div>
+        <input type="text" placeholder="Ej. Totalplay, Izzi — estable / se cae seguido…" data-key="internet_info">
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-ghost" onclick="goTo(0)">← Atrás</button>
+        <button class="btn btn-primary" onclick="goTo(2)">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 — PRODUCTOS Y CATÁLOGO -->
+  <div class="step" data-step="2">
+    <div class="panel">
+      <div class="stamp">Confidencial<small>Uso exclusivo</small></div>
+      <div class="section-tag"><span class="num">2</span> PRODUCTOS Y CATÁLOGO</div>
+      <h2 class="display">Lo que vendes</h2>
+      <p class="lede">Las vidrierías tienen particularidades muy específicas en su catálogo. Necesitamos entender bien qué manejan.</p>
+
+      <div class="q">
+        <div class="q-label">¿Qué tipos de vidrio manejan? (Selecciona todos los que apliquen)</div>
+        <div class="chips" data-group="tipos_vidrio" data-multi="true">
+          <div class="chip" data-value="Vidrio claro / flotado">Vidrio claro / flotado</div>
+          <div class="chip" data-value="Vidrio templado">Vidrio templado</div>
+          <div class="chip" data-value="Vidrio laminado / antibalas">Vidrio laminado / antibalas</div>
+          <div class="chip" data-value="Vidrio esmerilado / satinado">Esmerilado / satinado</div>
+          <div class="chip" data-value="Vidrio decorado / emplomado">Decorado / emplomado</div>
+          <div class="chip" data-value="Espejo">Espejo</div>
+          <div class="chip" data-value="Cristal doble / termopanel">Doble / termopanel</div>
+          <div class="chip" data-value="Acrílico">Acrílico</div>
+          <div class="chip" data-value="Otro tipo">Otro</div>
+        </div>
+        <div class="conditional" data-show-if="tipos_vidrio_otro=true">
+          <input type="text" placeholder="¿Qué otro tipo de vidrio manejan?" data-key="tipos_vidrio_otro_desc">
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Venden el vidrio cortado a medida del cliente, o en láminas fijas?</div>
+        <div class="chips" data-group="venta_medida">
+          <div class="chip" data-value="Siempre a medida del cliente">Siempre a medida</div>
+          <div class="chip" data-value="Las dos cosas — a medida y en piezas fijas">Las dos cosas</div>
+          <div class="chip" data-value="Solo en láminas o piezas estándar">Solo piezas estándar</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Cómo calculan el precio del vidrio — por metro cuadrado, por pieza o de otra forma?</div>
+        <div class="chips" data-group="calculo_precio">
+          <div class="chip" data-value="Por metro cuadrado (m²)">Por metro cuadrado (m²)</div>
+          <div class="chip" data-value="Por pieza completa">Por pieza completa</div>
+          <div class="chip" data-value="Por metro lineal">Por metro lineal</div>
+          <div class="chip" data-value="Depende del producto">Depende del producto</div>
+          <div class="chip" data-value="No estoy seguro">No estoy seguro</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Manejan herrajería, selladores, aluminio u otros materiales complementarios?</div>
+        <div class="chips" data-group="materiales_extra" data-multi="true">
+          <div class="chip" data-value="Herrajes (bisagras, jaladores, chapas)">Herrajes (bisagras, jaladores)</div>
+          <div class="chip" data-value="Perfiles de aluminio">Perfiles de aluminio</div>
+          <div class="chip" data-value="Selladores y masillas">Selladores y masillas</div>
+          <div class="chip" data-value="Silicón">Silicón</div>
+          <div class="chip" data-value="Ventanas de PVC">Ventanas de PVC</div>
+          <div class="chip" data-value="Cancelería de aluminio">Cancelería de aluminio</div>
+          <div class="chip" data-value="No, solo vidrio">No, solo vidrio</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Cuántos productos / referencias tienen aproximadamente en su catálogo actual?</div>
+        <div class="chips" data-group="tam_catalogo">
+          <div class="chip" data-value="Menos de 50">Menos de 50</div>
+          <div class="chip" data-value="50 a 150">50 a 150</div>
+          <div class="chip" data-value="150 a 400">150 a 400</div>
+          <div class="chip" data-value="Más de 400">Más de 400</div>
+          <div class="chip" data-value="No tengo idea">No tengo idea</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿El catálogo existe en algún lado hoy — Excel, lista en papel, sistema anterior?</div>
+        <div class="chips" data-group="estado_catalogo">
+          <div class="chip" data-value="Sí, tengo un Excel o lista organizada">Sí, tengo Excel / lista</div>
+          <div class="chip" data-value="Tengo algo pero está desordenado">Tengo algo desordenado</div>
+          <div class="chip" data-value="No existe, habría que construirlo desde cero">Hay que construirlo desde cero</div>
+        </div>
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-ghost" onclick="goTo(1)">← Atrás</button>
+        <button class="btn btn-primary" onclick="goTo(3)">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3 — SERVICIOS E INSTALACIÓN -->
+  <div class="step" data-step="3">
+    <div class="panel">
+      <div class="stamp">Confidencial<small>Uso exclusivo</small></div>
+      <div class="section-tag"><span class="num">3</span> SERVICIOS E INSTALACIÓN</div>
+      <h2 class="display">Más allá de vender</h2>
+      <p class="lede">Muchas vidrierías hacen más que vender — también instalan, miden a domicilio y dan servicios. Eso cambia cómo debe funcionar el sistema.</p>
+
+      <div class="q">
+        <div class="q-label">¿Ofrecen servicio de instalación de vidrios o cancelería?</div>
+        <div class="chips" data-group="servicio_instalacion">
+          <div class="chip" data-value="Sí, nosotros mismos instalamos">Sí, nosotros instalamos</div>
+          <div class="chip" data-value="A veces, dependiendo del trabajo">A veces</div>
+          <div class="chip" data-value="No, solo vendemos el material">No, solo vendemos</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Hacen mediciones a domicilio antes de entregar o instalar?</div>
+        <div class="chips" data-group="medicion_domicilio">
+          <div class="chip" data-value="Sí, siempre vamos a medir">Sí, siempre</div>
+          <div class="chip" data-value="A veces, en proyectos grandes">A veces, en proyectos grandes</div>
+          <div class="chip" data-value="No, el cliente da las medidas">No, el cliente da las medidas</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Manejan órdenes de trabajo o proyectos — trabajos que no se cobran en el momento, sino hasta que se termina la instalación?</div>
+        <div class="chips" data-group="ordenes_trabajo">
+          <div class="chip" data-value="Sí, tenemos trabajos que tardan días o semanas">Sí, trabajos de varios días</div>
+          <div class="chip" data-value="Ocasionalmente">Ocasionalmente</div>
+          <div class="chip" data-value="No, todo se cobra al momento">No, todo al momento</div>
+        </div>
+        <div class="conditional" data-show-if="ordenes_trabajo=Sí, tenemos trabajos que tardan días o semanas">
+          <div class="q-label" style="font-size:14px; margin-top:14px;">¿Cómo llevan el seguimiento de esos trabajos hoy?</div>
+          <textarea rows="2" placeholder="Ej. apuntamos en libreta, mandamos foto por WhatsApp, no llevamos control formal…" data-key="seguimiento_trabajos"></textarea>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Dan garantía sobre los trabajos de instalación o el material?</div>
+        <div class="chips" data-group="garantia">
+          <div class="chip" data-value="Sí, damos garantía por escrito">Sí, por escrito</div>
+          <div class="chip" data-value="Sí, pero de palabra">Sí, de palabra</div>
+          <div class="chip" data-value="No damos garantía">No</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Hacen entregas a domicilio o en obra?</div>
+        <div class="chips" data-group="entregas_domicilio">
+          <div class="chip" data-value="Sí, frecuentemente">Sí, frecuente</div>
+          <div class="chip" data-value="Ocasionalmente">Ocasionalmente</div>
+          <div class="chip" data-value="No, el cliente recoge en tienda">No, recoge en tienda</div>
+        </div>
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-ghost" onclick="goTo(2)">← Atrás</button>
+        <button class="btn btn-primary" onclick="goTo(4)">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 — METODOLOGÍA DE VENTA -->
+  <div class="step" data-step="4">
+    <div class="panel">
+      <div class="stamp">Confidencial<small>Uso exclusivo</small></div>
+      <div class="section-tag"><span class="num">4</span> VENTAS Y COBRANZA</div>
+      <h2 class="display">Cómo vendes hoy</h2>
+      <p class="lede">Queremos entender tu flujo real, desde que llega un cliente hasta que cobras.</p>
+
+      <div class="q">
+        <div class="q-label">Descríbenos cómo es una venta típica de tu vidriería, paso a paso</div>
+        <div class="q-hint">No hay respuesta mala — cuéntanos tal como pasa en tu tienda. Ej: "el cliente pide una medida, cotizamos, cobramos la mitad, cortamos y la otra mitad al entregar"</div>
+        <textarea rows="4" placeholder="Cuéntanos tu flujo de venta habitual…" data-key="flujo_venta"></textarea>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Hacen cotizaciones o presupuestos antes de cerrar la venta?</div>
+        <div class="chips" data-group="hacen_cotizaciones">
+          <div class="chip" data-value="Sí, siempre">Sí, siempre</div>
+          <div class="chip" data-value="En proyectos grandes sí">En proyectos grandes sí</div>
+          <div class="chip" data-value="No, decimos el precio de inmediato">No, precio inmediato</div>
+        </div>
+        <div class="conditional" data-show-if-any="hacen_cotizaciones=Sí, siempre|hacen_cotizaciones=En proyectos grandes sí">
+          <div class="q-label" style="font-size:14px; margin-top:14px;">¿Cómo hacen la cotización hoy?</div>
+          <textarea rows="2" placeholder="Ej. en papel, por WhatsApp, en Excel, de memoria…" data-key="como_cotizan"></textarea>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Piden anticipo o enganche antes de empezar el trabajo?</div>
+        <div class="chips" data-group="piden_anticipo">
+          <div class="chip" data-value="Sí, siempre">Sí, siempre</div>
+          <div class="chip" data-value="A veces, depende del trabajo">A veces</div>
+          <div class="chip" data-value="No, cobran al final">No, al final</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Le dan crédito o fían a clientes frecuentes — como constructoras, talleres o contratistas?</div>
+        <div class="q-hint">Solo informativo — si aplica, te compartimos una propuesta aparte para este módulo.</div>
+        <div class="chips" data-group="dan_credito">
+          <div class="chip" data-value="Sí, tenemos clientes que pagan después">Sí</div>
+          <div class="chip" data-value="No, solo ventas de contado">No</div>
+          <div class="chip" data-value="Tengo dudas sobre esto">Tengo dudas</div>
+        </div>
+        <div class="conditional" data-show-if="dan_credito=Sí, tenemos clientes que pagan después">
+          <div class="q-label" style="font-size:14px; margin-top:14px;">¿Cuántos clientes de crédito tienen aproximadamente y cómo llevan esas cuentas hoy?</div>
+          <textarea rows="2" placeholder="Ej. 10 clientes, los llevamos en libreta / Excel…" data-key="cuentas_credito"></textarea>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Qué formas de pago aceptan actualmente?</div>
+        <div class="chips" data-group="formas_pago" data-multi="true">
+          <div class="chip" data-value="Efectivo">Efectivo</div>
+          <div class="chip" data-value="Transferencia">Transferencia</div>
+          <div class="chip" data-value="Terminal bancaria (tarjeta)">Terminal bancaria</div>
+          <div class="chip" data-value="Cheque">Cheque</div>
+          <div class="chip" data-value="Crédito / fiado">Crédito / fiado</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Hacen corte de caja?</div>
+        <div class="chips" data-group="corte_caja">
+          <div class="chip" data-value="Diario">Diario</div>
+          <div class="chip" data-value="Por turno">Por turno</div>
+          <div class="chip" data-value="Cuando hay oportunidad">Cuando hay oportunidad</div>
+          <div class="chip" data-value="No hacemos corte de caja">No hacemos</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Facturan o solo dan nota de venta / ticket?</div>
+        <div class="q-hint">Solo informativo — si facturan, te compartimos propuesta aparte para el módulo de facturación.</div>
+        <div class="chips" data-group="facturan">
+          <div class="chip" data-value="Sí, facturamos seguido">Sí, seguido</div>
+          <div class="chip" data-value="Solo cuando el cliente lo pide">Solo cuando lo piden</div>
+          <div class="chip" data-value="No facturamos">No facturamos</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Tienen clientes recurrentes — gente que compra repetido — y les gustaría llevar su historial?</div>
+        <div class="chips" data-group="clientes_recurrentes">
+          <div class="chip" data-value="Sí, y me gustaría tener su historial">Sí, y quiero su historial</div>
+          <div class="chip" data-value="Sí, pero no es necesario llevar historial">Sí, pero sin historial</div>
+          <div class="chip" data-value="No, la mayoría son clientes nuevos cada vez">No, son clientes nuevos</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Qué información de tu negocio te gustaría ver que hoy no ves?</div>
+        <div class="chips" data-group="reportes_deseados" data-multi="true">
+          <div class="chip" data-value="Ventas del día / semana / mes">Ventas del período</div>
+          <div class="chip" data-value="Producto o tipo de vidrio que más se vende">Qué vidrio se vende más</div>
+          <div class="chip" data-value="Trabajos pendientes y su estado">Trabajos pendientes</div>
+          <div class="chip" data-value="Clientes que deben (cuentas por cobrar)">Cuentas por cobrar</div>
+          <div class="chip" data-value="Inventario bajo / agotados">Inventario bajo</div>
+          <div class="chip" data-value="Quién cobró qué (por cajero)">Quién cobró qué</div>
+          <div class="chip" data-value="Otro">Otro</div>
+        </div>
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-ghost" onclick="goTo(3)">← Atrás</button>
+        <button class="btn btn-primary" onclick="goTo(5)">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5 — HARDWARE -->
+  <div class="step" data-step="5">
+    <div class="panel">
+      <div class="stamp">Confidencial<small>Uso exclusivo</small></div>
+      <div class="section-tag"><span class="num">5</span> EQUIPO Y HARDWARE</div>
+      <h2 class="display">El hardware que ya tienen</h2>
+      <p class="lede">Con esto validamos qué se puede reutilizar y qué hace falta comprar.</p>
+
+      <div class="q">
+        <div class="q-label">¿Cuentan con computadora(s) actualmente?</div>
+        <div class="chips" data-group="tiene_computadora">
+          <div class="chip" data-value="Sí">Sí</div>
+          <div class="chip" data-value="No">No</div>
+        </div>
+        <div class="conditional" data-show-if="tiene_computadora=Sí">
+          <div class="q-label" style="font-size:14px; margin-top:14px;">Marca, año aproximado y RAM (si la sabes)</div>
+          <input type="text" placeholder="Ej. HP, 2020, 8GB RAM" data-key="computadora_info">
+          <div class="q-label" style="font-size:14px; margin-top:18px;">¿Qué sistema operativo usan?</div>
+          <div class="chips" data-group="sistema_operativo">
+            <div class="chip" data-value="Windows 10">Windows 10</div>
+            <div class="chip" data-value="Windows 11">Windows 11</div>
+            <div class="chip" data-value="Windows 7 u otro antiguo">Windows 7 u otro</div>
+            <div class="chip" data-value="Mac">Mac</div>
+            <div class="chip" data-value="No sé">No sé</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Tienen impresora de tickets?</div>
+        <div class="chips" data-group="tiene_impresora_ticket">
+          <div class="chip" data-value="Sí">Sí</div>
+          <div class="chip" data-value="No">No</div>
+        </div>
+        <div class="conditional" data-show-if="tiene_impresora_ticket=Sí">
+          <input type="text" placeholder="Marca y modelo si lo saben. Ej: Epson TM-T20, térmica" data-key="impresora_ticket_modelo" style="margin-top:14px;">
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Tienen escáner de código de barras?</div>
+        <div class="chips" data-group="tiene_escaner">
+          <div class="chip" data-value="Sí">Sí</div>
+          <div class="chip" data-value="No">No</div>
+          <div class="chip" data-value="No, y tampoco creo necesitarlo">No y no lo necesito</div>
+        </div>
+        <div class="conditional" data-show-if="tiene_escaner=Sí">
+          <input type="text" placeholder="Marca y modelo si lo saben. Ej: Honeywell Voyager 1200g" data-key="escaner_modelo" style="margin-top:14px;">
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Tienen cajón de dinero?</div>
+        <div class="chips" data-group="cajon_dinero">
+          <div class="chip" data-value="Sí, conectado a la impresora">Sí, conectado a la impresora</div>
+          <div class="chip" data-value="Sí, pero es manual (no conectado)">Sí, manual</div>
+          <div class="chip" data-value="No tenemos cajón">No tenemos</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Tienen terminal para cobrar con tarjeta?</div>
+        <div class="chips" data-group="terminal_pago">
+          <div class="chip" data-value="Sí, integrada al POS anterior">Sí, integrada</div>
+          <div class="chip" data-value="Sí, pero cobra aparte (Clip, Mercado Pago, etc.)">Sí, pero aparte</div>
+          <div class="chip" data-value="No tenemos">No tenemos</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿El monitor / pantalla es táctil?</div>
+        <div class="chips" data-group="monitor_tactil">
+          <div class="chip" data-value="Sí, es táctil">Sí, táctil</div>
+          <div class="chip" data-value="No, es monitor normal">No, normal</div>
+          <div class="chip" data-value="No tenemos monitor aún">No tenemos aún</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Les gustaría recibir una recomendación de hardware si necesitan comprar equipo nuevo?</div>
+        <div class="chips" data-group="quiere_recomendacion_hw">
+          <div class="chip" data-value="Sí, me interesa saber qué comprar">Sí, me interesa</div>
+          <div class="chip" data-value="No, ya tenemos todo lo que necesitamos">No, ya tenemos todo</div>
+        </div>
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-ghost" onclick="goTo(4)">← Atrás</button>
+        <button class="btn btn-primary" onclick="goTo(6)">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 6 — ACUERDO Y TIEMPOS -->
+  <div class="step" data-step="6">
+    <div class="panel">
+      <div class="stamp">Confidencial<small>Uso exclusivo</small></div>
+      <div class="section-tag"><span class="num">6</span> ACUERDO Y TIEMPOS</div>
+      <h2 class="display">Antes de continuar</h2>
+
+      <div class="q">
+        <div class="q-label">¿Tienen alguna fecha límite o urgencia para tener el sistema funcionando?</div>
+        <input type="text" placeholder="Ej. antes de fin de mes, para inauguración, no hay prisa…" data-key="fecha_limite">
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Cuál es el mayor dolor o problema que quieren resolver con este sistema?</div>
+        <div class="q-hint">Esto nos ayuda a priorizar lo más importante para ustedes.</div>
+        <textarea rows="3" placeholder="Ej. perdemos control del inventario, no sabemos cuánto vendemos, tardamos mucho en cobrar, los trabajos se quedan sin cobrar…" data-key="mayor_dolor"></textarea>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Hay algo más que quieran que sepamos antes de armar la propuesta?</div>
+        <textarea rows="3" placeholder="Cualquier detalle, duda, expectativa o situación especial de su negocio…" data-key="comentarios_extra"></textarea>
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-ghost" onclick="goTo(5)">← Atrás</button>
+        <button class="btn btn-primary" onclick="goTo(7)">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 7 — DATOS DE CONTACTO -->
+  <div class="step" data-step="7">
+    <div class="panel">
+      <div class="stamp">Confidencial<small>Uso exclusivo</small></div>
+      <div class="section-tag"><span class="num">7</span> TUS DATOS</div>
+      <h2 class="display">Para personalizar tu propuesta</h2>
+      <p class="lede">Ya casi terminas. Solo necesitamos saber a nombre de quién va la propuesta.</p>
+
+      <div class="q">
+        <div class="q-label">¿Cuál es el nombre del negocio o empresa?</div>
+        <input type="text" placeholder="Ej. Vidriería El Cristal, Vidriera López…" data-key="nombre_negocio">
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿En qué ciudad o municipio están?</div>
+        <input type="text" placeholder="Ej. Monterrey, N.L. / CDMX / Guadalajara, Jal." data-key="ciudad">
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Nos podrías compartir el link de Google Maps de tu negocio o negocios?</div>
+        <input type="text" placeholder="Pega el enlace de Google Maps aquí" data-key="google_maps">
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Cuál es tu nombre?</div>
+        <input type="text" placeholder="Tu nombre completo" data-key="nombre_contacto">
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Cuál es tu rol en el negocio?</div>
+        <div class="chips" data-group="rol_contacto">
+          <div class="chip" data-value="Dueño / propietario">Dueño / propietario</div>
+          <div class="chip" data-value="Administrador / gerente">Administrador / gerente</div>
+          <div class="chip" data-value="Encargado de sucursal">Encargado de sucursal</div>
+          <div class="chip" data-value="Otro">Otro</div>
+        </div>
+        <div class="conditional" data-show-if="rol_contacto=Otro">
+          <input type="text" placeholder="¿Cuál es tu rol?" data-key="rol_contacto_otro">
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Tu número de WhatsApp donde podemos mandarte la propuesta?</div>
+        <input type="text" placeholder="Ej. 81 1234 5678" data-key="whatsapp_contacto">
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-ghost" onclick="goTo(6)">← Atrás</button>
+        <button class="btn btn-primary" onclick="goTo(8); buildSummary();">Revisar y enviar →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 8 — REVIEW & SEND -->
+  <div class="step" data-step="8">
+    <div class="panel">
+      <div class="stamp">Confidencial<small>Uso exclusivo</small></div>
+      <div class="section-tag"><span class="num">✓</span> LISTO PARA ENVIAR</div>
+      <h2 class="display">Revisa tus respuestas</h2>
+      <p class="lede">Si algo se ve mal, regresa y ajústalo. Cuando esté bien, envíalo por WhatsApp — ahí eliges a quién.</p>
+
+      <div class="summary-block" id="summary"></div>
+
+      <div class="final-actions">
+        <button class="btn btn-primary btn-block" onclick="sendWhatsApp()">Enviar respuestas por WhatsApp →</button>
+        <button class="btn btn-block" onclick="copyAnswers()">Copiar respuestas</button>
+        <div class="copy-note" id="copyNote"></div>
+      </div>
+
+      <div class="nav" style="justify-content:flex-start; margin-top:26px;">
+        <button class="btn btn-ghost" onclick="goTo(7)">← Editar respuestas</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>HummingX BI · Software y consultoría digital</span>
+  <span>Documento confidencial</span>
+</footer>
+
+<script>
+  const TOTAL_STEPS = 8;
+  const state = {};
+
+  // ---- chip handling ----
+  document.querySelectorAll('.chips').forEach(group => {
+    const key = group.dataset.group;
+    const multi = group.dataset.multi === 'true';
+    if (multi) state[key] = [];
+    group.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const val = chip.dataset.value;
+        if (multi) {
+          chip.classList.toggle('selected');
+          const arr = state[key] || [];
+          if (chip.classList.contains('selected')) arr.push(val);
+          else { const i = arr.indexOf(val); if (i > -1) arr.splice(i, 1); }
+          state[key] = arr;
+        } else {
+          group.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+          chip.classList.add('selected');
+          state[key] = val;
+        }
+        refreshConditionals();
+      });
+    });
+  });
+
+  // ---- text/number inputs ----
+  document.querySelectorAll('input[data-key], textarea[data-key]').forEach(el => {
+    el.addEventListener('input', () => { state[el.dataset.key] = el.value; });
+  });
+
+  function refreshConditionals(){
+    document.querySelectorAll('.conditional').forEach(cond => {
+      let show = false;
+      if (cond.dataset.showIf) {
+        const [k, v] = cond.dataset.showIf.split('=');
+        show = state[k] === v;
+      } else if (cond.dataset.showIfAny) {
+        show = cond.dataset.showIfAny.split('|').some(pair => {
+          const [k, v] = pair.split('=');
+          return state[k] === v;
+        });
+      }
+      cond.classList.toggle('show', show);
+    });
+  }
+
+  // ---- navigation ----
+  function goTo(step){
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.querySelector(`.step[data-step="${step}"]`).classList.add('active');
+    renderGauge(step);
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function renderGauge(step){
+    const gauge = document.getElementById('gauge');
+    gauge.innerHTML = '';
+    for(let i=1;i<=7;i++){
+      const t = document.createElement('div');
+      t.className = 'gauge-tick' + (i <= step ? ' done' : '');
+      gauge.appendChild(t);
+    }
+  }
+  renderGauge(0);
+
+  // ---- labels for summary & export ----
+  const LABELS = {
+    anos_operando:            "Años operando la vidriería",
+    sistema_actual:           "Sistema actual de ventas",
+    sistema_actual_otro:      "Sistema actual (detalle)",
+    sistema_actual_cual:      "Sistema actual (nombre y problema)",
+    total_empleados:          "Total de empleados",
+    personas_mostrador:       "Personas que cobran en mostrador",
+    cajas_simultaneas:        "Cajas / computadoras simultáneas",
+    sucursales:               "Sucursales",
+    sucursales_detalle:       "Detalle de sucursales",
+    internet_info:            "Proveedor y estabilidad de internet",
+    tipos_vidrio:             "Tipos de vidrio que manejan",
+    tipos_vidrio_otro_desc:   "Otro tipo de vidrio",
+    venta_medida:             "¿Venden a medida o piezas estándar?",
+    calculo_precio:           "¿Cómo calculan el precio del vidrio?",
+    materiales_extra:         "Materiales complementarios",
+    tam_catalogo:             "Tamaño aproximado del catálogo",
+    estado_catalogo:          "Estado del catálogo actual",
+    servicio_instalacion:     "¿Ofrecen instalación?",
+    medicion_domicilio:       "¿Hacen medición a domicilio?",
+    ordenes_trabajo:          "¿Manejan órdenes de trabajo?",
+    seguimiento_trabajos:     "Seguimiento de trabajos hoy",
+    garantia:                 "¿Dan garantía?",
+    entregas_domicilio:       "¿Hacen entregas a domicilio / obra?",
+    flujo_venta:              "Flujo de venta típico",
+    hacen_cotizaciones:       "¿Hacen cotizaciones?",
+    como_cotizan:             "¿Cómo cotizan hoy?",
+    piden_anticipo:           "¿Piden anticipo?",
+    dan_credito:              "¿Dan crédito / fían?",
+    cuentas_credito:          "Clientes de crédito y manejo actual",
+    formas_pago:              "Formas de pago aceptadas",
+    corte_caja:               "Corte de caja",
+    facturan:                 "¿Facturan?",
+    clientes_recurrentes:     "Clientes recurrentes e historial",
+    reportes_deseados:        "Información que le gustaría ver",
+    tiene_computadora:        "¿Tienen computadora?",
+    computadora_info:         "Computadora (marca, año, RAM)",
+    sistema_operativo:        "Sistema operativo",
+    tiene_impresora_ticket:   "¿Tienen impresora de tickets?",
+    impresora_ticket_modelo:  "Impresora de tickets (modelo)",
+    tiene_escaner:            "¿Tienen escáner de código de barras?",
+    escaner_modelo:           "Escáner (modelo)",
+    cajon_dinero:             "Cajón de dinero",
+    terminal_pago:            "Terminal de pago con tarjeta",
+    monitor_tactil:           "¿Monitor táctil?",
+    quiere_recomendacion_hw:  "¿Quiere recomendación de hardware?",
+    fecha_limite:             "Fecha límite / urgencia",
+    mayor_dolor:              "Mayor problema a resolver",
+    comentarios_extra:        "Comentarios adicionales",
+    nombre_negocio:           "Nombre del negocio / empresa",
+    ciudad:                   "Ciudad / municipio",
+    google_maps:              "Enlace de Google Maps",
+    nombre_contacto:          "Nombre del contacto",
+    rol_contacto:             "Rol en el negocio",
+    rol_contacto_otro:        "Rol (detalle)",
+    whatsapp_contacto:        "WhatsApp de contacto"
+  };
+
+  function fmtVal(v){
+    if (Array.isArray(v)) return v.length ? v.join(', ') : '—';
+    return (v === undefined || v === '') ? '—' : v;
+  }
+
+  function buildSummary(){
+    const el = document.getElementById('summary');
+    el.innerHTML = '';
+    Object.keys(LABELS).forEach(key => {
+      if (!(key in state)) return;
+      const val = fmtVal(state[key]);
+      const row = document.createElement('div');
+      row.className = 'summary-item';
+      row.innerHTML = `<span class="k">${LABELS[key]}</span><span class="v">${val}</span>`;
+      el.appendChild(row);
+    });
+  }
+
+  function buildMessage(){
+    const negocio = state['nombre_negocio'] || 'Vidriería';
+    const contacto = state['nombre_contacto'] || '';
+    let msg = `*Cuestionario — ${negocio}*\n_Diagnóstico para HummingX BI_\n`;
+    if (contacto) msg += `_Contacto: ${contacto}_\n`;
+    msg += `\n`;
+    Object.keys(LABELS).forEach(key => {
+      if (!(key in state)) return;
+      const val = fmtVal(state[key]);
+      if (val === '—') return;
+      msg += `*${LABELS[key]}:*\n${val}\n\n`;
+    });
+    return msg.trim();
+  }
+
+  function sendWhatsApp(){
+    const text = encodeURIComponent(buildMessage());
+    window.open(`https://wa.me/525575084267?text=${text}`, '_blank');
+    
+    // Mostrar pantalla de despedida (donescreen)
+    const panel = document.querySelector('.step[data-step="8"] .panel');
+    panel.innerHTML = `
+      <div style="text-align: center; padding: 40px 10px;">
+        <img src="Logo HummingX BI png.png" alt="HummingX BI" style="max-height: 60px; margin-bottom: 24px;">
+        <h3 style="font-family:'Zilla Slab', serif; font-size: 26px; font-weight:600; color: var(--text); margin: 0 0 14px;">¡Gracias por confiar en HummingX BI!</h3>
+        <p style="color: var(--text-muted); line-height: 1.65; font-size: 15.5px; max-width: 440px; margin: 0 auto;">Agradecemos tu preferencia y el tiempo para llenar este diagnóstico. En breve recibirás una confirmación por parte de nuestro equipo para continuar con el diseño de tu punto de venta a medida.</p>
+      </div>
+    `;
+  }
+
+  function copyAnswers(){
+    const text = buildMessage();
+    navigator.clipboard.writeText(text).then(() => {
+      document.getElementById('copyNote').textContent = 'Copiado — ya lo puedes pegar donde quieras.';
+    });
+  }
+</script>
+
+</body>
+</html>
