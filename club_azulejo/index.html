@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuestionario Operativo · Recepción — Club Azulejo</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700&display=swap');
+
+        :root {
+            --paper: #FAFAF8;
+            --panel: #FFFFFF;
+            --line: #E1E5E8;
+            --ink: #16181C;
+            --ink-soft: #5B5F66;
+            --charcoal: #1B2229;
+            --charcoal-deep: #0F1418;
+            --steel: #3E5C76;
+            --steel-soft: #DCE6EC;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--paper);
+            color: var(--ink);
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .wrap {
+            max-width: 740px;
+            margin: 0 auto;
+            padding: 0 28px 100px;
+        }
+
+        .progress-rail {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            height: 3px;
+            width: 100%;
+            background: var(--line);
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--steel);
+            transition: width .4s ease;
+        }
+
+        .hero {
+            background: linear-gradient(160deg, var(--charcoal) 0%, var(--charcoal-deep) 100%);
+            color: var(--paper);
+            padding: 70px 28px 88px;
+        }
+
+        .hero-inner {
+            max-width: 740px;
+            margin: 0 auto;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11.5px;
+            letter-spacing: .02em;
+            color: var(--steel-soft);
+            border: 1px solid rgba(220, 230, 236, 0.35);
+            padding: 5px 14px;
+            border-radius: 3px;
+            margin-bottom: 26px;
+        }
+
+        .badge::before {
+            content: "";
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--steel);
+        }
+
+        .folio {
+            font-size: 12px;
+            color: rgba(250, 250, 248, 0.5);
+            margin-top: 14px;
+        }
+
+        .brandname {
+            font-family: 'Spectral', serif;
+            font-weight: 500;
+            font-size: clamp(28px, 5vw, 40px);
+            margin: 0;
+            line-height: 1.28;
+            max-width: 20ch;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: rgba(250, 250, 248, 0.72);
+            margin-top: 16px;
+            max-width: 54ch;
+        }
+
+        .intro {
+            margin-top: -46px;
+            position: relative;
+            z-index: 3;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            padding: 34px 32px;
+            box-shadow: 0 24px 50px -32px rgba(15, 20, 24, 0.4);
+        }
+
+        .intro p {
+            margin: 0 0 12px;
+            font-size: 14.5px;
+            color: var(--ink-soft);
+        }
+
+        .intro p:last-child {
+            margin: 0;
+        }
+
+        .intro strong {
+            color: var(--ink);
+            font-weight: 600;
+        }
+
+        .section {
+            margin-top: 60px;
+        }
+
+        .section-head {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            margin-bottom: 6px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .section-num {
+            font-family: 'Spectral', serif;
+            font-style: italic;
+            font-weight: 500;
+            font-size: 26px;
+            color: var(--steel);
+            min-width: 30px;
+        }
+
+        .section-title {
+            font-family: 'Spectral', serif;
+            font-size: 19px;
+            color: var(--ink);
+            margin: 0;
+        }
+
+        .section-sub {
+            font-size: 12.5px;
+            color: var(--ink-soft);
+            margin: 3px 0 0;
+        }
+
+        .section-body {
+            margin-top: 28px;
+        }
+
+        .q {
+            margin-bottom: 30px;
+        }
+
+        .q.compact {
+            margin-bottom: 0;
+        }
+
+        .q-text {
+            font-size: 14.5px;
+            color: var(--ink);
+            margin: 0 0 5px;
+            font-weight: 600;
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .q-hint {
+            font-size: 12.5px;
+            color: var(--ink-soft);
+            margin: 0 0 12px;
+            font-style: italic;
+        }
+
+        .options {
+            display: grid;
+            gap: 8px;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        @media (max-width:560px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .opt {
+            position: relative;
+        }
+
+        .opt input {
+            position: absolute;
+            opacity: 0;
+            inset: 0;
+            margin: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        .opt label {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            border: 1px solid var(--line);
+            background: var(--panel);
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: all .15s ease;
+            height: 100%;
+        }
+
+        .opt .opt-title {
+            font-size: 13px;
+            color: var(--ink);
+            font-weight: 500;
+        }
+
+        .opt label:hover {
+            border-color: var(--steel);
+        }
+
+        .opt input:checked+label {
+            border-color: var(--steel);
+            background: var(--steel-soft);
+        }
+
+        .opt input:checked+label::after {
+            content: "—";
+            position: absolute;
+            top: 10px;
+            right: 13px;
+            color: var(--steel);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .opt.wide {
+            grid-column: 1 / -1;
+        }
+
+        textarea.f,
+        input.f {
+            width: 100%;
+            border: 1px solid var(--line);
+            background: var(--panel);
+            padding: 11px 14px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13.5px;
+            color: var(--ink);
+        }
+
+        textarea.f {
+            resize: vertical;
+            min-height: 66px;
+        }
+
+        textarea.f:focus,
+        input.f:focus {
+            outline: none;
+            border-color: var(--steel);
+        }
+
+        textarea.f::placeholder,
+        input.f::placeholder {
+            color: #9AA3AA;
+            font-style: italic;
+        }
+
+        .grid2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width:560px) {
+            .grid2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .summary {
+            margin-top: 64px;
+            background: var(--charcoal);
+            color: var(--paper);
+            padding: 36px 30px;
+        }
+
+        .summary h3 {
+            font-family: 'Spectral', serif;
+            margin: 0 0 6px;
+            font-size: 19px;
+            font-weight: 500;
+        }
+
+        .summary .sub {
+            color: rgba(250, 250, 248, 0.6);
+            margin: 0 0 20px;
+            font-size: 13px;
+        }
+
+        #summaryText {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(220, 230, 236, 0.25);
+            padding: 16px;
+            font-size: 12px;
+            white-space: pre-wrap;
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        button.primary {
+            background: var(--steel);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 12.5px;
+            cursor: pointer;
+            letter-spacing: .01em;
+        }
+
+        button.ghost {
+            background: transparent;
+            border: 1px solid rgba(250, 250, 248, 0.3);
+            color: var(--paper);
+            padding: 12px 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        button.wa {
+            border-color: rgba(150, 220, 180, 0.4);
+        }
+
+        .pending {
+            font-size: 11.5px;
+            color: rgba(220, 230, 236, 0.8);
+            margin-top: 14px;
+        }
+
+        .signoff {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--ink-soft);
+            font-size: 12.5px;
+        }
+
+        .signoff b {
+            color: var(--ink);
+            font-family: 'Spectral', serif;
+        }
+
+        .footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-top: 22px;
+        }
+
+        .footer-link {
+            font-size: 12.5px;
+            color: var(--ink-soft);
+            text-decoration: none;
+        }
+
+        .divider-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--ink-soft);
+            opacity: .4;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="progress-rail">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="hero">
+        <div class="hero-inner">
+            <div class="badge">Operativo — Recepción</div>
+            <h1 class="brandname">Club Azulejo<br>Escuela de Natación</h1>
+            <p class="subtitle">Datos del día a día del club: instalaciones, instructores, alumnos y atención a
+                prospectos. Pensado para responderse desde recepción, con la información que manejan en el mostrador.
+            </p>
+            <p class="folio">HummingX BI · Folio HXBI-2026-025</p>
+        </div>
+    </div>
+
+    <div class="wrap">
+
+        <div class="intro">
+            <p><strong>Antes de empezar.</strong> Este cuestionario reúne los datos concretos de la operación: cómo son
+                las instalaciones, quiénes son los instructores, cómo se maneja hoy la información de los alumnos y cómo
+                se atiende a quien pregunta por primera vez.</p>
+            <p>Donde hay opciones claras, elijan la que más se acerque. Si algún dato no lo tienen a la mano, pueden
+                dejarlo en blanco y completarlo después.</p>
+        </div>
+
+        <!-- ============ SECCIÓN I — SEDE ============ -->
+        <div class="section">
+            <div class="section-head">
+                <span class="section-num">I</span>
+                <div>
+                    <p class="section-title">Datos de la sede</p>
+                    <p class="section-sub">Para el sitio web y el directorio de contacto</p>
+                </div>
+            </div>
+            <div class="section-body">
+
+                <div class="q" data-title="Dirección completa de la sede (o de cada sede)" data-type="textarea">
+                    <p class="q-text">Dirección completa de la sede (o de cada sede, si hay más de una)</p>
+                    <textarea class="f"
+                        placeholder="Ej. Av. de las Fuentes 245, Col. Lomas de Tepexpan, Estado de México"></textarea>
+                </div>
+
+                <div class="grid2">
+                    <div class="q compact" data-title="Teléfono de contacto general" data-type="text">
+                        <p class="q-text">Teléfono de contacto general</p>
+                        <input class="f" type="text" placeholder="Ej. 55 1234 5678">
+                    </div>
+                    <div class="q compact" data-title="Correo electrónico de contacto general" data-type="text">
+                        <p class="q-text">Correo electrónico de contacto general</p>
+                        <input class="f" type="text" placeholder="Ej. contacto@clubazulejo.mx">
+                    </div>
+                </div>
+
+                <div class="q" data-title="Horario de atención de recepción" data-type="text">
+                    <p class="q-text">Horario de atención de recepción</p>
+                    <input class="f" type="text" placeholder="Ej. Lunes a viernes 6:00–21:00, sábados 8:00–14:00">
+                </div>
+
+                <div class="grid2">
+                    <div class="q compact" data-title="Número de albercas" data-type="radio">
+                        <p class="q-text">¿Cuántas albercas tienen?</p>
+                        <div class="options">
+                            <div class="opt"><input type="radio" name="q_alb" id="q_alb_a"><label for="q_alb_a"><span
+                                        class="opt-title">1</span></label></div>
+                            <div class="opt"><input type="radio" name="q_alb" id="q_alb_b"><label for="q_alb_b"><span
+                                        class="opt-title">2</span></label></div>
+                            <div class="opt"><input type="radio" name="q_alb" id="q_alb_c"><label for="q_alb_c"><span
+                                        class="opt-title">3</span></label></div>
+                            <div class="opt"><input type="radio" name="q_alb" id="q_alb_d"><label for="q_alb_d"><span
+                                        class="opt-title">4 o más</span></label></div>
+                        </div>
+                    </div>
+                    <div class="q compact" data-title="Características de las albercas" data-type="checkbox">
+                        <p class="q-text">¿Sus albercas son...?</p>
+                        <div class="options">
+                            <div class="opt"><input type="checkbox" name="q_albcar" id="q_albcar_a"><label
+                                    for="q_albcar_a"><span class="opt-title">Techadas</span></label></div>
+                            <div class="opt"><input type="checkbox" name="q_albcar" id="q_albcar_b"><label
+                                    for="q_albcar_b"><span class="opt-title">Al aire libre</span></label></div>
+                            <div class="opt"><input type="checkbox" name="q_albcar" id="q_albcar_c"><label
+                                    for="q_albcar_c"><span class="opt-title">Climatizadas</span></label></div>
+                            <div class="opt"><input type="checkbox" name="q_albcar" id="q_albcar_d"><label
+                                    for="q_albcar_d"><span class="opt-title">Mixtas</span></label></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="q" data-title="Dimensiones y profundidad de cada alberca" data-type="textarea">
+                    <p class="q-text">Dimensiones y profundidad de cada alberca</p>
+                    <textarea class="f" placeholder="Ej. Alberca 1: 25m x 12.5m, profundidad 1.2m–1.8m"></textarea>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ============ SECCIÓN II — CONTENIDO WEB ============ -->
+        <div class="section">
+            <div class="section-head">
+                <span class="section-num">II</span>
+                <div>
+                    <p class="section-title">Contenido para el sitio web</p>
+                    <p class="section-sub">Instructores, paquetes, niveles y material visual</p>
+                </div>
+            </div>
+            <div class="section-body">
+
+                <div class="q" data-title="Fotografía profesional de instalaciones" data-type="radio">
+                    <p class="q-text">¿Tienen fotografía profesional de las instalaciones?</p>
+                    <div class="options">
+                        <div class="opt"><input type="radio" name="q_foto" id="q_foto_a"><label for="q_foto_a"><span
+                                    class="opt-title">Sí, profesional y reciente</span></label></div>
+                        <div class="opt"><input type="radio" name="q_foto" id="q_foto_b"><label for="q_foto_b"><span
+                                    class="opt-title">Tenemos fotos, no profesionales</span></label></div>
+                        <div class="opt"><input type="radio" name="q_foto" id="q_foto_c"><label for="q_foto_c"><span
+                                    class="opt-title">No tenemos, hay que tomarlas</span></label></div>
+                    </div>
+                </div>
+
+                <div class="q" data-title="Número de instructores" data-type="radio">
+                    <p class="q-text">¿Cuántos instructores tienen actualmente?</p>
+                    <div class="options">
+                        <div class="opt"><input type="radio" name="q_instrn" id="q_instrn_a"><label
+                                for="q_instrn_a"><span class="opt-title">1 a 2</span></label></div>
+                        <div class="opt"><input type="radio" name="q_instrn" id="q_instrn_b"><label
+                                for="q_instrn_b"><span class="opt-title">3 a 5</span></label></div>
+                        <div class="opt"><input type="radio" name="q_instrn" id="q_instrn_c"><label
+                                for="q_instrn_c"><span class="opt-title">6 a 10</span></label></div>
+                        <div class="opt"><input type="radio" name="q_instrn" id="q_instrn_d"><label
+                                for="q_instrn_d"><span class="opt-title">Más de 10</span></label></div>
+                    </div>
+                </div>
+
+                <div class="q" data-title="Detalle de instructores (nombre, certificaciones, experiencia, especialidad)"
+                    data-type="textarea">
+                    <p class="q-text">Para cada instructor: nombre, certificaciones vigentes, años de experiencia y
+                        especialidad</p>
+                    <p class="q-hint">Ej. Ana Torres — Cruz Roja vigente, 6 años de experiencia, especialista en bebés.
+                        Si es más fácil, envíenla en un documento aparte.</p>
+                    <textarea class="f"></textarea>
+                </div>
+
+                <div class="q" data-title="Número de paquetes o planes" data-type="radio">
+                    <p class="q-text">¿Cuántos paquetes o planes manejan?</p>
+                    <div class="options">
+                        <div class="opt"><input type="radio" name="q_paqn" id="q_paqn_a"><label for="q_paqn_a"><span
+                                    class="opt-title">1 a 2</span></label></div>
+                        <div class="opt"><input type="radio" name="q_paqn" id="q_paqn_b"><label for="q_paqn_b"><span
+                                    class="opt-title">3 a 5</span></label></div>
+                        <div class="opt"><input type="radio" name="q_paqn" id="q_paqn_c"><label for="q_paqn_c"><span
+                                    class="opt-title">6 o más</span></label></div>
+                    </div>
+                </div>
+
+                <div class="q" data-title="Detalle de paquetes (qué incluye, precio, duración, frecuencia)"
+                    data-type="textarea">
+                    <p class="q-text">Para cada paquete: qué incluye, precio y periodicidad, duración de la clase y
+                        frecuencia semanal</p>
+                    <p class="q-hint">Ej. Paquete Delfín — 2 clases/semana de 45 min, $1,200 mensual</p>
+                    <textarea class="f"></textarea>
+                </div>
+
+                <div class="q" data-title="Niveles que manejan (curricula completa)" data-type="textarea">
+                    <p class="q-text">Niveles que manejan, en orden: nombre, edad recomendada y requisito para pasar al
+                        siguiente</p>
+                    <p class="q-hint">Ej. Nivel 1 Acuabebés (6 meses–2 años) → Nivel 2 Iniciación (3–5 años)...</p>
+                    <textarea class="f"></textarea>
+                </div>
+
+                <div class="grid2">
+                    <div class="q compact" data-title="Logros institucionales" data-type="radio">
+                        <p class="q-text">¿Tienen logros institucionales (torneos, reconocimientos)?</p>
+                        <div class="options">
+                            <div class="opt wide"><input type="radio" name="q_logros" id="q_logros_a"><label
+                                    for="q_logros_a"><span class="opt-title">Sí, con fotos</span></label></div>
+                            <div class="opt wide"><input type="radio" name="q_logros" id="q_logros_b"><label
+                                    for="q_logros_b"><span class="opt-title">Sí, sin fotos</span></label></div>
+                            <div class="opt wide"><input type="radio" name="q_logros" id="q_logros_c"><label
+                                    for="q_logros_c"><span class="opt-title">No, aún no</span></label></div>
+                        </div>
+                    </div>
+                    <div class="q compact" data-title="Reseñas de alumnos o padres" data-type="radio">
+                        <p class="q-text">¿Tienen reseñas de alumnos o padres?</p>
+                        <div class="options">
+                            <div class="opt wide"><input type="radio" name="q_testim" id="q_testim_a"><label
+                                    for="q_testim_a"><span class="opt-title">Sí, autorizadas para usarse</span></label>
+                            </div>
+                            <div class="opt wide"><input type="radio" name="q_testim" id="q_testim_b"><label
+                                    for="q_testim_b"><span class="opt-title">Tenemos, sin autorización</span></label>
+                            </div>
+                            <div class="opt wide"><input type="radio" name="q_testim" id="q_testim_c"><label
+                                    for="q_testim_c"><span class="opt-title">No tenemos</span></label></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ============ SECCIÓN III — OPERACIÓN Y ALUMNOS ============ -->
+        <div class="section">
+            <div class="section-head">
+                <span class="section-num">III</span>
+                <div>
+                    <p class="section-title">Operación diaria y alumnos</p>
+                    <p class="section-sub">Para migrar horarios, expedientes y pagos al nuevo sistema</p>
+                </div>
+            </div>
+            <div class="section-body">
+
+                <div class="grid2">
+                    <div class="q compact" data-title="¿En qué formato tienen el horario de grupos?" data-type="radio">
+                        <p class="q-text">¿En qué formato tienen el horario de grupos (día, hora, alberca, nivel,
+                            instructor, cupo)?</p>
+                        <div class="options">
+                            <div class="opt wide"><input type="radio" name="q_horario" id="q_horario_a"><label
+                                    for="q_horario_a"><span class="opt-title">En Excel o Word</span></label></div>
+                            <div class="opt wide"><input type="radio" name="q_horario" id="q_horario_b"><label
+                                    for="q_horario_b"><span class="opt-title">En SwimSoft</span></label></div>
+                            <div class="opt wide"><input type="radio" name="q_horario" id="q_horario_c"><label
+                                    for="q_horario_c"><span class="opt-title">Solo en papel</span></label></div>
+                            <div class="opt wide"><input type="radio" name="q_horario" id="q_horario_d"><label
+                                    for="q_horario_d"><span class="opt-title">No está documentado</span></label></div>
+                        </div>
+                    </div>
+                    <div class="q compact" data-title="¿En qué formato tienen el listado de alumnos?" data-type="radio">
+                        <p class="q-text">¿En qué formato tienen su listado actual de alumnos?</p>
+                        <div class="options">
+                            <div class="opt wide"><input type="radio" name="q_alumnos" id="q_alumnos_a"><label
+                                    for="q_alumnos_a"><span class="opt-title">En Excel</span></label></div>
+                            <div class="opt wide"><input type="radio" name="q_alumnos" id="q_alumnos_b"><label
+                                    for="q_alumnos_b"><span class="opt-title">En SwimSoft</span></label></div>
+                            <div class="opt wide"><input type="radio" name="q_alumnos" id="q_alumnos_c"><label
+                                    for="q_alumnos_c"><span class="opt-title">Solo en papel</span></label></div>
+                            <div class="opt wide"><input type="radio" name="q_alumnos" id="q_alumnos_d"><label
+                                    for="q_alumnos_d"><span class="opt-title">No hay listado centralizado</span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid2">
+                    <div class="q compact" data-title="¿Capturan datos médicos de los alumnos?" data-type="radio">
+                        <p class="q-text">¿Capturan datos médicos (alergias, condiciones)?</p>
+                        <div class="options">
+                            <div class="opt wide"><input type="radio" name="q_medico" id="q_medico_a"><label
+                                    for="q_medico_a"><span class="opt-title">Sí, en expediente formal</span></label>
+                            </div>
+                            <div class="opt wide"><input type="radio" name="q_medico" id="q_medico_b"><label
+                                    for="q_medico_b"><span class="opt-title">Sí, de forma informal</span></label></div>
+                            <div class="opt wide"><input type="radio" name="q_medico" id="q_medico_c"><label
+                                    for="q_medico_c"><span class="opt-title">No lo capturamos</span></label></div>
+                        </div>
+                    </div>
+                    <div class="q compact" data-title="¿Capturan contacto de emergencia?" data-type="radio">
+                        <p class="q-text">¿Capturan contacto de emergencia por alumno?</p>
+                        <div class="options">
+                            <div class="opt wide"><input type="radio" name="q_emerg" id="q_emerg_a"><label
+                                    for="q_emerg_a"><span class="opt-title">Sí, siempre</span></label></div>
+                            <div class="opt wide"><input type="radio" name="q_emerg" id="q_emerg_b"><label
+                                    for="q_emerg_b"><span class="opt-title">A veces</span></label></div>
+                            <div class="opt wide"><input type="radio" name="q_emerg" id="q_emerg_c"><label
+                                    for="q_emerg_c"><span class="opt-title">No lo pedimos</span></label></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="q" data-title="Formato actual del expediente médico del alumno" data-type="text">
+                    <p class="q-text">¿Qué formato usan hoy para el expediente médico del alumno?</p>
+                    <input class="f" type="text" placeholder="Ej. Ficha en papel al inscribirse">
+                </div>
+
+                <div class="q" data-title="Método de pago que aceptan hoy" data-type="checkbox">
+                    <p class="q-text">¿Qué métodos de pago aceptan hoy?</p>
+                    <div class="options">
+                        <div class="opt"><input type="checkbox" name="q_pago" id="q_pago_a"><label for="q_pago_a"><span
+                                    class="opt-title">Efectivo</span></label></div>
+                        <div class="opt"><input type="checkbox" name="q_pago" id="q_pago_b"><label for="q_pago_b"><span
+                                    class="opt-title">Tarjeta</span></label></div>
+                        <div class="opt"><input type="checkbox" name="q_pago" id="q_pago_c"><label for="q_pago_c"><span
+                                    class="opt-title">Transferencia</span></label></div>
+                        <div class="opt"><input type="checkbox" name="q_pago" id="q_pago_d"><label for="q_pago_d"><span
+                                    class="opt-title">Pasarela de pago en línea</span></label></div>
+                    </div>
+                </div>
+
+                <div class="grid2">
+                    <div class="q compact" data-title="Día de corte de pago mensual y recargo por atraso"
+                        data-type="text">
+                        <p class="q-text">Día de corte mensual y recargo por atraso</p>
+                        <input class="f" type="text" placeholder="Ej. corte el día 5, recargo del 10%">
+                    </div>
+                    <div class="q compact" data-title="Certificaciones o medallas físicas por nivel" data-type="radio">
+                        <p class="q-text">¿Entregan certificaciones o medallas físicas por nivel?</p>
+                        <div class="options">
+                            <div class="opt wide"><input type="radio" name="q_med" id="q_med_a"><label
+                                    for="q_med_a"><span class="opt-title">Sí, entregamos</span></label></div>
+                            <div class="opt wide"><input type="radio" name="q_med" id="q_med_b"><label
+                                    for="q_med_b"><span class="opt-title">No entregamos nada</span></label></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="q" data-title="Políticas de cancelación, reembolso o cambio de horario"
+                    data-type="textarea">
+                    <p class="q-text">¿Cuáles son sus políticas de cancelación, reembolso o cambio de horario?</p>
+                    <textarea class="f"
+                        placeholder="Tal como las manejan hoy — se mostrarán en el sitio y se programarán en el sistema"></textarea>
+                </div>
+
+                <div class="q" data-title="Política de crédito o prorrateo al cambiar de grupo o darse de baja"
+                    data-type="textarea">
+                    <p class="q-text">¿Cuál es su política de crédito o prorrateo cuando un alumno cambia de grupo o se
+                        da de baja a medio mes?</p>
+                    <textarea class="f"></textarea>
+                </div>
+
+                <div class="q" data-title="Roles y permisos de instructores en el sistema" data-type="text">
+                    <p class="q-text">¿Qué necesita ver o hacer cada instructor dentro del sistema?</p>
+                    <input class="f" type="text" placeholder="Ej. ven solo sus grupos, pueden subir evaluaciones">
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ============ SECCIÓN IV — PROSPECTOS ============ -->
+        <div class="section">
+            <div class="section-head">
+                <span class="section-num">IV</span>
+                <div>
+                    <p class="section-title">Atención a prospectos</p>
+                    <p class="section-sub">Cómo se atiende hoy a quien pregunta por primera vez</p>
+                </div>
+            </div>
+            <div class="section-body">
+
+                <div class="grid2">
+                    <div class="q compact" data-title="Quién da seguimiento a prospectos hoy" data-type="text">
+                        <p class="q-text">¿Quién da seguimiento a los prospectos hoy?</p>
+                        <input class="f" type="text" placeholder="Nombre(s)">
+                    </div>
+                    <div class="q compact" data-title="Horario real de atención a prospectos" data-type="text">
+                        <p class="q-text">¿Cuál es su horario real de atención?</p>
+                        <input class="f" type="text" placeholder="Días y horas">
+                    </div>
+                </div>
+
+                <div class="q" data-title="Preguntas más frecuentes de los papás antes de inscribirse"
+                    data-type="textarea">
+                    <p class="q-text">¿Cuáles son las preguntas más frecuentes que reciben de los papás antes de
+                        inscribirse?</p>
+                    <p class="q-hint">Ej. ¿A qué edad puede empezar mi hijo? ¿Qué pasa si llueve?</p>
+                    <textarea class="f"></textarea>
+                </div>
+
+                <div class="grid2">
+                    <div class="q compact" data-title="¿Tienen lista de precios oficial y vigente?" data-type="radio">
+                        <p class="q-text">¿Tienen lista de precios oficial y vigente?</p>
+                        <div class="options">
+                            <div class="opt wide"><input type="radio" name="q_precios" id="q_precios_a"><label
+                                    for="q_precios_a"><span class="opt-title">Sí, documentada</span></label></div>
+                            <div class="opt wide"><input type="radio" name="q_precios" id="q_precios_b"><label
+                                    for="q_precios_b"><span class="opt-title">Solo de palabra</span></label></div>
+                            <div class="opt wide"><input type="radio" name="q_precios" id="q_precios_c"><label
+                                    for="q_precios_c"><span class="opt-title">No está definida aún</span></label></div>
+                        </div>
+                    </div>
+                    <div class="q compact" data-title="Política de clase de prueba" data-type="radio">
+                        <p class="q-text">¿Cómo es su clase de prueba?</p>
+                        <div class="options">
+                            <div class="opt wide"><input type="radio" name="q_prueba" id="q_prueba_a"><label
+                                    for="q_prueba_a"><span class="opt-title">Es gratis</span></label></div>
+                            <div class="opt wide"><input type="radio" name="q_prueba" id="q_prueba_b"><label
+                                    for="q_prueba_b"><span class="opt-title">Tiene costo</span></label></div>
+                            <div class="opt wide"><input type="radio" name="q_prueba" id="q_prueba_c"><label
+                                    for="q_prueba_c"><span class="opt-title">No ofrecemos</span></label></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid2">
+                    <div class="q compact" data-title="Programa de referidos" data-type="radio">
+                        <p class="q-text">¿Manejan algún programa de referidos?</p>
+                        <div class="options">
+                            <div class="opt wide"><input type="radio" name="q_ref" id="q_ref_a"><label
+                                    for="q_ref_a"><span class="opt-title">Sí, formal</span></label></div>
+                            <div class="opt wide"><input type="radio" name="q_ref" id="q_ref_b"><label
+                                    for="q_ref_b"><span class="opt-title">Sí, informal</span></label></div>
+                            <div class="opt wide"><input type="radio" name="q_ref" id="q_ref_c"><label
+                                    for="q_ref_c"><span class="opt-title">No tenemos</span></label></div>
+                        </div>
+                    </div>
+                    <div class="q compact" data-title="¿Tienen guion o script de ventas?" data-type="radio">
+                        <p class="q-text">¿Tienen guion o script de ventas?</p>
+                        <div class="options">
+                            <div class="opt wide"><input type="radio" name="q_script" id="q_script_a"><label
+                                    for="q_script_a"><span class="opt-title">Sí</span></label></div>
+                            <div class="opt wide"><input type="radio" name="q_script" id="q_script_b"><label
+                                    for="q_script_b"><span class="opt-title">No, nos gustaría uno</span></label></div>
+                            <div class="opt wide"><input type="radio" name="q_script" id="q_script_c"><label
+                                    for="q_script_c"><span class="opt-title">No, improvisamos</span></label></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="q" data-title="Qué se considera 'prospecto perdido' y después de cuánto tiempo"
+                    data-type="textarea">
+                    <p class="q-text">¿Qué consideran un "prospecto perdido" y después de cuánto tiempo sin respuesta se
+                        deja de insistir?</p>
+                    <textarea class="f"
+                        placeholder="Ej. Después de 15 días sin respuesta a dos mensajes de seguimiento"></textarea>
+                </div>
+
+                <div class="q" data-title="WhatsApp Business dedicado" data-type="radio">
+                    <p class="q-text">¿Tienen número de WhatsApp Business dedicado?</p>
+                    <div class="options">
+                        <div class="opt"><input type="radio" name="q_wa" id="q_wa_a"><label for="q_wa_a"><span
+                                    class="opt-title">Sí, ya lo tenemos</span></label></div>
+                        <div class="opt"><input type="radio" name="q_wa" id="q_wa_b"><label for="q_wa_b"><span
+                                    class="opt-title">Es personal, hay que separar uno</span></label></div>
+                        <div class="opt"><input type="radio" name="q_wa" id="q_wa_c"><label for="q_wa_c"><span
+                                    class="opt-title">No tenemos ninguno</span></label></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-head">
+                <span class="section-num">V</span>
+                <div>
+                    <p class="section-title">Algo más</p>
+                    <p class="section-sub">Cualquier cosa que no hayamos preguntado</p>
+                </div>
+            </div>
+            <div class="section-body">
+                <div class="q" data-title="Algo más que quieran compartir" data-type="textarea">
+                    <p class="q-text">¿Algo más que quieran que sepamos? (opcional)</p>
+                    <textarea class="f"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="summary">
+            <h3>Resumen — Cuestionario de Recepción</h3>
+            <p class="sub">Listo para compartir con HummingX BI</p>
+            <div id="summaryText">Respondan las preguntas de arriba y presionen "Generar resumen" para verlo aquí.</div>
+            <div class="btn-row">
+                <button class="primary" onclick="generateSummary()">Generar resumen</button>
+                <button class="ghost" onclick="copySummary()">Copiar resumen</button>
+                <button class="ghost wa" onclick="sendWhatsApp()">Enviar por WhatsApp</button>
+            </div>
+            <p class="pending" id="pendingNote"></p>
+        </div>
+
+        <p class="signoff"><b>HummingX BI</b> — Cuestionario de Recepción · Club Azulejo</p>
+        <div class="footer">
+            <a href="https://hummingxbi.com" target="_blank" class="footer-link">hummingxbi.com</a>
+            <span class="divider-dot"></span>
+            <span class="footer-link">Folio HXBI-2026-025</span>
+        </div>
+
+    </div>
+
+    <script>
+        const WHATSAPP_NUMBER = "525575084267";
+
+        function trackableGroups() {
+            const names = new Set();
+            document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(el => names.add(el.name));
+            return Array.from(names);
+        }
+        function updateProgress() {
+            const groups = trackableGroups();
+            let answered = 0;
+            groups.forEach(name => { if (document.querySelector('input[name="' + name + '"]:checked')) answered++; });
+            document.getElementById('progressFill').style.width = (groups.length ? Math.round((answered / groups.length) * 100) : 0) + '%';
+        }
+        document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(el => el.addEventListener('change', updateProgress));
+
+        function generateSummary() {
+            const items = document.querySelectorAll('.q');
+            let lines = [], missing = 0;
+            items.forEach(q => {
+                const title = q.getAttribute('data-title');
+                const type = q.getAttribute('data-type');
+                if (type === 'radio') {
+                    const radio = q.querySelector('input[type="radio"]');
+                    if (!radio) return;
+                    const checked = document.querySelector('input[name="' + radio.name + '"]:checked');
+                    if (checked) {
+                        const label = checked.parentElement.querySelector('.opt-title');
+                        lines.push('• ' + title + ': ' + (label ? label.textContent.trim() : ''));
+                    } else missing++;
+                } else if (type === 'checkbox') {
+                    const boxes = q.querySelectorAll('input[type="checkbox"]:checked');
+                    if (boxes.length) {
+                        const vals = Array.from(boxes).map(b => (b.parentElement.querySelector('.opt-title') || {}).textContent?.trim() || '');
+                        lines.push('• ' + title + ': ' + vals.join(', '));
+                    } else missing++;
+                } else {
+                    const field = q.querySelector('input.f, textarea.f');
+                    const val = field ? field.value.trim() : '';
+                    if (val) lines.push('• ' + title + ': ' + val); else missing++;
+                }
+            });
+            const header = 'CUESTIONARIO DE RECEPCIÓN — CLUB AZULEJO\nFolio HXBI-2026-025\n' + '—'.repeat(30) + '\n\n';
+            document.getElementById('summaryText').textContent = header + lines.join('\n');
+            document.getElementById('pendingNote').textContent = missing > 0
+                ? 'Aún quedan ' + missing + ' campo(s) sin responder. Pueden generar el resumen igual y completarlos después.'
+                : 'Completaron todo. El resumen está listo para enviar.';
+        }
+
+        function copySummary() {
+            const text = document.getElementById('summaryText').textContent;
+            if (!text || text.includes('Respondan las preguntas')) generateSummary();
+            const finalText = document.getElementById('summaryText').textContent;
+            navigator.clipboard.writeText(finalText).then(() => {
+                document.getElementById('pendingNote').textContent = 'Resumen copiado.';
+            }).catch(() => { document.getElementById('pendingNote').textContent = 'No se pudo copiar automáticamente.'; });
+        }
+
+        function sendWhatsApp() {
+            const textEl = document.getElementById('summaryText');
+            if (!textEl.textContent || textEl.textContent.includes('Respondan las preguntas')) generateSummary();
+            const finalText = document.getElementById('summaryText').textContent;
+            window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(finalText), '_blank');
+        }
+
+        updateProgress();
+    </script>
+
+</body>
+
+</html>
