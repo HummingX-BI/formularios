@@ -191,3 +191,25 @@ export function cramersV(observed: number[][]): number {
   const k = Math.min(r - 1, c - 1);
   return Math.sqrt(res.stat / (total * k));
 }
+
+export function holmCorrection(pValues: number[]): number[] {
+  const n = pValues.length;
+  // Create an array of indices to keep track of original positions
+  const indexedPValues = pValues.map((p, i) => ({ p, i }));
+  // Sort in ascending order
+  indexedPValues.sort((a, b) => a.p - b.p);
+  
+  const adjPValues = new Array(n).fill(0);
+  let maxAdjP = 0;
+  
+  for (let k = 0; k < n; k++) {
+    const { p, i } = indexedPValues[k]!;
+    // Holm multiplier: n - k
+    const currentAdjP = Math.min(1, p * (n - k));
+    // Enforce monotonicity (adjusted p-values cannot decrease)
+    maxAdjP = Math.max(maxAdjP, currentAdjP);
+    adjPValues[i] = maxAdjP;
+  }
+  
+  return adjPValues;
+}

@@ -396,10 +396,10 @@ export const MODULE_REGISTRY: AppModule[] = [
     title: "Embudo de niveles",
     level: "E",
     route: "/c08/m8-1",
-    icon: "Activity",
-    shortDescription: "Desc para Embudo de niveles",
-    businessQuestion: "¿Pregunta de negocio?",
-    component: lazy(() => import('@/ui/ModulePlaceholder').then(m => ({ default: () => <m.ModulePlaceholder id="M8.1" /> })))
+    icon: "Filter",
+    shortDescription: "Flujo y estancamiento",
+    businessQuestion: "¿En qué nivel se atoran mis alumnos?",
+    component: lazy(() => import('./c08/M8_1_LevelFunnel'))
   },
   {
     id: "M8.2",
@@ -407,10 +407,10 @@ export const MODULE_REGISTRY: AppModule[] = [
     title: "Tiempo por nivel",
     level: "S",
     route: "/c08/m8-2",
-    icon: "Activity",
-    shortDescription: "Desc para Tiempo por nivel",
-    businessQuestion: "¿Pregunta de negocio?",
-    component: lazy(() => import('@/ui/ModulePlaceholder').then(m => ({ default: () => <m.ModulePlaceholder id="M8.2" /> })))
+    icon: "Clock",
+    shortDescription: "Distribución de tiempos",
+    businessQuestion: "¿Cuánto tardan los alumnos en avanzar?",
+    component: lazy(() => import('./c08/M8_2_TimeInLevel'))
   },
   {
     id: "M8.3",
@@ -418,10 +418,10 @@ export const MODULE_REGISTRY: AppModule[] = [
     title: "Efectividad por instructor",
     level: "S",
     route: "/c08/m8-3",
-    icon: "Activity",
-    shortDescription: "Desc para Efectividad por instructor",
-    businessQuestion: "¿Pregunta de negocio?",
-    component: lazy(() => import('@/ui/ModulePlaceholder').then(m => ({ default: () => <m.ModulePlaceholder id="M8.3" /> })))
+    icon: "Award",
+    shortDescription: "Retención docente",
+    businessQuestion: "¿Qué instructor retiene mejor y por qué?",
+    component: lazy(() => import('./c08/M8_3_InstructorEffectiveness'))
   },
   {
     id: "M9.1",
