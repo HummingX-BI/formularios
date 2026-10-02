@@ -4,7 +4,7 @@ import { kmeans } from '../kmeans';
 import { pca } from '../pca';
 import { decomposeTimeSeries } from '../timeseries';
 import { holtWinters } from '../forecast';
-import { monteCarlo } from '../montecarlo';
+import { monteCarlo, createDistributions } from '../montecarlo';
 
 const tasks: Record<string, (params: any) => any> = {
   kaplanMeier: (p) => kaplanMeier(p.times, p.events, p.maxTime),
@@ -30,6 +30,34 @@ const tasks: Record<string, (params: any) => any> = {
       return monteCarlo({ iterations: p.iterations, inputs, model, seed: p.seed, threshold: p.threshold });
     }
     
+    if (p.modelName === 'pantera_revenue') {
+      const dists = createDistributions(p.seed);
+      // p params: baseActive, ticket, convMean, convStd, churnMean, churnStd, prospMin, prospMode, prospMax
+      const inputs = {
+        conversion: () => dists.normal(p.convMean, p.convStd),
+        churn: () => dists.normal(p.churnMean, p.churnStd),
+        prospects: () => dists.triangular(p.prospMin, p.prospMode, p.prospMax),
+        ticket: () => dists.normal(p.ticket, p.ticket * 0.05)
+      };
+      const model = (i: Record<string, number>) => {
+        let active = p.baseActive;
+        let totalRev = 0;
+        // Simular 6 meses
+        for(let m=0; m<6; m++) {
+          const conv = Math.max(0, Math.min(1, i['conversion']!));
+          const chrn = Math.max(0, Math.min(1, i['churn']!));
+          const p = Math.max(0, i['prospects']!);
+          const t = Math.max(0, i['ticket']!);
+          
+          const nuevos = p * conv;
+          active = (active + nuevos) * (1 - chrn);
+          totalRev += active * t;
+        }
+        return totalRev;
+      };
+      return monteCarlo({ iterations: p.iterations, inputs, model, seed: p.seed, threshold: p.threshold });
+    }
+    
     // Default pass-through (only works in fallback main-thread mode)
     return monteCarlo(p);
   }
@@ -44,10 +72,10 @@ self.onmessage = async (e: MessageEvent) => {
       
       // Simulate progress for heavy tasks
       if (taskName === 'monteCarlo' || taskName === 'holtWinters' || taskName === 'logisticRegression') {
-        self.postMessage({ type: 'progress', id, progress: 0.1 });
-        await new Promise(r => setTimeout(r, 10)); // Yield
-        self.postMessage({ type: 'progress', id, progress: 0.5 });
-        await new Promise(r => setTimeout(r, 10)); // Yield
+        for(let i=1; i<=9; i++) {
+          self.postMessage({ type: 'progress', id, progress: i / 10 });
+          await new Promise(r => setTimeout(r, 20));
+        }
       }
       
       const result = handler(params);

@@ -517,10 +517,10 @@ export const MODULE_REGISTRY: AppModule[] = [
     title: "Catálogo y desempeño de modelos",
     level: "S",
     route: "/c10/m10-1",
-    icon: "Activity",
-    shortDescription: "Desc para Catálogo y desempeño de modelos",
-    businessQuestion: "¿Pregunta de negocio?",
-    component: lazy(() => import('@/ui/ModulePlaceholder').then(m => ({ default: () => <m.ModulePlaceholder id="M10.1" /> })))
+    icon: "Brain",
+    shortDescription: "Transparencia algorítmica",
+    businessQuestion: "¿Qué modelos están corriendo detrás de mi escuela?",
+    component: lazy(() => import('./c10/M10_1_ModelCatalog'))
   },
   {
     id: "M10.2",
@@ -528,32 +528,32 @@ export const MODULE_REGISTRY: AppModule[] = [
     title: "Segmentación de familias",
     level: "E",
     route: "/c10/m10-2",
-    icon: "Activity",
-    shortDescription: "Desc para Segmentación de familias",
-    businessQuestion: "¿Pregunta de negocio?",
-    component: lazy(() => import('@/ui/ModulePlaceholder').then(m => ({ default: () => <m.ModulePlaceholder id="M10.2" /> })))
+    icon: "Users",
+    shortDescription: "Perfiles automáticos",
+    businessQuestion: "¿Qué tipos de familias tengo y qué necesita cada una?",
+    component: lazy(() => import('./c10/M10_2_FamilySegmentation'))
   },
   {
     id: "M10.3",
     categoryId: 10,
-    title: "Pronóstico",
+    title: "Pronóstico de inscripciones e ingresos",
     level: "E",
     route: "/c10/m10-3",
-    icon: "Activity",
-    shortDescription: "Desc para Pronóstico",
-    businessQuestion: "¿Pregunta de negocio?",
-    component: lazy(() => import('@/ui/ModulePlaceholder').then(m => ({ default: () => <m.ModulePlaceholder id="M10.3" /> })))
+    icon: "TrendingUp",
+    shortDescription: "Proyección a 6 meses",
+    businessQuestion: "¿Qué va a pasar en los próximos 6 meses?",
+    component: lazy(() => import('./c10/M10_3_Forecast'))
   },
   {
     id: "M10.4",
     categoryId: 10,
-    title: "Simulación Monte Carlo",
+    title: "Simulador de escenarios Monte Carlo",
     level: "S",
     route: "/c10/m10-4",
-    icon: "Activity",
-    shortDescription: "Desc para Simulación Monte Carlo",
-    businessQuestion: "¿Pregunta de negocio?",
-    component: lazy(() => import('@/ui/ModulePlaceholder').then(m => ({ default: () => <m.ModulePlaceholder id="M10.4" /> })))
+    icon: "Dices",
+    shortDescription: "Probabilidad de metas",
+    businessQuestion: "¿Qué tan probable es que llegue a mi meta de ingresos?",
+    component: lazy(() => import('./c10/M10_4_MonteCarlo'))
   },
   {
     id: "M11.1",
