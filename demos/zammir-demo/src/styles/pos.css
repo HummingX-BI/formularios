@@ -1,0 +1,256 @@
+.pos-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.pos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  background: var(--c-panel);
+  padding: 1.5rem;
+  border-radius: var(--r-md);
+  border: 1px solid rgba(124,133,146,0.15);
+}
+
+.pos-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--c-ink);
+}
+
+.pos-cajero-select {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.pos-cajero-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--c-ink-muted);
+  text-transform: uppercase;
+}
+.pos-cajero-dropdown {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--r-md);
+  border: 1px solid rgba(124,133,146,0.3);
+  background: var(--c-paper);
+}
+
+.pos-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.pos-tab {
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: 1px solid rgba(124,133,146,0.2);
+  border-radius: var(--r-md);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--c-ink-soft);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.pos-tab.active {
+  background: var(--c-laton);
+  color: #fff;
+  border-color: var(--c-laton);
+}
+
+.pos-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  flex: 1;
+}
+
+.pos-box {
+  background: #fff;
+  border-radius: var(--r-md);
+  border: 1px solid rgba(124,133,146,0.15);
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.pos-box-title {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--c-ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(124,133,146,0.1);
+  padding-bottom: 0.75rem;
+}
+
+.pos-product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+.pos-product-card {
+  border: 1px solid rgba(124,133,146,0.2);
+  border-radius: var(--r-sm);
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.pos-product-card:hover {
+  border-color: var(--c-laton);
+  background: rgba(156,122,60,0.02);
+}
+.pos-product-name {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--c-ink);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+.pos-product-price {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--c-laton);
+  font-weight: 600;
+}
+
+.pos-cart-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 150px;
+}
+.pos-cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+}
+.pos-cart-total {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  border-top: 1px dashed rgba(124,133,146,0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.pos-cart-total-label {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: var(--c-ink-soft);
+}
+.pos-cart-total-val {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--c-ink);
+}
+
+.pos-pay-methods {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+.pos-pay-btn {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid rgba(124,133,146,0.3);
+  background: var(--c-paper);
+  border-radius: var(--r-sm);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+.pos-pay-btn.active {
+  background: rgba(156,122,60,0.1);
+  border-color: var(--c-laton);
+  color: var(--c-laton);
+  font-weight: 600;
+}
+
+.pos-cobrar-btn {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 1.25rem;
+  background: var(--c-success);
+  color: #fff;
+  border: none;
+  border-radius: var(--r-md);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.pos-cobrar-btn:hover {
+  background: #219653;
+  transform: translateY(-2px);
+}
+.pos-cobrar-btn:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Corte de caja view */
+.pos-corte-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.pos-corte-card {
+  background: #fff;
+  border-radius: var(--r-lg);
+  padding: 2.5rem;
+  border: 1px solid rgba(124,133,146,0.15);
+  box-shadow: var(--shadow-sm);
+}
+
+.pos-corte-hero {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--c-ink);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.pos-corte-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(124,133,146,0.1);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 900px) {
+  .pos-layout {
+    grid-template-columns: 1fr;
+  }
+  .pos-corte-layout {
+    grid-template-columns: 1fr;
+  }
+}
+.pos-corte-row:last-child {
+  border-bottom: none;
+}
+.pos-corte-label {
+  color: var(--c-ink-soft);
+}
+.pos-corte-val {
+  font-weight: 600;
+  color: var(--c-ink);
+}

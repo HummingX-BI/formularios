@@ -1,0 +1,46 @@
+/* ... append to dueno.css ... */
+
+@media (max-width: 768px) {
+  .d-layout {
+    flex-direction: column;
+  }
+  .d-sidebar {
+    width: 100%;
+    padding: 1.5rem;
+    border-right: none;
+    border-bottom: 1px solid rgba(124,133,146,0.15);
+  }
+  .d-logo {
+    margin-bottom: 1.5rem;
+  }
+  .d-nav {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    /* Hide scrollbar for clean look */
+    scrollbar-width: none;
+  }
+  .d-nav::-webkit-scrollbar {
+    display: none;
+  }
+  .d-nav-item {
+    white-space: nowrap;
+    margin-right: 0.5rem;
+  }
+  .d-nav-spacer {
+    display: none;
+  }
+  
+  .d-header {
+    padding: 1.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  .d-header-quote {
+    text-align: left;
+  }
+  .d-content {
+    padding: 1.5rem;
+  }
+}

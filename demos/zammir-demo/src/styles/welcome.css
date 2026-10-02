@@ -1,0 +1,364 @@
+﻿/* ════════════════════════════════════════════════════
+   WELCOME PAGE — Bienvenida cinematografica ZAMMIR
+   HummingX BI Sistema Visual
+   ════════════════════════════════════════════════════ */
+
+.w-main {
+  background: #26241F;
+  overflow-x: hidden;
+}
+
+/* ─── HERO ─────────────────────────────────────────── */
+.w-hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 2rem;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 65% 55% at 15% 65%, rgba(185,198,204,0.06) 0%, transparent 100%),
+    radial-gradient(ellipse 55% 45% at 85% 25%, rgba(156,122,60,0.08) 0%, transparent 100%),
+    #26241F;
+}
+
+/* Lineas de perfil de aluminio */
+.w-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.w-line-h {
+  position: absolute;
+  left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(185,198,204,0.18) 50%, transparent 100%);
+}
+.w-line-h--top { top: 18%; }
+.w-line-h--mid {
+  top: 50%;
+  background: linear-gradient(90deg, transparent 0%, rgba(156,122,60,0.12) 50%, transparent 100%);
+}
+.w-line-h--bot { bottom: 18%; top: auto; }
+.w-line-v {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(185,198,204,0.1) 50%, transparent);
+}
+.w-line-v--left { left: 8%; }
+.w-line-v--right { right: 8%; }
+
+/* Badge ZAMMIR */
+.w-badge {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.35em;
+  color: var(--c-laton);
+  text-transform: uppercase;
+  padding: 0.45rem 1.25rem;
+  border: 1px solid rgba(156,122,60,0.35);
+  border-radius: 999px;
+  margin-bottom: 2.5rem;
+  background: rgba(156,122,60,0.06);
+}
+
+/* Headline principal */
+.w-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 9vw, 7rem);
+  font-weight: 900;
+  color: var(--c-paper);
+  text-align: center;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  max-width: 840px;
+  margin-bottom: 1.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 0.28em;
+}
+.w-word-clip {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.w-word { display: inline-block; }
+
+/* Subtitle ubicacion */
+.w-hero-sub {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: rgba(244,241,236,0.32);
+  letter-spacing: 0.14em;
+  text-align: center;
+}
+
+/* Cue de scroll */
+.w-cue {
+  position: absolute;
+  bottom: 2.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+}
+.w-cue-text {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: rgba(244,241,236,0.28);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.w-cue-line {
+  width: 1px;
+  height: 52px;
+  background: linear-gradient(to bottom, rgba(244,241,236,0.45), transparent);
+  animation: cuePulse 2.6s ease-in-out infinite;
+}
+@keyframes cuePulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(1) translateY(0); }
+  50% { opacity: 0.75; transform: scaleY(1.18) translateY(5px); }
+}
+
+/* ─── MOMENTOS NARRATIVOS ──────────────────────────── */
+.w-moment {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.w-moment-body {
+  max-width: 680px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* Numeros */
+.w-num {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  color: var(--c-laton);
+  text-transform: uppercase;
+  margin-bottom: 1.75rem;
+}
+.w-num--gold { color: var(--c-laton-light); }
+
+/* Titulos de momento */
+.w-moment-h {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4.5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  margin-bottom: 1.5rem;
+  color: var(--c-ink);
+}
+.w-moment-h--light { color: var(--c-paper); }
+
+/* Texto de momento */
+.w-moment-p {
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  line-height: 1.78;
+  color: var(--c-ink-soft);
+  max-width: 560px;
+}
+.w-moment-p--dim { color: rgba(244,241,236,0.48); }
+
+/* Linea acento */
+.w-accent {
+  margin-top: 2.5rem;
+  width: 44px;
+  height: 2px;
+  background: var(--c-laton);
+  border-radius: 1px;
+}
+.w-accent--gold {
+  background: var(--c-laton-light);
+  box-shadow: 0 0 14px rgba(196,168,106,0.45);
+}
+
+/* M1 — Papel calido */
+.w-m1 { background: var(--c-paper); }
+.w-m1::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(124,133,146,0.2) 50%, transparent);
+}
+
+/* M2 — Panel */
+.w-m2 { background: var(--c-panel); }
+.w-m2::before {
+  content: '';
+  position: absolute;
+  left: 6%; top: 50%;
+  transform: translateY(-50%);
+  width: 1px; height: 55%;
+  background: linear-gradient(to bottom, transparent, rgba(185,198,204,0.3), transparent);
+}
+
+/* M3 — Oscuro / transformacion */
+.w-m3 { background: #1B1915; }
+.w-m3-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 75% 55% at 50% 50%, rgba(156,122,60,0.13) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+/* ─── CTA ──────────────────────────────────────────── */
+.w-cta {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 2rem;
+  background: var(--c-paper);
+  position: relative;
+}
+.w-cta::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(156,122,60,0.35), transparent);
+}
+.w-cta-body {
+  max-width: 720px;
+  width: 100%;
+  text-align: center;
+}
+.w-cta-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  color: var(--c-laton);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.w-cta-h {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 2.85rem);
+  font-weight: 700;
+  color: var(--c-ink);
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+  margin-bottom: 3rem;
+}
+
+/* Grid de botones */
+.w-cta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+@media (max-width: 580px) {
+  .w-cta-grid { grid-template-columns: 1fr; }
+  .w-hero-title { font-size: clamp(2.5rem, 11vw, 4rem); }
+  .w-moment-h { font-size: clamp(1.75rem, 7vw, 2.5rem); }
+  .w-cta-h { font-size: clamp(1.5rem, 7vw, 2rem); }
+}
+
+.w-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1.75rem 1.5rem;
+  border-radius: var(--r-xl);
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  gap: 0.45rem;
+  transition: transform 260ms cubic-bezier(0.4,0,0.2,1),
+              box-shadow 260ms cubic-bezier(0.4,0,0.2,1),
+              border-color 260ms;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 160px;
+}
+.w-btn:hover { transform: translateY(-4px); }
+.w-btn:active { transform: translateY(-1px) scale(0.99); }
+
+.w-btn--dark {
+  background: var(--c-ink);
+  box-shadow: 0 8px 32px rgba(38,36,31,0.22);
+}
+.w-btn--dark:hover { box-shadow: 0 16px 48px rgba(38,36,31,0.32); }
+
+.w-btn--light {
+  background: var(--c-panel);
+  border: 1.5px solid rgba(38,36,31,0.1);
+  box-shadow: var(--shadow-sm);
+}
+.w-btn--light:hover {
+  border-color: var(--c-laton);
+  box-shadow: var(--shadow-laton);
+}
+
+.w-btn-pill {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(156,122,60,0.2);
+  color: var(--c-laton-light);
+  margin-bottom: 0.15rem;
+  display: inline-block;
+}
+.w-btn-pill--light {
+  background: rgba(156,122,60,0.1);
+  color: var(--c-laton);
+}
+
+.w-btn-name {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--c-paper);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+.w-btn-name--dark { color: var(--c-ink); }
+
+.w-btn-desc {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: rgba(244,241,236,0.42);
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+}
+.w-btn-desc--dark { color: var(--c-ink-muted); }
+
+/* Quote motivacional */
+.w-cta-quote {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--c-ink-soft);
+  line-height: 1.75;
+  max-width: 500px;
+  margin: 0 auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(124,133,146,0.15);
+}

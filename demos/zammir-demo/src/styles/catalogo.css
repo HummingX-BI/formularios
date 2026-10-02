@@ -1,0 +1,196 @@
+.cat-container {
+  padding-bottom: 2rem;
+}
+
+.cat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.cat-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--c-ink);
+  font-weight: 700;
+}
+
+.cat-btn-add {
+  background: var(--c-laton);
+  color: var(--c-paper);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--r-md);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+}
+.cat-btn-add:hover {
+  background: #896931;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(156,122,60,0.3);
+}
+
+.cat-group {
+  margin-bottom: 3rem;
+}
+
+.cat-group-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--c-ink);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid rgba(124,133,146,0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.cat-group-count {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  background: rgba(124,133,146,0.1);
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  color: var(--c-ink-muted);
+}
+
+.cat-table-wrapper {
+  background: var(--c-paper);
+  border-radius: var(--r-md);
+  border: 1px solid rgba(124,133,146,0.15);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.cat-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cat-table th {
+  text-align: left;
+  padding: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--c-ink-soft);
+  text-transform: uppercase;
+  background: rgba(124,133,146,0.03);
+  border-bottom: 1px solid rgba(124,133,146,0.15);
+}
+
+.cat-table td {
+  padding: 1rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--c-ink);
+  border-bottom: 1px solid rgba(124,133,146,0.08);
+}
+.cat-table tr:last-child td {
+  border-bottom: none;
+}
+.cat-table tr:hover td {
+  background: rgba(156,122,60,0.02);
+}
+
+.cat-sku {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--c-ink-muted);
+  background: rgba(124,133,146,0.1);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.cat-badge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+.cat-badge.medida { background: rgba(52, 152, 219, 0.1); color: #2980B9; border: 1px solid rgba(52, 152, 219, 0.2); }
+.cat-badge.pieza { background: rgba(155, 89, 182, 0.1); color: #8E44AD; border: 1px solid rgba(155, 89, 182, 0.2); }
+.cat-badge.servicio { background: rgba(230, 126, 34, 0.1); color: #D35400; border: 1px solid rgba(230, 126, 34, 0.2); }
+
+/* Modal */
+.cat-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(38,36,31,0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.cat-modal {
+  background: var(--c-panel);
+  width: 90%;
+  max-width: 500px;
+  border-radius: var(--r-xl);
+  padding: 2.5rem;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  position: relative;
+}
+
+.cat-modal-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--c-ink-muted);
+  cursor: pointer;
+}
+
+.cat-modal-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--c-ink);
+}
+
+.cat-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cat-modal-form label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--c-ink-soft);
+  text-transform: uppercase;
+}
+.cat-modal-form input, .cat-modal-form select {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 0.75rem;
+  border: 1px solid rgba(124,133,146,0.3);
+  border-radius: var(--r-sm);
+  background: var(--c-paper);
+}
+
+.cat-modal-btn {
+  background: var(--c-ink);
+  color: var(--c-paper);
+  border: none;
+  padding: 1rem;
+  border-radius: var(--r-md);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 1rem;
+}

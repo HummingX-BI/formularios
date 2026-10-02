@@ -1,0 +1,214 @@
+/* ═══════════════════════════════════════════════════════════════════
+   ZAMMIR DEMO — Global Styles
+   Sistema visual HummingX BI
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap');
+
+/* ─── CSS Custom Properties (Tokens) ─────────────────────────────── */
+:root {
+  /* Colores */
+  --c-paper: #F4F1EC;
+  --c-panel: #ECE8E0;
+  --c-panel-dark: #E0DBD1;
+  --c-ink: #26241F;
+  --c-ink-soft: #57534A;
+  --c-ink-muted: #8C8880;
+  --c-laton: #0F4C81;
+  --c-laton-dark: #0A3153;
+  --c-laton-light: #4A7DAB;
+  --c-oliva: #5C6B4F;
+  --c-aluminio: #7C8592;
+  --c-vidrio: #B9C6CC;
+  --c-vidrio-light: #D6E1E5;
+  --c-success: #4A7C59;
+  --c-success-bg: #EBF4EE;
+  --c-warning: #B07D2A;
+  --c-warning-bg: #FDF4E3;
+  --c-danger: #8B3A3A;
+  --c-danger-bg: #F9EBEB;
+  --c-white: #FFFFFF;
+
+  /* Tipografía */
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Source Serif 4', serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 3px rgba(38,36,31,0.08);
+  --shadow-md: 0 4px 12px rgba(38,36,31,0.10);
+  --shadow-lg: 0 8px 24px rgba(38,36,31,0.12);
+  --shadow-xl: 0 16px 40px rgba(38,36,31,0.14);
+  --shadow-laton: 0 4px 20px rgba(15,76,129,0.25);
+  --shadow-glow: 0 0 40px rgba(185,198,204,0.35);
+
+  /* Transiciones */
+  --t-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --t-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --t-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  --t-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Radios */
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-xl: 16px;
+  --r-2xl: 24px;
+  --r-full: 9999px;
+}
+
+/* ─── Reset y Base ────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: auto; /* Lenis maneja el scroll suave */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: var(--c-paper);
+  color: var(--c-ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── Tipografía Base ─────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--c-ink);
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: clamp(2.25rem, 5vw, 4.5rem); }
+h2 { font-size: clamp(1.75rem, 3.5vw, 3rem); }
+h3 { font-size: clamp(1.25rem, 2.5vw, 1.875rem); }
+h4 { font-size: 1.25rem; }
+
+p {
+  font-family: var(--font-body);
+  color: var(--c-ink-soft);
+  line-height: 1.65;
+}
+
+/* ─── Utilitarios de texto ────────────────────────────────────────── */
+.text-display { font-family: var(--font-display); }
+.text-body { font-family: var(--font-body); }
+.text-mono { font-family: var(--font-mono); font-size: 0.875em; }
+
+.text-ink { color: var(--c-ink); }
+.text-soft { color: var(--c-ink-soft); }
+.text-muted { color: var(--c-ink-muted); }
+.text-laton { color: var(--c-laton); }
+.text-oliva { color: var(--c-oliva); }
+.text-vidrio { color: var(--c-vidrio); }
+
+/* ─── Animaciones de reveal (para GSAP/Framer Motion) ────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity var(--t-slow), transform var(--t-slow);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Scrollbar personalizado ─────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--c-panel); }
+::-webkit-scrollbar-thumb {
+  background: var(--c-aluminio);
+  border-radius: var(--r-full);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--c-laton); }
+
+/* ─── Selección de texto ──────────────────────────────────────────── */
+::selection {
+  background: var(--c-laton-light);
+  color: var(--c-ink);
+}
+
+/* ─── Focus visible accesible ────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--c-laton);
+  outline-offset: 3px;
+  border-radius: var(--r-sm);
+}
+
+/* ─── Botones base ────────────────────────────────────────────────── */
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+a { color: inherit; text-decoration: none; }
+
+/* ─── Textura vidrio esmerilado (fondo de secciones especiales) ───── */
+.texture-glass {
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(185,198,204,0.12) 0%, transparent 60%),
+    radial-gradient(circle at 80% 50%, rgba(185,198,204,0.08) 0%, transparent 60%);
+  background-size: 100% 100%;
+}
+
+/* ─── Separadores de perfil de aluminio ──────────────────────────── */
+.divider-aluminio {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--c-aluminio), transparent);
+  opacity: 0.5;
+  margin: 2rem 0;
+}
+
+/* ─── Status badges ──────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--r-full);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.badge-pending { background: var(--c-warning-bg); color: var(--c-warning); }
+.badge-process { background: var(--c-vidrio-light); color: var(--c-ink-soft); }
+.badge-ready   { background: var(--c-success-bg); color: var(--c-success); }
+.badge-done    { background: var(--c-panel-dark); color: var(--c-ink-muted); }
+
+/* ─── Animaciones ─────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-fade-up { animation: fadeUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+.animate-fade-in { animation: fadeIn 0.6s ease forwards; }
