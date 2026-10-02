@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Panel de Administración Inteligente — Club Azulejo Escuela de Natación. Demo por HummingX BI." />
+    <title>Club Azulejo · Panel de Administración</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      window.addEventListener('error', function(e) {
+        var err = document.createElement('pre');
+        err.style.color = 'red';
+        err.style.padding = '20px';
+        err.style.zIndex = 9999;
+        err.style.position = 'relative';
+        err.style.background = 'white';
+        err.textContent = e.error ? e.error.stack : e.message;
+        document.body.appendChild(err);
+      });
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

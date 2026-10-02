@@ -1,0 +1,10 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Data Generator Validation and Audit > takes a snapshot of key metrics for seed 2026 1`] = `
+{
+  "activeStudents": 561,
+  "churnedStudents": 539,
+  "totalCharges": 18578992,
+  "totalPayments": 18163487,
+}
+`;

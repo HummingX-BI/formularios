@@ -1,0 +1,16 @@
+export const STORIES = {
+  H1: { id: 'H1', description: 'Distribución de edades y niveles', params: {  }, tolerances: {} },
+  H2: { id: 'H2', description: 'Cohortes y retención', params: { ret1m: 0.91, ret3m: 0.64, ret6m: 0.755, instructorEffects: { mariana: 0.15, ricardo: -0.15, others: 0 } }, tolerances: {} },
+  H3: { id: 'H3', description: 'Demografía (3+ niños)', params: { share: 0.08 }, tolerances: {} },
+  H4: { id: 'H4', description: 'Embudo de ventas', params: {}, tolerances: {} },
+  H5: { id: 'H5', description: 'Evaluación de instructores', params: { topScore: 0.82, bottomScore: 0.71, marianaPedagogy: 0.85, ricardoPedagogy: 0.65 }, tolerances: {} },
+  H6: { id: 'H6', description: 'Caídas de asistencia', params: {}, tolerances: {} },
+  H7: { id: 'H7', description: 'Modelo de riesgo de baja', params: { baseRisk: 0.06, threeAbsencesRisk: 0.30, prevalence: 0.12, sensitivity: 0.60 }, tolerances: {} },
+  H8: { id: 'H8', description: 'Sobrevivencia', params: {}, tolerances: {} },
+  H9: { id: 'H9', description: 'Rentabilidad de horarios', params: {}, tolerances: {} },
+  H10: { id: 'H10', description: 'Estacionalidad de inscripciones', params: {}, tolerances: {} },
+  H11: { id: 'H11', description: 'Correlaciones', params: {}, tolerances: {} },
+  H12: { id: 'H12', description: 'Simulación Monte Carlo', params: {}, tolerances: {} },
+  H13: { id: 'H13', description: 'Recomendaciones y Prescriptivo', params: {}, tolerances: {} },
+  H14: { id: 'H14', description: 'Asistente IA Analítico', params: {}, tolerances: {} },
+};
