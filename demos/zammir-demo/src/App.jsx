@@ -5,6 +5,7 @@ import Welcome from './pages/Welcome';
 import Dueno from './pages/Dueno';
 import Cliente from './pages/Cliente';
 import ClientePortal from './pages/ClientePortal';
+import FacturaPortal from './pages/FacturaPortal';
 
 function App() {
   useLenis();
@@ -15,6 +16,7 @@ function App() {
         <Route path="/dueno" element={<Dueno />} />
         <Route path="/cliente" element={<Cliente />} />
         <Route path="/cliente-portal" element={<ClientePortal />} />
+        <Route path="/factura" element={<FacturaPortal />} />
       </Routes>
     </BrowserRouter>
   );
