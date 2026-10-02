@@ -561,10 +561,10 @@ export const MODULE_REGISTRY: AppModule[] = [
     title: "Recomendaciones priorizadas",
     level: "S",
     route: "/c11/m11-1",
-    icon: "Activity",
-    shortDescription: "Desc para Recomendaciones priorizadas",
-    businessQuestion: "¿Pregunta de negocio?",
-    component: lazy(() => import('@/ui/ModulePlaceholder').then(m => ({ default: () => <m.ModulePlaceholder id="M11.1" /> })))
+    icon: "Lightbulb",
+    shortDescription: "Sugerencias inteligentes",
+    businessQuestion: "¿Qué debo hacer hoy para mejorar mi escuela?",
+    component: lazy(() => import('./c11/M11_1_Recommendations'))
   },
   {
     id: "M11.2",
@@ -572,10 +572,10 @@ export const MODULE_REGISTRY: AppModule[] = [
     title: "Simulador de escenarios",
     level: "E",
     route: "/c11/m11-2",
-    icon: "Activity",
-    shortDescription: "Desc para Simulador de escenarios",
-    businessQuestion: "¿Pregunta de negocio?",
-    component: lazy(() => import('@/ui/ModulePlaceholder').then(m => ({ default: () => <m.ModulePlaceholder id="M11.2" /> })))
+    icon: "SlidersHorizontal",
+    shortDescription: "Modelado What-If",
+    businessQuestion: "¿Qué pasa si muevo precio, descuentos, grupos o retención?",
+    component: lazy(() => import('./c11/M11_2_Simulator'))
   },
   {
     id: "M11.3",
@@ -583,10 +583,10 @@ export const MODULE_REGISTRY: AppModule[] = [
     title: "Plan de acción y medición",
     level: "S",
     route: "/c11/m11-3",
-    icon: "Activity",
-    shortDescription: "Desc para Plan de acción y medición",
-    businessQuestion: "¿Pregunta de negocio?",
-    component: lazy(() => import('@/ui/ModulePlaceholder').then(m => ({ default: () => <m.ModulePlaceholder id="M11.3" /> })))
+    icon: "CheckSquare",
+    shortDescription: "Kanban de tareas",
+    businessQuestion: "¿Qué estamos haciendo y está funcionando?",
+    component: lazy(() => import('./c11/M11_3_ActionPlan'))
   },
   {
     id: "M12.1",
