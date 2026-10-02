@@ -426,13 +426,13 @@ export const MODULE_REGISTRY: AppModule[] = [
   {
     id: "M9.1",
     categoryId: 9,
-    title: "Descriptiva",
+    title: "Estadística descriptiva",
     level: "S",
     route: "/c09/m9-1",
-    icon: "Activity",
-    shortDescription: "Desc para Descriptiva",
-    businessQuestion: "¿Pregunta de negocio?",
-    component: lazy(() => import('@/ui/ModulePlaceholder').then(m => ({ default: () => <m.ModulePlaceholder id="M9.1" /> })))
+    icon: "BarChart2",
+    shortDescription: "Distribución y métricas",
+    businessQuestion: "¿Cómo se distribuyen mis alumnos y mis cifras?",
+    component: lazy(() => import('./c09/M9_1_Descriptive'))
   },
   {
     id: "M9.2",
@@ -440,10 +440,10 @@ export const MODULE_REGISTRY: AppModule[] = [
     title: "Percentiles y cuantiles",
     level: "S",
     route: "/c09/m9-2",
-    icon: "Activity",
-    shortDescription: "Desc para Percentiles y cuantiles",
-    businessQuestion: "¿Pregunta de negocio?",
-    component: lazy(() => import('@/ui/ModulePlaceholder').then(m => ({ default: () => <m.ModulePlaceholder id="M9.2" /> })))
+    icon: "Percent",
+    shortDescription: "Posición relativa",
+    businessQuestion: "¿Dónde está un alumno respecto a los demás?",
+    component: lazy(() => import('./c09/M9_2_Percentiles'))
   },
   {
     id: "M9.3",
@@ -452,20 +452,20 @@ export const MODULE_REGISTRY: AppModule[] = [
     level: "E",
     route: "/c09/m9-3",
     icon: "Activity",
-    shortDescription: "Desc para Binomial y Poisson",
-    businessQuestion: "¿Pregunta de negocio?",
-    component: lazy(() => import('@/ui/ModulePlaceholder').then(m => ({ default: () => <m.ModulePlaceholder id="M9.3" /> })))
+    shortDescription: "Probabilidad de eventos",
+    businessQuestion: "¿Qué tan realistas son mis metas de inscripción y bajas?",
+    component: lazy(() => import('./c09/M9_3_BinomialPoisson'))
   },
   {
     id: "M9.4",
     categoryId: 9,
-    title: "Probabilidad condicional y Bayes",
+    title: "Probabilidad condicional",
     level: "E",
     route: "/c09/m9-4",
-    icon: "Activity",
-    shortDescription: "Desc para Probabilidad condicional y Bayes",
-    businessQuestion: "¿Pregunta de negocio?",
-    component: lazy(() => import('@/ui/ModulePlaceholder').then(m => ({ default: () => <m.ModulePlaceholder id="M9.4" /> })))
+    icon: "GitMerge",
+    shortDescription: "Teorema de Bayes",
+    businessQuestion: "Si ocurre X, ¿qué tan probable es que ocurra Y?",
+    component: lazy(() => import('./c09/M9_4_Bayes'))
   },
   {
     id: "M9.5",
@@ -474,9 +474,9 @@ export const MODULE_REGISTRY: AppModule[] = [
     level: "S",
     route: "/c09/m9-5",
     icon: "Activity",
-    shortDescription: "Desc para Intervalos y pruebas de hipótesis",
-    businessQuestion: "¿Pregunta de negocio?",
-    component: lazy(() => import('@/ui/ModulePlaceholder').then(m => ({ default: () => <m.ModulePlaceholder id="M9.5" /> })))
+    shortDescription: "Evaluación de diferencias",
+    businessQuestion: "¿Esta diferencia es real o puede ser azar?",
+    component: lazy(() => import('./c09/M9_5_Inference'))
   },
   {
     id: "M9.6",
@@ -485,9 +485,9 @@ export const MODULE_REGISTRY: AppModule[] = [
     level: "S",
     route: "/c09/m9-6",
     icon: "Activity",
-    shortDescription: "Desc para Correlaciones",
-    businessQuestion: "¿Pregunta de negocio?",
-    component: lazy(() => import('@/ui/ModulePlaceholder').then(m => ({ default: () => <m.ModulePlaceholder id="M9.6" /> })))
+    shortDescription: "Relaciones entre variables",
+    businessQuestion: "¿Qué variables se mueven juntas en mi escuela?",
+    component: lazy(() => import('./c09/M9_6_Correlations'))
   },
   {
     id: "M9.7",
@@ -496,9 +496,9 @@ export const MODULE_REGISTRY: AppModule[] = [
     level: "E",
     route: "/c09/m9-7",
     icon: "Activity",
-    shortDescription: "Desc para Regresiones",
-    businessQuestion: "¿Pregunta de negocio?",
-    component: lazy(() => import('@/ui/ModulePlaceholder').then(m => ({ default: () => <m.ModulePlaceholder id="M9.7" /> })))
+    shortDescription: "Modelos predictivos",
+    businessQuestion: "¿Qué factores explican cuánto se queda un alumno y cómo se comportan?",
+    component: lazy(() => import('./c09/M9_7_Regressions'))
   },
   {
     id: "M9.8",
@@ -507,9 +507,9 @@ export const MODULE_REGISTRY: AppModule[] = [
     level: "S",
     route: "/c09/m9-8",
     icon: "Activity",
-    shortDescription: "Desc para Series de tiempo y estacionalidad",
-    businessQuestion: "¿Pregunta de negocio?",
-    component: lazy(() => import('@/ui/ModulePlaceholder').then(m => ({ default: () => <m.ModulePlaceholder id="M9.8" /> })))
+    shortDescription: "Análisis de temporadas",
+    businessQuestion: "¿Qué parte de mis altibajos es temporada y qué parte es tendencia?",
+    component: lazy(() => import('./c09/M9_8_TimeSeries'))
   },
   {
     id: "M10.1",
