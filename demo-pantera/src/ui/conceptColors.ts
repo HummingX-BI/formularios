@@ -18,7 +18,7 @@ export const conceptColors = {
     '#8AA3B8', // gris-azulado
     '#14507F', // blue-800
     '#4A6A85', // secundario
-  ] as const
+  ] as const,
 } as const;
 
 export type ConceptColorKey = keyof typeof conceptColors;

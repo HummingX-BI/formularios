@@ -6,12 +6,20 @@ export interface AlertConfig {
   arrearsThreshold: number; // e.g. 30000
 }
 
-export function generateAlerts(metrics: Record<string, any>, config: AlertConfig, currentDate: Date): Alert[] {
+export function generateAlerts(
+  metrics: Record<string, any>,
+  config: AlertConfig,
+  currentDate: Date,
+): Alert[] {
   const alerts: Alert[] = [];
   const ts = currentDate.toISOString();
 
   // 1. Ocupación crítica
-  if (metrics.ocupacion && metrics.ocupacion > config.occupancyThreshold && metrics.listaEspera > 0) {
+  if (
+    metrics.ocupacion &&
+    metrics.ocupacion > config.occupancyThreshold &&
+    metrics.listaEspera > 0
+  ) {
     alerts.push({
       id: 'alert-occ-critical',
       type: 'occupancy',
@@ -21,7 +29,7 @@ export function generateAlerts(metrics: Record<string, any>, config: AlertConfig
       moduleId: 'm1-executive',
       createdAt: ts,
       evidence: { ocupacion: metrics.ocupacion, listaEspera: metrics.listaEspera },
-      dismissible: true
+      dismissible: true,
     });
   }
 
@@ -36,7 +44,7 @@ export function generateAlerts(metrics: Record<string, any>, config: AlertConfig
       moduleId: 'm2-health',
       createdAt: ts,
       evidence: { riesgoAlto: metrics.alumnosRiesgoAlto },
-      dismissible: true
+      dismissible: true,
     });
   }
 
@@ -51,7 +59,7 @@ export function generateAlerts(metrics: Record<string, any>, config: AlertConfig
       moduleId: 'm3-arrears',
       createdAt: ts,
       evidence: { carteraVencida: metrics.carteraVencida },
-      dismissible: false
+      dismissible: false,
     });
   }
 
@@ -66,7 +74,7 @@ export function generateAlerts(metrics: Record<string, any>, config: AlertConfig
       moduleId: 'm5-funnel',
       createdAt: ts,
       evidence: { caida: metrics.caidaConversion },
-      dismissible: true
+      dismissible: true,
     });
   }
 
@@ -81,7 +89,7 @@ export function generateAlerts(metrics: Record<string, any>, config: AlertConfig
       moduleId: 'm2-health',
       createdAt: ts,
       evidence: metrics.instructorRetencionBaja,
-      dismissible: true
+      dismissible: true,
     });
   }
 
@@ -96,7 +104,7 @@ export function generateAlerts(metrics: Record<string, any>, config: AlertConfig
       moduleId: 'm2-health',
       createdAt: ts,
       evidence: metrics.cohorteDebil,
-      dismissible: true
+      dismissible: true,
     });
   }
 
@@ -111,7 +119,7 @@ export function generateAlerts(metrics: Record<string, any>, config: AlertConfig
       moduleId: 'm1-executive',
       createdAt: ts,
       evidence: { crecimiento: metrics.crecimientoListaEspera },
-      dismissible: true
+      dismissible: true,
     });
   }
 
@@ -126,7 +134,7 @@ export function generateAlerts(metrics: Record<string, any>, config: AlertConfig
       moduleId: 'm1-executive',
       createdAt: ts,
       evidence: { proyeccion: metrics.proyeccionIngresos, meta: metrics.metaIngresos },
-      dismissible: true
+      dismissible: true,
     });
   }
 

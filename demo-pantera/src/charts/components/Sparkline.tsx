@@ -9,23 +9,23 @@ export interface SparklineProps {
   highlightLast?: boolean;
 }
 
-export const Sparkline: React.FC<SparklineProps> = ({ 
-  data, 
-  concept = 'prospectos', 
-  width = 120, 
+export const Sparkline: React.FC<SparklineProps> = ({
+  data,
+  concept = 'prospectos',
+  width = 120,
   height = 40,
-  highlightLast = true
+  highlightLast = true,
 }) => {
   if (!data || data.length === 0) return <svg width={width} height={height} />;
 
   const min = Math.min(...data);
   const max = Math.max(...data);
   const range = max - min || 1;
-  
+
   const padding = 4;
   const usableWidth = width - padding * 2;
   const usableHeight = height - padding * 2;
-  
+
   const points = data.map((val, i) => {
     const x = padding + (i / (data.length - 1 || 1)) * usableWidth;
     const y = padding + usableHeight - ((val - min) / range) * usableHeight;
@@ -46,13 +46,20 @@ export const Sparkline: React.FC<SparklineProps> = ({
         </linearGradient>
       </defs>
       <path d={areaStr} fill={`url(#grad-${concept})`} stroke="none" />
-      <path d={pathStr} fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d={pathStr}
+        fill="none"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
       {highlightLast && data.length > 0 && (
-        <circle 
-          cx={padding + usableWidth} 
-          cy={padding + usableHeight - ((data[data.length - 1]! - min) / range) * usableHeight} 
-          r="3" 
-          fill={color} 
+        <circle
+          cx={padding + usableWidth}
+          cy={padding + usableHeight - ((data[data.length - 1]! - min) / range) * usableHeight}
+          r="3"
+          fill={color}
         />
       )}
     </svg>

@@ -25,13 +25,14 @@ describe('Insight Templates Engine', () => {
   it('must not contain hardcoded digits in string literals', () => {
     const filePath = path.join(__dirname, '../../insights/templates.ts');
     const content = fs.readFileSync(filePath, 'utf8');
-    
+
     // Look for string literals containing digits (excluding formats, imports, etc.)
     // A simple regex for '...' or "..." or `...` containing digits:
-    const stringLiterals = content.match(/"[^"\n]*\d[^"\n]*"|'[^'\n]*\d[^'\n]*'|`[^`\n]*\d[^`\n]*`/g) || [];
-    
+    const stringLiterals =
+      content.match(/"[^"\n]*\d[^"\n]*"|'[^'\n]*\d[^'\n]*'|`[^`\n]*\d[^`\n]*`/g) || [];
+
     // We filter out expected ones like config or locale strings ('es-MX')
-    const violations = stringLiterals.filter(lit => {
+    const violations = stringLiterals.filter((lit) => {
       if (lit.includes('es-MX')) return false;
       if (lit.includes('items[0]') || lit.includes('items[1]')) return false;
       if (lit.includes('thresholds[0]') || lit.includes('thresholds[1]')) return false;

@@ -57,7 +57,7 @@ export function vecMul(a: Matrix, v: Vector): Vector {
 export function gaussianElimination(A: Matrix, b: Vector): Vector {
   const n = A.length;
   const M = A.map((row, i) => [...row, b[i]!]);
-  
+
   for (let i = 0; i < n; i++) {
     // Pivot
     let maxEl = Math.abs(M[i]![i]!);
@@ -68,12 +68,12 @@ export function gaussianElimination(A: Matrix, b: Vector): Vector {
         maxRow = k;
       }
     }
-    
+
     // Swap
     const tmp = M[maxRow]!;
     M[maxRow] = M[i]!;
     M[i] = tmp;
-    
+
     // Eliminate
     for (let k = i + 1; k < n; k++) {
       const c = -M[k]![i]! / M[i]![i]!;
@@ -83,7 +83,7 @@ export function gaussianElimination(A: Matrix, b: Vector): Vector {
       }
     }
   }
-  
+
   // Back substitution
   const x = new Array(n).fill(0);
   for (let i = n - 1; i >= 0; i--) {
@@ -102,7 +102,7 @@ export function inverse(A: Matrix): Matrix {
     for (let j = 0; j < n; j++) r.push(i === j ? 1 : 0);
     return r;
   });
-  
+
   for (let i = 0; i < n; i++) {
     let maxEl = Math.abs(M[i]![i]!);
     let maxRow = i;
@@ -115,10 +115,10 @@ export function inverse(A: Matrix): Matrix {
     const tmp = M[maxRow]!;
     M[maxRow] = M[i]!;
     M[i] = tmp;
-    
+
     const div = M[i]![i]!;
     for (let j = i; j < 2 * n; j++) M[i]![j] /= div;
-    
+
     for (let k = 0; k < n; k++) {
       if (k === i) continue;
       const c = M[k]![i]!;
@@ -127,84 +127,91 @@ export function inverse(A: Matrix): Matrix {
       }
     }
   }
-  
-  return M.map(row => row.slice(n));
+
+  return M.map((row) => row.slice(n));
 }
 
 // QR Decomposition (Gram-Schmidt)
-export function qr(A: Matrix): { Q: Matrix, R: Matrix } {
+export function qr(A: Matrix): { Q: Matrix; R: Matrix } {
   const m = A.length;
   const n = A[0]!.length;
   const Q = zeros(m, n);
   const R = zeros(n, n);
-  
+
   for (let k = 0; k < n; k++) {
     const v = new Array(m).fill(0);
     for (let i = 0; i < m; i++) v[i] = A[i]![k]!;
-    
+
     for (let j = 0; j < k; j++) {
       let dot = 0;
       for (let i = 0; i < m; i++) dot += Q[i]![j]! * A[i]![k]!;
       R[j]![k] = dot;
       for (let i = 0; i < m; i++) v[i] -= dot * Q[i]![j]!;
     }
-    
+
     let norm = 0;
     for (let i = 0; i < m; i++) norm += v[i]! * v[i]!;
     norm = Math.sqrt(norm);
     R[k]![k] = norm;
-    
+
     for (let i = 0; i < m; i++) Q[i]![k] = v[i]! / norm;
   }
   return { Q, R };
 }
 
-export function jacobiEigenvalue(A: Matrix): { values: Vector, vectors: Matrix } {
+export function jacobiEigenvalue(A: Matrix): { values: Vector; vectors: Matrix } {
   const n = A.length;
-  let D = A.map(r => [...r]);
+  let D = A.map((r) => [...r]);
   let V = identity(n);
   const maxIt = 100;
   const eps = 1e-9;
-  
+
   for (let it = 0; it < maxIt; it++) {
-    let p = 0, q = 1, maxVal = Math.abs(D[0]![1]!);
+    let p = 0,
+      q = 1,
+      maxVal = Math.abs(D[0]![1]!);
     for (let i = 0; i < n; i++) {
       for (let j = i + 1; j < n; j++) {
         if (Math.abs(D[i]![j]!) > maxVal) {
           maxVal = Math.abs(D[i]![j]!);
-          p = i; q = j;
+          p = i;
+          q = j;
         }
       }
     }
-    
+
     if (maxVal < eps) break;
-    
+
     const theta = (D[q]![q]! - D[p]![p]!) / (2 * D[p]![q]!);
     let t = 1 / (Math.abs(theta) + Math.sqrt(theta * theta + 1));
     if (theta < 0) t = -t;
     const c = 1 / Math.sqrt(t * t + 1);
     const s = t * c;
-    
-    const Dpp = D[p]![p]!, Dqq = D[q]![q]!, Dpq = D[p]![q]!;
+
+    const Dpp = D[p]![p]!,
+      Dqq = D[q]![q]!,
+      Dpq = D[p]![q]!;
     D[p]![p] = c * c * Dpp - 2 * s * c * Dpq + s * s * Dqq;
     D[q]![q] = s * s * Dpp + 2 * s * c * Dpq + c * c * Dqq;
     D[p]![q] = 0;
     D[q]![p] = 0;
-    
+
     for (let i = 0; i < n; i++) {
       if (i !== p && i !== q) {
-        const Dip = D[i]![p]!, Diq = D[i]![q]!;
+        const Dip = D[i]![p]!,
+          Diq = D[i]![q]!;
         D[i]![p] = c * Dip - s * Diq;
         D[p]![i] = D[i]![p]!;
         D[i]![q] = s * Dip + c * Diq;
         D[q]![i] = D[i]![q]!;
       }
-      const Vip = V[i]![p]!, Viq = V[i]![q]!;
+      const Vip = V[i]![p]!,
+        Viq = V[i]![q]!;
       V[i]![p] = c * Vip - s * Viq;
       V[i]![q] = s * Vip + c * Viq;
     }
   }
-  
+
   const values = new Array(n);
   for (let i = 0; i < n; i++) values[i] = D[i]![i]!;
   return { values, vectors: V };

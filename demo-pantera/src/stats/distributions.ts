@@ -16,14 +16,14 @@ export const normal = {
     if (p <= 0) return -Infinity;
     if (p >= 1) return Infinity;
     return mu + sigma * Math.sqrt(2) * erfinv(2 * p - 1);
-  }
+  },
 };
 
 // === Distribución t de Student ===
 export const studentT = {
   pdf(x: number, df: number): number {
     const term1 = logGamma((df + 1) / 2) - logGamma(df / 2);
-    const term2 = -0.5 * Math.log(df * Math.PI) - ((df + 1) / 2) * Math.log(1 + x * x / df);
+    const term2 = -0.5 * Math.log(df * Math.PI) - ((df + 1) / 2) * Math.log(1 + (x * x) / df);
     return Math.exp(term1 + term2);
   },
   cdf(x: number, df: number): number {
@@ -37,9 +37,9 @@ export const studentT = {
   quantile(p: number, df: number): number {
     if (p <= 0) return -Infinity;
     if (p >= 1) return Infinity;
-    // Approach via inverse regularized beta is complex. We use a Newton-Raphson approx using normal if df large, 
+    // Approach via inverse regularized beta is complex. We use a Newton-Raphson approx using normal if df large,
     // or numerical inversion for simplicity and exactness.
-    if (df > 100) return normal.quantile(p); 
+    if (df > 100) return normal.quantile(p);
     // Bisection method to find root
     let lower = -20;
     let upper = 20;
@@ -51,7 +51,7 @@ export const studentT = {
       else upper = mid;
     }
     return (lower + upper) / 2;
-  }
+  },
 };
 
 // === Distribución Chi Cuadrada ===
@@ -80,15 +80,20 @@ export const chi2 = {
       else upper = mid;
     }
     return (lower + upper) / 2;
-  }
+  },
 };
 
 // === Distribución F de Fisher ===
 export const fisherF = {
   pdf(x: number, df1: number, df2: number): number {
     if (x <= 0) return 0;
-    const lnum = (df1 / 2) * Math.log(df1) + (df2 / 2) * Math.log(df2) + (df1 / 2 - 1) * Math.log(x);
-    const lden = ((df1 + df2) / 2) * Math.log(df1 * x + df2) + logGamma(df1 / 2) + logGamma(df2 / 2) - logGamma((df1 + df2) / 2);
+    const lnum =
+      (df1 / 2) * Math.log(df1) + (df2 / 2) * Math.log(df2) + (df1 / 2 - 1) * Math.log(x);
+    const lden =
+      ((df1 + df2) / 2) * Math.log(df1 * x + df2) +
+      logGamma(df1 / 2) +
+      logGamma(df2 / 2) -
+      logGamma((df1 + df2) / 2);
     return Math.exp(lnum - lden);
   },
   cdf(x: number, df1: number, df2: number): number {
@@ -97,7 +102,7 @@ export const fisherF = {
   },
   sf(x: number, df1: number, df2: number): number {
     return 1 - fisherF.cdf(x, df1, df2);
-  }
+  },
 };
 
 // === Distribución Binomial ===
@@ -132,8 +137,12 @@ export const binomial = {
     }
     return n;
   },
-  mean(n: number, p: number): number { return n * p; },
-  variance(n: number, p: number): number { return n * p * (1 - p); }
+  mean(n: number, p: number): number {
+    return n * p;
+  },
+  variance(n: number, p: number): number {
+    return n * p * (1 - p);
+  },
 };
 
 // === Distribución Poisson ===
@@ -149,7 +158,7 @@ export const poisson = {
   },
   sf(k: number, lambda: number): number {
     return 1 - poisson.cdf(k, lambda);
-  }
+  },
 };
 
 // === Distribución Exponencial ===
@@ -166,17 +175,17 @@ export const exponential = {
   quantile(p: number, lambda: number): number {
     if (p < 0 || p >= 1) return NaN;
     return -Math.log(1 - p) / lambda;
-  }
+  },
 };
 
 // === Distribución Uniforme ===
 export const uniform = {
   pdf(x: number, a: number, b: number): number {
-    return (x >= a && x <= b) ? 1 / (b - a) : 0;
+    return x >= a && x <= b ? 1 / (b - a) : 0;
   },
   cdf(x: number, a: number, b: number): number {
     if (x < a) return 0;
     if (x > b) return 1;
     return (x - a) / (b - a);
-  }
+  },
 };

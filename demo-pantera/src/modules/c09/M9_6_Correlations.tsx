@@ -15,13 +15,13 @@ export default function M9_6_Correlations() {
       { id: 'antiguedad', label: 'Antigüedad' },
       { id: 'asistencia', label: 'Asistencia' },
       { id: 'ticket', label: 'Ticket' },
-      { id: 'retraso', label: 'Retraso Pago' }
+      { id: 'retraso', label: 'Retraso Pago' },
     ];
 
     // Mock data generation for correlation to ensure some visible correlations
     const n = 100;
     const data: Record<string, number[]> = {};
-    vars.forEach(v => data[v.id] = []);
+    vars.forEach((v) => (data[v.id] = []));
 
     for (let i = 0; i < n; i++) {
       const edad = 3 + Math.random() * 10; // 3 to 13
@@ -38,9 +38,9 @@ export default function M9_6_Correlations() {
     }
 
     const k = vars.length;
-    const zData = Array.from({length: k}, () => new Array(k).fill(1));
-    const textData = Array.from({length: k}, () => new Array(k).fill(''));
-    const flatRels: { v1: string, v2: string, r: number, p: number }[] = [];
+    const zData = Array.from({ length: k }, () => new Array(k).fill(1));
+    const textData = Array.from({ length: k }, () => new Array(k).fill(''));
+    const flatRels: { v1: string; v2: string; r: number; p: number }[] = [];
 
     for (let i = 0; i < k; i++) {
       for (let j = 0; j < k; j++) {
@@ -49,37 +49,41 @@ export default function M9_6_Correlations() {
           textData[i]![j] = '1.00';
           continue;
         }
-        
+
         const vi = vars[i]!.id;
         const vj = vars[j]!.id;
-        const res = method === 'pearson' ? pearson(data[vi]!, data[vj]!) : spearman(data[vi]!, data[vj]!);
-        
+        const res =
+          method === 'pearson' ? pearson(data[vi]!, data[vj]!) : spearman(data[vi]!, data[vj]!);
+
         zData[i]![j] = res.r;
-        textData[i]![j] = `${res.r > 0 ? '+' : ''}${res.r.toFixed(2)} (p${res.p < 0.01 ? '<.01' : '='+res.p.toFixed(2)})`;
-        
+        textData[i]![j] =
+          `${res.r > 0 ? '+' : ''}${res.r.toFixed(2)} (p${res.p < 0.01 ? '<.01' : '=' + res.p.toFixed(2)})`;
+
         if (i < j) {
           flatRels.push({ v1: vars[i]!.label, v2: vars[j]!.label, r: res.r, p: res.p });
         }
       }
     }
 
-    flatRels.sort((a,b) => Math.abs(b.r) - Math.abs(a.r));
+    flatRels.sort((a, b) => Math.abs(b.r) - Math.abs(a.r));
     const topRelations = flatRels.slice(0, 3);
 
-    const labels = vars.map(v => v.label);
+    const labels = vars.map((v) => v.label);
 
-    const chartData = [{
-      type: 'heatmap',
-      z: zData,
-      x: labels,
-      y: labels,
-      text: textData,
-      texttemplate: '%{text}',
-      hoverinfo: 'x+y+text',
-      colorscale: 'RdBu',
-      zmin: -1,
-      zmax: 1
-    }];
+    const chartData = [
+      {
+        type: 'heatmap',
+        z: zData,
+        x: labels,
+        y: labels,
+        text: textData,
+        texttemplate: '%{text}',
+        hoverinfo: 'x+y+text',
+        colorscale: 'RdBu',
+        zmin: -1,
+        zmax: 1,
+      },
+    ];
 
     return { chartData, topRelations };
   }, [dataset, method]);
@@ -95,13 +99,13 @@ export default function M9_6_Correlations() {
         <div className="space-y-6">
           <div className="w-64 mb-4">
             <label className="block text-xs font-bold text-navy-900 mb-1">Método</label>
-            <Select 
+            <Select
               options={[
-                {label: 'Pearson (Lineal)', value: 'pearson'},
-                {label: 'Spearman (Rangos)', value: 'spearman'}
+                { label: 'Pearson (Lineal)', value: 'pearson' },
+                { label: 'Spearman (Rangos)', value: 'spearman' },
               ]}
               value={method}
-              onChange={e => setMethod(e.target.value as any)}
+              onChange={(e) => setMethod(e.target.value as any)}
             />
           </div>
 
@@ -110,27 +114,37 @@ export default function M9_6_Correlations() {
               <PlotChart
                 id="corr_heatmap"
                 data={chartData as any}
-                layout={{ 
+                layout={{
                   margin: { l: 80, r: 20, t: 20, b: 80 },
-                  xaxis: { tickangle: -45 }
+                  xaxis: { tickangle: -45 },
                 }}
                 altText="Matriz de correlación"
                 tableData={{ columns: [], rows: [] }}
               />
             </div>
-            
+
             <div className="flex flex-col gap-4">
-              <h4 className="font-bold text-navy-900 border-b border-ice-200 pb-2">Top 3 Relaciones Más Fuertes</h4>
+              <h4 className="font-bold text-navy-900 border-b border-ice-200 pb-2">
+                Top 3 Relaciones Más Fuertes
+              </h4>
               {topRelations.map((rel, idx) => (
-                <div key={idx} className="p-3 bg-white border border-ice-100 rounded shadow-sm text-sm">
-                  <div className="font-bold text-navy-900 mb-1">{rel.v1} ↔ {rel.v2}</div>
-                  <div className={`text-lg font-bold mb-1 ${rel.r > 0 ? 'text-blue-600' : 'text-coral'}`}>
-                    r = {rel.r > 0 ? '+' : ''}{rel.r.toFixed(2)}
+                <div
+                  key={idx}
+                  className="p-3 bg-white border border-ice-100 rounded shadow-sm text-sm"
+                >
+                  <div className="font-bold text-navy-900 mb-1">
+                    {rel.v1} ↔ {rel.v2}
+                  </div>
+                  <div
+                    className={`text-lg font-bold mb-1 ${rel.r > 0 ? 'text-blue-600' : 'text-coral'}`}
+                  >
+                    r = {rel.r > 0 ? '+' : ''}
+                    {rel.r.toFixed(2)}
                   </div>
                   <div className="text-xs text-secundario mb-2">Valor p: {rel.p.toFixed(4)}</div>
                   <p className="text-xs text-navy-900 bg-ice-50 p-2 rounded">
-                    {rel.r > 0 
-                      ? `Cuando ${rel.v1} es alto, ${rel.v2} tiende a ser alto.` 
+                    {rel.r > 0
+                      ? `Cuando ${rel.v1} es alto, ${rel.v2} tiende a ser alto.`
                       : `Cuando ${rel.v1} es alto, ${rel.v2} tiende a ser bajo.`}
                   </p>
                 </div>
@@ -145,8 +159,10 @@ export default function M9_6_Correlations() {
             ⚠️ Correlación NO implica causalidad.
           </p>
           <p>
-            Que la edad esté correlacionada con la asistencia no significa que cumplir años te haga faltar menos. Podría haber una variable oculta (ej. los padres de niños más grandes organizan mejor su tiempo). 
-            Usa esto para generar <strong>hipótesis</strong>, no conclusiones definitivas.
+            Que la edad esté correlacionada con la asistencia no significa que cumplir años te haga
+            faltar menos. Podría haber una variable oculta (ej. los padres de niños más grandes
+            organizan mejor su tiempo). Usa esto para generar <strong>hipótesis</strong>, no
+            conclusiones definitivas.
           </p>
         </div>
       }

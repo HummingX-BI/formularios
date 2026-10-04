@@ -11,9 +11,9 @@ export interface MonteCarloConfig {
 }
 
 export interface MonteCarloResult {
-  percentiles: { p5: number, p25: number, p50: number, p75: number, p95: number };
+  percentiles: { p5: number; p25: number; p50: number; p75: number; p95: number };
   thresholdProb: number | null;
-  trajectories: { inputs: Record<string, number>, result: number }[];
+  trajectories: { inputs: Record<string, number>; result: number }[];
   mean: number;
   meta: MLMeta;
 }
@@ -28,16 +28,16 @@ function seededRNG(seed = 42) {
 
 export function monteCarlo(config: MonteCarloConfig): MonteCarloResult {
   const { iterations, inputs, model, threshold, seed = 42 } = config;
-  
+
   // Actually we need the generators to use our seed, but the prompt says
-  // "recibe distribuciones de entrada". We will assume inputs are closures capturing a generator 
+  // "recibe distribuciones de entrada". We will assume inputs are closures capturing a generator
   // or we pass our rng to them. To be strictly deterministic, we'll expose a wrapper or assume
   // they are deterministic if we run them.
-  
+
   const results: number[] = [];
-  const trajectories: { inputs: Record<string, number>, result: number }[] = [];
+  const trajectories: { inputs: Record<string, number>; result: number }[] = [];
   const keys = Object.keys(inputs);
-  
+
   let exceedCount = 0;
   let sum = 0;
 
@@ -46,15 +46,15 @@ export function monteCarlo(config: MonteCarloConfig): MonteCarloResult {
     for (const k of keys) {
       inputVals[k] = inputs[k]!();
     }
-    
+
     const res = model(inputVals);
     results.push(res);
     sum += res;
-    
+
     if (threshold !== undefined && res >= threshold) {
       exceedCount++;
     }
-    
+
     if (i < 100) {
       trajectories.push({ inputs: inputVals, result: res });
     }
@@ -62,7 +62,7 @@ export function monteCarlo(config: MonteCarloConfig): MonteCarloResult {
 
   const p5 = percentile(results, 0.05);
   const p25 = percentile(results, 0.25);
-  const p50 = percentile(results, 0.50);
+  const p50 = percentile(results, 0.5);
   const p75 = percentile(results, 0.75);
   const p95 = percentile(results, 0.95);
 
@@ -76,9 +76,10 @@ export function monteCarlo(config: MonteCarloConfig): MonteCarloResult {
       inputs: keys,
       metrics: { Iterations: iterations, Mean: sum / iterations },
       trainingDate: '2026-09-30',
-      limitations: 'Asume independencia entre las variables de entrada a menos que se defina correlación explícita.',
-      tag: 'ilustrativo sobre datos de demostración'
-    }
+      limitations:
+        'Asume independencia entre las variables de entrada a menos que se defina correlación explícita.',
+      tag: 'ilustrativo sobre datos de demostración',
+    },
   };
 }
 
@@ -89,9 +90,10 @@ export function createDistributions(seed = 42) {
     uniform: (min: number, max: number) => min + rng() * (max - min),
     normal: (mean: number, std: number) => {
       // Box-Muller
-      let u = 0, v = 0;
-      while(u === 0) u = rng();
-      while(v === 0) v = rng();
+      let u = 0,
+        v = 0;
+      while (u === 0) u = rng();
+      while (v === 0) v = rng();
       const z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
       return z * std + mean;
     },
@@ -103,6 +105,6 @@ export function createDistributions(seed = 42) {
       } else {
         return max - Math.sqrt((1 - u) * (max - min) * (max - mode));
       }
-    }
+    },
   };
 }

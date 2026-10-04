@@ -1,32 +1,47 @@
-# Demo Pantera — Panel de Administración Inteligente (Club Azulejo)
+# Pantera Demo (HummingX BI)
 
-## Propósito
-Este proyecto es una demo de preventa interactiva ("Panel de Administración Inteligente") construida para Club Azulejo Escuela de Natación bajo el ala de HummingX BI. Su objetivo es impresionar a un empresario no técnico mediante visualizaciones premium de datos, simulaciones estadísticas y módulos interactivos.
+Demostración técnica de un Panel de Administración Inteligente para el "Club Azulejo Escuela de Natación". Este sistema fue diseñado para resolver problemas de gestión académica y financiera mediante el uso de análisis prescriptivo y Machine Learning en el navegador.
 
-**ADVERTENCIA: Datos de demostración.**
-Este proyecto no tiene backend real ni base de datos. Todos los datos, cifras y métricas se generan dinámicamente en el navegador utilizando un generador pseudoaleatorio determinista (PRNG) matemático, lo cual asegura que el escenario de datos siempre se vea consistente durante las demostraciones.
+## 🚀 Inicio Rápido (Modo Presentación Offline)
 
-## Requisitos
-- Node.js (versión LTS).
-- NPM.
+Para abrir la demo terminada sin necesidad de compilar y sin conexión a internet:
+1. En Windows: Haz doble clic en `iniciar.bat`
+2. En Mac/Linux: Ejecuta `./iniciar.sh` en la terminal.
 
-## Comandos Principales
-- `npm run dev`: Inicia el servidor local de desarrollo.
-- `npm run build`: Genera la versión de producción empaquetada.
-- `npm run preview`: Previsualiza localmente el build de producción.
-- `npm test`: Corre los tests unitarios.
-- `npm run lint`: Evalúa las reglas de estilo y consistencia (ESLint).
-- `npm run typecheck`: Evalúa los tipos estrictos de TypeScript sin compilar.
-- `npm run format`: Formatea el código base con Prettier.
+La aplicación se abrirá en `http://localhost:4173`.
 
-## Estructura del Proyecto
-- `src/app/`: Núcleo de la app (store global Zustand, React Router).
-- `src/ui/`: Componentes de interfaz (Layout, botones, barra lateral).
-- `src/modules/`: Páginas y vistas principales divididas por categoría C01-C13.
-- `src/config/`: Constantes de negocio de la escuela (tarifas, niveles).
-- `src/data/`, `src/metrics/`, `src/stats/`, `src/ml/`: Capas de lógica pura y matemática (Sin React).
+## 💻 Desarrollo
 
-## Convenciones de Código
-- React 18 y TypeScript Estricto.
-- Tailwind CSS para los estilos de UI. Framer Motion para las animaciones.
-- Regla Arquitectónica estricta: Las carpetas matemáticas/lógicas no pueden importar React.
+Si deseas modificar la aplicación o ver el código fuente en acción:
+
+```bash
+# 1. Instalar dependencias
+npm install
+
+# 2. Iniciar servidor de desarrollo (con Hot Reload)
+npm run dev
+
+# 3. Compilar para producción
+npm run build
+```
+
+## 🛠 Atajos de Teclado y Opciones Ocultas
+
+* **Modo Presentación (`P`)**: Oculta barras, aumenta el tamaño de la letra y entra en un modo amigable para proyector.
+* **Búsqueda Global (`/` o `Ctrl + K`)**: Abre el buscador principal.
+* **Hoja del Presentador**: Navega manualmente a `/#/_cheatsheet` para ver el guion y cifras exactas del generador.
+* **Variables de Entorno**: 
+  * `VITE_SHOW_DEBUG=true` muestra rutas de depuración ocultas en la navegación principal (Gráficas de debug, rendimiento de ML, etc).
+
+## 📄 Documentación Adjunta
+En la carpeta `docs/` encontrarás:
+* `ARQUITECTURA.md`: Diseño de software y flujo de datos.
+* `DATOS.md`: Cómo funciona el motor de generación.
+* `ESTADISTICA.md`: Técnicas predictivas y descriptivas.
+* `MODULOS.md`: Listado de los 58 submódulos integrados.
+* `ACEPTACION.md`: Informe final de Criterios de Aceptación.
+* `CONTINGENCIA.md`: Plan de riesgos y resolución.
+* `LICENCIAS.md`: Licenciamiento de software de terceros.
+
+---
+*Versión 1.0.0. Propiedad de HummingX BI.*

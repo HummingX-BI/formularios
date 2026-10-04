@@ -28,7 +28,7 @@ export function formatDate(dateStr: string): string {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
-    timeZone: 'UTC'
+    timeZone: 'UTC',
   }).format(d);
 }
 
@@ -37,7 +37,7 @@ export function formatMonth(dateStr: string): string {
   return new Intl.DateTimeFormat('es-MX', {
     month: 'short',
     year: 'numeric',
-    timeZone: 'UTC'
+    timeZone: 'UTC',
   }).format(d);
 }
 

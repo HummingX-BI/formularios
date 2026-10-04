@@ -28,9 +28,7 @@ export function ModulePage({ module, children }: ModulePageProps) {
       </header>
 
       {/* Content */}
-      <main className="flex-1 w-full">
-        {children}
-      </main>
+      <main className="flex-1 w-full">{children}</main>
 
       {/* Footer */}
       <footer className="mt-8 pt-4 border-t text-sm text-text-tenue text-center">

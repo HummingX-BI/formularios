@@ -27,7 +27,7 @@ describe('RNG', () => {
       sumSq += v * v;
     }
     const mean = sum / n;
-    const varEst = (sumSq / n) - (mean * mean);
+    const varEst = sumSq / n - mean * mean;
     expect(mean).toBeCloseTo(10, 1);
     expect(varEst).toBeCloseTo(4, 1);
   });

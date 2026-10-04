@@ -67,9 +67,7 @@ export function Sidebar(): React.JSX.Element {
             <p className="text-sm font-semibold text-[var(--text-primary)] leading-tight">
               {BRAND.name}
             </p>
-            <p className="text-[10px] text-[var(--text-muted)] leading-tight">
-              {BRAND.tagline}
-            </p>
+            <p className="text-[10px] text-[var(--text-muted)] leading-tight">{BRAND.tagline}</p>
           </motion.div>
         )}
       </div>
@@ -104,11 +102,7 @@ export function Sidebar(): React.JSX.Element {
               )}
               <Icon size={18} className="shrink-0" />
               {!collapsed && (
-                <motion.span
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="truncate"
-                >
+                <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="truncate">
                   {item.label}
                 </motion.span>
               )}

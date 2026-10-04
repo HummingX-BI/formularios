@@ -11,10 +11,10 @@ export function AnimatedCounter({ value, className }: AnimatedCounterProps): Rea
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    const isReduced = window.matchMedia 
-      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches 
+    const isReduced = window.matchMedia
+      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
       : false;
-      
+
     if (isReduced) {
       setDisplayValue(value);
       return;
@@ -27,28 +27,27 @@ export function AnimatedCounter({ value, className }: AnimatedCounterProps): Rea
     const step = (timestamp: number) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-      
+
       // easeOutQuart
       const ease = 1 - Math.pow(1 - progress, 4);
       const current = startValue + (value - startValue) * ease;
-      
+
       setDisplayValue(current);
-      
+
       if (progress < 1) {
         window.requestAnimationFrame(step);
       } else {
         setDisplayValue(value);
       }
     };
-    
+
     window.requestAnimationFrame(step);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   // Format appropriately
-  const formatted = displayValue % 1 !== 0 
-    ? displayValue.toFixed(2)
-    : Math.floor(displayValue).toString();
+  const formatted =
+    displayValue % 1 !== 0 ? displayValue.toFixed(2) : Math.floor(displayValue).toString();
 
   return <span className={className}>{formatted}</span>;
 }

@@ -4,7 +4,10 @@
 
 // Helper to hash string to 4 32-bit seeds (cyrb128)
 function cyrb128(str: string): [number, number, number, number] {
-  let h1 = 1779033703, h2 = 3144134277, h3 = 1013904242, h4 = 2773480762;
+  let h1 = 1779033703,
+    h2 = 3144134277,
+    h3 = 1013904242,
+    h4 = 2773480762;
   for (let i = 0, k; i < str.length; i++) {
     k = str.charCodeAt(i);
     h1 = h2 ^ Math.imul(h1 ^ k, 597399067);
@@ -16,7 +19,7 @@ function cyrb128(str: string): [number, number, number, number] {
   h2 = Math.imul(h4 ^ (h2 >>> 22), 2869860233);
   h3 = Math.imul(h1 ^ (h3 >>> 17), 951274213);
   h4 = Math.imul(h2 ^ (h4 >>> 19), 2716044179);
-  return [(h1^h2^h3^h4)>>>0, (h2^h1)>>>0, (h3^h1)>>>0, (h4^h1)>>>0];
+  return [(h1 ^ h2 ^ h3 ^ h4) >>> 0, (h2 ^ h1) >>> 0, (h3 ^ h1) >>> 0, (h4 ^ h1) >>> 0];
 }
 
 export class RandomGenerator {
@@ -31,12 +34,15 @@ export class RandomGenerator {
     this.c = c;
     this.d = d;
     // warm up
-    for(let i = 0; i < 15; i++) this.next();
+    for (let i = 0; i < 15; i++) this.next();
   }
 
   // Returns float [0, 1)
   next(): number {
-    this.a >>>= 0; this.b >>>= 0; this.c >>>= 0; this.d >>>= 0; 
+    this.a >>>= 0;
+    this.b >>>= 0;
+    this.c >>>= 0;
+    this.d >>>= 0;
     let t = (this.a + this.b) | 0;
     this.a = this.b ^ (this.b >>> 9);
     this.b = (this.c + (this.c << 3)) | 0;
@@ -67,9 +73,10 @@ export class RandomGenerator {
 
   normal(mu: number = 0, sigma: number = 1): number {
     // Box-Muller
-    let u = 0, v = 0;
-    while(u === 0) u = this.next();
-    while(v === 0) v = this.next();
+    let u = 0,
+      v = 0;
+    while (u === 0) u = this.next();
+    while (v === 0) v = this.next();
     const z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
     return z * sigma + mu;
   }
@@ -80,7 +87,7 @@ export class RandomGenerator {
 
   exponential(rate: number): number {
     let u = 0;
-    while(u === 0) u = this.next();
+    while (u === 0) u = this.next();
     return -Math.log(u) / rate;
   }
 
@@ -88,7 +95,7 @@ export class RandomGenerator {
     let sum = 0;
     for (let i = 0; i < k; i++) {
       let u = 0;
-      while(u === 0) u = this.next();
+      while (u === 0) u = this.next();
       sum += -Math.log(u);
     }
     return sum * theta;
@@ -127,7 +134,7 @@ export class RandomGenerator {
     const total = weights.reduce((acc, w) => acc + w, 0);
     let r = this.next() * total;
     for (let i = 0; i < items.length; i++) {
-      r -= (weights[i] as number);
+      r -= weights[i] as number;
       if (r <= 0) return items[i] as T;
     }
     return items[items.length - 1] as T;

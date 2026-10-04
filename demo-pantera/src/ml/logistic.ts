@@ -47,7 +47,11 @@ function sigmoid(z: number): number {
   return 1 / (1 + Math.exp(-z));
 }
 
-export function logisticRegression(X: number[][], y: number[], options: { l2?: number, threshold?: number } = {}): LogisticResult {
+export function logisticRegression(
+  X: number[][],
+  y: number[],
+  options: { l2?: number; threshold?: number } = {},
+): LogisticResult {
   const n = X.length;
   const p = X[0]!.length;
   const l2 = options.l2 || 0;
@@ -58,16 +62,16 @@ export function logisticRegression(X: number[][], y: number[], options: { l2?: n
   const splitIdx = Math.floor(n * 0.8);
   const trainIndices = indices.slice(0, splitIdx);
   const testIndices = indices.slice(splitIdx);
-  
+
   // Standardize X based on train
   const means = new Array(p).fill(0);
   const stds = new Array(p).fill(0);
-  
+
   for (const i of trainIndices) {
     for (let j = 0; j < p; j++) means[j] += X[i]![j]!;
   }
   for (let j = 0; j < p; j++) means[j] /= trainIndices.length;
-  
+
   for (const i of trainIndices) {
     for (let j = 0; j < p; j++) {
       stds[j] += Math.pow(X[i]![j]! - means[j]!, 2);
@@ -79,23 +83,23 @@ export function logisticRegression(X: number[][], y: number[], options: { l2?: n
   }
 
   // Prepare train X and y (add intercept)
-  const Xtrain = trainIndices.map(i => {
+  const Xtrain = trainIndices.map((i) => {
     const row = [1];
     for (let j = 0; j < p; j++) {
       row.push((X[i]![j]! - means[j]!) / stds[j]!);
     }
     return row;
   });
-  const ytrain = trainIndices.map(i => y[i]!);
+  const ytrain = trainIndices.map((i) => y[i]!);
 
   // Newton-Raphson IRLS
   let beta = new Array(p + 1).fill(0);
   let cov = zeros(p + 1, p + 1);
   const maxIt = 25;
   const eps = 1e-6;
-  
+
   for (let it = 0; it < maxIt; it++) {
-    const pTrain = Xtrain.map(row => {
+    const pTrain = Xtrain.map((row) => {
       let z = 0;
       for (let j = 0; j < p + 1; j++) z += row[j]! * beta[j]!;
       return sigmoid(z);
@@ -112,7 +116,7 @@ export function logisticRegression(X: number[][], y: number[], options: { l2?: n
     const XT = transpose(Xtrain);
     const XTW = matMul(XT, W);
     let hessian = matMul(XTW, Xtrain);
-    
+
     if (l2 > 0) {
       for (let j = 1; j < p + 1; j++) hessian[j]![j] += l2;
     }
@@ -125,7 +129,7 @@ export function logisticRegression(X: number[][], y: number[], options: { l2?: n
         grad[j] += Xtrain[i]![j]! * err;
       }
     }
-    
+
     if (l2 > 0) {
       for (let j = 1; j < p + 1; j++) grad[j] -= l2 * beta[j]!;
     }
@@ -136,7 +140,7 @@ export function logisticRegression(X: number[][], y: number[], options: { l2?: n
       // Singular matrix
       break;
     }
-    
+
     const delta = vecMul(cov, grad);
     let maxDelta = 0;
     for (let j = 0; j < p + 1; j++) {
@@ -154,19 +158,22 @@ export function logisticRegression(X: number[][], y: number[], options: { l2?: n
   const intercept = beta[0]!;
   const coefficients = beta.slice(1);
   const seCoef = stdErrors.slice(1);
-  
+
   const zCrit = normal.quantile(0.975);
-  const oddsRatios = coefficients.map(b => Math.exp(b));
+  const oddsRatios = coefficients.map((b) => Math.exp(b));
   const oddsCI: [number, number][] = coefficients.map((b, i) => [
     Math.exp(b - zCrit * seCoef[i]!),
-    Math.exp(b + zCrit * seCoef[i]!)
+    Math.exp(b + zCrit * seCoef[i]!),
   ]);
   const pValues = coefficients.map((b, i) => 2 * normal.sf(Math.abs(b / seCoef[i]!)));
 
   // Test set prediction (using all indices for stable metric calculation)
-  const predsTest: { prob: number, actual: number }[] = [];
-  let TP = 0, FP = 0, TN = 0, FN = 0;
-  
+  const predsTest: { prob: number; actual: number }[] = [];
+  let TP = 0,
+    FP = 0,
+    TN = 0,
+    FN = 0;
+
   for (const i of indices) {
     let z = intercept;
     for (let j = 0; j < p; j++) {
@@ -176,11 +183,13 @@ export function logisticRegression(X: number[][], y: number[], options: { l2?: n
     const prob = sigmoid(z);
     const actual = y[i]!;
     predsTest.push({ prob, actual });
-    
+
     if (prob >= threshold) {
-      if (actual === 1) TP++; else FP++;
+      if (actual === 1) TP++;
+      else FP++;
     } else {
-      if (actual === 1) FN++; else TN++;
+      if (actual === 1) FN++;
+      else TN++;
     }
   }
 
@@ -189,12 +198,13 @@ export function logisticRegression(X: number[][], y: number[], options: { l2?: n
   const precision = TP / (TP + FP || 1);
   const recall = TP / (TP + FN || 1);
   const specificity = TN / (TN + FP || 1);
-  const f1 = 2 * (precision * recall) / (precision + recall || 1);
-  
+  const f1 = (2 * (precision * recall)) / (precision + recall || 1);
+
   // AUC by trapezoid
   predsTest.sort((a, b) => b.prob - a.prob);
   let auc = 0;
-  let cumTP = 0, cumFP = 0;
+  let cumTP = 0,
+    cumFP = 0;
   const totP = TP + FN;
   const totN = TN + FP;
   if (totP > 0 && totN > 0) {
@@ -220,7 +230,7 @@ export function logisticRegression(X: number[][], y: number[], options: { l2?: n
     }
     return sigmoid(z);
   };
-  
+
   const contributions = (x: number[]) => {
     return x.map((val, j) => coefficients[j]! * ((val - means[j]!) / stds[j]!));
   };
@@ -239,17 +249,20 @@ export function logisticRegression(X: number[][], y: number[], options: { l2?: n
       specificity,
       f1,
       auc,
-      confusionMatrix: [[TN, FP], [FN, TP]]
+      confusionMatrix: [
+        [TN, FP],
+        [FN, TP],
+      ],
     },
     meta: {
       modelName: 'Binary Logistic Regression',
-      inputs: Array.from({ length: p }, (_, i) => `X${i+1}`),
+      inputs: Array.from({ length: p }, (_, i) => `X${i + 1}`),
       metrics: { AUC: auc, Accuracy: accuracy, F1: f1 },
       trainingDate: '2026-09-30',
       limitations: 'Modelo lineal en el logit. Asume independencia de observaciones.',
-      tag: 'ilustrativo sobre datos de demostración'
+      tag: 'ilustrativo sobre datos de demostración',
     },
     predict,
-    contributions
+    contributions,
   };
 }

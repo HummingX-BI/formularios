@@ -5,8 +5,11 @@ import { describe, it, expect } from 'vitest';
  * https://www.w3.org/TR/WCAG20/#relativeluminancedef
  */
 function getLuminance(hex: string): number {
-  const rgb = hex.replace('#', '').match(/.{2}/g)?.map((val) => parseInt(val, 16)) || [0, 0, 0];
-  const [R=0, G=0, B=0] = rgb.map((val) => {
+  const rgb = hex
+    .replace('#', '')
+    .match(/.{2}/g)
+    ?.map((val) => parseInt(val, 16)) || [0, 0, 0];
+  const [R = 0, G = 0, B = 0] = rgb.map((val) => {
     const sRGB = val / 255;
     return sRGB <= 0.03928 ? sRGB / 12.92 : Math.pow((sRGB + 0.055) / 1.055, 2.4);
   });
@@ -28,7 +31,7 @@ function getContrastRatio(hex1: string, hex2: string): number {
 describe('Design Tokens WCAG Contrast (RNF-16)', () => {
   const bgColors = {
     'ice-50': '#F5FAFD',
-    'white': '#FFFFFF',
+    white: '#FFFFFF',
   };
 
   const textColors = {
@@ -45,7 +48,10 @@ describe('Design Tokens WCAG Contrast (RNF-16)', () => {
   it('All text colors must have at least 4.5:1 contrast against white', () => {
     for (const [name, hex] of Object.entries(textColors)) {
       const ratio = getContrastRatio(hex, bgColors.white);
-      expect(ratio, `${name} (${hex}) against white (${bgColors.white}) has ratio ${ratio.toFixed(2)}`).toBeGreaterThanOrEqual(4.5);
+      expect(
+        ratio,
+        `${name} (${hex}) against white (${bgColors.white}) has ratio ${ratio.toFixed(2)}`,
+      ).toBeGreaterThanOrEqual(4.5);
     }
   });
 

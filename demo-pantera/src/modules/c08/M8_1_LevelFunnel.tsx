@@ -11,9 +11,9 @@ export default function M8_1_LevelFunnel() {
 
   const { sankeyData, levelStats, n3Diagnosis } = useMemo(() => {
     const levels = ['Bebés', 'Nivel 1', 'Nivel 2', 'Nivel 3', 'Nivel 4', 'Equipo'];
-    
+
     // Simulate LevelStints
-    const stints = dataset.students.map(s => {
+    const stints = dataset.students.map((s) => {
       // Dummy logic to assign a stint based on current level and tenure
       const l = s.level.split(' ')[0] || 'Nivel 1';
       const duration = Math.random() * 8 + (l === 'Nivel 3' ? 4 : 2);
@@ -26,18 +26,18 @@ export default function M8_1_LevelFunnel() {
     });
 
     // Compute stats per level
-    const stats = levels.map(lvl => {
-      const lStints = stints.filter(s => s.level.startsWith(lvl));
+    const stats = levels.map((lvl) => {
+      const lStints = stints.filter((s) => s.level.startsWith(lvl));
       const total = lStints.length;
       if (total === 0) return { lvl, total: 0, pAdv: 0, pStuck: 0, pDrop: 0, median: 0 };
-      
-      const pAdv = lStints.filter(s => s.outcome === 'Avanza').length / total;
-      const pDrop = lStints.filter(s => s.outcome === 'Baja').length / total;
-      const pStuck = lStints.filter(s => s.outcome === 'Estancado').length / total;
-      
+
+      const pAdv = lStints.filter((s) => s.outcome === 'Avanza').length / total;
+      const pDrop = lStints.filter((s) => s.outcome === 'Baja').length / total;
+      const pStuck = lStints.filter((s) => s.outcome === 'Estancado').length / total;
+
       lStints.sort((a, b) => a.duration - b.duration);
       const median = lStints[Math.floor(total / 2)]?.duration || 0;
-      
+
       return { lvl, total, pAdv, pStuck, pDrop, median };
     });
 
@@ -72,16 +72,16 @@ export default function M8_1_LevelFunnel() {
     });
 
     // Diagnosis N3
-    const n3Stints = stints.filter(s => s.level.startsWith('Nivel 3')).map(s => s.duration);
-    const otherStints = stints.filter(s => !s.level.startsWith('Nivel 3')).map(s => s.duration);
-    
+    const n3Stints = stints.filter((s) => s.level.startsWith('Nivel 3')).map((s) => s.duration);
+    const otherStints = stints.filter((s) => !s.level.startsWith('Nivel 3')).map((s) => s.duration);
+
     // Using Welch t-test as approximation for median test/difference
     const tTest = tTestWelch(n3Stints, otherStints);
 
-    return { 
-      sankeyData: { labels, source, target, value }, 
-      levelStats: stats, 
-      n3Diagnosis: { tTest } 
+    return {
+      sankeyData: { labels, source, target, value },
+      levelStats: stats,
+      n3Diagnosis: { tTest },
     };
   }, [dataset]);
 
@@ -106,7 +106,7 @@ export default function M8_1_LevelFunnel() {
               tableData={{ columns: [], rows: [] }}
             />
           </Card>
-          
+
           <Card className="p-4 bg-white border border-ice-100 shadow-sm flex-1 overflow-x-auto">
             <h3 className="font-bold text-navy-900 mb-4">Desempeño por Nivel</h3>
             <table className="w-full text-left text-sm">
@@ -122,7 +122,7 @@ export default function M8_1_LevelFunnel() {
                 </tr>
               </thead>
               <tbody>
-                {levelStats.map(st => {
+                {levelStats.map((st) => {
                   const dropTotal = levelStats.reduce((acc, s) => acc + s.total * s.pDrop, 0);
                   const conc = dropTotal > 0 ? (st.total * st.pDrop) / dropTotal : 0;
                   return (
@@ -135,11 +135,14 @@ export default function M8_1_LevelFunnel() {
                       <td className="py-2">{st.median.toFixed(1)}</td>
                       <td className="py-2">
                         <div className="w-full h-2 bg-ice-100 rounded-full overflow-hidden">
-                          <div className="h-full bg-coral" style={{ width: `${conc * 100}%` }}></div>
+                          <div
+                            className="h-full bg-coral"
+                            style={{ width: `${conc * 100}%` }}
+                          ></div>
                         </div>
                       </td>
                     </tr>
-                  )
+                  );
                 })}
               </tbody>
             </table>
@@ -149,7 +152,7 @@ export default function M8_1_LevelFunnel() {
         <div className="col-span-4 flex flex-col gap-6">
           <Card className="p-6 bg-white border border-ice-100 shadow-sm border-t-4 border-t-amber-400">
             <h3 className="font-bold text-navy-900 mb-2">Diagnóstico: Nivel 3</h3>
-            
+
             <p className="text-sm text-secundario mb-4">
               El Nivel 3 concentra el mayor cuello de botella pedagógico.
             </p>
@@ -171,19 +174,31 @@ export default function M8_1_LevelFunnel() {
 
             <div className="mb-6 p-3 bg-white border border-ice-200 rounded text-sm shadow-sm">
               <div className="flex items-center gap-2 mb-1">
-                <Badge color={n3Diagnosis.tTest.p < 0.05 ? 'bg-amber-100 text-amber-800' : 'bg-ice-100 text-navy-900'}>
+                <Badge
+                  color={
+                    n3Diagnosis.tTest.p < 0.05
+                      ? 'bg-amber-100 text-amber-800'
+                      : 'bg-ice-100 text-navy-900'
+                  }
+                >
                   Prueba de Welch
                 </Badge>
               </div>
               <p className="text-navy-900">
-                {n3Diagnosis.tTest.phrase.replace('los promedios de los dos grupos son distintos', 'el tiempo en Nivel 3 es significativamente mayor que en el resto de niveles')}
+                {n3Diagnosis.tTest.phrase.replace(
+                  'los promedios de los dos grupos son distintos',
+                  'el tiempo en Nivel 3 es significativamente mayor que en el resto de niveles',
+                )}
               </p>
             </div>
-            
+
             <h4 className="text-xs font-bold text-secundario mb-2">ACCIÓN RECOMENDADA</h4>
             <div className="bg-amber-50 border border-amber-200 p-4 rounded text-sm text-amber-900 mb-4">
               <strong>Refuerzo Dominical</strong>
-              <p className="mt-1 mb-2">Lanzar clínicas de 30 min enfocadas en el movimiento de brazos para destrabar alumnos estancados (+4 meses).</p>
+              <p className="mt-1 mb-2">
+                Lanzar clínicas de 30 min enfocadas en el movimiento de brazos para destrabar
+                alumnos estancados (+4 meses).
+              </p>
               <div className="flex justify-between font-bold text-xs">
                 <span>Impacto en retención:</span>
                 <span className="text-green-600">+15%</span>
@@ -193,7 +208,6 @@ export default function M8_1_LevelFunnel() {
                 <span className="text-green-600">{formatCurrency(45000)} / mes</span>
               </div>
             </div>
-            
           </Card>
         </div>
       </div>

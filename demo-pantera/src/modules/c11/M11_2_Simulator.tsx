@@ -8,8 +8,8 @@ import type { ScenarioConfig, ScenarioParams } from '@/metrics/scenarioModel';
 import { useAppStore } from '@/app/store';
 
 export default function M11_2_Simulator() {
-  const { addPlanAction } = useAppStore(state => ({
-    addPlanAction: state.addPlanAction
+  const { addPlanAction } = useAppStore((state) => ({
+    addPlanAction: state.addPlanAction,
   }));
 
   // Workaround for store not having addSavedScenario natively:
@@ -27,49 +27,70 @@ export default function M11_2_Simulator() {
   const [convElasticity, setConvElasticity] = useState(-0.9);
   const [churnElasticity, setChurnElasticity] = useState(0.35);
 
-  const [activeTab, setActiveTab] = useState<'simulador'|'comparador'>('simulador');
+  const [activeTab, setActiveTab] = useState<'simulador' | 'comparador'>('simulador');
 
-  const baseConfig: ScenarioConfig = useMemo(() => ({
-    months: 6,
-    baseProspects: [120, 110, 140, 100, 95, 130],
-    baseConversion: 0.35,
-    baseChurn: 0.08,
-    baseActive: 450,
-    totalCapacity: 500,
-    basePrice: 1200,
-    instructorCostPerHour: 150,
-    laneCostPerHour: 100,
-    avgSessionsPerStudent: 8,
-    hoursPerMonth: 160,
-    lanes: 4
-  }), []);
+  const baseConfig: ScenarioConfig = useMemo(
+    () => ({
+      months: 6,
+      baseProspects: [120, 110, 140, 100, 95, 130],
+      baseConversion: 0.35,
+      baseChurn: 0.08,
+      baseActive: 450,
+      totalCapacity: 500,
+      basePrice: 1200,
+      instructorCostPerHour: 150,
+      laneCostPerHour: 100,
+      avgSessionsPerStudent: 8,
+      hoursPerMonth: 160,
+      lanes: 4,
+    }),
+    [],
+  );
 
-  const baseParams: ScenarioParams = useMemo(() => ({
-    priceVariationPct: 0,
-    siblingDiscountPct: 0,
-    groupsAddedOrRemoved: 0,
-    retentionImprovementPct: 0,
-    seasonalityEnabled: true,
-    convElasticityMin: -0.5,
-    convElasticityExpected: -0.9,
-    convElasticityMax: -1.3,
-    churnElasticityMin: 0.15,
-    churnElasticityExpected: 0.35,
-    churnElasticityMax: 0.60
-  }), []);
+  const baseParams: ScenarioParams = useMemo(
+    () => ({
+      priceVariationPct: 0,
+      siblingDiscountPct: 0,
+      groupsAddedOrRemoved: 0,
+      retentionImprovementPct: 0,
+      seasonalityEnabled: true,
+      convElasticityMin: -0.5,
+      convElasticityExpected: -0.9,
+      convElasticityMax: -1.3,
+      churnElasticityMin: 0.15,
+      churnElasticityExpected: 0.35,
+      churnElasticityMax: 0.6,
+    }),
+    [],
+  );
 
-  const currentParams: ScenarioParams = useMemo(() => ({
-    ...baseParams,
-    priceVariationPct: priceVarPct / 100,
-    siblingDiscountPct: siblingDiscountPct / 100,
-    groupsAddedOrRemoved: groupsDelta,
-    retentionImprovementPct: retentionImpr / 100,
-    seasonalityEnabled: seasonality,
-    convElasticityExpected: convElasticity,
-    churnElasticityExpected: churnElasticity
-  }), [priceVarPct, siblingDiscountPct, groupsDelta, retentionImpr, seasonality, convElasticity, churnElasticity, baseParams]);
+  const currentParams: ScenarioParams = useMemo(
+    () => ({
+      ...baseParams,
+      priceVariationPct: priceVarPct / 100,
+      siblingDiscountPct: siblingDiscountPct / 100,
+      groupsAddedOrRemoved: groupsDelta,
+      retentionImprovementPct: retentionImpr / 100,
+      seasonalityEnabled: seasonality,
+      convElasticityExpected: convElasticity,
+      churnElasticityExpected: churnElasticity,
+    }),
+    [
+      priceVarPct,
+      siblingDiscountPct,
+      groupsDelta,
+      retentionImpr,
+      seasonality,
+      convElasticity,
+      churnElasticity,
+      baseParams,
+    ],
+  );
 
-  const baseScenario = useMemo(() => runScenarioModel(baseConfig, baseParams), [baseConfig, baseParams]);
+  const baseScenario = useMemo(
+    () => runScenarioModel(baseConfig, baseParams),
+    [baseConfig, baseParams],
+  );
   const currentScenario = useMemo(() => {
     // Artificial small delay for UI feedback "en vivo menos de 1 segundo"
     return runScenarioModel(baseConfig, currentParams);
@@ -77,22 +98,25 @@ export default function M11_2_Simulator() {
 
   const saveScenario = () => {
     if (localSavedScenarios.length >= 3) return;
-    setLocalSavedScenarios([...localSavedScenarios, {
-      id: `scen_${Date.now()}`,
-      name: `Escenario ${localSavedScenarios.length + 1} (${priceVarPct > 0 ? '+' : ''}${priceVarPct}% precio)`,
-      params: { ...currentParams },
-      result: currentScenario
-    }]);
+    setLocalSavedScenarios([
+      ...localSavedScenarios,
+      {
+        id: `scen_${Date.now()}`,
+        name: `Escenario ${localSavedScenarios.length + 1} (${priceVarPct > 0 ? '+' : ''}${priceVarPct}% precio)`,
+        params: { ...currentParams },
+        result: currentScenario,
+      },
+    ]);
   };
 
   const removeScenario = (id: string) => {
-    setLocalSavedScenarios(localSavedScenarios.filter(s => s.id !== id));
+    setLocalSavedScenarios(localSavedScenarios.filter((s) => s.id !== id));
   };
 
   const sendToActionPlan = (scenario: any) => {
     addPlanAction({
       id: `plan_${Date.now()}`,
-      task: `Implementar ${scenario.name} (Precio: ${scenario.params.priceVariationPct*100}%, Descuento: ${scenario.params.siblingDiscountPct*100}%)`,
+      task: `Implementar ${scenario.name} (Precio: ${scenario.params.priceVariationPct * 100}%, Descuento: ${scenario.params.siblingDiscountPct * 100}%)`,
       source: 'M11.2 Simulador',
       owner: 'Por asignar',
       deadline: new Date(Date.now() + 14 * 86400000).toISOString().split('T')[0],
@@ -100,8 +124,8 @@ export default function M11_2_Simulator() {
       status: 'todo',
       impact: {
         estimate: scenario.result.expected.reduce((sum: number, m: any) => sum + m.revenue, 0),
-        unit: 'MXN'
-      }
+        unit: 'MXN',
+      },
     });
     alert(`Escenario "${scenario.name}" enviado al Plan de Acción.`);
   };
@@ -111,37 +135,48 @@ export default function M11_2_Simulator() {
 
   // Chart Data
   const months = ['Mes 1', 'Mes 2', 'Mes 3', 'Mes 4', 'Mes 5', 'Mes 6'];
-  const baseRev = baseScenario.expected.map(m => m.revenue);
-  const curRev = currentScenario.expected.map(m => m.revenue);
-  const curRevOpt = currentScenario.optimistic.map(m => m.revenue);
-  const curRevCons = currentScenario.conservative.map(m => m.revenue);
+  const baseRev = baseScenario.expected.map((m) => m.revenue);
+  const curRev = currentScenario.expected.map((m) => m.revenue);
+  const curRevOpt = currentScenario.optimistic.map((m) => m.revenue);
+  const curRevCons = currentScenario.conservative.map((m) => m.revenue);
 
   // Base metrics to compare
-  const base6MoRev = baseRev.reduce((a,b)=>a+b,0);
-  const cur6MoRev = curRev.reduce((a,b)=>a+b,0);
-  
-  const base6MoProfit = baseScenario.expected.reduce((a,b)=>a+b.profit,0);
-  const cur6MoProfit = currentScenario.expected.reduce((a,b)=>a+b.profit,0);
+  const base6MoRev = baseRev.reduce((a, b) => a + b, 0);
+  const cur6MoRev = curRev.reduce((a, b) => a + b, 0);
+
+  const base6MoProfit = baseScenario.expected.reduce((a, b) => a + b.profit, 0);
+  const cur6MoProfit = currentScenario.expected.reduce((a, b) => a + b.profit, 0);
 
   const baseAct = baseScenario.expected[5]!.active;
   const curAct = currentScenario.expected[5]!.active;
 
-  const limitedByCap = currentScenario.expected.some(m => m.limitedByCapacity);
+  const limitedByCap = currentScenario.expected.some((m) => m.limitedByCapacity);
 
   return (
-    <ModulePage module={{ id: 'M11.2', categoryId: 11, title: 'Simulador de Escenarios', level: 'E', route: '', icon: '', shortDescription: '', businessQuestion: '¿Qué pasa si muevo precio, descuentos, grupos o retención?', component: null as any }}>
+    <ModulePage
+      module={{
+        id: 'M11.2',
+        categoryId: 11,
+        title: 'Simulador de Escenarios',
+        level: 'E',
+        route: '',
+        icon: '',
+        shortDescription: '',
+        businessQuestion: '¿Qué pasa si muevo precio, descuentos, grupos o retención?',
+        component: null as any,
+      }}
+    >
       <div className="flex flex-col h-full space-y-4">
-        
         <div className="flex justify-between items-end border-b border-ice-200 pb-2">
           <div className="flex gap-4">
-            <button 
-              className={`pb-2 px-1 font-bold text-sm ${activeTab==='simulador'?'text-navy-900 border-b-2 border-navy-900':'text-secundario hover:text-navy-900'}`}
+            <button
+              className={`pb-2 px-1 font-bold text-sm ${activeTab === 'simulador' ? 'text-navy-900 border-b-2 border-navy-900' : 'text-secundario hover:text-navy-900'}`}
               onClick={() => setActiveTab('simulador')}
             >
               Simulador en Vivo
             </button>
-            <button 
-              className={`pb-2 px-1 font-bold text-sm ${activeTab==='comparador'?'text-navy-900 border-b-2 border-navy-900':'text-secundario hover:text-navy-900'}`}
+            <button
+              className={`pb-2 px-1 font-bold text-sm ${activeTab === 'comparador' ? 'text-navy-900 border-b-2 border-navy-900' : 'text-secundario hover:text-navy-900'}`}
               onClick={() => setActiveTab('comparador')}
             >
               Comparador ({localSavedScenarios.length}/3)
@@ -149,10 +184,13 @@ export default function M11_2_Simulator() {
           </div>
           {activeTab === 'simulador' && (
             <div className="flex gap-2">
-              <button onClick={() => setShowAdvanced(!showAdvanced)} className="text-xs text-secundario underline">
+              <button
+                onClick={() => setShowAdvanced(!showAdvanced)}
+                className="text-xs text-secundario underline"
+              >
                 {showAdvanced ? 'Ocultar Elasticidades' : 'Ajustar Elasticidades'}
               </button>
-              <button 
+              <button
                 onClick={saveScenario}
                 disabled={localSavedScenarios.length >= 3}
                 className="bg-navy-900 text-white text-xs px-3 py-1 rounded disabled:opacity-50"
@@ -171,25 +209,38 @@ export default function M11_2_Simulator() {
                 <div>
                   <div className="flex justify-between text-xs font-bold text-navy-900 mb-2">
                     <span>Precio Base</span>
-                    <span className={priceVarPct > 0 ? 'text-green-600' : priceVarPct < 0 ? 'text-red-600' : ''}>
-                      {priceVarPct > 0 ? '+' : ''}{priceVarPct}% ({formatMXN(baseConfig.basePrice * (1 + priceVarPct/100))})
+                    <span
+                      className={
+                        priceVarPct > 0 ? 'text-green-600' : priceVarPct < 0 ? 'text-red-600' : ''
+                      }
+                    >
+                      {priceVarPct > 0 ? '+' : ''}
+                      {priceVarPct}% ({formatMXN(baseConfig.basePrice * (1 + priceVarPct / 100))})
                     </span>
                   </div>
                   <Slider min={-20} max={40} value={priceVarPct} onChangeValue={setPriceVarPct} />
                 </div>
-                
+
                 <div>
                   <div className="flex justify-between text-xs font-bold text-navy-900 mb-2">
                     <span>Descuento por Hermanos</span>
                     <span>{siblingDiscountPct}%</span>
                   </div>
-                  <Slider min={0} max={20} value={siblingDiscountPct} onChangeValue={setSiblingDiscountPct} />
+                  <Slider
+                    min={0}
+                    max={20}
+                    value={siblingDiscountPct}
+                    onChangeValue={setSiblingDiscountPct}
+                  />
                 </div>
 
                 <div>
                   <div className="flex justify-between text-xs font-bold text-navy-900 mb-2">
                     <span>Grupos Agregados / Removidos</span>
-                    <span>{groupsDelta > 0 ? '+' : ''}{groupsDelta} ({groupsDelta * 5} lugares)</span>
+                    <span>
+                      {groupsDelta > 0 ? '+' : ''}
+                      {groupsDelta} ({groupsDelta * 5} lugares)
+                    </span>
                   </div>
                   <Slider min={-5} max={10} value={groupsDelta} onChangeValue={setGroupsDelta} />
                 </div>
@@ -203,8 +254,15 @@ export default function M11_2_Simulator() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <input type="checkbox" id="seas" checked={seasonality} onChange={e => setSeasonality(e.target.checked)} />
-                  <label htmlFor="seas" className="text-xs font-bold text-navy-900">Aplicar Estacionalidad Mensual</label>
+                  <input
+                    type="checkbox"
+                    id="seas"
+                    checked={seasonality}
+                    onChange={(e) => setSeasonality(e.target.checked)}
+                  />
+                  <label htmlFor="seas" className="text-xs font-bold text-navy-900">
+                    Aplicar Estacionalidad Mensual
+                  </label>
                 </div>
               </div>
 
@@ -217,14 +275,26 @@ export default function M11_2_Simulator() {
                         <span>Elasticidad Conversión</span>
                         <span>{convElasticity.toFixed(2)}</span>
                       </div>
-                      <Slider min={-1.5} max={-0.1} step={0.1} value={convElasticity} onChangeValue={setConvElasticity} />
+                      <Slider
+                        min={-1.5}
+                        max={-0.1}
+                        step={0.1}
+                        value={convElasticity}
+                        onChangeValue={setConvElasticity}
+                      />
                     </div>
                     <div>
                       <div className="flex justify-between mb-1">
                         <span>Elasticidad Churn</span>
                         <span>{churnElasticity.toFixed(2)}</span>
                       </div>
-                      <Slider min={0} max={1} step={0.05} value={churnElasticity} onChangeValue={setChurnElasticity} />
+                      <Slider
+                        min={0}
+                        max={1}
+                        step={0.05}
+                        value={churnElasticity}
+                        onChangeValue={setChurnElasticity}
+                      />
                     </div>
                   </div>
                 </div>
@@ -233,34 +303,46 @@ export default function M11_2_Simulator() {
 
             {/* Resultados */}
             <div className="w-full lg:w-2/3 flex flex-col overflow-y-auto pr-2 pb-4">
-              
               {/* KPIs */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
                 <Card className="p-3 bg-white border border-ice-200">
                   <p className="text-[10px] text-secundario uppercase">Ingreso (6m)</p>
                   <p className="text-lg font-bold text-navy-900">{formatMXN(cur6MoRev)}</p>
-                  <p className={`text-xs ${cur6MoRev >= base6MoRev ? 'text-green-600' : 'text-red-600'}`}>
-                    {cur6MoRev >= base6MoRev ? '+' : ''}{formatMXN(cur6MoRev - base6MoRev)} vs base
+                  <p
+                    className={`text-xs ${cur6MoRev >= base6MoRev ? 'text-green-600' : 'text-red-600'}`}
+                  >
+                    {cur6MoRev >= base6MoRev ? '+' : ''}
+                    {formatMXN(cur6MoRev - base6MoRev)} vs base
                   </p>
                 </Card>
                 <Card className="p-3 bg-white border border-ice-200">
                   <p className="text-[10px] text-secundario uppercase">Utilidad (6m)</p>
                   <p className="text-lg font-bold text-navy-900">{formatMXN(cur6MoProfit)}</p>
-                  <p className={`text-xs ${cur6MoProfit >= base6MoProfit ? 'text-green-600' : 'text-red-600'}`}>
-                    {cur6MoProfit >= base6MoProfit ? '+' : ''}{formatMXN(cur6MoProfit - base6MoProfit)} vs base
+                  <p
+                    className={`text-xs ${cur6MoProfit >= base6MoProfit ? 'text-green-600' : 'text-red-600'}`}
+                  >
+                    {cur6MoProfit >= base6MoProfit ? '+' : ''}
+                    {formatMXN(cur6MoProfit - base6MoProfit)} vs base
                   </p>
                 </Card>
                 <Card className="p-3 bg-white border border-ice-200">
                   <p className="text-[10px] text-secundario uppercase">Alumnos (Mes 6)</p>
                   <p className="text-lg font-bold text-navy-900">{Math.round(curAct)}</p>
                   <p className={`text-xs ${curAct >= baseAct ? 'text-green-600' : 'text-red-600'}`}>
-                    {curAct >= baseAct ? '+' : ''}{Math.round(curAct - baseAct)} vs base
+                    {curAct >= baseAct ? '+' : ''}
+                    {Math.round(curAct - baseAct)} vs base
                   </p>
                 </Card>
-                <Card className={`p-3 border ${limitedByCap ? 'bg-red-50 border-red-200' : 'bg-white border-ice-200'}`}>
+                <Card
+                  className={`p-3 border ${limitedByCap ? 'bg-red-50 border-red-200' : 'bg-white border-ice-200'}`}
+                >
                   <p className="text-[10px] text-secundario uppercase">Ocupación (Mes 6)</p>
-                  <p className="text-lg font-bold text-navy-900">{formatPct(currentScenario.expected[5]!.occupancy)}</p>
-                  {limitedByCap && <p className="text-[10px] font-bold text-red-600">CAPACIDAD AL MÁXIMO</p>}
+                  <p className="text-lg font-bold text-navy-900">
+                    {formatPct(currentScenario.expected[5]!.occupancy)}
+                  </p>
+                  {limitedByCap && (
+                    <p className="text-[10px] font-bold text-red-600">CAPACIDAD AL MÁXIMO</p>
+                  )}
                 </Card>
               </div>
 
@@ -268,17 +350,17 @@ export default function M11_2_Simulator() {
               <Card className="p-4 bg-white border border-ice-200 flex-1 min-h-[300px] mb-6">
                 <h3 className="text-sm font-bold text-navy-900 mb-4">Proyección de Ingresos</h3>
                 <div className="h-[250px]">
-                  <LineChart 
+                  <LineChart
                     id="sim_rev"
                     x={months}
                     series={[
                       { name: 'Base', y: baseRev, concept: 'default' },
                       { name: 'Escenario', y: curRev, concept: 'cobranza' },
                       { name: 'Límite Sup', y: curRevOpt, concept: 'meta' },
-                      { name: 'Límite Inf', y: curRevCons, concept: 'meta' }
+                      { name: 'Límite Inf', y: curRevCons, concept: 'meta' },
                     ]}
                     altText="Simulador de Ingresos"
-                    tableData={{columns:[], rows:[]}}
+                    tableData={{ columns: [], rows: [] }}
                   />
                 </div>
               </Card>
@@ -303,7 +385,12 @@ export default function M11_2_Simulator() {
                         <td className="p-2 font-bold">{months[i]}</td>
                         <td className="p-2">{Math.round(m.prospects)}</td>
                         <td className="p-2">{formatPct(m.conversion)}</td>
-                        <td className={`p-2 ${m.limitedByCapacity?'text-red-600 font-bold':''}`}>{Math.round(m.enrollments)}{m.limitedByCapacity?'*':''}</td>
+                        <td
+                          className={`p-2 ${m.limitedByCapacity ? 'text-red-600 font-bold' : ''}`}
+                        >
+                          {Math.round(m.enrollments)}
+                          {m.limitedByCapacity ? '*' : ''}
+                        </td>
                         <td className="p-2">{Math.round(m.churned)}</td>
                         <td className="p-2">{Math.round(m.active)}</td>
                         <td className="p-2">{formatMXN(m.revenue)}</td>
@@ -325,22 +412,32 @@ export default function M11_2_Simulator() {
             ) : (
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {localSavedScenarios.map(s => {
-                    const totalRev = s.result.expected.reduce((a:number,b:any)=>a+b.revenue,0);
+                  {localSavedScenarios.map((s) => {
+                    const totalRev = s.result.expected.reduce(
+                      (a: number, b: any) => a + b.revenue,
+                      0,
+                    );
                     return (
                       <Card key={s.id} className="p-4 border border-ice-200">
                         <div className="flex justify-between items-start mb-2">
                           <h4 className="font-bold text-navy-900">{s.name}</h4>
-                          <button onClick={() => removeScenario(s.id)} className="text-red-500 hover:text-red-700">✕</button>
+                          <button
+                            onClick={() => removeScenario(s.id)}
+                            className="text-red-500 hover:text-red-700"
+                          >
+                            ✕
+                          </button>
                         </div>
-                        <div className="text-xl font-bold text-green-600 mb-4">{formatMXN(totalRev)}</div>
+                        <div className="text-xl font-bold text-green-600 mb-4">
+                          {formatMXN(totalRev)}
+                        </div>
                         <ul className="text-xs space-y-1 mb-4 text-secundario">
-                          <li>Precio: +{s.params.priceVariationPct*100}%</li>
-                          <li>Descuento: {s.params.siblingDiscountPct*100}%</li>
-                          <li>Retención: +{s.params.retentionImprovementPct*100}%</li>
+                          <li>Precio: +{s.params.priceVariationPct * 100}%</li>
+                          <li>Descuento: {s.params.siblingDiscountPct * 100}%</li>
+                          <li>Retención: +{s.params.retentionImprovementPct * 100}%</li>
                           <li>Grupos: {s.params.groupsAddedOrRemoved}</li>
                         </ul>
-                        <button 
+                        <button
                           onClick={() => sendToActionPlan(s)}
                           className="w-full bg-sky-700 hover:bg-sky-800 text-white font-bold py-2 rounded text-xs"
                         >
@@ -353,18 +450,24 @@ export default function M11_2_Simulator() {
 
                 {localSavedScenarios.length > 0 && (
                   <Card className="p-4 border border-ice-200">
-                    <h3 className="font-bold text-navy-900 mb-4">Comparación de Ingreso a 6 meses</h3>
+                    <h3 className="font-bold text-navy-900 mb-4">
+                      Comparación de Ingreso a 6 meses
+                    </h3>
                     <div className="h-64">
-                      <BarChart 
+                      <BarChart
                         id="comp_chart"
-                        x={localSavedScenarios.map(s => s.name)}
-                        series={[{
-                          name: 'Ingreso Total',
-                          y: localSavedScenarios.map(s => s.result.expected.reduce((a:number,b:any)=>a+b.revenue,0)),
-                          concept: 'cobranza'
-                        }]}
+                        x={localSavedScenarios.map((s) => s.name)}
+                        series={[
+                          {
+                            name: 'Ingreso Total',
+                            y: localSavedScenarios.map((s) =>
+                              s.result.expected.reduce((a: number, b: any) => a + b.revenue, 0),
+                            ),
+                            concept: 'cobranza',
+                          },
+                        ]}
                         altText="Comparación de escenarios"
-                        tableData={{columns:[], rows:[]}}
+                        tableData={{ columns: [], rows: [] }}
                       />
                     </div>
                   </Card>

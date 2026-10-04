@@ -4,8 +4,8 @@ export interface OptimizerMove {
   groupName: string;
   level: string;
   instructor: string;
-  sourceSlot: { day: string, hour: string, occ: number, waitlist: number };
-  destSlot: { day: string, hour: string, occ: number, waitlist: number };
+  sourceSlot: { day: string; hour: string; occ: number; waitlist: number };
+  destSlot: { day: string; hour: string; occ: number; waitlist: number };
   type: 'consolidate' | 'move_to_demand';
   familiesBenefited: number;
   frictionCost: number; // number of students forced to change
@@ -32,7 +32,8 @@ export function runScheduleOptimizer(): OptimizerMove[] {
       impactLow: 2400,
       impactExpected: 3300,
       impactHigh: 4200,
-      explanation: 'Mover un grupo subutilizado de Miércoles 11:00 (40% occ) a Sábado 10:00 absorbería 4 familias en lista de espera.'
+      explanation:
+        'Mover un grupo subutilizado de Miércoles 11:00 (40% occ) a Sábado 10:00 absorbería 4 familias en lista de espera.',
     },
     {
       id: 'opt-2',
@@ -48,7 +49,8 @@ export function runScheduleOptimizer(): OptimizerMove[] {
       impactLow: 1200,
       impactExpected: 1500,
       impactHigh: 1800,
-      explanation: 'Consolidar Tortugas de 08:00 y 09:00 libera un carril y un bloque de instructor, ahorrando costos operativos directos.'
-    }
+      explanation:
+        'Consolidar Tortugas de 08:00 y 09:00 libera un carril y un bloque de instructor, ahorrando costos operativos directos.',
+    },
   ];
 }

@@ -4,14 +4,14 @@ import { generateStructure } from '@/data/generator/structure';
 describe('Data Structure Generator', () => {
   it('generates exact sizes and constraints', () => {
     const data = generateStructure(42);
-    
+
     // 1. 170 exact groups
     expect(data.groups.length).toBe(170);
-    
+
     // 2. Capacities within 5% of targets (Principal ~110 * 10 = 1100, Infantil ~60 * 8 = 480)
     let prinCap = 0;
     let infCap = 0;
-    data.groups.forEach(g => {
+    data.groups.forEach((g) => {
       if (g.pool === 'principal') prinCap += g.capacity;
       else infCap += g.capacity;
     });
@@ -22,8 +22,7 @@ describe('Data Structure Generator', () => {
 
     // 3. No double booking
     const grid = new Set<string>();
-    data.groups.forEach(g => {
-      
+    data.groups.forEach((g) => {
       const key = `${g.instructorId}-${g.dayOfWeek}-${g.timeSlot}`;
       expect(grid.has(key)).toBe(false);
       grid.add(key);
@@ -31,7 +30,7 @@ describe('Data Structure Generator', () => {
 
     // 4. No lane exceedance
     const lanes = new Map<string, number>();
-    data.groups.forEach(g => {
+    data.groups.forEach((g) => {
       const key = `${g.pool}-${g.dayOfWeek}-${g.timeSlot}`;
       lanes.set(key, (lanes.get(key) || 0) + 1);
     });
@@ -41,14 +40,14 @@ describe('Data Structure Generator', () => {
 
     // 5. Instructor workload between 18 and 30
     const load = new Map<string, number>();
-    data.groups.forEach(g => load.set(g.instructorId, (load.get(g.instructorId) || 0) + 1));
+    data.groups.forEach((g) => load.set(g.instructorId, (load.get(g.instructorId) || 0) + 1));
     for (const count of load.values()) {
       expect(count).toBeGreaterThanOrEqual(15);
       expect(count).toBeLessThanOrEqual(32);
     }
 
     // 6. Mariana and Ricardo present
-    const names = data.instructors.map(i => i.name);
+    const names = data.instructors.map((i) => i.name);
     expect(names).toContain('Mariana');
     expect(names).toContain('Ricardo');
   });

@@ -2,7 +2,19 @@ export const DEMO_CONFIG = {
   dates: {
     startDate: '2024-10-01',
     cutoffDate: '2026-09-30',
-    holidays: ['2024-12-25', '2025-01-01', '2025-05-01', '2025-09-16', '2025-11-20', '2025-12-25', '2026-01-01', '2026-02-02', '2026-03-16', '2026-05-01', '2026-09-16'],
+    holidays: [
+      '2024-12-25',
+      '2025-01-01',
+      '2025-05-01',
+      '2025-09-16',
+      '2025-11-20',
+      '2025-12-25',
+      '2026-01-01',
+      '2026-02-02',
+      '2026-03-16',
+      '2026-05-01',
+      '2026-09-16',
+    ],
   },
   volumes: {
     baseStudents: 180,
@@ -16,9 +28,9 @@ export const DEMO_CONFIG = {
     scheduledGroups: 170,
   },
   plans: {
-    freq1: { price: 1350, share: 0.20 },
-    freq2: { price: 2100, share: 0.60 },
-    freq3: { price: 2750, share: 0.20 },
+    freq1: { price: 1350, share: 0.2 },
+    freq2: { price: 2100, share: 0.6 },
+    freq3: { price: 2750, share: 0.2 },
     annualEnrollmentFee: 1200,
     quarterlyDiscount: 0.08,
     dueDay: 5,
@@ -44,28 +56,28 @@ export const DEMO_CONFIG = {
       commercial: 20,
       operational: 25,
       retention: 15,
-      pedagogical: 15
+      pedagogical: 15,
     },
     goals: {
       financial: 100,
       commercial: 100,
       operational: 100,
       retention: 100,
-      pedagogical: 100
-    }
+      pedagogical: 100,
+    },
   },
   thresholds: {
     riskLow: 0.15,
     riskHigh: 0.35,
-    saturation: 0.90,
-    underutilization: 0.60,
+    saturation: 0.9,
+    underutilization: 0.6,
   },
   prospects: {
     sources: {
       meta: { share: 0.45, conversion: 0.12 },
-      google: { share: 0.20, conversion: 0.25 },
+      google: { share: 0.2, conversion: 0.25 },
       referral: { share: 0.15, conversion: 0.45 },
-      organic: { share: 0.20, conversion: 0.18 },
+      organic: { share: 0.2, conversion: 0.18 },
     },
     lostReasons: ['precio', 'horario', 'distancia', 'otra_escuela', 'sin_respuesta'] as const,
   },
@@ -74,8 +86,8 @@ export const DEMO_CONFIG = {
   },
   paymentMethods: {
     cash: 0.38,
-    transfer: 0.30,
-    card: 0.20,
+    transfer: 0.3,
+    card: 0.2,
     online: 0.12,
-  }
+  },
 };

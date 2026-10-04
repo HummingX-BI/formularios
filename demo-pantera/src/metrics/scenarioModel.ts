@@ -55,7 +55,7 @@ function calculateTrajectory(
   config: ScenarioConfig,
   params: ScenarioParams,
   convElasticity: number,
-  churnElasticity: number
+  churnElasticity: number,
 ): MonthResult[] {
   const results: MonthResult[] = [];
   let currentActive = config.baseActive;
@@ -68,12 +68,14 @@ function calculateTrajectory(
 
   const newPrice = config.basePrice * (1 + params.priceVariationPct);
   // Each group is assumed to be 5 spots. So capacity changes by groups * 5.
-  const capacity = config.totalCapacity + (params.groupsAddedOrRemoved * 5);
-  
+  const capacity = config.totalCapacity + params.groupsAddedOrRemoved * 5;
+
   // Cost: base cost + extra cost for added groups.
   // Each group adds 4 hours a month of instructor time.
-  const baseCost = config.hoursPerMonth * config.lanes * config.laneCostPerHour + config.hoursPerMonth * config.lanes * config.instructorCostPerHour;
-  const extraCost = params.groupsAddedOrRemoved * 4 * config.instructorCostPerHour; 
+  const baseCost =
+    config.hoursPerMonth * config.lanes * config.laneCostPerHour +
+    config.hoursPerMonth * config.lanes * config.instructorCostPerHour;
+  const extraCost = params.groupsAddedOrRemoved * 4 * config.instructorCostPerHour;
   const totalCost = baseCost + extraCost;
 
   for (let t = 0; t < config.months; t++) {
@@ -85,16 +87,17 @@ function calculateTrajectory(
 
     // 2. Conversion
     // Conversion(t) = base_conversion * (1 + conv_elasticity * price_variation + sibling_discount_effect)
-    let conversion = config.baseConversion * (1 + convElasticity * params.priceVariationPct + siblingEffectConv);
+    let conversion =
+      config.baseConversion * (1 + convElasticity * params.priceVariationPct + siblingEffectConv);
     conversion = Math.max(0, Math.min(1, conversion));
 
     // 3. Enrollments
     let intendedEnrollments = prospects * conversion;
     const freeSpots = Math.max(0, capacity - currentActive);
-    
+
     let enrollments = intendedEnrollments;
     let limitedByCapacity = false;
-    
+
     // Ocupación limit = capacity
     if (enrollments > freeSpots) {
       enrollments = freeSpots;
@@ -103,7 +106,11 @@ function calculateTrajectory(
 
     // 4. Churn
     // Churn(t) = base_churn * (1 + churn_elasticity * price_variation) * (1 - retention_improvement) * (1 - sibling_effect)
-    let churnRate = config.baseChurn * (1 + churnElasticity * params.priceVariationPct) * (1 - params.retentionImprovementPct) * (1 - siblingEffectChurn);
+    let churnRate =
+      config.baseChurn *
+      (1 + churnElasticity * params.priceVariationPct) *
+      (1 - params.retentionImprovementPct) *
+      (1 - siblingEffectChurn);
     churnRate = Math.max(0, Math.min(1, churnRate));
 
     const churned = currentActive * churnRate;
@@ -133,7 +140,7 @@ function calculateTrajectory(
       profit,
       occupancy,
       capacity,
-      limitedByCapacity
+      limitedByCapacity,
     });
   }
 
@@ -145,15 +152,20 @@ function calculateTrajectory(
  */
 export function runScenarioModel(config: ScenarioConfig, params: ScenarioParams): ScenarioResult {
   // Expected
-  const expected = calculateTrajectory(config, params, params.convElasticityExpected, params.churnElasticityExpected);
-  
+  const expected = calculateTrajectory(
+    config,
+    params,
+    params.convElasticityExpected,
+    params.churnElasticityExpected,
+  );
+
   // Optimistic
   // Min elasticity means price increases drop conversion LESS and increase churn LESS.
   // Wait, elasticity is negative for conversion. -0.5 is MIN magnitude (less effect), -1.3 is MAX magnitude (more effect).
   // For optimistic when price goes up, we want least magnitude: -0.5 (conv), 0.15 (churn).
   // But if price goes down, we want highest magnitude for optimistic: -1.3 (conv), 0.60 (churn).
   const priceUp = params.priceVariationPct >= 0;
-  
+
   const optConvE = priceUp ? params.convElasticityMin : params.convElasticityMax;
   const optChurnE = priceUp ? params.churnElasticityMin : params.churnElasticityMax;
   const optimistic = calculateTrajectory(config, params, optConvE, optChurnE);

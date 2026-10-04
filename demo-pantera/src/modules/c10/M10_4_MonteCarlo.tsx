@@ -22,11 +22,11 @@ export default function M10_4_MonteCarlo() {
   const runSimulation = async () => {
     if (abortCtrl.current) abortCtrl.current.abort();
     abortCtrl.current = new AbortController();
-    
+
     setLoading(true);
     setProgress(0);
     setError('');
-    
+
     try {
       const params = {
         modelName: 'pantera_revenue',
@@ -41,12 +41,12 @@ export default function M10_4_MonteCarlo() {
         churnStd: churnMean * 0.2,
         prospMin: prospMode * 0.5,
         prospMode,
-        prospMax: prospMode * 1.5
+        prospMax: prospMode * 1.5,
       };
 
       const res = await runMLTask<MonteCarloResult>('monteCarlo', params, {
         onProgress: (p) => setProgress(p),
-        signal: abortCtrl.current.signal
+        signal: abortCtrl.current.signal,
       });
       setMcRes(res);
     } catch (err: any) {
@@ -67,76 +67,135 @@ export default function M10_4_MonteCarlo() {
 
   const chartData = useMemo(() => {
     if (!mcRes) return null;
-    
-    const histData = mcRes.trajectories.map(t => t.result);
+
+    const histData = mcRes.trajectories.map((t) => t.result);
     // Actually montecarlo results return percentile 5 and 95, so min and max can be p5 and p95.
     // The histogram in Plotly takes raw data, but we only saved 100 trajectories to memory to save RAM.
     // However, the worker returns `percentiles` from all 10,000 iterations.
-    
+
     return {
       histogram: {
         type: 'histogram',
         x: histData,
         nbinsx: 20,
         marker: { color: '#0B2A47' },
-        name: 'Frecuencia'
+        name: 'Frecuencia',
       },
       tornado: [
         {
           type: 'bar',
           orientation: 'h',
-          x: [0.85, 0.60, -0.40, 0.15],
+          x: [0.85, 0.6, -0.4, 0.15],
           y: ['Retención', 'Prospectos', 'Sensibilidad Precio', 'Conversión'],
           marker: {
-            color: ['#10B981', '#10B981', '#EF4444', '#10B981']
-          }
-        }
-      ]
+            color: ['#10B981', '#10B981', '#EF4444', '#10B981'],
+          },
+        },
+      ],
     };
   }, [mcRes]);
 
-
   return (
-    <ModulePage module={ { id: 'M10.4', categoryId: 10, title: 'Simulación Monte Carlo', level: 'S', route: '', icon: '', shortDescription: '', businessQuestion: '¿Qué tan probable es que llegue a mi meta de ingresos?', component: null as any } }>
+    <ModulePage
+      module={{
+        id: 'M10.4',
+        categoryId: 10,
+        title: 'Simulación Monte Carlo',
+        level: 'S',
+        route: '',
+        icon: '',
+        shortDescription: '',
+        businessQuestion: '¿Qué tan probable es que llegue a mi meta de ingresos?',
+        component: null as any,
+      }}
+    >
       <div className="space-y-6 flex flex-col h-full overflow-auto pr-2 pb-6">
-        
         <div className="grid grid-cols-12 gap-6">
           <div className="col-span-3 space-y-4">
             <Card className="p-4 border border-ice-200 bg-sky-50">
               <h4 className="font-bold text-sky-900 mb-4 text-sm">Supuestos del Modelo</h4>
-              
+
               <div className="space-y-3">
                 <div>
-                  <label className="block text-xs font-bold text-navy-900 mb-1">Tasa de Conversión (Media)</label>
-                  <input type="range" min="0.05" max="0.30" step="0.01" value={convMean} onChange={e => setConvMean(parseFloat(e.target.value))} className="w-full" />
-                  <div className="text-xs text-right font-mono">{(convMean*100).toFixed(0)}%</div>
-                </div>
-                
-                <div>
-                  <label className="block text-xs font-bold text-navy-900 mb-1">Tasa de Churn (Media)</label>
-                  <input type="range" min="0.01" max="0.10" step="0.01" value={churnMean} onChange={e => setChurnMean(parseFloat(e.target.value))} className="w-full" />
-                  <div className="text-xs text-right font-mono">{(churnMean*100).toFixed(0)}%</div>
+                  <label className="block text-xs font-bold text-navy-900 mb-1">
+                    Tasa de Conversión (Media)
+                  </label>
+                  <input
+                    type="range"
+                    min="0.05"
+                    max="0.30"
+                    step="0.01"
+                    value={convMean}
+                    onChange={(e) => setConvMean(parseFloat(e.target.value))}
+                    className="w-full"
+                  />
+                  <div className="text-xs text-right font-mono">{(convMean * 100).toFixed(0)}%</div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-navy-900 mb-1">Prospectos x Mes (Moda)</label>
-                  <input type="range" min="50" max="300" step="10" value={prospMode} onChange={e => setProspMode(parseInt(e.target.value))} className="w-full" />
+                  <label className="block text-xs font-bold text-navy-900 mb-1">
+                    Tasa de Churn (Media)
+                  </label>
+                  <input
+                    type="range"
+                    min="0.01"
+                    max="0.10"
+                    step="0.01"
+                    value={churnMean}
+                    onChange={(e) => setChurnMean(parseFloat(e.target.value))}
+                    className="w-full"
+                  />
+                  <div className="text-xs text-right font-mono">
+                    {(churnMean * 100).toFixed(0)}%
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-navy-900 mb-1">
+                    Prospectos x Mes (Moda)
+                  </label>
+                  <input
+                    type="range"
+                    min="50"
+                    max="300"
+                    step="10"
+                    value={prospMode}
+                    onChange={(e) => setProspMode(parseInt(e.target.value))}
+                    className="w-full"
+                  />
                   <div className="text-xs text-right font-mono">{prospMode}</div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-navy-900 mb-1">Ticket Promedio</label>
-                  <input type="range" min="800" max="1500" step="50" value={ticket} onChange={e => setTicket(parseInt(e.target.value))} className="w-full" />
+                  <label className="block text-xs font-bold text-navy-900 mb-1">
+                    Ticket Promedio
+                  </label>
+                  <input
+                    type="range"
+                    min="800"
+                    max="1500"
+                    step="50"
+                    value={ticket}
+                    onChange={(e) => setTicket(parseInt(e.target.value))}
+                    className="w-full"
+                  />
                   <div className="text-xs text-right font-mono">${ticket}</div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-navy-900 mb-1 border-t border-sky-200 pt-2">Meta a 6 Meses ($)</label>
-                  <input type="number" value={target} onChange={e => setTarget(parseInt(e.target.value))} className="w-full p-1 text-sm rounded border border-gray-300" />
+                  <label className="block text-xs font-bold text-navy-900 mb-1 border-t border-sky-200 pt-2">
+                    Meta a 6 Meses ($)
+                  </label>
+                  <input
+                    type="number"
+                    value={target}
+                    onChange={(e) => setTarget(parseInt(e.target.value))}
+                    className="w-full p-1 text-sm rounded border border-gray-300"
+                  />
                 </div>
               </div>
 
-              <button 
+              <button
                 onClick={runSimulation}
                 disabled={loading}
                 className="mt-6 w-full py-2 bg-sky-700 hover:bg-sky-800 text-white rounded font-bold text-sm transition-colors disabled:opacity-50"
@@ -147,50 +206,83 @@ export default function M10_4_MonteCarlo() {
           </div>
 
           <div className="col-span-9 space-y-6">
-            
             {loading && (
               <Card className="p-8 border border-ice-200 flex flex-col items-center justify-center h-64">
                 <div className="text-4xl mb-4 animate-bounce">🎲</div>
-                <h4 className="font-bold text-navy-900 mb-2">Calculando 10,000 futuros posibles...</h4>
+                <h4 className="font-bold text-navy-900 mb-2">
+                  Calculando 10,000 futuros posibles...
+                </h4>
                 <div className="w-64 h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div className="h-full bg-sky-600 transition-all duration-200" style={{ width: `${progress * 100}%` }}></div>
+                  <div
+                    className="h-full bg-sky-600 transition-all duration-200"
+                    style={{ width: `${progress * 100}%` }}
+                  ></div>
                 </div>
-                <p className="text-xs text-secundario mt-2">Iteración {Math.floor(progress * 10000)} de 10,000</p>
-                <button onClick={() => abortCtrl.current?.abort()} className="mt-4 text-xs text-red-500 hover:underline">Cancelar</button>
+                <p className="text-xs text-secundario mt-2">
+                  Iteración {Math.floor(progress * 10000)} de 10,000
+                </p>
+                <button
+                  onClick={() => abortCtrl.current?.abort()}
+                  className="mt-4 text-xs text-red-500 hover:underline"
+                >
+                  Cancelar
+                </button>
               </Card>
             )}
 
-            {!loading && error && <div className="text-red-500 font-bold bg-red-50 p-4 rounded border border-red-200">Error: {error}</div>}
+            {!loading && error && (
+              <div className="text-red-500 font-bold bg-red-50 p-4 rounded border border-red-200">
+                Error: {error}
+              </div>
+            )}
 
             {!loading && mcRes && chartData && (
               <>
                 <div className="grid grid-cols-3 gap-4">
                   <Card className="p-4 border border-ice-200 shadow-sm text-center">
-                    <strong className="block text-secundario text-xs uppercase mb-1">Probabilidad de Exito</strong>
+                    <strong className="block text-secundario text-xs uppercase mb-1">
+                      Probabilidad de Exito
+                    </strong>
                     <div className="text-3xl font-bold text-sky-700">
                       {((mcRes.thresholdProb || 0) * 100).toFixed(1)}%
                     </div>
-                    <div className="text-xs text-secundario mt-1">De alcanzar ${target.toLocaleString()}</div>
+                    <div className="text-xs text-secundario mt-1">
+                      De alcanzar ${target.toLocaleString()}
+                    </div>
                   </Card>
                   <Card className="p-4 border border-ice-200 shadow-sm text-center">
-                    <strong className="block text-secundario text-xs uppercase mb-1">Peor Escenario (P05)</strong>
+                    <strong className="block text-secundario text-xs uppercase mb-1">
+                      Peor Escenario (P05)
+                    </strong>
                     <div className="text-xl font-bold font-mono text-coral">
-                      ${mcRes.percentiles.p5.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                      $
+                      {mcRes.percentiles.p5.toLocaleString(undefined, { maximumFractionDigits: 0 })}
                     </div>
-                    <div className="text-xs text-secundario mt-1">Solo 5% de que sea peor que esto</div>
+                    <div className="text-xs text-secundario mt-1">
+                      Solo 5% de que sea peor que esto
+                    </div>
                   </Card>
                   <Card className="p-4 border border-ice-200 shadow-sm text-center">
-                    <strong className="block text-secundario text-xs uppercase mb-1">Mejor Escenario (P95)</strong>
+                    <strong className="block text-secundario text-xs uppercase mb-1">
+                      Mejor Escenario (P95)
+                    </strong>
                     <div className="text-xl font-bold font-mono text-green-600">
-                      ${mcRes.percentiles.p95.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                      $
+                      {mcRes.percentiles.p95.toLocaleString(undefined, {
+                        maximumFractionDigits: 0,
+                      })}
                     </div>
-                    <div className="text-xs text-secundario mt-1">Solo 5% de que sea mejor que esto</div>
+                    <div className="text-xs text-secundario mt-1">
+                      Solo 5% de que sea mejor que esto
+                    </div>
                   </Card>
                 </div>
 
                 <div className="grid grid-cols-2 gap-6">
                   <Card className="p-4 border border-ice-200 shadow-sm">
-                    <h4 className="font-bold text-navy-900 text-sm mb-2">Distribución de Ingresos a 6 Meses</h4>
+                    <h4 className="font-bold text-navy-900 text-sm mb-2">
+                      Distribución de Ingresos a 6 Meses
+                    </h4>
                     <div className="h-64">
                       <PlotChart
                         id="mc_histogram"
@@ -202,21 +294,45 @@ export default function M10_4_MonteCarlo() {
                           shapes: [
                             {
                               type: 'line',
-                              x0: target, x1: target,
-                              y0: 0, y1: 1, yref: 'paper',
-                              line: { color: 'green', width: 2, dash: 'dash' }
+                              x0: target,
+                              x1: target,
+                              y0: 0,
+                              y1: 1,
+                              yref: 'paper',
+                              line: { color: 'green', width: 2, dash: 'dash' },
                             },
                             {
                               type: 'line',
-                              x0: mcRes.mean, x1: mcRes.mean,
-                              y0: 0, y1: 1, yref: 'paper',
-                              line: { color: 'blue', width: 2, dash: 'dot' }
-                            }
+                              x0: mcRes.mean,
+                              x1: mcRes.mean,
+                              y0: 0,
+                              y1: 1,
+                              yref: 'paper',
+                              line: { color: 'blue', width: 2, dash: 'dot' },
+                            },
                           ],
                           annotations: [
-                            { x: target, y: 1, xref: 'x', yref: 'paper', text: 'Meta', showarrow: false, yanchor: 'bottom', font: {color:'green'} },
-                            { x: mcRes.mean, y: 1, xref: 'x', yref: 'paper', text: 'Media', showarrow: false, yanchor: 'bottom', font: {color:'blue'} }
-                          ]
+                            {
+                              x: target,
+                              y: 1,
+                              xref: 'x',
+                              yref: 'paper',
+                              text: 'Meta',
+                              showarrow: false,
+                              yanchor: 'bottom',
+                              font: { color: 'green' },
+                            },
+                            {
+                              x: mcRes.mean,
+                              y: 1,
+                              xref: 'x',
+                              yref: 'paper',
+                              text: 'Media',
+                              showarrow: false,
+                              yanchor: 'bottom',
+                              font: { color: 'blue' },
+                            },
+                          ],
                         }}
                         altText="Histograma Monte Carlo"
                         tableData={{ columns: [], rows: [] }}
@@ -225,14 +341,16 @@ export default function M10_4_MonteCarlo() {
                   </Card>
 
                   <Card className="p-4 border border-ice-200 shadow-sm">
-                    <h4 className="font-bold text-navy-900 text-sm mb-2">Sensibilidad (Diagrama Tornado)</h4>
+                    <h4 className="font-bold text-navy-900 text-sm mb-2">
+                      Sensibilidad (Diagrama Tornado)
+                    </h4>
                     <div className="h-64">
                       <PlotChart
                         id="mc_tornado"
                         data={chartData.tornado as any}
                         layout={{
                           margin: { l: 120, r: 10, t: 10, b: 30 },
-                          xaxis: { title: 'Correlación con el Ingreso Final', range: [-1, 1] }
+                          xaxis: { title: 'Correlación con el Ingreso Final', range: [-1, 1] },
                         }}
                         altText="Diagrama Tornado"
                         tableData={{ columns: [], rows: [] }}
@@ -245,7 +363,6 @@ export default function M10_4_MonteCarlo() {
                 </div>
               </>
             )}
-
           </div>
         </div>
       </div>

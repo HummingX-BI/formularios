@@ -15,17 +15,17 @@ export function AppRouter(): React.JSX.Element {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/_design" element={<DesignGallery />} />
-        
+
         <Route element={<DashboardLayout />}>
-          {MODULE_REGISTRY.map(mod => (
-            <Route 
-              key={mod.id} 
-              path={mod.route} 
+          {MODULE_REGISTRY.map((mod) => (
+            <Route
+              key={mod.id}
+              path={mod.route}
               element={
                 <Suspense fallback={<div className="p-8">Cargando...</div>}>
                   <mod.component />
                 </Suspense>
-              } 
+              }
             />
           ))}
           <Route path="_data-audit" element={<DataAuditPage />} />

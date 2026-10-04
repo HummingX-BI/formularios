@@ -15,11 +15,11 @@ export default function M5_4_Sources() {
     { name: 'Facebook', leads: 85, enrolled: 12, cost: costFacebook },
     { name: 'Google', leads: 60, enrolled: 15, cost: costGoogle },
     { name: 'Referido', leads: 30, enrolled: 18, cost: 0 },
-    { name: 'Orgánico', leads: 25, enrolled: 5, cost: 0 }
+    { name: 'Orgánico', leads: 25, enrolled: 5, cost: 0 },
   ];
 
   // Chi Square: Rows=Source, Cols=[Enrolled, NotEnrolled]
-  const observed = sources.map(s => [s.enrolled, s.leads - s.enrolled]);
+  const observed = sources.map((s) => [s.enrolled, s.leads - s.enrolled]);
   const chiResult = chiSquareIndependence(observed);
 
   // Chart data for Conversion with Wilson CI
@@ -27,24 +27,45 @@ export default function M5_4_Sources() {
     {
       name: 'Conversión',
       type: 'bar',
-      x: sources.map(s => s.name),
-      y: sources.map(s => (s.enrolled / s.leads) * 100),
+      x: sources.map((s) => s.name),
+      y: sources.map((s) => (s.enrolled / s.leads) * 100),
       error_y: {
         type: 'data',
-        array: sources.map(s => {
+        array: sources.map((s) => {
           const ci = confIntervalProportionWilson(s.enrolled, s.leads);
-          return ((ci[1] || 0) - (s.enrolled / s.leads)) * 100;
+          return ((ci[1] || 0) - s.enrolled / s.leads) * 100;
         }),
-        visible: true
+        visible: true,
       },
-      marker: { color: ['#7CC4E8', '#1E7FC0', '#2FB6D4', '#CFE8F5'] }
-    }
+      marker: { color: ['#7CC4E8', '#1E7FC0', '#2FB6D4', '#CFE8F5'] },
+    },
   ];
 
   const mixEvolutionData = [
-    { name: 'Referido', type: 'scatter', stackgroup: 'one', x: ['Ene','Feb','Mar','Abr'], y: [20,25,28,30], fillcolor: '#2FB6D4' },
-    { name: 'Google', type: 'scatter', stackgroup: 'one', x: ['Ene','Feb','Mar','Abr'], y: [40,45,55,60], fillcolor: '#1E7FC0' },
-    { name: 'Facebook', type: 'scatter', stackgroup: 'one', x: ['Ene','Feb','Mar','Abr'], y: [100,90,95,85], fillcolor: '#7CC4E8' }
+    {
+      name: 'Referido',
+      type: 'scatter',
+      stackgroup: 'one',
+      x: ['Ene', 'Feb', 'Mar', 'Abr'],
+      y: [20, 25, 28, 30],
+      fillcolor: '#2FB6D4',
+    },
+    {
+      name: 'Google',
+      type: 'scatter',
+      stackgroup: 'one',
+      x: ['Ene', 'Feb', 'Mar', 'Abr'],
+      y: [40, 45, 55, 60],
+      fillcolor: '#1E7FC0',
+    },
+    {
+      name: 'Facebook',
+      type: 'scatter',
+      stackgroup: 'one',
+      x: ['Ene', 'Feb', 'Mar', 'Abr'],
+      y: [100, 90, 95, 85],
+      fillcolor: '#7CC4E8',
+    },
   ];
 
   const insightData = {
@@ -52,17 +73,18 @@ export default function M5_4_Sources() {
     moduleId: 'M5.4',
     severity: 'positivo' as const,
     headline: 'Referidos domina en conversión, Google es más eficiente que Facebook',
-    summary: 'La prueba chi-cuadrada confirma que la fuente sí afecta la conversión significativamente. Los referidos convierten a más del doble, sin costo de campaña.',
+    summary:
+      'La prueba chi-cuadrada confirma que la fuente sí afecta la conversión significativamente. Los referidos convierten a más del doble, sin costo de campaña.',
     bullets: [
       chiResult.phrase,
-      'Costo de Adquisición (CAC) en Facebook es alto; se sugiere reasignar 20% del presupuesto a Google o a incentivos de referidos.'
+      'Costo de Adquisición (CAC) en Facebook es alto; se sugiere reasignar 20% del presupuesto a Google o a incentivos de referidos.',
     ],
     action: {
       text: 'Simular reasignación en Planner',
       actionType: 'navigate' as const,
-      targetModule: 'M11.2'
+      targetModule: 'M11.2',
     },
-    evidence: []
+    evidence: [],
   };
 
   return (
@@ -70,7 +92,9 @@ export default function M5_4_Sources() {
       <div className="flex justify-between items-end">
         <div>
           <h1 className="text-3xl font-jakarta font-bold text-navy-900">Fuentes de Captación</h1>
-          <p className="text-lg text-secundario mt-1">Análisis de adquisición y eficiencia por canal</p>
+          <p className="text-lg text-secundario mt-1">
+            Análisis de adquisición y eficiencia por canal
+          </p>
         </div>
       </div>
 
@@ -89,7 +113,7 @@ export default function M5_4_Sources() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-ice-100">
-                {sources.map(s => {
+                {sources.map((s) => {
                   const conv = (s.enrolled / s.leads) * 100;
                   const cac = s.cost > 0 ? s.cost / s.enrolled : 0;
                   return (
@@ -109,16 +133,36 @@ export default function M5_4_Sources() {
               </tbody>
             </table>
           </div>
-          
+
           <div className="mt-6 p-4 bg-ice-50 border border-ice-200 rounded flex gap-4">
             <div className="flex-1">
-              <label className="block text-xs font-bold text-navy-900 mb-1">Costo Campaña Facebook</label>
-              <input type="range" min="1000" max="20000" step="500" value={costFacebook} onChange={e => setCostFacebook(Number(e.target.value))} className="w-full accent-aqua-500" />
+              <label className="block text-xs font-bold text-navy-900 mb-1">
+                Costo Campaña Facebook
+              </label>
+              <input
+                type="range"
+                min="1000"
+                max="20000"
+                step="500"
+                value={costFacebook}
+                onChange={(e) => setCostFacebook(Number(e.target.value))}
+                className="w-full accent-aqua-500"
+              />
               <div className="text-xs text-secundario mt-1">{formatCurrency(costFacebook)}</div>
             </div>
             <div className="flex-1">
-              <label className="block text-xs font-bold text-navy-900 mb-1">Costo Campaña Google</label>
-              <input type="range" min="1000" max="20000" step="500" value={costGoogle} onChange={e => setCostGoogle(Number(e.target.value))} className="w-full accent-aqua-500" />
+              <label className="block text-xs font-bold text-navy-900 mb-1">
+                Costo Campaña Google
+              </label>
+              <input
+                type="range"
+                min="1000"
+                max="20000"
+                step="500"
+                value={costGoogle}
+                onChange={(e) => setCostGoogle(Number(e.target.value))}
+                className="w-full accent-aqua-500"
+              />
               <div className="text-xs text-secundario mt-1">{formatCurrency(costGoogle)}</div>
             </div>
           </div>
@@ -130,7 +174,7 @@ export default function M5_4_Sources() {
       </div>
 
       <div className="grid grid-cols-2 gap-6">
-        <PlotChart 
+        <PlotChart
           id="sources_conversion_chart"
           title="Tasa de Conversión por Fuente"
           subtitle="Con intervalos de confianza (Wilson 95%)"
@@ -140,7 +184,7 @@ export default function M5_4_Sources() {
           tableData={{ columns: [], rows: [] }}
           onExplain={() => {}}
         />
-        <PlotChart 
+        <PlotChart
           id="sources_mix_chart"
           title="Mix de Fuentes (Volumen)"
           subtitle="Evolución de prospectos"

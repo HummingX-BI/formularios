@@ -98,7 +98,7 @@ export function kurtosis(data: number[], sample = true): number {
   m2 /= n;
   m4 /= n;
   if (m2 === 0) return 0;
-  
+
   if (!sample) {
     return m4 / (m2 * m2) - 3;
   }
@@ -124,32 +124,46 @@ export function fiveNumberSummary(data: number[]): [number, number, number, numb
     percentile(data, 0.25),
     percentile(data, 0.5),
     percentile(data, 0.75),
-    Math.max(...data)
+    Math.max(...data),
   ];
 }
 
-export function outliers(data: number[]): { lowerBound: number, upperBound: number, outliers: number[] } {
+export function outliers(data: number[]): {
+  lowerBound: number;
+  upperBound: number;
+  outliers: number[];
+} {
   const q1 = percentile(data, 0.25);
   const q3 = percentile(data, 0.75);
   const iqrVal = q3 - q1;
   const lowerBound = q1 - 1.5 * iqrVal;
   const upperBound = q3 + 1.5 * iqrVal;
-  const out = data.filter(v => v < lowerBound || v > upperBound);
+  const out = data.filter((v) => v < lowerBound || v > upperBound);
   return { lowerBound, upperBound, outliers: out };
 }
 
-export function histogramSturges(data: number[]): { bins: number, min: number, max: number, width: number } {
+export function histogramSturges(data: number[]): {
+  bins: number;
+  min: number;
+  max: number;
+  width: number;
+} {
   const bins = Math.ceil(Math.log2(data.length) + 1);
   const min = Math.min(...data);
   const max = Math.max(...data);
   return { bins, min, max, width: (max - min) / bins };
 }
 
-export function histogramFD(data: number[]): { bins: number, min: number, max: number, width: number } {
+export function histogramFD(data: number[]): {
+  bins: number;
+  min: number;
+  max: number;
+  width: number;
+} {
   const min = Math.min(...data);
   const max = Math.max(...data);
   const iqrVal = iqr(data);
-  let width = 2 * iqrVal * Math.pow(data.length, -1/3);
+  let width = 2 * iqrVal * Math.pow(data.length, -1 / 3);
   if (width === 0) width = max - min; // fallback
   const bins = width === 0 ? 1 : Math.ceil((max - min) / width);
   return { bins, min, max, width };
@@ -158,7 +172,7 @@ export function histogramFD(data: number[]): { bins: number, min: number, max: n
 export function kernelDensity(data: number[], xVals: number[], bandwidth?: number): number[] {
   const n = data.length;
   if (n === 0) return xVals.map(() => 0);
-  
+
   // Silverman's rule of thumb
   let h = bandwidth;
   if (!h) {
@@ -167,11 +181,11 @@ export function kernelDensity(data: number[], xVals: number[], bandwidth?: numbe
     const a = Math.min(std, iqrVal / 1.34);
     h = 0.9 * a * Math.pow(n, -0.2);
   }
-  
+
   if (h === 0) h = 1;
-  
+
   const factor = 1 / (n * h * Math.sqrt(2 * Math.PI));
-  return xVals.map(x => {
+  return xVals.map((x) => {
     let sum = 0;
     for (const xi of data) {
       const u = (x - xi) / h!;

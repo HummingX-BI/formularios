@@ -1,13 +1,17 @@
-export function getDemandWeight(dayOfWeek: number, hour: number, pool: 'principal' | 'infantil'): number {
+export function getDemandWeight(
+  dayOfWeek: number,
+  hour: number,
+  pool: 'principal' | 'infantil',
+): number {
   let w = 1.0;
-  
+
   // Sat 10-12 Principal: max demand (95%+)
   if (pool === 'principal' && dayOfWeek === 6 && hour >= 10 && hour <= 12) {
     w = 10.0;
   }
   // Tue/Thu 16-17 Principal: ~48%
   else if (pool === 'principal' && (dayOfWeek === 2 || dayOfWeek === 4) && hour === 16) {
-    w = 0.8; 
+    w = 0.8;
   }
   // Weekday 17-19: high demand (90%)
   else if (dayOfWeek >= 1 && dayOfWeek <= 5 && hour >= 17 && hour <= 19) {

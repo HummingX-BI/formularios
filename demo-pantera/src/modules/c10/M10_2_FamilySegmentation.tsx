@@ -32,24 +32,42 @@ export default function M10_2_FamilySegmentation() {
       let riesgo = Math.random() * 0.2;
       let sesiones = 2;
 
-      if (isHighValue) { ticket += 800; hijos = 2; asistencia = 95; riesgo = 0.05; }
-      if (isSleeping) { asistencia = 40 + Math.random()*20; riesgo = 0.8; atraso = 15; }
-      if (isNew) { antiguedad = Math.random() * 2; riesgo = 0.4; }
+      if (isHighValue) {
+        ticket += 800;
+        hijos = 2;
+        asistencia = 95;
+        riesgo = 0.05;
+      }
+      if (isSleeping) {
+        asistencia = 40 + Math.random() * 20;
+        riesgo = 0.8;
+        atraso = 15;
+      }
+      if (isNew) {
+        antiguedad = Math.random() * 2;
+        riesgo = 0.4;
+      }
 
       families.push({
-        id: `FAM-${1000+i}`,
-        ticket, antiguedad, asistencia, atraso, hijos, riesgo, sesiones
+        id: `FAM-${1000 + i}`,
+        ticket,
+        antiguedad,
+        asistencia,
+        atraso,
+        hijos,
+        riesgo,
+        sesiones,
       });
     }
 
-    const X = families.map(f => [
+    const X = families.map((f) => [
       f.ticket,
       f.antiguedad,
       f.asistencia,
       f.atraso,
       f.hijos,
       f.riesgo,
-      f.sesiones
+      f.sesiones,
     ]);
     return { families, X };
   }, []);
@@ -59,7 +77,12 @@ export default function M10_2_FamilySegmentation() {
       try {
         setLoading(true);
         // Run KMeans
-        const km = await runMLTask<KMeansResult>('kmeans', { X: dataExtract.X, maxK: 8, targetK: 5, seed: 123 });
+        const km = await runMLTask<KMeansResult>('kmeans', {
+          X: dataExtract.X,
+          maxK: 8,
+          targetK: 5,
+          seed: 123,
+        });
         setKmeansRes(km);
 
         // Run PCA
@@ -84,7 +107,7 @@ export default function M10_2_FamilySegmentation() {
       const ticket = centroid[0]!;
       const asistencia = centroid[2]!;
       const riesgo = centroid[5]!;
-      
+
       let name = '';
       if (riesgo > 0.6) name = 'Familias dormidas';
       else if (ticket > 1200 && riesgo > 0.3) name = 'Alto valor con riesgo';
@@ -112,7 +135,9 @@ export default function M10_2_FamilySegmentation() {
           x.push(pcaRes.projection2D[i]![0]!);
           y.push(pcaRes.projection2D[i]![1]!);
           sizes.push(dataExtract.families[i]!.ticket / 100);
-          texts.push(`${dataExtract.families[i]!.id} ($${dataExtract.families[i]!.ticket.toFixed(0)})`);
+          texts.push(
+            `${dataExtract.families[i]!.id} ($${dataExtract.families[i]!.ticket.toFixed(0)})`,
+          );
         }
       });
 
@@ -120,38 +145,57 @@ export default function M10_2_FamilySegmentation() {
         type: 'scatter',
         mode: 'markers',
         name,
-        x, y,
+        x,
+        y,
         text: texts,
-        marker: { size: sizes, sizemode: 'area', sizeref: 0.1, opacity: 0.7 }
+        marker: { size: sizes, sizemode: 'area', sizeref: 0.1, opacity: 0.7 },
       };
     });
 
-    const elbowTrace = [{
-      type: 'scatter',
-      mode: 'lines+markers',
-      x: kmeansRes.elbow.map(e => e.k),
-      y: kmeansRes.elbow.map(e => e.inertia),
-      line: { color: '#0B2A47' },
-      name: 'Inercia'
-    }];
+    const elbowTrace = [
+      {
+        type: 'scatter',
+        mode: 'lines+markers',
+        x: kmeansRes.elbow.map((e) => e.k),
+        y: kmeansRes.elbow.map((e) => e.inertia),
+        line: { color: '#0B2A47' },
+        name: 'Inercia',
+      },
+    ];
 
     return { clusterData: traces, elbowData: elbowTrace, segmentNames };
   }, [kmeansRes, pcaRes, dataExtract]);
 
-
   return (
-    <ModulePage module={ { id: 'M10.2', categoryId: 10, title: 'Segmentación de Familias', level: 'E', route: '', icon: '', shortDescription: '', businessQuestion: '¿Qué tipos de familias tengo y qué necesita cada una?', component: null as any } }>
+    <ModulePage
+      module={{
+        id: 'M10.2',
+        categoryId: 10,
+        title: 'Segmentación de Familias',
+        level: 'E',
+        route: '',
+        icon: '',
+        shortDescription: '',
+        businessQuestion: '¿Qué tipos de familias tengo y qué necesita cada una?',
+        component: null as any,
+      }}
+    >
       <div className="space-y-6 flex flex-col h-full overflow-auto pr-2 pb-6">
-        
         {loading && (
           <div className="flex flex-col items-center justify-center h-64 text-sky-800">
             <div className="animate-spin text-4xl mb-4">⚙️</div>
             <p className="font-bold">Procesando 410 expedientes...</p>
-            <p className="text-sm">Ejecutando K-Means y Análisis de Componentes Principales en el Worker...</p>
+            <p className="text-sm">
+              Ejecutando K-Means y Análisis de Componentes Principales en el Worker...
+            </p>
           </div>
         )}
 
-        {error && <div className="text-red-500 font-bold bg-red-50 p-4 rounded border border-red-200">Error ML: {error}</div>}
+        {error && (
+          <div className="text-red-500 font-bold bg-red-50 p-4 rounded border border-red-200">
+            Error ML: {error}
+          </div>
+        )}
 
         {!loading && kmeansRes && pcaRes && clusterData && (
           <>
@@ -166,20 +210,25 @@ export default function M10_2_FamilySegmentation() {
                       margin: { l: 30, r: 10, t: 10, b: 30 },
                       xaxis: { title: 'Componente Principal 1' },
                       yaxis: { title: 'Componente Principal 2' },
-                      legend: { orientation: 'h', y: -0.1 }
+                      legend: { orientation: 'h', y: -0.1 },
                     }}
                     altText="Dispersión de clusters PCA"
                     tableData={{ columns: [], rows: [] }}
                   />
                 </div>
                 <p className="text-xs text-secundario text-center mt-2">
-                  El tamaño de la burbuja representa el ticket mensual. Dimensiones originales comprimidas de 7 a 2 usando PCA (Explica el {(pcaRes.explainedVarianceRatio[0]! + pcaRes.explainedVarianceRatio[1]!)*100}% de la varianza).
+                  El tamaño de la burbuja representa el ticket mensual. Dimensiones originales
+                  comprimidas de 7 a 2 usando PCA (Explica el{' '}
+                  {(pcaRes.explainedVarianceRatio[0]! + pcaRes.explainedVarianceRatio[1]!) * 100}%
+                  de la varianza).
                 </p>
               </Card>
 
               <div className="col-span-4 space-y-6">
                 <Card className="p-4 border border-ice-200">
-                  <h4 className="font-bold text-navy-900 text-sm mb-2">Justificación del Modelo (Método del Codo)</h4>
+                  <h4 className="font-bold text-navy-900 text-sm mb-2">
+                    Justificación del Modelo (Método del Codo)
+                  </h4>
                   <div className="h-40">
                     <PlotChart
                       id="elbow_chart"
@@ -187,25 +236,39 @@ export default function M10_2_FamilySegmentation() {
                       layout={{
                         margin: { l: 40, r: 10, t: 10, b: 20 },
                         xaxis: { title: 'Número de clusters (k)' },
-                        yaxis: { title: 'Inercia (SSE)' }
+                        yaxis: { title: 'Inercia (SSE)' },
                       }}
                       altText="Gráfico del codo"
                       tableData={{ columns: [], rows: [] }}
                     />
                   </div>
                   <div className="mt-3 text-xs text-secundario bg-ice-50 p-2 rounded">
-                    <strong>Silueta:</strong> {kmeansRes.silhouette.toFixed(2)}. Un valor mayor a 0.5 indica que los clústeres están bien separados.
+                    <strong>Silueta:</strong> {kmeansRes.silhouette.toFixed(2)}. Un valor mayor a
+                    0.5 indica que los clústeres están bien separados.
                   </div>
                 </Card>
 
                 <Card className="p-4 border border-ice-200">
-                  <h4 className="font-bold text-navy-900 text-sm mb-2">Reglas de Asignación Automática</h4>
+                  <h4 className="font-bold text-navy-900 text-sm mb-2">
+                    Reglas de Asignación Automática
+                  </h4>
                   <ul className="text-xs text-secundario space-y-2 list-disc pl-4">
-                    <li><strong>Familias constantes:</strong> Ticket alto, baja morosidad.</li>
-                    <li><strong>Sensibles al precio:</strong> Ticket menor a $1200, asistencia regular.</li>
-                    <li><strong>Alto valor con riesgo:</strong> Ticket alto, ausencias en aumento.</li>
-                    <li><strong>Nuevas en exploración:</strong> Antigüedad menor a 2 meses.</li>
-                    <li><strong>Familias dormidas:</strong> Riesgo mayor a 60%.</li>
+                    <li>
+                      <strong>Familias constantes:</strong> Ticket alto, baja morosidad.
+                    </li>
+                    <li>
+                      <strong>Sensibles al precio:</strong> Ticket menor a $1200, asistencia
+                      regular.
+                    </li>
+                    <li>
+                      <strong>Alto valor con riesgo:</strong> Ticket alto, ausencias en aumento.
+                    </li>
+                    <li>
+                      <strong>Nuevas en exploración:</strong> Antigüedad menor a 2 meses.
+                    </li>
+                    <li>
+                      <strong>Familias dormidas:</strong> Riesgo mayor a 60%.
+                    </li>
                   </ul>
                 </Card>
               </div>
@@ -215,30 +278,47 @@ export default function M10_2_FamilySegmentation() {
               <h3 className="text-xl font-bold text-navy-900">Perfiles de Segmentos</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {clusterData.map((cluster, i) => {
-                  const size = kmeansRes.assignments.filter(a => a === i).length;
+                  const size = kmeansRes.assignments.filter((a) => a === i).length;
                   const c = kmeansRes.centroids[i]!;
                   return (
-                    <Card key={i} className="p-4 border border-ice-200 bg-white shadow-sm flex flex-col justify-between">
+                    <Card
+                      key={i}
+                      className="p-4 border border-ice-200 bg-white shadow-sm flex flex-col justify-between"
+                    >
                       <div>
                         <div className="flex justify-between items-start mb-2">
                           <h4 className="font-bold text-sky-900">{cluster.name}</h4>
                           <Badge color="bg-ice-100 text-navy-900">{size} fams</Badge>
                         </div>
                         <div className="space-y-1 mb-4 text-sm">
-                          <div className="flex justify-between"><span className="text-secundario">Ticket Promedio:</span> <span className="font-mono">${c[0]!.toFixed(0)}</span></div>
-                          <div className="flex justify-between"><span className="text-secundario">Asistencia:</span> <span className="font-mono">{c[2]!.toFixed(1)}%</span></div>
-                          <div className="flex justify-between"><span className="text-secundario">Riesgo Promedio:</span> <span className="font-mono text-coral">{(c[5]!*100).toFixed(1)}%</span></div>
+                          <div className="flex justify-between">
+                            <span className="text-secundario">Ticket Promedio:</span>{' '}
+                            <span className="font-mono">${c[0]!.toFixed(0)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-secundario">Asistencia:</span>{' '}
+                            <span className="font-mono">{c[2]!.toFixed(1)}%</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-secundario">Riesgo Promedio:</span>{' '}
+                            <span className="font-mono text-coral">
+                              {(c[5]! * 100).toFixed(1)}%
+                            </span>
+                          </div>
                         </div>
                       </div>
-                      
+
                       <div className="border-t border-ice-100 pt-3">
                         <p className="text-xs font-bold text-navy-900 mb-1">Acción Recomendada:</p>
                         <p className="text-xs text-secundario">
-                          {cluster.name.includes('dormidas') && "Lanzar campaña de rescate con 50% en reingreso."}
-                          {cluster.name.includes('constantes') && "Ofrecer upgrade VIP o pase anual."}
-                          {cluster.name.includes('Nuevas') && "Llamada de calidad de coordinación."}
-                          {cluster.name.includes('riesgo') && "Intervención inmediata del gerente."}
-                          {cluster.name.includes('Sensibles') && "Mantener cuotas fijas, no empujar venta cruzada."}
+                          {cluster.name.includes('dormidas') &&
+                            'Lanzar campaña de rescate con 50% en reingreso.'}
+                          {cluster.name.includes('constantes') &&
+                            'Ofrecer upgrade VIP o pase anual.'}
+                          {cluster.name.includes('Nuevas') && 'Llamada de calidad de coordinación.'}
+                          {cluster.name.includes('riesgo') && 'Intervención inmediata del gerente.'}
+                          {cluster.name.includes('Sensibles') &&
+                            'Mantener cuotas fijas, no empujar venta cruzada.'}
                         </p>
                       </div>
                     </Card>

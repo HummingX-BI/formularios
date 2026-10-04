@@ -14,7 +14,7 @@ export default function M9_2_Percentiles() {
 
   const { boxData, ptiles, ecdf } = useMemo(() => {
     let raw: number[] = [];
-    
+
     if (variable === 'asistencia') {
       raw = dataset.students.map(() => 40 + Math.random() * 60);
     } else {
@@ -22,11 +22,12 @@ export default function M9_2_Percentiles() {
     }
 
     if (raw.length === 0) raw = [0];
-    raw.sort((a,b) => a - b);
+    raw.sort((a, b) => a - b);
 
     // Removed unused qs
-    const pVals = [5, 10, 25, 50, 75, 90, 95].map(p => ({
-      p, val: percentile(raw, p/100)
+    const pVals = [5, 10, 25, 50, 75, 90, 95].map((p) => ({
+      p,
+      val: percentile(raw, p / 100),
     }));
 
     const box = [
@@ -35,13 +36,13 @@ export default function M9_2_Percentiles() {
         y: raw,
         name: 'Distribución',
         boxpoints: 'outliers',
-        marker: { color: '#2FB6D4' }
-      }
+        marker: { color: '#2FB6D4' },
+      },
     ];
 
     // Empirical CDF
     const ecdf = (x: number) => {
-      const less = raw.filter(v => v <= x).length;
+      const less = raw.filter((v) => v <= x).length;
       return less / raw.length;
     };
 
@@ -59,14 +60,16 @@ export default function M9_2_Percentiles() {
       findings={
         <div className="space-y-6">
           <div className="w-64">
-            <label className="block text-xs font-bold text-navy-900 mb-1">Variable de Referencia</label>
-            <Select 
+            <label className="block text-xs font-bold text-navy-900 mb-1">
+              Variable de Referencia
+            </label>
+            <Select
               options={[
-                {label: 'Asistencia Histórica (%)', value: 'asistencia'},
-                {label: 'Tiempo en Nivel (meses)', value: 'tiempoNivel'}
+                { label: 'Asistencia Histórica (%)', value: 'asistencia' },
+                { label: 'Tiempo en Nivel (meses)', value: 'tiempoNivel' },
               ]}
               value={variable}
-              onChange={e => setVariable(e.target.value as VarKey)}
+              onChange={(e) => setVariable(e.target.value as VarKey)}
             />
           </div>
 
@@ -80,7 +83,7 @@ export default function M9_2_Percentiles() {
                 tableData={{ columns: [], rows: [] }}
               />
             </div>
-            
+
             <div>
               <h4 className="font-bold text-navy-900 mb-2">Tabla de Percentiles</h4>
               <table className="w-full text-left text-sm border-collapse">
@@ -92,8 +95,11 @@ export default function M9_2_Percentiles() {
                   </tr>
                 </thead>
                 <tbody>
-                  {ptiles.map(pt => (
-                    <tr key={pt.p} className={`border-b border-ice-50 ${pt.p === 50 ? 'bg-ice-50 font-bold text-navy-900' : ''}`}>
+                  {ptiles.map((pt) => (
+                    <tr
+                      key={pt.p}
+                      className={`border-b border-ice-50 ${pt.p === 50 ? 'bg-ice-50 font-bold text-navy-900' : ''}`}
+                    >
                       <td className="py-2">P{pt.p}</td>
                       <td className="py-2 text-right">{pt.val.toFixed(1)}</td>
                       <td className="py-2 text-right text-xs text-secundario">
@@ -110,18 +116,21 @@ export default function M9_2_Percentiles() {
             <h4 className="font-bold text-navy-900 mb-4">Herramienta: Ubicar un valor</h4>
             <div className="flex gap-4 items-end">
               <div className="w-48">
-                <label className="block text-xs text-secundario mb-1">Ingresa el valor del alumno/grupo</label>
-                <input 
-                  type="number" 
-                  value={targetValue} 
-                  onChange={e => setTargetValue(Number(e.target.value))}
+                <label className="block text-xs text-secundario mb-1">
+                  Ingresa el valor del alumno/grupo
+                </label>
+                <input
+                  type="number"
+                  value={targetValue}
+                  onChange={(e) => setTargetValue(Number(e.target.value))}
                   className="w-full bg-white border border-ice-200 rounded p-2 focus:outline-none focus:border-blue-500"
                 />
               </div>
               <div className="flex-1 bg-white border border-ice-200 rounded p-2 flex items-center">
                 <span className="text-navy-900">
-                  Este registro está en el <strong className="text-blue-600 text-lg">Percentil {pFound}</strong>. 
-                  Supera al {pFound}% de la base histórica.
+                  Este registro está en el{' '}
+                  <strong className="text-blue-600 text-lg">Percentil {pFound}</strong>. Supera al{' '}
+                  {pFound}% de la base histórica.
                 </span>
               </div>
             </div>
@@ -130,9 +139,10 @@ export default function M9_2_Percentiles() {
       }
       action={
         <p className="text-sm text-navy-900">
-          Usa los percentiles extremos (P10 y P90) para crear reglas de alertas automáticas, 
-          en lugar de umbrales fijos que quedan obsoletos con el tiempo. Así siempre detectarás al 10% de peor o mejor desempeño, 
-          independientemente de si la escuela en general mejora o empeora.
+          Usa los percentiles extremos (P10 y P90) para crear reglas de alertas automáticas, en
+          lugar de umbrales fijos que quedan obsoletos con el tiempo. Así siempre detectarás al 10%
+          de peor o mejor desempeño, independientemente de si la escuela en general mejora o
+          empeora.
         </p>
       }
     />

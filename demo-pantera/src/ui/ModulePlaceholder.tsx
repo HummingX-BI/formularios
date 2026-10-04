@@ -2,7 +2,7 @@ import { MODULE_REGISTRY } from '@/modules/registry';
 import { ModulePage } from '@/ui/ModulePage';
 
 export function ModulePlaceholder({ id }: { id: string }) {
-  const mod = MODULE_REGISTRY.find(m => m.id === id);
+  const mod = MODULE_REGISTRY.find((m) => m.id === id);
   if (!mod) return <div>Module not found</div>;
 
   return (

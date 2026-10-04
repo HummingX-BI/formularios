@@ -29,7 +29,7 @@ export function pearson(x: number[], y: number[]): CorrelationResult {
   let r = cov / (sdx * sdy);
   if (r > 1) r = 1;
   if (r < -1) r = -1;
-  
+
   const t = r * Math.sqrt((n - 2) / (1 - r * r));
   const p = 2 * studentT.sf(Math.abs(t), n - 2);
   return { r, p };
@@ -64,12 +64,12 @@ export function spearman(x: number[], y: number[]): CorrelationResult {
 export function kendall(x: number[], y: number[]): CorrelationResult {
   const n = x.length;
   if (n < 3) return { r: NaN, p: NaN };
-  
+
   let concordant = 0;
   let discordant = 0;
   let tx = 0;
   let ty = 0;
-  
+
   for (let i = 0; i < n - 1; i++) {
     for (let j = i + 1; j < n; j++) {
       const dx = Math.sign(x[i]! - x[j]!);
@@ -82,23 +82,26 @@ export function kendall(x: number[], y: number[]): CorrelationResult {
       if (dy === 0 && dx !== 0) ty++;
     }
   }
-  
+
   const totalPairs = (n * (n - 1)) / 2;
   const num = concordant - discordant;
   const den = Math.sqrt((totalPairs - tx) * (totalPairs - ty));
   const tau = den === 0 ? 0 : num / den;
-  
+
   const varianceTau = (4 * n + 10) / (9 * n * (n - 1));
   const z = tau / Math.sqrt(varianceTau);
   const p = 2 * normal.sf(Math.abs(z));
-  
+
   return { r: tau, p };
 }
 
-export function correlationMatrix(data: number[][], method: 'pearson'|'spearman'|'kendall' = 'pearson'): number[][] {
+export function correlationMatrix(
+  data: number[][],
+  method: 'pearson' | 'spearman' | 'kendall' = 'pearson',
+): number[][] {
   const k = data.length;
   const matrix = Array.from({ length: k }, () => new Array(k).fill(1));
-  
+
   for (let i = 0; i < k; i++) {
     for (let j = i + 1; j < k; j++) {
       let r = 0;

@@ -11,43 +11,80 @@ describe('Metrics Engine - Synthetic Mini Dataset', () => {
       metadata: { seed: 1, generatedAt: '' },
       instructors: [],
       groups: [
-        { id: 'g1', pool: 'principal', level: 'L1', capacity: 10, dayOfWeek: 'Lunes', timeSlot: '16:00', instructorId: 'i1' }
+        {
+          id: 'g1',
+          pool: 'principal',
+          level: 'L1',
+          capacity: 10,
+          dayOfWeek: 'Lunes',
+          timeSlot: '16:00',
+          instructorId: 'i1',
+        },
       ],
       families: [],
       students: [
         {
-          id: 's1', familyId: 'f1', name: 'S1', birthDate: '2010-01-01', status: 'active',
-          enrollmentDate: '2026-08-01', churnDate: null, churnReason: null,
-          currentLevel: 'L1', assignedGroups: ['g1'], enrollmentPlan: '1_per_week'
+          id: 's1',
+          familyId: 'f1',
+          name: 'S1',
+          birthDate: '2010-01-01',
+          status: 'active',
+          enrollmentDate: '2026-08-01',
+          churnDate: null,
+          churnReason: null,
+          currentLevel: 'L1',
+          assignedGroups: ['g1'],
+          enrollmentPlan: '1_per_week',
         } as Student,
         {
-          id: 's2', familyId: 'f2', name: 'S2', birthDate: '2010-01-01', status: 'churned',
-          enrollmentDate: '2026-07-01', churnDate: '2026-09-15', churnReason: 'clima',
-          currentLevel: 'L2', assignedGroups: [], enrollmentPlan: '1_per_week'
-        } as Student
+          id: 's2',
+          familyId: 'f2',
+          name: 'S2',
+          birthDate: '2010-01-01',
+          status: 'churned',
+          enrollmentDate: '2026-07-01',
+          churnDate: '2026-09-15',
+          churnReason: 'clima',
+          currentLevel: 'L2',
+          assignedGroups: [],
+          enrollmentPlan: '1_per_week',
+        } as Student,
       ],
       enrollments: [],
       levelStints: [],
       attendance: [],
       charges: [
-        { id: 'c1', familyId: 'f1', type: 'mensualidad', amount: 1350, date: '2026-09-01', status: 'pagado' } as Charge
+        {
+          id: 'c1',
+          familyId: 'f1',
+          type: 'mensualidad',
+          amount: 1350,
+          date: '2026-09-01',
+          status: 'pagado',
+        } as Charge,
       ],
       payments: [
-        { id: 'p1', familyId: 'f1', amount: 1350, date: '2026-09-05', method: 'tarjeta' } as Payment
+        {
+          id: 'p1',
+          familyId: 'f1',
+          amount: 1350,
+          date: '2026-09-05',
+          method: 'tarjeta',
+        } as Payment,
       ],
       prospects: [],
       waitlist: [],
       web: [],
       keywords: [],
       pages: [],
-      messages: []
+      messages: [],
     };
   };
 
   const getCtx = (): MetricsContext => ({
     dataset: createMockDataset(),
     period: { start: '2026-09-01', end: '2026-09-30' },
-    pool: 'todas'
+    pool: 'todas',
   });
 
   it('calculates active students correctly (D-01)', () => {
@@ -55,7 +92,7 @@ describe('Metrics Engine - Synthetic Mini Dataset', () => {
     // s1 is active, s2 churned on 09-15, so at end of 09-30, s2 is churned.
     // Wait, activeStudents takes period.end by default.
     expect(m.activeStudents().value).toBe(1);
-    
+
     // On 2026-09-10, both were active
     expect(m.activeStudents('2026-09-10').value).toBe(2);
   });
@@ -83,7 +120,7 @@ describe('Metrics Engine - Consistency with Seed 2026', () => {
   const ctx: MetricsContext = {
     dataset: ds,
     period: { start: '2026-09-01', end: '2026-09-30' },
-    pool: 'todas'
+    pool: 'todas',
   };
   const m = createMetrics(ctx);
 
@@ -103,15 +140,15 @@ describe('Metrics Engine - Consistency with Seed 2026', () => {
   it('RF-22: the real revenue series equals the sum of payments in the dataset with zero difference', () => {
     // Generate real revenue series
     const series = m.series('revenue_real').value;
-    
+
     for (const dataPoint of series) {
       // The series date is the end of the month (YYYY-MM-DD)
-      const y = parseInt(dataPoint.date.slice(0,4));
-      const mth = parseInt(dataPoint.date.slice(5,7)) - 1; // 0-indexed
-      
-      const mStart = new Date(y, mth, 1).toISOString().slice(0,10);
-      const mEnd = new Date(y, mth + 1, 0).toISOString().slice(0,10);
-      
+      const y = parseInt(dataPoint.date.slice(0, 4));
+      const mth = parseInt(dataPoint.date.slice(5, 7)) - 1; // 0-indexed
+
+      const mStart = new Date(y, mth, 1).toISOString().slice(0, 10);
+      const mEnd = new Date(y, mth + 1, 0).toISOString().slice(0, 10);
+
       // Calculate from raw dataset
       let sum = 0;
       for (const p of ds.payments) {
@@ -119,7 +156,7 @@ describe('Metrics Engine - Consistency with Seed 2026', () => {
           sum += p.amount;
         }
       }
-      
+
       expect(dataPoint.value).toBe(sum);
     }
   });

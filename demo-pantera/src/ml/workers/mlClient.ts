@@ -17,7 +17,10 @@ export interface MLTaskOptions {
 
 let workerInstance: Worker | null = null;
 let jobId = 0;
-const pendingJobs = new Map<number, { resolve: (val: any) => void, reject: (err: any) => void, onProgress?: (p: number) => void }>();
+const pendingJobs = new Map<
+  number,
+  { resolve: (val: any) => void; reject: (err: any) => void; onProgress?: (p: number) => void }
+>();
 
 function getWorker(): Worker | null {
   if (typeof Worker === 'undefined') return null;
@@ -27,7 +30,7 @@ function getWorker(): Worker | null {
       const { type, id, result, error, progress } = e.data;
       const job = pendingJobs.get(id);
       if (!job) return;
-      
+
       if (type === 'result') {
         job.resolve(result);
         pendingJobs.delete(id);
@@ -50,24 +53,30 @@ const fallbackTasks: Record<string, (params: any) => any> = {
   pca: (p) => pca(p.X),
   decomposeTimeSeries: (p) => decomposeTimeSeries(p.data, p.method),
   holtWinters: (p) => holtWinters(p.data, p.horizon),
-  monteCarlo: (p) => monteCarlo(p)
+  monteCarlo: (p) => monteCarlo(p),
 };
 
-export async function runMLTask<T>(taskName: string, params: any, options?: MLTaskOptions): Promise<T> {
+export async function runMLTask<T>(
+  taskName: string,
+  params: any,
+  options?: MLTaskOptions,
+): Promise<T> {
   const worker = getWorker();
-  
+
   if (!worker) {
     // Fallback to main thread
-    console.warn(`Web Workers no disponibles. Ejecutando tarea ML '${taskName}' en el hilo principal.`);
+    console.warn(
+      `Web Workers no disponibles. Ejecutando tarea ML '${taskName}' en el hilo principal.`,
+    );
     const handler = fallbackTasks[taskName];
     if (!handler) throw new Error(`Unknown task fallback: ${taskName}`);
     if (options?.onProgress) options.onProgress(0.5);
-    
+
     // Simulate async yield to not freeze immediately
-    await new Promise(r => setTimeout(r, 0));
-    
-    if (options?.signal?.aborted) throw new Error("Aborted");
-    
+    await new Promise((r) => setTimeout(r, 0));
+
+    if (options?.signal?.aborted) throw new Error('Aborted');
+
     const res = handler(params);
     if (options?.onProgress) options.onProgress(1.0);
     return res as T;
@@ -75,32 +84,38 @@ export async function runMLTask<T>(taskName: string, params: any, options?: MLTa
 
   return new Promise<T>((resolve, reject) => {
     const id = ++jobId;
-    
+
     const abortHandler = () => {
       pendingJobs.delete(id);
-      reject(new Error("Aborted"));
+      reject(new Error('Aborted'));
     };
-    
+
     if (options?.signal) {
       if (options.signal.aborted) {
-        return reject(new Error("Aborted"));
+        return reject(new Error('Aborted'));
       }
       options.signal.addEventListener('abort', abortHandler);
     }
-    
+
     const cleanup = () => {
       if (options?.signal) options.signal.removeEventListener('abort', abortHandler);
     };
 
     const job: any = {
-      resolve: (val: any) => { cleanup(); resolve(val); },
-      reject: (err: any) => { cleanup(); reject(err); }
+      resolve: (val: any) => {
+        cleanup();
+        resolve(val);
+      },
+      reject: (err: any) => {
+        cleanup();
+        reject(err);
+      },
     };
     if (options?.onProgress) {
       job.onProgress = options.onProgress;
     }
     pendingJobs.set(id, job);
-    
+
     worker.postMessage({ type: 'task', id, taskName, params });
   });
 }

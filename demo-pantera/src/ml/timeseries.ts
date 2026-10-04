@@ -5,16 +5,19 @@ export interface DecompositionResult {
   seasonal: number[];
   residual: (number | null)[];
   seasonalIndices: number[]; // Length 12
-  seasonOverSeason: { month: number, diff: number, pct: number }[];
+  seasonOverSeason: { month: number; diff: number; pct: number }[];
 }
 
-export function decomposeTimeSeries(data: number[], method: 'additive' | 'multiplicative' = 'additive'): DecompositionResult {
+export function decomposeTimeSeries(
+  data: number[],
+  method: 'additive' | 'multiplicative' = 'additive',
+): DecompositionResult {
   const n = data.length;
   // Centered 12-month moving average
   // MA of 12 elements, then MA of 2 elements of the first MA
   const ma12 = movingAverage(data, 12);
   const trend: (number | null)[] = new Array(n).fill(null);
-  
+
   if (ma12.length > 0) {
     const centeredMA = movingAverage(ma12, 2);
     // Centered MA aligns at index 6 (0-indexed) for month 7
@@ -48,17 +51,22 @@ export function decomposeTimeSeries(data: number[], method: 'additive' | 'multip
 
   let seasonalIndices = new Array(12).fill(0);
   for (let i = 0; i < 12; i++) {
-    seasonalIndices[i] = seasonalCounts[i]! > 0 ? seasonalSums[i]! / seasonalCounts[i]! : (method === 'additive' ? 0 : 1);
+    seasonalIndices[i] =
+      seasonalCounts[i]! > 0
+        ? seasonalSums[i]! / seasonalCounts[i]!
+        : method === 'additive'
+          ? 0
+          : 1;
   }
 
   // Normalize seasonal indices
   let sumIdx = seasonalIndices.reduce((a, b) => a + b, 0);
   if (method === 'additive') {
     const bias = sumIdx / 12;
-    seasonalIndices = seasonalIndices.map(s => s - bias);
+    seasonalIndices = seasonalIndices.map((s) => s - bias);
   } else {
     const bias = sumIdx / 12;
-    seasonalIndices = seasonalIndices.map(s => s / (bias || 1));
+    seasonalIndices = seasonalIndices.map((s) => s / (bias || 1));
   }
 
   // Reconstruct seasonal component & residuals
@@ -90,6 +98,6 @@ export function decomposeTimeSeries(data: number[], method: 'additive' | 'multip
     seasonal,
     residual,
     seasonalIndices,
-    seasonOverSeason
+    seasonOverSeason,
   };
 }

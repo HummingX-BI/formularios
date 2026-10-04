@@ -31,7 +31,14 @@ export default function M1_1_Executive() {
   const insights = useMemo(() => generateInsightsFor('m1-executive', m), [m]);
   const headline = insights.length > 0 ? insights[0]!.headline : 'El negocio opera con normalidad';
 
-  const alerts = useMemo(() => generateAlerts(m, { occupancyThreshold: 95, arrearsThreshold: 30000 }, new Date()).slice(0, 3), [m]);
+  const alerts = useMemo(
+    () =>
+      generateAlerts(m, { occupancyThreshold: 95, arrearsThreshold: 30000 }, new Date()).slice(
+        0,
+        3,
+      ),
+    [m],
+  );
   const recommendations = useMemo(() => generateRecommendations(m).slice(0, 3), [m]);
 
   return (
@@ -117,21 +124,36 @@ export default function M1_1_Executive() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <section>
-          <h3 className="text-xl font-bold font-jakarta text-navy-900 mb-4">Alertas Prioritarias</h3>
+          <h3 className="text-xl font-bold font-jakarta text-navy-900 mb-4">
+            Alertas Prioritarias
+          </h3>
           <div className="space-y-4">
             {alerts.length === 0 ? (
               <p className="text-secundario">No hay alertas activas.</p>
             ) : (
-              alerts.map(alert => (
-                <div key={alert.id} className="p-4 bg-white border border-ice-100 rounded-lg flex gap-4 shadow-sm">
+              alerts.map((alert) => (
+                <div
+                  key={alert.id}
+                  className="p-4 bg-white border border-ice-100 rounded-lg flex gap-4 shadow-sm"
+                >
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <SeverityPill level={alert.severity === 'critico' ? 'critical' : alert.severity === 'alerta' ? 'high' : 'medium'} />
+                      <SeverityPill
+                        level={
+                          alert.severity === 'critico'
+                            ? 'critical'
+                            : alert.severity === 'alerta'
+                              ? 'high'
+                              : 'medium'
+                        }
+                      />
                       <h4 className="font-bold text-navy-900">{alert.title}</h4>
                     </div>
                     <p className="text-sm text-secundario">{alert.message}</p>
                   </div>
-                  <Button variant="secondary" size="sm">Descartar</Button>
+                  <Button variant="secondary" size="sm">
+                    Descartar
+                  </Button>
                 </div>
               ))
             )}
@@ -144,14 +166,23 @@ export default function M1_1_Executive() {
             {recommendations.length === 0 ? (
               <p className="text-secundario">No hay recomendaciones en este momento.</p>
             ) : (
-              recommendations.map(rec => (
-                <div key={rec.id} className="p-4 bg-white border border-ice-100 rounded-lg shadow-sm">
+              recommendations.map((rec) => (
+                <div
+                  key={rec.id}
+                  className="p-4 bg-white border border-ice-100 rounded-lg shadow-sm"
+                >
                   <h4 className="font-bold text-navy-900 mb-1">{rec.title}</h4>
                   <p className="text-sm text-secundario mb-3">{rec.rationale}</p>
                   <div className="flex gap-2">
-                    <Button variant="primary" size="sm">Aceptar</Button>
-                    <Button variant="secondary" size="sm">Posponer</Button>
-                    <Button variant="ghost" size="sm">Descartar</Button>
+                    <Button variant="primary" size="sm">
+                      Aceptar
+                    </Button>
+                    <Button variant="secondary" size="sm">
+                      Posponer
+                    </Button>
+                    <Button variant="ghost" size="sm">
+                      Descartar
+                    </Button>
                   </div>
                 </div>
               ))

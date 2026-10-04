@@ -10,15 +10,21 @@ export interface InsightBlockProps {
   className?: string;
 }
 
-export function InsightBlock({ conclusion, action, severity = 'low', onActionClick, className }: InsightBlockProps): React.JSX.Element {
+export function InsightBlock({
+  conclusion,
+  action,
+  severity = 'low',
+  onActionClick,
+  className,
+}: InsightBlockProps): React.JSX.Element {
   const severityColors = {
     low: 'bg-ice-50 border-sky-200 text-blue-800',
     medium: 'bg-orange-50 border-state-ambar text-orange-900',
-    high: 'bg-red-50 border-state-coral text-red-900'
+    high: 'bg-red-50 border-state-coral text-red-900',
   };
 
   return (
-    <div className={cn("rounded-xl border p-5 shadow-sm", severityColors[severity], className)}>
+    <div className={cn('rounded-xl border p-5 shadow-sm', severityColors[severity], className)}>
       <div className="flex items-center gap-2 mb-3">
         <Droplet className="h-5 w-5 fill-current" />
         <h4 className="font-display font-semibold">En español simple</h4>
@@ -29,7 +35,7 @@ export function InsightBlock({ conclusion, action, severity = 'low', onActionCli
           <p className="text-sm font-medium mb-3">Qué hacer:</p>
           <p className="text-sm mb-4 opacity-90">{action}</p>
           {onActionClick && (
-            <button 
+            <button
               onClick={onActionClick}
               className="inline-flex items-center text-sm font-semibold hover:opacity-80 transition-opacity"
             >

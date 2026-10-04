@@ -1,6 +1,10 @@
 import React from 'react';
 
-export const SectionHeader: React.FC<{ title: string; subtitle?: string; action?: React.ReactNode }> = ({ title, subtitle, action }) => (
+export const SectionHeader: React.FC<{
+  title: string;
+  subtitle?: string;
+  action?: React.ReactNode;
+}> = ({ title, subtitle, action }) => (
   <div className="flex justify-between items-end mb-6">
     <div>
       <h2 className="text-2xl font-bold font-jakarta text-navy-900">{title}</h2>

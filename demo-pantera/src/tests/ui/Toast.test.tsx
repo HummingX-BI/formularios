@@ -4,7 +4,7 @@ import { Toast } from '@/ui/components/Toast';
 
 describe('Toast', () => {
   it('renders without crashing', () => {
-    const { container } = render(<Toast />);
+    const { container } = render(<Toast id="1" title="Test Toast" />);
     expect(container.firstChild).toBeInTheDocument();
   });
 });

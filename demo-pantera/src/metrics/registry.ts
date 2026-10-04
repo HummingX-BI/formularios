@@ -8,7 +8,7 @@ export const METRICS_REGISTRY: Record<string, MetricMetadata> = {
     formula: 'Σ(Alumnos) donde enrollmentDate <= end y (churnDate es null o churnDate > end)',
     unit: 'count',
     directionGood: 'up',
-    code: 'D-01'
+    code: 'D-01',
   },
   churn: {
     id: 'churn',
@@ -17,7 +17,7 @@ export const METRICS_REGISTRY: Record<string, MetricMetadata> = {
     formula: 'Σ(Alumnos) donde churnDate entre start y end',
     unit: 'count',
     directionGood: 'down',
-    code: 'D-02'
+    code: 'D-02',
   },
   occupancy: {
     id: 'occupancy',
@@ -26,7 +26,7 @@ export const METRICS_REGISTRY: Record<string, MetricMetadata> = {
     formula: 'Lugares Ocupados / Capacidad Total Disponible',
     unit: 'percentage',
     directionGood: 'up',
-    code: 'D-05'
+    code: 'D-05',
   },
   laneUtilization: {
     id: 'laneUtilization',
@@ -35,16 +35,17 @@ export const METRICS_REGISTRY: Record<string, MetricMetadata> = {
     formula: 'Σ(Carriles Asignados) / Σ(Carriles Totales de Alberca)',
     unit: 'percentage',
     directionGood: 'up',
-    code: 'D-06'
+    code: 'D-06',
   },
   tenure: {
     id: 'tenure',
     name: 'Permanencia (Tenure)',
     shortDefinition: 'Meses promedio de vida del alumno',
-    formula: 'Promedio de (Fecha Baja - Fecha Ingreso) en meses, manejando censura por Kaplan-Meier',
+    formula:
+      'Promedio de (Fecha Baja - Fecha Ingreso) en meses, manejando censura por Kaplan-Meier',
     unit: 'months',
     directionGood: 'up',
-    code: 'D-07'
+    code: 'D-07',
   },
   timeInLevel: {
     id: 'timeInLevel',
@@ -53,7 +54,7 @@ export const METRICS_REGISTRY: Record<string, MetricMetadata> = {
     formula: 'Promedio(Fecha Fin - Fecha Inicio) para LevelStint completados',
     unit: 'months',
     directionGood: 'down',
-    code: 'D-08'
+    code: 'D-08',
   },
   retention6m: {
     id: 'retention6m',
@@ -62,7 +63,7 @@ export const METRICS_REGISTRY: Record<string, MetricMetadata> = {
     formula: '(Activos de Cohorte en M+6) / (Inscritos en Cohorte M)',
     unit: 'percentage',
     directionGood: 'up',
-    code: 'D-09'
+    code: 'D-09',
   },
   monthlyChurnRate: {
     id: 'monthlyChurnRate',
@@ -71,7 +72,7 @@ export const METRICS_REGISTRY: Record<string, MetricMetadata> = {
     formula: 'Bajas(Mes) / Activos(Inicio de Mes)',
     unit: 'percentage',
     directionGood: 'down',
-    code: 'D-10'
+    code: 'D-10',
   },
   churnRisk: {
     id: 'churnRisk',
@@ -80,7 +81,7 @@ export const METRICS_REGISTRY: Record<string, MetricMetadata> = {
     formula: 'Modelo(Faltas Consecutivas, Nivel, Pagos)',
     unit: 'percentage',
     directionGood: 'down',
-    code: 'D-11'
+    code: 'D-11',
   },
   averageTicket: {
     id: 'averageTicket',
@@ -89,7 +90,7 @@ export const METRICS_REGISTRY: Record<string, MetricMetadata> = {
     formula: 'Ingreso Facturable / Alumnos Activos',
     unit: 'currency',
     directionGood: 'up',
-    code: 'D-12'
+    code: 'D-12',
   },
   ltv: {
     id: 'ltv',
@@ -98,7 +99,7 @@ export const METRICS_REGISTRY: Record<string, MetricMetadata> = {
     formula: 'Permanencia Media * Ticket Promedio * Margen Bruto',
     unit: 'currency',
     directionGood: 'up',
-    code: 'D-13'
+    code: 'D-13',
   },
   conversionRate: {
     id: 'conversionRate',
@@ -107,7 +108,7 @@ export const METRICS_REGISTRY: Record<string, MetricMetadata> = {
     formula: 'Inscritos / Total Prospectos Nuevos',
     unit: 'percentage',
     directionGood: 'up',
-    code: 'D-14'
+    code: 'D-14',
   },
   revenueReal: {
     id: 'revenueReal',
@@ -116,7 +117,7 @@ export const METRICS_REGISTRY: Record<string, MetricMetadata> = {
     formula: 'Σ(Pagos) donde fecha pago entre start y end',
     unit: 'currency',
     directionGood: 'up',
-    code: 'D-15'
+    code: 'D-15',
   },
   unpaidDebt: {
     id: 'unpaidDebt',
@@ -125,7 +126,7 @@ export const METRICS_REGISTRY: Record<string, MetricMetadata> = {
     formula: 'Σ(Cargos Vencidos) - Σ(Pagos a Cargos Vencidos)',
     unit: 'currency',
     directionGood: 'down',
-    code: 'D-16'
+    code: 'D-16',
   },
   paymentStatus: {
     id: 'paymentStatus',
@@ -134,7 +135,7 @@ export const METRICS_REGISTRY: Record<string, MetricMetadata> = {
     formula: 'Clasificación: Al Corriente (0), Atraso (1-15), Morosidad (16-30), Incobrable (>90)',
     unit: 'count',
     directionGood: 'up',
-    code: 'D-17'
+    code: 'D-17',
   },
   revenuePerSession: {
     id: 'revenuePerSession',
@@ -143,7 +144,7 @@ export const METRICS_REGISTRY: Record<string, MetricMetadata> = {
     formula: 'Ingreso Real / Total Sesiones Impartidas',
     unit: 'currency',
     directionGood: 'up',
-    code: 'D-18'
+    code: 'D-18',
   },
   profitabilityHourly: {
     id: 'profitabilityHourly',
@@ -152,7 +153,7 @@ export const METRICS_REGISTRY: Record<string, MetricMetadata> = {
     formula: '(Ingreso Franja - Costo Franja) / Horas',
     unit: 'currency',
     directionGood: 'up',
-    code: 'D-19'
+    code: 'D-19',
   },
   healthIndex: {
     id: 'healthIndex',
@@ -161,7 +162,7 @@ export const METRICS_REGISTRY: Record<string, MetricMetadata> = {
     formula: '0.3*Conv + 0.3*Ret + 0.15*Ocup + 0.15*Fin + 0.1*Clima',
     unit: 'index',
     directionGood: 'up',
-    code: 'D-20'
+    code: 'D-20',
   },
   cohorts: {
     id: 'cohorts',
@@ -170,7 +171,7 @@ export const METRICS_REGISTRY: Record<string, MetricMetadata> = {
     formula: 'Matriz (Mes Ingreso) x (Meses Transcurridos)',
     unit: 'percentage',
     directionGood: 'up',
-    code: 'D-21'
+    code: 'D-21',
   },
   goalProgress: {
     id: 'goalProgress',
@@ -179,6 +180,6 @@ export const METRICS_REGISTRY: Record<string, MetricMetadata> = {
     formula: 'Ingreso Real / Meta Ingreso del Periodo',
     unit: 'percentage',
     directionGood: 'up',
-    code: 'D-22'
-  }
+    code: 'D-22',
+  },
 };

@@ -135,7 +135,7 @@ export const GOALS = {
   /** Late payment threshold (days after due date) */
   latePaymentDays: 10,
   /** Late fee surcharge fraction */
-  lateFeeRate: 0.10,
+  lateFeeRate: 0.1,
   /** Payment due day of month */
   paymentDueDay: 5,
 } as const;
@@ -163,29 +163,29 @@ export const SCORING = {
   /** Health score component weights (must sum to 1.0) */
   healthScore: {
     retention: 0.25,
-    revenue: 0.20,
+    revenue: 0.2,
     utilization: 0.15,
     nps: 0.15,
-    enrollment: 0.10,
-    churn: 0.10,
+    enrollment: 0.1,
+    churn: 0.1,
     conversion: 0.05,
   },
   /** Churn risk model weights */
   churnRisk: {
-    attendanceWeight: 0.30,
+    attendanceWeight: 0.3,
     paymentWeight: 0.25,
     tenureWeight: 0.15,
     levelProgressWeight: 0.15,
-    ageGroupWeight: 0.10,
+    ageGroupWeight: 0.1,
     seasonalityWeight: 0.05,
   },
   /** Instructor performance weights */
   instructorScore: {
-    retentionRate: 0.30,
+    retentionRate: 0.3,
     studentProgress: 0.25,
-    attendance: 0.20,
+    attendance: 0.2,
     parentSatisfaction: 0.15,
-    punctuality: 0.10,
+    punctuality: 0.1,
   },
 } as const;
 
@@ -193,17 +193,17 @@ export const SCORING = {
 /** Monthly enrollment multiplier (Jan=0, Dec=11). Models swim school seasonality. */
 export const SEASONAL_MULTIPLIERS: readonly number[] = [
   0.85, // Enero — post-holidays dip
-  0.90, // Febrero
-  1.00, // Marzo
-  1.10, // Abril — spring break bump
+  0.9, // Febrero
+  1.0, // Marzo
+  1.1, // Abril — spring break bump
   1.05, // Mayo
-  1.20, // Junio — summer start, peak
-  1.30, // Julio — peak
+  1.2, // Junio — summer start, peak
+  1.3, // Julio — peak
   1.25, // Agosto — still high
   1.15, // Septiembre — back to school
-  1.00, // Octubre
-  0.90, // Noviembre
-  0.80, // Diciembre — holiday dip
+  1.0, // Octubre
+  0.9, // Noviembre
+  0.8, // Diciembre — holiday dip
 ] as const;
 
 // ─── Prospect / Funnel ──────────────────────────────────────
@@ -212,10 +212,10 @@ export const FUNNEL = {
   monthlyProspects: 95,
   /** Channels and their share of prospects */
   channels: {
-    whatsapp: 0.40,
+    whatsapp: 0.4,
     walkIn: 0.25,
-    website: 0.20,
-    referral: 0.10,
+    website: 0.2,
+    referral: 0.1,
     socialMedia: 0.05,
   },
   /** Days before a prospect is considered "lost" */
@@ -227,13 +227,25 @@ export const FUNNEL = {
 // ─── Alert Thresholds ────────────────────────────────────────
 export const ALERTS = {
   /** Revenue drop that triggers a warning (fraction below target) */
-  revenueDrop: 0.10,
+  revenueDrop: 0.1,
   /** Enrollment drop that triggers a warning */
   enrollmentDrop: 0.15,
   /** Churn spike that triggers an alert */
   churnSpike: 0.12,
   /** Utilization below this fraction triggers low-usage alert */
-  lowUtilization: 0.50,
+  lowUtilization: 0.5,
   /** Number of consecutive late payments before escalation */
   consecutiveLatePayments: 2,
 } as const;
+
+export const BUSINESS_CONFIG = {
+  targets: { monthlyRevenue: GOALS.monthlyRevenueTarget },
+  costs: { d19_per_kg: COSTS.poolMaintenanceCost },
+  thresholds: { occupancySaturation: GOALS.utilizationTarget, churnRisk: GOALS.churnCeiling },
+  plans: PACKAGES,
+  pools: [
+    { id: 'principal', name: 'Alberca Principal', maxCapacity: 120 },
+    { id: 'infantil', name: 'Alberca Infantil', maxCapacity: 40 }
+  ],
+  levels: LEVELS
+};

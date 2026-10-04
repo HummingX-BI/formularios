@@ -5,7 +5,6 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
-
 export function pluralize(count: number, singular: string, plural: string): string {
   return count === 1 ? singular : plural;
 }
@@ -23,7 +22,11 @@ export function joinList(items: string[]): string {
   return `${rest.join(', ')} y ${last}`;
 }
 
-export function relativeComparative(value: number, baseline: number, _isPositiveGood: boolean): string {
+export function relativeComparative(
+  value: number,
+  baseline: number,
+  _isPositiveGood: boolean,
+): string {
   const diff = value - baseline;
   const absDiff = Math.abs(diff);
   if (absDiff < 0.001) return 'similar a';
@@ -40,23 +43,23 @@ export function intensityLevel(value: number, thresholds: [number, number]): str
 
 export function formatNum(n: number, decimals: number = 0): string {
   // We use Intl.NumberFormat to avoid hardcoding digits
-  return new Intl.NumberFormat('es-MX', { 
-    maximumFractionDigits: decimals, 
-    minimumFractionDigits: decimals 
+  return new Intl.NumberFormat('es-MX', {
+    maximumFractionDigits: decimals,
+    minimumFractionDigits: decimals,
   }).format(n);
 }
 
 export function formatCurrency(n: number): string {
-  return new Intl.NumberFormat('es-MX', { 
-    style: 'currency', 
-    currency: 'MXN', 
-    maximumFractionDigits: 0 
+  return new Intl.NumberFormat('es-MX', {
+    style: 'currency',
+    currency: 'MXN',
+    maximumFractionDigits: 0,
   }).format(n);
 }
 
 export function formatPercent(n: number, decimals: number = 1): string {
-  return new Intl.NumberFormat('es-MX', { 
-    style: 'percent', 
-    maximumFractionDigits: decimals 
+  return new Intl.NumberFormat('es-MX', {
+    style: 'percent',
+    maximumFractionDigits: decimals,
   }).format(n / 100);
 }

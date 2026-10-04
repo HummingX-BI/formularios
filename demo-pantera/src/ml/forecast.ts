@@ -16,7 +16,7 @@ export interface ForecastResult {
   gamma: number;
   fitted: number[];
   residuals: number[];
-  metrics: { mae: number, rmse: number, mape: number };
+  metrics: { mae: number; rmse: number; mape: number };
   forecast: {
     expected: number[];
     optimistic: number[];
@@ -29,13 +29,15 @@ export interface ForecastResult {
 export function holtWinters(data: number[], horizon = 6): ForecastResult {
   const n = data.length;
   const slen = 12; // 12 months
-  if (n < slen * 2) throw new Error("Need at least 2 full seasons of data");
+  if (n < slen * 2) throw new Error('Need at least 2 full seasons of data');
 
   // Grid search for best params
-  let bestAlpha = 0.1, bestBeta = 0.1, bestGamma = 0.1;
+  let bestAlpha = 0.1,
+    bestBeta = 0.1,
+    bestGamma = 0.1;
   let bestRMSE = Infinity;
   let bestFitted: number[] = [];
-  
+
   const step = 0.1;
   for (let a = 0.1; a <= 0.9; a += step) {
     for (let b = 0.1; b <= 0.9; b += step) {
@@ -65,8 +67,8 @@ export function holtWinters(data: number[], horizon = 6): ForecastResult {
   const upper80 = [];
   const lower95 = [];
   const upper95 = [];
-  
-  const z80 = normal.quantile(0.90);
+
+  const z80 = normal.quantile(0.9);
   const z95 = normal.quantile(0.975);
 
   for (let h = 1; h <= horizon; h++) {
@@ -74,9 +76,9 @@ export function holtWinters(data: number[], horizon = 6): ForecastResult {
     const season = model.season[Math.max(0, sIndex)] || 0;
     const yHat = lastLevel + h * lastTrend + season;
     expected.push(yHat);
-    
+
     // Prediction interval grows with horizon
-    const margin = stdRes * Math.sqrt(h); 
+    const margin = stdRes * Math.sqrt(h);
     lower80.push(yHat - z80 * margin);
     upper80.push(yHat + z80 * margin);
     lower95.push(yHat - z95 * margin);
@@ -86,19 +88,21 @@ export function holtWinters(data: number[], horizon = 6): ForecastResult {
   // Cross-validation (backtesting on last 6 months)
   const trainData = data.slice(0, n - 6);
   const testData = data.slice(n - 6);
-  let mae = 0, rmse = 0, mape = 0;
-  
+  let mae = 0,
+    rmse = 0,
+    mape = 0;
+
   if (trainData.length >= slen * 2) {
     const cvModel = runHoltWinters(trainData, slen, bestAlpha, bestBeta, bestGamma, true);
     const cvLevel = cvModel.level[trainData.length - 1]!;
     const cvTrend = cvModel.trend[trainData.length - 1]!;
-    
+
     for (let h = 1; h <= 6; h++) {
       const sIndex = trainData.length - 1 + h - slen * Math.ceil(h / slen);
       const cvSeason = cvModel.season[Math.max(0, sIndex)] || 0;
       const pred = cvLevel + h * cvTrend + cvSeason;
       const actual = testData[h - 1]!;
-      
+
       const err = pred - actual;
       mae += Math.abs(err);
       rmse += err * err;
@@ -119,24 +123,35 @@ export function holtWinters(data: number[], horizon = 6): ForecastResult {
     forecast: {
       expected,
       optimistic: upper80,
-      conservative: lower80
+      conservative: lower80,
     },
     scenarios: {
       mean: expected,
-      lower80, upper80, lower95, upper95
+      lower80,
+      upper80,
+      lower95,
+      upper95,
     },
     meta: {
       modelName: 'Holt-Winters (Aditivo)',
       inputs: ['Serie mensual histórica'],
       metrics: { RMSE: rmse, MAPE: (mape * 100).toFixed(1) + '%' },
       trainingDate: '2026-09-30',
-      limitations: 'Asume tendencia lineal y estacionalidad constante. La incertidumbre crece rápido.',
-      tag: 'ilustrativo sobre datos de demostración'
-    }
+      limitations:
+        'Asume tendencia lineal y estacionalidad constante. La incertidumbre crece rápido.',
+      tag: 'ilustrativo sobre datos de demostración',
+    },
   };
 }
 
-function runHoltWinters(data: number[], slen: number, alpha: number, beta: number, gamma: number, full: boolean) {
+function runHoltWinters(
+  data: number[],
+  slen: number,
+  alpha: number,
+  beta: number,
+  gamma: number,
+  full: boolean,
+) {
   const n = data.length;
   const level = new Array(n).fill(0);
   const trend = new Array(n).fill(0);
@@ -162,20 +177,20 @@ function runHoltWinters(data: number[], slen: number, alpha: number, beta: numbe
     const lastL = level[i - 1]!;
     const lastT = trend[i - 1]!;
     const s = season[i - slen]!;
-    
+
     const val = data[i]!;
     const L = alpha * (val - s) + (1 - alpha) * (lastL + lastT);
     const T = beta * (L - lastL) + (1 - beta) * lastT;
     const S = gamma * (val - L) + (1 - gamma) * s;
-    
+
     level[i] = L;
     trend[i] = T;
     season[i] = S;
     fitted[i] = lastL + lastT + s;
-    
+
     rmse += Math.pow(val - fitted[i]!, 2);
   }
-  
+
   rmse = Math.sqrt(rmse / (n - slen));
   return { rmse, fitted, level, trend, season };
 }

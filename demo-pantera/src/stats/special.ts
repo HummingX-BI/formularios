@@ -12,9 +12,8 @@
 export function logGamma(z: number): number {
   if (z <= 0) return NaN;
   const p = [
-    676.5203681218851, -1259.1392167224028, 771.3234287776531,
-    -176.6150291621406, 12.50734327822346, -0.13857109526572012,
-    9.9843695780195716e-6, 1.5056327351493116e-7
+    676.5203681218851, -1259.1392167224028, 771.3234287776531, -176.6150291621406,
+    12.50734327822346, -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7,
   ];
   let y = z;
   let tmp = z + 7.5;
@@ -51,7 +50,7 @@ export function beta(a: number, b: number): number {
 export function regularizedGammaP(a: number, x: number): number {
   if (x < 0 || a <= 0) return NaN;
   if (x === 0) return 0;
-  
+
   if (x < a + 1) {
     // Expansión en serie
     let ap = a;
@@ -97,13 +96,15 @@ export function regularizedBeta(x: number, a: number, b: number): number {
   if (x === 0) return 0;
   if (x === 1) return 1;
 
-  const bt = Math.exp(logGamma(a + b) - logGamma(a) - logGamma(b) + a * Math.log(x) + b * Math.log(1 - x));
-  
+  const bt = Math.exp(
+    logGamma(a + b) - logGamma(a) - logGamma(b) + a * Math.log(x) + b * Math.log(1 - x),
+  );
+
   // Simetría para mejor convergencia
   if (x < (a + 1) / (a + b + 2)) {
-    return bt * betaContFraction(x, a, b) / a;
+    return (bt * betaContFraction(x, a, b)) / a;
   } else {
-    return 1 - bt * betaContFraction(1 - x, b, a) / b;
+    return 1 - (bt * betaContFraction(1 - x, b, a)) / b;
   }
 }
 
@@ -114,22 +115,22 @@ function betaContFraction(x: number, a: number, b: number): number {
   let qap = a + 1;
   let qam = a - 1;
   let c = 1;
-  let d = 1 - qab * x / qap;
+  let d = 1 - (qab * x) / qap;
   if (Math.abs(d) < 1e-30) d = 1e-30;
   d = 1 / d;
   let h = d;
-  
+
   for (let m = 1; m <= maxIt; m++) {
     let m2 = 2 * m;
-    let aa = m * (b - m) * x / ((qam + m2) * (a + m2));
+    let aa = (m * (b - m) * x) / ((qam + m2) * (a + m2));
     d = 1 + aa * d;
     if (Math.abs(d) < 1e-30) d = 1e-30;
     c = 1 + aa / c;
     if (Math.abs(c) < 1e-30) c = 1e-30;
     d = 1 / d;
     h *= d * c;
-    
-    aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
+
+    aa = (-(a + m) * (qab + m) * x) / ((a + m2) * (qap + m2));
     d = 1 + aa * d;
     if (Math.abs(d) < 1e-30) d = 1e-30;
     c = 1 + aa / c;
@@ -162,7 +163,7 @@ export function erfinv(x: number): number {
   const ln1minusX2 = Math.log(1 - x * x);
   const term1 = 2 / (Math.PI * a) + ln1minusX2 / 2;
   const term2 = ln1minusX2 / a;
-  
+
   const sign = x < 0 ? -1 : 1;
   return sign * Math.sqrt(Math.sqrt(term1 * term1 - term2) - term1);
 }

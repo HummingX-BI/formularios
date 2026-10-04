@@ -4,29 +4,68 @@ import { Button } from '@/ui/components/Buttons';
 import { formatCurrency } from '@/insights/templates';
 
 const SEGMENTS = [
-  { id: 1, name: 'Alto Riesgo - 3 Faltas', cause: 'Faltas', action: 'Llamada del Instructor', target: 12, cost: 0, effectiveness: 0.3, ltv: 3500 },
-  { id: 2, name: 'Alto Riesgo - Nivel 3', cause: 'Fricción', action: 'Clase de Refuerzo Gratis', target: 8, cost: 200, effectiveness: 0.5, ltv: 3500 },
-  { id: 3, name: 'Medio Riesgo - Atraso Pago', cause: 'Finanzas', action: 'Descuento 10% por 3 meses', target: 25, cost: 450, effectiveness: 0.4, ltv: 2800 },
-  { id: 4, name: 'Medio Riesgo - Horario', cause: 'Horario', action: 'Oferta de Cambio Prioritario', target: 18, cost: 0, effectiveness: 0.6, ltv: 3100 }
+  {
+    id: 1,
+    name: 'Alto Riesgo - 3 Faltas',
+    cause: 'Faltas',
+    action: 'Llamada del Instructor',
+    target: 12,
+    cost: 0,
+    effectiveness: 0.3,
+    ltv: 3500,
+  },
+  {
+    id: 2,
+    name: 'Alto Riesgo - Nivel 3',
+    cause: 'Fricción',
+    action: 'Clase de Refuerzo Gratis',
+    target: 8,
+    cost: 200,
+    effectiveness: 0.5,
+    ltv: 3500,
+  },
+  {
+    id: 3,
+    name: 'Medio Riesgo - Atraso Pago',
+    cause: 'Finanzas',
+    action: 'Descuento 10% por 3 meses',
+    target: 25,
+    cost: 450,
+    effectiveness: 0.4,
+    ltv: 2800,
+  },
+  {
+    id: 4,
+    name: 'Medio Riesgo - Horario',
+    cause: 'Horario',
+    action: 'Oferta de Cambio Prioritario',
+    target: 18,
+    cost: 0,
+    effectiveness: 0.6,
+    ltv: 3100,
+  },
 ];
 
 export default function M7_5_RetentionPlan() {
   const [activeActions, setActiveActions] = useState<number[]>([]);
 
   const toggleAction = (id: number) => {
-    setActiveActions(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+    setActiveActions((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
   };
 
-  const totals = SEGMENTS.filter(s => activeActions.includes(s.id)).reduce((acc, s) => {
-    const saved = s.target * s.effectiveness;
-    const rev = saved * s.ltv;
-    const cost = s.target * s.cost;
-    return {
-      saved: acc.saved + saved,
-      rev: acc.rev + rev,
-      cost: acc.cost + cost
-    };
-  }, { saved: 0, rev: 0, cost: 0 });
+  const totals = SEGMENTS.filter((s) => activeActions.includes(s.id)).reduce(
+    (acc, s) => {
+      const saved = s.target * s.effectiveness;
+      const rev = saved * s.ltv;
+      const cost = s.target * s.cost;
+      return {
+        saved: acc.saved + saved,
+        rev: acc.rev + rev,
+        cost: acc.cost + cost,
+      };
+    },
+    { saved: 0, rev: 0, cost: 0 },
+  );
 
   return (
     <div className="space-y-6 h-full flex flex-col">
@@ -47,7 +86,12 @@ export default function M7_5_RetentionPlan() {
         <Card className="p-4 bg-white border border-ice-100 shadow-sm text-center">
           <div className="text-sm text-secundario mb-1">Retorno sobre Inversión (ROI)</div>
           <div className="text-3xl font-bold text-navy-900">
-            {totals.cost > 0 ? (((totals.rev - totals.cost) / totals.cost) * 100).toFixed(0) : (totals.rev > 0 ? '∞' : '0')}%
+            {totals.cost > 0
+              ? (((totals.rev - totals.cost) / totals.cost) * 100).toFixed(0)
+              : totals.rev > 0
+                ? '∞'
+                : '0'}
+            %
           </div>
           <div className="text-xs text-coral mt-1">Costo: {formatCurrency(totals.cost)}</div>
         </Card>
@@ -71,12 +115,15 @@ export default function M7_5_RetentionPlan() {
               </tr>
             </thead>
             <tbody>
-              {SEGMENTS.map(s => {
+              {SEGMENTS.map((s) => {
                 const isActive = activeActions.includes(s.id);
                 const saved = s.target * s.effectiveness;
                 const ret = saved * s.ltv - s.target * s.cost;
                 return (
-                  <tr key={s.id} className={`border-b border-ice-50 hover:bg-ice-50 transition-colors ${isActive ? 'bg-aqua-50/30' : ''}`}>
+                  <tr
+                    key={s.id}
+                    className={`border-b border-ice-50 hover:bg-ice-50 transition-colors ${isActive ? 'bg-aqua-50/30' : ''}`}
+                  >
                     <td className="p-4">
                       <div className="font-bold text-navy-900">{s.name}</div>
                       <div className="text-xs text-secundario">Causa: {s.cause}</div>
@@ -84,11 +131,15 @@ export default function M7_5_RetentionPlan() {
                     <td className="p-4 font-bold text-aqua-600">{s.action}</td>
                     <td className="p-4 text-center font-bold text-navy-900">{s.target}</td>
                     <td className="p-4 text-right">{(s.effectiveness * 100).toFixed(0)}%</td>
-                    <td className="p-4 text-right text-coral font-bold">{s.cost > 0 ? formatCurrency(s.cost) : 'N/A'}</td>
-                    <td className="p-4 text-right text-green-600 font-bold">+{formatCurrency(ret)}</td>
+                    <td className="p-4 text-right text-coral font-bold">
+                      {s.cost > 0 ? formatCurrency(s.cost) : 'N/A'}
+                    </td>
+                    <td className="p-4 text-right text-green-600 font-bold">
+                      +{formatCurrency(ret)}
+                    </td>
                     <td className="p-4 text-center">
-                      <Button 
-                        variant={isActive ? 'ghost' : 'primary'} 
+                      <Button
+                        variant={isActive ? 'ghost' : 'primary'}
                         className={`text-xs py-1 px-3 ${isActive ? 'text-secundario border-secundario' : ''}`}
                         onClick={() => toggleAction(s.id)}
                       >

@@ -1,5 +1,12 @@
 export type Pool = 'principal' | 'infantil';
-export type Level = 'L1_Adaptacion' | 'L2_Flotacion' | 'L3_Respiracion' | 'L4_Libre' | 'L5_Dorso' | 'L6_PechoMariposa' | 'L7_Perfeccionamiento';
+export type Level =
+  | 'L1_Adaptacion'
+  | 'L2_Flotacion'
+  | 'L3_Respiracion'
+  | 'L4_Libre'
+  | 'L5_Dorso'
+  | 'L6_PechoMariposa'
+  | 'L7_Perfeccionamiento';
 export type Plan = '1/semana' | '2/semana' | '3/semana';
 export interface LevelObj {
   id: Level;
@@ -8,9 +15,18 @@ export interface LevelObj {
   typicalEntryAge: number;
   medianMonths: number;
 }
-export type ProspectStage = 'nuevo' | 'contactado' | 'visita_agendada' | 'clase_muestra' | 'inscrito' | 'perdido';
+export type ProspectStage =
+  'nuevo' | 'contactado' | 'visita_agendada' | 'clase_muestra' | 'inscrito' | 'perdido';
 export type LostReason = 'precio' | 'horario' | 'distancia' | 'otra_escuela' | 'sin_respuesta';
-export type ChurnReason = 'precio' | 'horario' | 'mudanza' | 'cambio_interes' | 'no_avanza' | 'otra_escuela' | 'salud' | 'sin_motivo';
+export type ChurnReason =
+  | 'precio'
+  | 'horario'
+  | 'mudanza'
+  | 'cambio_interes'
+  | 'no_avanza'
+  | 'otra_escuela'
+  | 'salud'
+  | 'sin_motivo';
 
 export interface Instructor {
   id: string;
@@ -19,7 +35,7 @@ export interface Instructor {
   active: boolean;
   score: number;
   costPerHour: number;
-  shifts: { day: number, start: number, end: number }[]; // 1=Mon, 7=Sun. start/end in hours
+  shifts: { day: number; start: number; end: number }[]; // 1=Mon, 7=Sun. start/end in hours
   retentionEffect: number; // Hidden param
   pedagogicalGoodness: number; // Hidden param
 }
@@ -151,7 +167,7 @@ export interface MessageThread {
   handledByBot: boolean;
   firstResponseMin: number;
   result: 'clase_muestra' | 'visita' | 'pierde_precio' | 'pierde_horario' | 'abierto';
-  messages: { sender: 'user' | 'agent' | 'human', text: string, timestamp: string }[];
+  messages: { sender: 'user' | 'agent' | 'human'; text: string; timestamp: string }[];
 }
 
 export interface NotificationLog {

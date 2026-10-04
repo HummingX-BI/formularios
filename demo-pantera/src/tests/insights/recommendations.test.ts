@@ -19,11 +19,11 @@ describe('Recommendations Engine', () => {
       inflacion: 5,
       ajustePrecioReciente: false,
       mesAniversario: 'diciembre',
-      pagosTardios: 25
+      pagosTardios: 25,
     };
 
     const recs = generateRecommendations(metrics);
-    
+
     // There are 14 rules, with this complete dataset we expect all 14 to trigger
     // Actually, only 14 are defined in our generator. Let's see if 14 trigger.
     expect(recs.length).toBeGreaterThanOrEqual(13); // One rule might be strict about exact month, but we passed 'diciembre' so 14
@@ -40,10 +40,10 @@ describe('Recommendations Engine', () => {
 
     for (let i = 0; i < recs.length - 1; i++) {
       const r1 = recs[i]!;
-      const r2 = recs[i+1]!;
+      const r2 = recs[i + 1]!;
       const score1 = normalize(r1.impact.estimate, r1.impact.unit) / effortMap[r1.effort];
       const score2 = normalize(r2.impact.estimate, r2.impact.unit) / effortMap[r2.effort];
-      
+
       expect(score1).toBeGreaterThanOrEqual(score2);
     }
   });

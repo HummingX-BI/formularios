@@ -18,14 +18,14 @@ export interface TableProps<T> {
   exportName?: string;
 }
 
-export function Table<T extends Record<string, any>>({ 
-  data, 
-  columns, 
-  searchable = true, 
-  pagination = true, 
+export function Table<T extends Record<string, any>>({
+  data = [],
+  columns = [],
+  searchable = true,
+  pagination = true,
   pageSize = 10,
   exportable = true,
-  exportName = 'export'
+  exportName = 'export',
 }: TableProps<T>) {
   const [search, setSearch] = useState('');
   const [sortKey, setSortKey] = useState<string | null>(null);
@@ -35,8 +35,8 @@ export function Table<T extends Record<string, any>>({
   const filtered = useMemo(() => {
     if (!search) return data;
     const lower = search.toLowerCase();
-    return data.filter(row => 
-      Object.values(row).some(val => String(val).toLowerCase().includes(lower))
+    return data.filter((row) =>
+      Object.values(row).some((val) => String(val).toLowerCase().includes(lower)),
     );
   }, [data, search]);
 
@@ -61,8 +61,10 @@ export function Table<T extends Record<string, any>>({
 
   const handleSort = (key: string) => {
     if (sortKey === key) {
-      if (sortDesc) { setSortKey(null); setSortDesc(false); }
-      else setSortDesc(true);
+      if (sortDesc) {
+        setSortKey(null);
+        setSortDesc(false);
+      } else setSortDesc(true);
     } else {
       setSortKey(key);
       setSortDesc(false);
@@ -70,14 +72,18 @@ export function Table<T extends Record<string, any>>({
   };
 
   const exportCSV = () => {
-    const headers = columns.map(c => `"${c.header}"`).join(',');
-    const rows = sorted.map(row => 
-      columns.map(c => {
-        let val = row[c.key as string];
-        if (val === undefined || val === null) val = '';
-        return `"${String(val).replace(/"/g, '""')}"`;
-      }).join(',')
-    ).join('\n');
+    const headers = columns.map((c) => `"${c.header}"`).join(',');
+    const rows = sorted
+      .map((row) =>
+        columns
+          .map((c) => {
+            let val = row[c.key as string];
+            if (val === undefined || val === null) val = '';
+            return `"${String(val).replace(/"/g, '""')}"`;
+          })
+          .join(','),
+      )
+      .join('\n');
     const csv = `${headers}\n${rows}`;
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -94,18 +100,35 @@ export function Table<T extends Record<string, any>>({
       <div className="p-4 border-b border-ice-100 bg-ice-50/50 flex flex-wrap gap-4 justify-between items-center">
         {searchable && (
           <div className="relative max-w-sm w-full">
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-secundario w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-            <input 
-              type="text" 
-              placeholder="Buscar..." 
+            <svg
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-secundario w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+            <input
+              type="text"
+              placeholder="Buscar..."
               value={search}
-              onChange={e => { setSearch(e.target.value); setCurrentPage(1); }}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setCurrentPage(1);
+              }}
               className="w-full pl-9 pr-3 py-2 text-sm bg-white border border-ice-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-shadow shadow-sm"
             />
           </div>
         )}
         {exportable && (
-          <Button variant="secondary" size="sm" onClick={exportCSV}>Exportar CSV</Button>
+          <Button variant="secondary" size="sm" onClick={exportCSV}>
+            Exportar CSV
+          </Button>
         )}
       </div>
 
@@ -114,9 +137,9 @@ export function Table<T extends Record<string, any>>({
         <table className="min-w-full divide-y divide-ice-100">
           <thead className="bg-ice-50">
             <tr>
-              {columns.map(col => (
-                <th 
-                  key={String(col.key)} 
+              {columns.map((col) => (
+                <th
+                  key={String(col.key)}
                   className={`px-6 py-3 text-left text-xs font-semibold text-navy-900 uppercase tracking-wider ${col.sortable ? 'cursor-pointer hover:bg-sky-200/30 select-none' : ''}`}
                   onClick={() => col.sortable && handleSort(String(col.key))}
                 >
@@ -140,8 +163,11 @@ export function Table<T extends Record<string, any>>({
             ) : (
               paginated.map((row, i) => (
                 <tr key={i} className="hover:bg-ice-50/50 transition-colors">
-                  {columns.map(col => (
-                    <td key={String(col.key)} className="px-6 py-4 text-sm text-secundario whitespace-nowrap">
+                  {columns.map((col) => (
+                    <td
+                      key={String(col.key)}
+                      className="px-6 py-4 text-sm text-secundario whitespace-nowrap"
+                    >
                       {col.render ? col.render(row) : String(row[col.key as string] ?? '')}
                     </td>
                   ))}
@@ -156,19 +182,20 @@ export function Table<T extends Record<string, any>>({
       {pagination && totalPages > 1 && (
         <div className="px-6 py-3 border-t border-ice-100 bg-ice-50/50 flex items-center justify-between">
           <span className="text-sm text-secundario">
-            Mostrando {((currentPage - 1) * pageSize) + 1} a {Math.min(currentPage * pageSize, sorted.length)} de {sorted.length}
+            Mostrando {(currentPage - 1) * pageSize + 1} a{' '}
+            {Math.min(currentPage * pageSize, sorted.length)} de {sorted.length}
           </span>
           <div className="flex gap-1">
-            <button 
+            <button
               disabled={currentPage === 1}
-              onClick={() => setCurrentPage(p => p - 1)}
+              onClick={() => setCurrentPage((p) => p - 1)}
               className="px-3 py-1 rounded border border-ice-100 bg-white text-secundario hover:bg-ice-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus:outline-none focus:ring-2 focus:ring-blue-600"
             >
               Anterior
             </button>
-            <button 
+            <button
               disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage(p => p + 1)}
+              onClick={() => setCurrentPage((p) => p + 1)}
               className="px-3 py-1 rounded border border-ice-100 bg-white text-secundario hover:bg-ice-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus:outline-none focus:ring-2 focus:ring-blue-600"
             >
               Siguiente

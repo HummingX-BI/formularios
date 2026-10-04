@@ -13,7 +13,7 @@ describe('Kaplan-Meier', () => {
     const times = [10, 20, 30, 40, 50, 60];
     const events = [true, false, true, false, true, false];
     const res = kaplanMeier(times, events, 60);
-    
+
     // Total risk = 6 -> Event at 10 (1) -> Surv = 5/6 = 0.8333
     // Censor at 20 -> risk = 4
     // Event at 30 (1) -> Surv = 5/6 * 3/4 = 15/24 = 0.625
@@ -54,8 +54,8 @@ describe('Logistic Regression', () => {
   });
 
   it('performance on 620 rows 8 variables < 300ms', () => {
-    const X = Array.from({length: 620}, () => Array.from({length: 8}, () => Math.random()));
-    const y = Array.from({length: 620}, () => Math.random() > 0.5 ? 1 : 0);
+    const X = Array.from({ length: 620 }, () => Array.from({ length: 8 }, () => Math.random()));
+    const y = Array.from({ length: 620 }, () => (Math.random() > 0.5 ? 1 : 0));
     const start = performance.now();
     logisticRegression(X, y);
     const time = performance.now() - start;
@@ -66,8 +66,12 @@ describe('Logistic Regression', () => {
 describe('K-Means', () => {
   it('clusters distinct blobs correctly', () => {
     const X = [
-      [1, 1], [1.1, 1.1], [0.9, 0.9],
-      [10, 10], [10.1, 10.1], [9.9, 9.9]
+      [1, 1],
+      [1.1, 1.1],
+      [0.9, 0.9],
+      [10, 10],
+      [10.1, 10.1],
+      [9.9, 9.9],
     ];
     const res = kmeans(X, 3, 42, 2);
     expect(res.k).toBe(2);
@@ -78,9 +82,12 @@ describe('K-Means', () => {
 
   it('finds elbow around correct k', () => {
     const X = [
-      [1, 1], [1.2, 1.2],
-      [10, 10], [10.2, 10.2],
-      [-10, 10], [-10.2, 10.2]
+      [1, 1],
+      [1.2, 1.2],
+      [10, 10],
+      [10.2, 10.2],
+      [-10, 10],
+      [-10.2, 10.2],
     ];
     // With 3 clear distinct blobs, maxK=4
     const res = kmeans(X, 4, 42);
@@ -90,7 +97,7 @@ describe('K-Means', () => {
   });
 
   it('performance on 410 rows < 300ms', () => {
-    const X = Array.from({length: 410}, () => Array.from({length: 5}, () => Math.random()));
+    const X = Array.from({ length: 410 }, () => Array.from({ length: 5 }, () => Math.random()));
     const start = performance.now();
     kmeans(X, 8, 42);
     const time = performance.now() - start;
@@ -101,7 +108,11 @@ describe('K-Means', () => {
 describe('PCA', () => {
   it('extracts principal components correctly', () => {
     const X = [
-      [1, 1], [2, 2], [3, 3], [4, 4], [5, 5]
+      [1, 1],
+      [2, 2],
+      [3, 3],
+      [4, 4],
+      [5, 5],
     ];
     const res = pca(X);
     // 1st component should explain 100% variance
@@ -111,7 +122,7 @@ describe('PCA', () => {
 
 describe('Time Series Decomposition', () => {
   it('decomposes additive correctly', () => {
-    const data = Array.from({length: 36}, (_, i) => i + (i % 12));
+    const data = Array.from({ length: 36 }, (_, i) => i + (i % 12));
     const res = decomposeTimeSeries(data, 'additive');
     expect(res.seasonalIndices.length).toBe(12);
     expect(res.trend.length).toBe(36);
@@ -122,8 +133,8 @@ describe('Holt-Winters Forecast', () => {
   it('forecasts synthetic data with trend and season', () => {
     // Generate synthetic
     const data = [];
-    for(let i = 0; i < 48; i++) {
-      data.push(10 + i * 0.5 + Math.sin(i * Math.PI / 6) * 5); // slen=12
+    for (let i = 0; i < 48; i++) {
+      data.push(10 + i * 0.5 + Math.sin((i * Math.PI) / 6) * 5); // slen=12
     }
     const res = holtWinters(data, 6);
     expect(res.forecast.expected.length).toBe(6);
@@ -131,7 +142,7 @@ describe('Holt-Winters Forecast', () => {
   });
 
   it('performance < 300ms', () => {
-    const data = Array.from({length: 48}, () => Math.random() * 100);
+    const data = Array.from({ length: 48 }, () => Math.random() * 100);
     const start = performance.now();
     holtWinters(data, 6);
     const time = performance.now() - start;
@@ -147,9 +158,9 @@ describe('Monte Carlo Simulation', () => {
       iterations: 5000,
       inputs: {
         a: () => dists.uniform(0, 1),
-        b: () => dists.uniform(0, 1)
+        b: () => dists.uniform(0, 1),
       },
-      model: (i: any) => i.a + i.b
+      model: (i: any) => i.a + i.b,
     };
     const res = monteCarlo(config);
     expect(res.mean).toBeCloseTo(1.0, 1);
@@ -161,7 +172,7 @@ describe('Monte Carlo Simulation', () => {
     const config = {
       iterations: 10000,
       inputs: { a: () => dists.normal(10, 2), b: () => dists.normal(5, 1) },
-      model: (i: any) => i.a * i.b
+      model: (i: any) => i.a * i.b,
     };
     const start = performance.now();
     monteCarlo(config);

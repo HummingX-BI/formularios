@@ -5,10 +5,18 @@ import { useDataset } from '@/data/hooks';
 
 export default function M3_3_InstructorScorecard() {
   const dataset = useDataset();
-  const instructorsOptions = useMemo(() => dataset.instructors.map(i => ({ label: i.name, value: i.id })), [dataset]);
-  const [selectedInstructorId, setSelectedInstructorId] = useState(instructorsOptions[0]?.value || '');
+  const instructorsOptions = useMemo(
+    () => dataset.instructors.map((i) => ({ label: i.name, value: i.id })),
+    [dataset],
+  );
+  const [selectedInstructorId, setSelectedInstructorId] = useState(
+    instructorsOptions[0]?.value || '',
+  );
 
-  const instructor = useMemo(() => dataset.instructors.find(i => i.id === selectedInstructorId), [dataset, selectedInstructorId]);
+  const instructor = useMemo(
+    () => dataset.instructors.find((i) => i.id === selectedInstructorId),
+    [dataset, selectedInstructorId],
+  );
 
   // Mock performance metrics based on instructor ID
   const metrics = useMemo(() => {
@@ -31,10 +39,16 @@ export default function M3_3_InstructorScorecard() {
       <div className="flex justify-between items-end">
         <div>
           <h1 className="text-3xl font-jakarta font-bold text-navy-900">Ficha de Desempeño</h1>
-          <p className="text-lg text-secundario mt-1">Evaluación de métricas clave por instructor</p>
+          <p className="text-lg text-secundario mt-1">
+            Evaluación de métricas clave por instructor
+          </p>
         </div>
         <div className="w-64">
-          <Select options={instructorsOptions} value={selectedInstructorId} onChange={e => setSelectedInstructorId(e.target.value)} />
+          <Select
+            options={instructorsOptions}
+            value={selectedInstructorId}
+            onChange={(e) => setSelectedInstructorId(e.target.value)}
+          />
         </div>
       </div>
 
@@ -96,9 +110,11 @@ export default function M3_3_InstructorScorecard() {
             [Gráfica de Barras Comparativas: Múltiples KPIs normalizados]
           </div>
         </Card>
-        
+
         <Card className="p-6 bg-white border border-ice-100 shadow-sm">
-          <h3 className="font-bold text-navy-900 mb-4 font-jakarta">Retención por Cohorte del Instructor</h3>
+          <h3 className="font-bold text-navy-900 mb-4 font-jakarta">
+            Retención por Cohorte del Instructor
+          </h3>
           <div className="h-64 bg-ice-50 rounded flex items-center justify-center text-secundario border border-ice-100">
             [Gráfica de Líneas/Área: Retención de alumnos a 1, 3 y 6 meses]
           </div>

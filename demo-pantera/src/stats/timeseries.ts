@@ -27,14 +27,14 @@ export function autocorrelation(data: number[], maxLag = 10): number[] {
   const m = mean(data);
   const varPop = variance(data, false);
   if (varPop === 0) return Array.from({ length: maxLag + 1 }, () => 0);
-  
+
   const result = [];
   for (let k = 0; k <= Math.min(maxLag, n - 1); k++) {
     let cov = 0;
     for (let i = 0; i < n - k; i++) {
       cov += (data[i]! - m) * (data[i + k]! - m);
     }
-    result.push((cov / n) / varPop);
+    result.push(cov / n / varPop);
   }
   return result;
 }
