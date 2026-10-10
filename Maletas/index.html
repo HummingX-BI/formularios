@@ -1,0 +1,824 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cuestionario de arranque | HummingX BI</title>
+  <meta name="description" content="Formulario estratégico para fabricantes y mayoristas de maletas, bolsos y mochilas.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="./jspdf.umd.min.js?v=2"></script>
+  <style>
+    :root{--ink:#1c1917;--ink-soft:#57534e;--paper:#fafaf9;--panel:#fff;--line:#e7e5e4;--green:#451a03;--green-dark:#290f02;--mint:#fef3c7;--gold:#d97706;--danger:#dc2626}
+    *{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 'DM Sans',sans-serif} button,input,textarea,select{font:inherit}
+    .top{position:sticky;top:0;z-index:5;background:rgba(250,246,240,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+    .top-in{max-width:800px;margin:auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:10px;font:500 11px 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--green)}.brand img{width:30px;max-height:30px;object-fit:contain}.progress{height:3px;background:var(--line)}.progress i{display:block;height:100%;width:0;background:var(--green);transition:width .3s}
+    main{max-width:800px;margin:auto;padding:0 24px 70px}.hero{text-align:center;padding:65px 12px 45px}.client-logo{height:125px;max-width:360px;object-fit:contain;margin:0 auto 24px;display:block}.client-logo.is-missing{display:none}.eyebrow{font:500 11px 'IBM Plex Mono',monospace;letter-spacing:.17em;text-transform:uppercase;color:var(--gold);margin:0 0 15px}.hero h1{font:400 clamp(38px,7vw,62px)/1.05 'DM Serif Display',serif;margin:0 auto 17px;letter-spacing:-.02em}.hero p{max-width:570px;margin:auto;color:var(--ink-soft);font-size:17px}.intro{background:var(--green-dark);color:#fff;padding:25px 28px;margin-bottom:24px;border-top:6px solid var(--gold)}.intro strong{color:var(--gold)}.intro p{margin:0;max-width:680px}
+    .step{display:none;background:var(--panel);border:1px solid var(--line);padding:34px 34px 30px;box-shadow:0 12px 34px rgba(69,26,3,.05)}.step.active{display:block;animation:rise .35s ease}@keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}.step-head{border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:7px}.step-no{font:500 11px 'IBM Plex Mono',monospace;color:var(--green);letter-spacing:.14em;text-transform:uppercase}.step h2{font:400 31px/1.1 'DM Serif Display',serif;margin:7px 0 7px}.step-head p{color:var(--ink-soft);margin:0}.q{padding:22px 0;border-bottom:1px solid #edf0eb}.q:last-of-type{border-bottom:0}.label{display:block;font-weight:600;margin-bottom:9px}.hint{font-size:12.5px;color:var(--ink-soft);margin:-5px 0 10px}.req{color:var(--danger)} .star{color:var(--gold);font-size:1.15em;vertical-align:bottom;line-height:1} input[type=text],input[type=email],input[type=tel],input[type=url],input[type=number],textarea,select{width:100%;border:1px solid #e2e2e2;background:#fafafa;color:var(--ink);border-radius:3px;padding:12px 13px;outline:none;box-shadow:none;transition:border .2s,background .2s,box-shadow .2s}textarea{min-height:105px;resize:vertical}input:focus,textarea:focus,select:focus{border-color:var(--gold);background:#fff;box-shadow:0 0 0 3px rgba(217,119,6,.14)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.options{display:flex;flex-wrap:wrap;gap:9px}.options label{border:1px solid var(--line);padding:10px 13px;cursor:pointer;display:flex;gap:8px;align-items:center;background:#fafafa;color:var(--ink-soft);font-size:14px}.options label:has(input:checked){border-color:var(--gold);background:var(--mint);color:var(--green-dark)}.options input{accent-color:var(--gold)}
+    .nav{display:flex;justify-content:space-between;gap:12px;padding-top:25px}.btn{border:1px solid var(--green);background:var(--green);color:#fff;padding:12px 18px;cursor:pointer;font-weight:600}.btn:hover{background:var(--gold);border-color:var(--gold);color:#111}.btn.secondary{background:transparent;color:var(--green)}.btn.secondary:hover{background:var(--mint);color:#111}.btn:disabled{opacity:.45;cursor:not-allowed}.finish{background:var(--mint);padding:18px;margin:20px 0;color:var(--green-dark);border-left:5px solid var(--gold)}.summary{border-top:1px solid var(--line);margin-top:22px}.summary-row{display:grid;grid-template-columns:35% 65%;gap:15px;padding:12px 0;border-bottom:1px solid #edf0eb}.summary-row b{font-size:12px;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;font-weight:500}.summary-row span{white-space:pre-wrap}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}.budget-line{display:flex;align-items:center;gap:18px}.budget-line input{flex:1;accent-color:var(--gold)}.budget-line output{min-width:105px;color:var(--green-dark);font-weight:700;text-align:right}.budget-scale{display:flex;justify-content:space-between;color:var(--ink-soft);font:11px 'IBM Plex Mono',monospace;margin-top:6px}.completion{text-align:center;padding:22px 8px 10px}.completion-logos{display:flex;justify-content:center;align-items:center;gap:28px;margin:8px auto 22px}.completion-logos img{width:96px;height:70px;object-fit:contain}.completion-logos img:first-child{width:62px}.completion h2{margin:0 0 10px}.completion p{max-width:510px;margin:0 auto 20px;color:var(--ink-soft)}.completion .actions{justify-content:center}.note{font-size:13px;color:var(--ink-soft);margin-top:12px}.error{color:var(--danger);font-size:13px;margin-top:8px;display:none}.footer{text-align:center;color:var(--ink-soft);font-size:12px;padding-top:28px}.footer a{color:var(--green)}
+    .field-card{background:transparent;border:0;padding:22px 0;margin:0;box-shadow:none}.field-card .label{margin-bottom:10px}.field-card input{display:block;width:100%;min-width:0;background:#f7f7f7;border:1px solid #d8d8d8;border-radius:2px;min-height:46px}.field-card input:focus{border-color:#d97706;background:#fff;box-shadow:0 0 0 3px rgba(217,119,6,.14)}
+    @media(max-width:620px){main{padding-left:14px;padding-right:14px}.top-in{padding:12px 14px}.hero{padding-top:43px}.step{padding:25px 18px}.grid{grid-template-columns:1fr}.nav{flex-direction:column-reverse}.nav .btn{width:100%}.summary-row{grid-template-columns:1fr;gap:4px}.actions .btn{width:100%}}
+    @media print{.top,.hero,.intro,.nav,.actions,.note,.footer{display:none!important}.step{display:block!important;border:0;box-shadow:none;padding:0}.q{break-inside:avoid}body{background:#fff}.summary-row{break-inside:avoid}}
+  </style>
+</head>
+<body>
+  <header class="top"><div class="top-in"><div class="brand"><img src="logo-hummingx.png" alt="HummingX BI">HummingX BI · Diagnóstico</div><span id="counter" class="step-no">1 / 10</span></div><div class="progress"><i id="progressFill"></i></div></header>
+  <main>
+    <section class="hero">
+      <p class="eyebrow" id="heroEyebrow">Cuestionario de arranque · </p>
+      <h1 id="heroTitle">Hablemos de su negocio.</h1>
+      <p>Con sus respuestas armamos su sitio web y su publicidad a la medida, sin preguntas de relleno.</p>
+    </section>
+    
+    <div class="intro">
+      <p><strong>Tiempo estimado: 20 minutos.</strong> Las preguntas con <span class="star">★</span> son las que más influyen; si tiene poco tiempo, empiece por ellas. Si algo no lo sabe, escriba «no sé» y lo vemos juntos.</p>
+    </div>
+
+    <form id="form">
+      <section class="step active" data-step="1">
+        <div class="step-head">
+          <span class="step-no">01 · Su empresa</span>
+          <h2>Conozcamos su negocio</h2>
+          <p><strong>Para qué lo usamos:</strong> el texto del sitio, la sección "Quiénes somos" y la imagen que damos en anuncios.</p>
+        </div>
+        <div class="q field-card"><label class="label">Su nombre y puesto <span class="req">*</span></label><input required name="nombre_puesto" placeholder="Ej. Carlos Mendoza, Director General"></div>
+        <div class="q field-card"><label class="label"><span class="star">★</span> Nombre comercial de la empresa <span class="req">*</span></label><input required name="nombre_comercial" placeholder="Ej. Maletas Gaviota"></div>
+        <div class="q field-card"><label class="label">Razón social, si es distinta</label><input name="razon_social" placeholder="Ej. Manufacturas Gaviota S.A. de C.V."></div>
+        <div class="q"><label class="label">Año en que comenzó la empresa</label><input name="anio_inicio" type="number" min="1900" max="2100" placeholder="Ej. 1998"></div>
+        <div class="q"><label class="label">Su historia en pocas líneas: cómo empezó y quién la fundó</label><textarea name="historia" placeholder="Ej. Fundada por mi padre en el centro de la ciudad reparando bolsos, hasta convertirnos en fabricantes..."></textarea></div>
+        <div class="q"><label class="label">Dirección completa</label><textarea name="direccion" placeholder="Ej. Calle 5, Colonia Centro, CDMX..."></textarea></div>
+        <div class="q"><label class="label">Liga de Google Maps</label><input name="maps" type="url" placeholder="https://maps.google.com/..."></div>
+        <div class="q"><label class="label">¿Reciben visitas de clientes?</label><div class="options">
+          <label><input type="radio" name="reciben_visitas" value="Sí"> Sí</label>
+          <label><input type="radio" name="reciben_visitas" value="Solo con cita"> Solo con cita</label>
+          <label><input type="radio" name="reciben_visitas" value="No"> No</label>
+        </div></div>
+        <div class="q grid">
+          <div><label class="label">WhatsApp o teléfono <span class="req">*</span></label><input required name="telefono" type="tel" placeholder="10 dígitos"></div>
+          <div><label class="label">Correo <span class="req">*</span></label><input required name="correo" type="email" placeholder="ventas@empresa.com"></div>
+        </div>
+        <div class="q"><label class="label">Horario de atención</label><input name="horario" placeholder="Ej. Lunes a Viernes de 9am a 6pm"></div>
+        <div class="q"><label class="label">Certificaciones, reconocimientos, clientes o marcas conocidas que podamos mencionar</label><textarea name="certificaciones" placeholder="Ej. Fabricamos para tiendas XYZ, certificados en ISO 9001..."></textarea></div>
+        <div class="nav"><span></span><button class="btn" type="button" data-next>Continuar →</button></div>
+      </section>
+
+      <section class="step" data-step="2">
+        <div class="step-head">
+          <span class="step-no">02 · Productos</span>
+          <h2>Lo que fabrica y vende</h2>
+          <p><strong>Para qué lo usamos:</strong> las páginas de producto, los títulos de anuncios y las palabras con las que lo encontrarán en Google.</p>
+        </div>
+        <div class="q"><label class="label"><span class="star">★</span> ¿Qué productos fabrican?</label><p class="hint">Enumérelos por categoría</p><div class="options">
+          <label><input type="checkbox" name="productos_fabrican" value="Maletas"> Maletas</label>
+          <label><input type="checkbox" name="productos_fabrican" value="Bolsos"> Bolsos</label>
+          <label><input type="checkbox" name="productos_fabrican" value="Mochilas"> Mochilas</label>
+          <label><input type="checkbox" name="productos_fabrican" value="Loncheras"> Loncheras</label>
+          <label><input type="checkbox" name="productos_fabrican" value="Cangureras"> Cangureras</label>
+          <label><input type="checkbox" name="productos_fabrican" value="Otros"> Otros</label>
+        </div><textarea name="productos_categoria_extra" placeholder="Detalles adicionales..."></textarea></div>
+        <div class="q"><label class="label"><span class="star">★</span> Sus 3 productos estrella: los que más venden o más les gustaría vender</label><textarea name="productos_estrella" placeholder="Ej. Mochila escolar modelo X, Maleta de viaje de 24 pulgadas, Lonchera térmica..."></textarea></div>
+        <div class="q"><label class="label">Materiales y acabados</label><div class="options">
+          <label><input type="checkbox" name="materiales" value="Nylon"> Nylon</label>
+          <label><input type="checkbox" name="materiales" value="Piel"> Piel</label>
+          <label><input type="checkbox" name="materiales" value="Vinil"> Vinil</label>
+          <label><input type="checkbox" name="materiales" value="Lona"> Lona</label>
+          <label><input type="checkbox" name="materiales" value="Poliéster"> Poliéster</label>
+          <label><input type="checkbox" name="materiales" value="Otro"> Otro</label>
+        </div><textarea name="materiales_extra" placeholder="Opcional: detalles de materiales (ej. cierres YKK, lonas impermeables)..."></textarea></div>
+        <div class="q"><label class="label"><span class="star">★</span> ¿Hacen producto personalizado o maquila, con logo, colores o diseños del cliente?</label><div class="options">
+          <label><input type="radio" name="personalizado" value="Sí, personalizado y maquila"> Sí, personalizado y maquila</label>
+          <label><input type="radio" name="personalizado" value="Solo personalizado con logo"> Solo personalizado con logo</label>
+          <label><input type="radio" name="personalizado" value="No"> No</label>
+        </div><textarea name="minimo_personalizar" placeholder="¿Cuál es el mínimo para personalizar? Ej. A partir de 50 piezas..."></textarea></div>
+        <div class="q"><label class="label">¿Venden bajo su propia marca, fabrican para otras marcas, o ambas?</label><div class="options">
+          <label><input type="radio" name="tipo_marca" value="Solo marca propia"> Solo marca propia</label>
+          <label><input type="radio" name="tipo_marca" value="Solo maquila para otras marcas"> Solo maquila para otras marcas</label>
+          <label><input type="radio" name="tipo_marca" value="Ambas"> Ambas</label>
+        </div></div>
+        <div class="q"><label class="label">¿Qué modelos tienen en existencia y cuáles se fabrican al pedir?</label><div class="options">
+          <label><input type="radio" name="existencia" value="Casi todo en existencia"> Casi todo en existencia</label>
+          <label><input type="radio" name="existencia" value="Mitad y mitad"> Mitad y mitad</label>
+          <label><input type="radio" name="existencia" value="Casi todo bajo pedido"> Casi todo bajo pedido</label>
+        </div><textarea name="existencia_extra" placeholder="Opcional: aclaraciones sobre stock..."></textarea></div>
+        <div class="q"><label class="label"><span class="star">★</span> ¿Qué los hace mejores que otros fabricantes?</label><p class="hint">Dé ejemplos concretos de calidad, precio, tiempos, diseño o atención.</p><textarea name="diferenciadores" placeholder="Ej. Entregamos en 7 días, damos garantía de 1 año en cierres, somos fabricantes directos sin intermediarios..."></textarea></div>
+        <div class="q"><label class="label">¿Tienen catálogo?</label><div class="options">
+          <label><input type="checkbox" name="catalogo" value="PDF"> PDF</label>
+          <label><input type="checkbox" name="catalogo" value="Fotos"> Fotos</label>
+          <label><input type="checkbox" name="catalogo" value="Redes sociales"> Redes sociales</label>
+          <label><input type="checkbox" name="catalogo" value="Todavía no"> Todavía no</label>
+        </div><textarea name="catalogo_modelos" placeholder="¿Cuántos modelos manejan y cuántos cambian por temporada?"></textarea></div>
+        <div class="q"><label class="label">¿Mostrarían precios en el sitio, por ejemplo "desde $X por pieza"?</label><div class="options">
+          <label><input type="radio" name="mostrar_precios" value="Sí, mostrar precios"> Sí, mostrar precios</label>
+          <label><input type="radio" name="mostrar_precios" value="No, solo cotización"> No, solo cotización</label>
+          <label><input type="radio" name="mostrar_precios" value="Depende del producto"> Depende del producto</label>
+        </div></div>
+        <div class="q"><label class="label">¿Qué productos NO quieren promover, aunque los fabriquen?</label><textarea name="no_promover" placeholder="Ej. No queremos hacer mochilas infantiles ni productos de un solo uso..."></textarea></div>
+        <div class="nav"><button class="btn secondary" type="button" data-prev>← Atrás</button><button class="btn" type="button" data-next>Continuar →</button></div>
+      </section>
+
+      <section class="step" data-step="3">
+        <div class="step-head">
+          <span class="step-no">03 · Reparación de maletas</span>
+          <h2>Sus servicios de reparación</h2>
+          <p><strong>Para qué lo usamos:</strong> decidir si la reparación tiene su propia sección en el sitio y una campaña local aparte. <em>Si no ofrecen reparación, déjelo en blanco y continúe.</em></p>
+        </div>
+        <div class="q"><label class="label">¿Ofrecen reparación de maletas?</label><div class="options">
+          <label><input type="radio" name="ofrecen_reparacion" value="Sí, es un servicio importante"> Sí, es un servicio importante</label>
+          <label><input type="radio" name="ofrecen_reparacion" value="Sí, es complementario"> Sí, es complementario</label>
+          <label><input type="radio" name="ofrecen_reparacion" value="No"> No</label>
+        </div></div>
+        <div class="q"><label class="label">¿Qué reparan?</label><div class="options">
+          <label><input type="checkbox" name="que_reparan" value="Cierres"> Cierres</label>
+          <label><input type="checkbox" name="que_reparan" value="Ruedas"> Ruedas</label>
+          <label><input type="checkbox" name="que_reparan" value="Asas o jaladeras"> Asas o jaladeras</label>
+          <label><input type="checkbox" name="que_reparan" value="Costuras y forros"> Costuras y forros</label>
+          <label><input type="checkbox" name="que_reparan" value="Candados"> Candados</label>
+          <label><input type="checkbox" name="que_reparan" value="Otros"> Otros</label>
+        </div></div>
+        <div class="q"><label class="label">¿A quién se lo hacen?</label><div class="options">
+          <label><input type="checkbox" name="a_quien_reparan" value="Público en general"> Público en general</label>
+          <label><input type="checkbox" name="a_quien_reparan" value="Tiendas y negocios"> Tiendas y negocios</label>
+          <label><input type="checkbox" name="a_quien_reparan" value="Empresas"> Empresas</label>
+          <label><input type="checkbox" name="a_quien_reparan" value="Otros"> Otros</label>
+        </div></div>
+        <div class="q"><label class="label">Tiempo promedio de reparación y precios aproximados</label><textarea name="tiempo_reparacion" placeholder="Ej. Cambio de llantas desde $150 en 24 hrs..."></textarea></div>
+        <div class="q"><label class="label">¿Quieren promoverlo en el sitio y en los anuncios?</label><div class="options">
+          <label><input type="radio" name="promover_reparacion" value="Sí, como servicio destacado"> Sí, como servicio destacado</label>
+          <label><input type="radio" name="promover_reparacion" value="Sí, pero secundario"> Sí, pero secundario</label>
+          <label><input type="radio" name="promover_reparacion" value="No por ahora"> No por ahora</label>
+        </div></div>
+        <div class="nav"><button class="btn secondary" type="button" data-prev>← Atrás</button><button class="btn" type="button" data-next>Continuar →</button></div>
+      </section>
+
+      <section class="step" data-step="4">
+        <div class="step-head">
+          <span class="step-no">04 · Clientes y ventas</span>
+          <h2>Quién y cómo les compra</h2>
+          <p><strong>Para qué lo usamos:</strong> elegir a quién mostrarle los anuncios, en qué zonas y con qué mensaje.</p>
+        </div>
+        <div class="q"><label class="label"><span class="star">★</span> ¿Quiénes les compran hoy?</label><div class="options">
+          <label><input type="checkbox" name="compran_hoy" value="Tiendas de ropa o regalos"> Tiendas de ropa o regalos</label>
+          <label><input type="checkbox" name="compran_hoy" value="Papelerías"> Papelerías</label>
+          <label><input type="checkbox" name="compran_hoy" value="Escuelas"> Escuelas</label>
+          <label><input type="checkbox" name="compran_hoy" value="Empresas que regalan artículos promocionales"> Empresas (artículos promocionales)</label>
+          <label><input type="checkbox" name="compran_hoy" value="Revendedores"> Revendedores</label>
+          <label><input type="checkbox" name="compran_hoy" value="Mercados o tianguis"> Mercados o tianguis</label>
+          <label><input type="checkbox" name="compran_hoy" value="Tiendas en línea"> Tiendas en línea</label>
+          <label><input type="checkbox" name="compran_hoy" value="Público en general"> Público en general</label>
+          <label><input type="checkbox" name="compran_hoy" value="Otros"> Otros</label>
+        </div></div>
+        <div class="q"><label class="label"><span class="star">★</span> ¿Cuál de esos clientes les gustaría tener más?</label><p class="hint">Es decir, el que deja mejor ganancia o es más fácil de atender.</p><textarea name="cliente_ideal" placeholder="Ej. Tiendas departamentales o corporativos que pidan volumen..."></textarea></div>
+        <div class="q"><label class="label">En ese cliente ideal, ¿quién decide la compra?</label><div class="options">
+          <label><input type="checkbox" name="quien_decide" value="El dueño"> El dueño</label>
+          <label><input type="checkbox" name="quien_decide" value="Un comprador o encargado de compras"> Comprador / encargado</label>
+          <label><input type="checkbox" name="quien_decide" value="Un administrador"> Un administrador</label>
+          <label><input type="checkbox" name="quien_decide" value="Otro"> Otro</label>
+        </div></div>
+        <div class="q"><label class="label"><span class="star">★</span> Pedido mínimo (piezas o monto) y pedido promedio de un buen cliente</label><input name="pedidos_montos" placeholder="Ej. Mínimo 50 piezas, promedio de un buen cliente: 300 piezas."></div>
+        <div class="q"><label class="label">¿A qué zonas entregan hoy y a cuáles quieren llegar?</label><p class="hint">Ciudad, estado, todo el país o exportación.</p><textarea name="zonas_entrega" placeholder="Ej. Actualmente en CDMX y EdoMex, queremos llegar a todo el bajío y norte."></textarea></div>
+        <div class="q"><label class="label">¿Hacen envíos? ¿Con qué paquetería y quién paga el flete?</label><input name="envios" placeholder="Ej. Enviamos por Castores, el cliente paga el envío."></div>
+        <div class="q"><label class="label">Formas de pago que aceptan y si piden anticipo</label><input name="formas_pago" placeholder="Ej. Transferencia, 50% de anticipo y 50% al enviar."></div>
+        <div class="q"><label class="label">¿Facturan?</label><div class="options">
+          <label><input type="radio" name="facturan" value="Sí, y casi siempre nos la piden"> Sí, y casi siempre nos la piden</label>
+          <label><input type="radio" name="facturan" value="Sí, pero casi nadie la pide"> Sí, pero casi nadie la pide</label>
+          <label><input type="radio" name="facturan" value="No facturamos"> No facturamos</label>
+        </div></div>
+        <div class="q"><label class="label"><span class="star">★</span> ¿Cómo les llegan sus clientes actuales?</label><div class="options">
+          <label><input type="checkbox" name="origen_clientes" value="Recomendación"> Recomendación</label>
+          <label><input type="checkbox" name="origen_clientes" value="Visitas al local"> Visitas al local</label>
+          <label><input type="checkbox" name="origen_clientes" value="Redes sociales"> Redes sociales</label>
+          <label><input type="checkbox" name="origen_clientes" value="Llamadas"> Llamadas</label>
+          <label><input type="checkbox" name="origen_clientes" value="Ferias o exposiciones"> Ferias o exposiciones</label>
+          <label><input type="checkbox" name="origen_clientes" value="Otros"> Otros</label>
+        </div><textarea name="origen_clientes_extra" placeholder="Porcentaje aproximado de cada vía, si lo saben..."></textarea></div>
+        <div class="q"><label class="label">¿Qué dudas frenan a un cliente antes de comprarles?</label><p class="hint">Precio, calidad, confianza, tiempos o mínimo. Cuéntenos de alguna cotización que no se cerró y por qué.</p><textarea name="dudas_clientes" placeholder="Ej. A veces desconfían si no ven muestras físicas, o el tiempo de entrega de 30 días se les hace mucho..."></textarea></div>
+        <div class="q"><label class="label">¿Los clientes vuelven a comprar? ¿Cada cuánto?</label><input name="recurrencia" placeholder="Ej. Las escuelas compran una vez al año, las boutiques cada 2 meses."></div>
+        <div class="q"><label class="label">¿Hay temporadas fuertes?</label><div class="options">
+          <label><input type="checkbox" name="temporadas" value="Regreso a clases"> Regreso a clases</label>
+          <label><input type="checkbox" name="temporadas" value="Día de las Madres"> Día de las Madres</label>
+          <label><input type="checkbox" name="temporadas" value="Buen Fin"> Buen Fin</label>
+          <label><input type="checkbox" name="temporadas" value="Navidad"> Navidad</label>
+          <label><input type="checkbox" name="temporadas" value="Otra"> Otra</label>
+        </div><textarea name="temporadas_extra" placeholder="¿Cuándo empiezan a recibir pedidos para cada una?"></textarea></div>
+        <div class="nav"><button class="btn secondary" type="button" data-prev>← Atrás</button><button class="btn" type="button" data-next>Continuar →</button></div>
+      </section>
+
+      <section class="step" data-step="5">
+        <div class="step-head">
+          <span class="step-no">05 · Proceso y capacidad</span>
+          <h2>Cómo operan y producen</h2>
+          <p><strong>Para qué lo usamos:</strong> no prometer en el anuncio lo que no pueden cumplir y explicar bien su proceso en el sitio.</p>
+        </div>
+        <div class="q"><label class="label">Proceso desde que un cliente pide cotización hasta que recibe su pedido: pasos y tiempos</label><textarea name="proceso_cotizacion" placeholder="Ej. El cliente cotiza, enviamos en 24h, paga 50% de anticipo, fabricamos en 15 días..."></textarea></div>
+        <div class="q"><label class="label"><span class="star">★</span> ¿Cuántas piezas pueden producir por semana o por mes?</label><p class="hint">Si les llegaran el doble de pedidos, ¿podrían atenderlos?</p><textarea name="capacidad_produccion" placeholder="Ej. Producimos 2000 mochilas al mes. Sí podríamos atender el doble subcontratando..."></textarea></div>
+        <div class="q"><label class="label">¿Cuánto tarda una cotización y quién la responde? ¿En cuánto responden los mensajes de WhatsApp?</label><input name="tiempos_respuesta" placeholder="Ej. Cotizaciones en 1-2 días por el dueño, WhatsApp en minutos por el asistente."></div>
+        <div class="q"><label class="label">¿Ofrecen muestras? ¿Tienen costo?</label><input name="muestras" placeholder="Ej. Damos muestras pero las cobramos a precio de menudeo."></div>
+        <div class="q"><label class="label">Política de garantía, devoluciones o cambios</label><input name="politica_garantia" placeholder="Ej. 1 año en cierres y costuras. No aceptamos devoluciones sin defecto de fábrica."></div>
+        <div class="nav"><button class="btn secondary" type="button" data-prev>← Atrás</button><button class="btn" type="button" data-next>Continuar →</button></div>
+      </section>
+
+      <section class="step" data-step="6">
+        <div class="step-head">
+          <span class="step-no">06 · Presencia y competencia</span>
+          <h2>Su situación actual y el mercado</h2>
+          <p><strong>Para qué lo usamos:</strong> ver qué ya tienen para aprovecharlo, qué corregir y cómo posicionarlos mejor que los demás.</p>
+        </div>
+        <div class="q grid">
+          <div><label class="label">Instagram</label><input name="instagram_actual" placeholder="@usuario o link"></div>
+          <div><label class="label">Facebook</label><input name="facebook_actual" placeholder="Enlace o nombre de página"></div>
+        </div>
+        <div class="q"><label class="label">TikTok, WhatsApp Business u otro directorio donde aparezcan</label><input name="otros_directorios" placeholder="Ej. Estamos en Yelp, Sección Amarilla, TikTok..."></div>
+        <div class="q"><label class="label">¿Tienen sitio web hoy?</label><div class="options">
+          <label><input type="radio" name="tiene_sitio" value="Sí"> Sí</label>
+          <label><input type="radio" name="tiene_sitio" value="No"> No</label>
+        </div><textarea name="sitio_actual" placeholder="Liga de su sitio. ¿Qué le gusta y no le gusta de él?"></textarea></div>
+        <div class="q"><label class="label">¿Tienen ficha en Google (Google Business Profile)?</label><div class="options">
+          <label><input type="radio" name="ficha_google" value="Sí, con reseñas"> Sí, con reseñas</label>
+          <label><input type="radio" name="ficha_google" value="Sí, sin reseñas"> Sí, sin reseñas</label>
+          <label><input type="radio" name="ficha_google" value="No"> No</label>
+          <label><input type="radio" name="ficha_google" value="No sé"> No sé</label>
+        </div></div>
+        <div class="q"><label class="label">¿Quién maneja hoy sus redes y con qué frecuencia publican?</label><input name="manejo_redes" placeholder="Ej. Un sobrino, sube fotos de vez en cuando."></div>
+        <div class="q"><label class="label">¿Han hecho publicidad antes (Facebook, Google, volantes, ferias)?</label><p class="hint">¿Qué resultados tuvieron y cuánto invirtieron?</p><textarea name="publicidad_anterior" placeholder="Ej. Volantes en el centro, pagamos Facebook ads el año pasado con $1000/mes pero no funcionó..."></textarea></div>
+        <div class="q"><label class="label">¿Llevan registro de sus ventas y de dónde vino cada cliente?</label><div class="options">
+          <label><input type="radio" name="registro_ventas" value="Cuaderno"> Cuaderno</label>
+          <label><input type="radio" name="registro_ventas" value="Excel"> Excel</label>
+          <label><input type="radio" name="registro_ventas" value="Un sistema"> Un sistema</label>
+          <label><input type="radio" name="registro_ventas" value="No llevamos registro"> No llevamos registro</label>
+        </div></div>
+        <div class="q"><label class="label"><span class="star">★</span> Sus 3 principales competidores</label><p class="hint">Con sus páginas o redes si las conocen.</p><textarea name="competidores" placeholder="Ej. Maletas ABC (facebook.com/abc), Mochilas XYZ (xyz.com)..."></textarea></div>
+        <div class="q"><label class="label">¿Qué hacen mejor y qué hacen peor que ustedes?</label><textarea name="competidores_analisis" placeholder="Ej. Tienen mejores fotos que nosotros, pero nuestra tela es más gruesa y damos mejor precio."></textarea></div>
+        <div class="q"><label class="label">2 o 3 sitios web de maletas o de otro giro que les gusten, y qué les gusta de cada uno</label><textarea name="sitios_inspiracion" placeholder="Ej. Me gusta samsonite.com porque es limpia, y otra de ferretería porque cotiza rápido..."></textarea></div>
+        <div class="q"><label class="label">Sitios que NO les gustan y por qué</label><input name="sitios_no_gustan" placeholder="Ej. Los sitios muy lentos o con fondos oscuros."></div>
+        <div class="nav"><button class="btn secondary" type="button" data-prev>← Atrás</button><button class="btn" type="button" data-next>Continuar →</button></div>
+      </section>
+
+      <section class="step" data-step="7">
+        <div class="step-head">
+          <span class="step-no">07 · Internet, objetivos y presupuesto</span>
+          <h2>Cómo los encontrarán y qué esperan</h2>
+          <p><strong>Para qué lo usamos:</strong> elegir las palabras de las campañas de Google, definir qué es un buen resultado y no gastar de más ni de menos.</p>
+        </div>
+        <div class="q"><label class="label"><span class="star">★</span> Si usted quisiera comprar a mayoreo lo que ustedes fabrican, ¿qué escribiría en Google?</label><p class="hint">Anote todas las frases que se le ocurran, por ejemplo "mochilas escolares a mayoreo" o "fábrica de bolsos".</p><textarea name="busquedas_google" placeholder="Ej. mochilas para congresos, fabricante de maletas CDMX, maquila de cangureras..."></textarea></div>
+        <div class="q"><label class="label">¿Qué palabras usan sus clientes cuando piden cotización?</label><div class="options">
+          <label><input type="checkbox" name="palabras_clientes" value="Mayoreo"> Mayoreo</label>
+          <label><input type="checkbox" name="palabras_clientes" value="Maquila"> Maquila</label>
+          <label><input type="checkbox" name="palabras_clientes" value="Fábrica"> Fábrica</label>
+          <label><input type="checkbox" name="palabras_clientes" value="Personalizadas"> Personalizadas</label>
+          <label><input type="checkbox" name="palabras_clientes" value="Otras"> Otras</label>
+        </div><textarea name="palabras_clientes_extra" placeholder="Opcional: ¿qué otras palabras suelen usar?"></textarea></div>
+        <div class="q"><label class="label">Palabras que NO quieren que se asocien con ustedes</label><input name="palabras_negativas" placeholder="Ej. baratas, usadas, menudeo, saldos, remate..."></div>
+        <div class="q"><label class="label">¿Venden también por pieza (menudeo)?</label><div class="options">
+          <label><input type="radio" name="vende_menudeo" value="Sí, y quiero promoverlo"> Sí, y quiero promoverlo</label>
+          <label><input type="radio" name="vende_menudeo" value="Sí, pero prefiero no promoverlo"> Sí, pero prefiero no promoverlo</label>
+          <label><input type="radio" name="vende_menudeo" value="Solo mayoreo"> Solo mayoreo</label>
+        </div></div>
+        <div class="q"><label class="label"><span class="star">★</span> ¿Qué significaría para usted que esto "funcionó" en 3 meses?</label><p class="hint">Por ejemplo, 10 cotizaciones al mes, 2 clientes nuevos grandes o entrar a otra ciudad.</p><textarea name="exito_3_meses" placeholder="Ej. Quiero estar recibiendo al menos 5 pedidos de mayoreo nuevos cada mes."></textarea></div>
+        <div class="q"><label class="label"><span class="star">★</span> ¿Cuántos clientes nuevos al mes pueden atender sin que se les complique?</label><input name="clientes_maximos" type="number" min="1" max="10000" placeholder="Ej. 10"></div>
+        <div class="q"><label class="label"><span class="star">★</span> Inversión mensual en anuncios</label><p class="hint">Esto va directo a Google o Meta, aparte de nuestro servicio. Si no lo tiene claro, elija un rango cómodo.</p><div class="budget-line"><input id="budget" name="presupuesto_ads" type="range" min="0" max="20000" step="500" value="3000"><output id="budgetValue">$3,000 MXN</output></div><div class="budget-scale"><span>$0</span><span>$20,000 o más</span></div></div>
+        <div class="q"><label class="label">Ganancia aproximada de un cliente nuevo en su primer pedido</label><p class="hint">Con esto sabemos cuánto es razonable pagar por conseguirlo.</p><input name="ganancia_cliente" placeholder="Ej. Un pedido mínimo nos deja $3,000 de utilidad libre."></div>
+        <div class="q"><label class="label">¿Qué es lo más importante para ustedes?</label><div class="options">
+          <label><input type="radio" name="objetivo_principal" value="Más cotizaciones"> Más cotizaciones</label>
+          <label><input type="radio" name="objetivo_principal" value="Más visitas a la fábrica"> Más visitas a la fábrica</label>
+          <label><input type="radio" name="objetivo_principal" value="Que los reconozcan como marca"> Que los reconozcan como marca</label>
+          <label><input type="radio" name="objetivo_principal" value="Abrir otra zona"> Abrir otra zona</label>
+        </div></div>
+        <div class="nav"><button class="btn secondary" type="button" data-prev>← Atrás</button><button class="btn" type="button" data-next>Continuar →</button></div>
+      </section>
+
+      <section class="step" data-step="8">
+        <div class="step-head">
+          <span class="step-no">08 · Marca y materiales</span>
+          <h2>Diseño y activos</h2>
+          <p><strong>Para qué lo usamos:</strong> que el sitio y los anuncios se vean como su empresa, sin tener que inventar nada.</p>
+        </div>
+        <div class="q"><label class="label">¿Qué materiales ya tienen?</label><p class="hint">Envíelos por WhatsApp junto con el PDF. Si no tiene algo, díganoslo sin pena: nos ayuda a planear tiempos y costos.</p><div class="options">
+          <label><input type="checkbox" name="materiales_actuales" value="Logo en buena calidad"> Logo en buena calidad</label>
+          <label><input type="checkbox" name="materiales_actuales" value="Paleta de colores o manual de marca"> Paleta de colores / manual</label>
+          <label><input type="checkbox" name="materiales_actuales" value="Fotos de producto"> Fotos de producto</label>
+          <label><input type="checkbox" name="materiales_actuales" value="Fotos de la fábrica, proceso o equipo"> Fotos de fábrica/equipo</label>
+          <label><input type="checkbox" name="materiales_actuales" value="Video"> Video</label>
+          <label><input type="checkbox" name="materiales_actuales" value="Catálogo"> Catálogo</label>
+          <label><input type="checkbox" name="materiales_actuales" value="Lista de precios"> Lista de precios</label>
+          <label><input type="checkbox" name="materiales_actuales" value="Testimonios de clientes"> Testimonios de clientes</label>
+        </div></div>
+        <div class="q"><label class="label">¿Qué tono quieren que tenga la marca?</label><div class="options">
+          <label><input type="checkbox" name="tono_marca" value="Formal"> Formal</label>
+          <label><input type="checkbox" name="tono_marca" value="Cercano"> Cercano</label>
+          <label><input type="checkbox" name="tono_marca" value="Moderno"> Moderno</label>
+          <label><input type="checkbox" name="tono_marca" value="Tradicional"> Tradicional</label>
+          <label><input type="checkbox" name="tono_marca" value="Económico"> Económico</label>
+          <label><input type="checkbox" name="tono_marca" value="Premium"> Premium</label>
+          <label><input type="checkbox" name="tono_marca" value="Divertido"> Divertido</label>
+        </div></div>
+        <div class="q"><label class="label">¿Qué colores les gustaría o quieren evitar?</label><input name="colores_deseados" placeholder="Ej. Queremos negro y dorado, o evitar el rojo."></div>
+        <div class="q"><label class="label">¿Hay algo del sitio o de la publicidad que sí o sí quieren que aparezca: una frase, imagen o dato?</label><textarea name="elementos_indispensables" placeholder="Ej. Poner 'Hecho en México' bien grande, o 'Garantía de 1 año' en todas partes..."></textarea></div>
+        <div class="nav"><button class="btn secondary" type="button" data-prev>← Atrás</button><button class="btn" type="button" data-next>Continuar →</button></div>
+      </section>
+
+      <section class="step" data-step="9">
+        <div class="step-head">
+          <span class="step-no">09 · Accesos y participación</span>
+          <h2>Información técnica y su equipo</h2>
+          <p><strong>Para qué lo usamos:</strong> dejar todo a su nombre y que ustedes controlen su sitio y su publicidad.</p>
+        </div>
+        <div class="intro" style="padding:15px; margin-bottom:20px; font-size:14px;"><p style="max-width:100%; margin:0;"><strong>Por seguridad, NO escriba contraseñas en este formulario.</strong> Solo díganos si tienen las cuentas.</p></div>
+        <div class="q"><label class="label">¿Tienen dominio, por ejemplo www.suempresa.com?</label><p class="hint">¿Dónde está registrado y a nombre de quién?</p><input name="dominio" placeholder="Ej. Sí, en GoDaddy a mi nombre."></div>
+        <div class="q"><label class="label">¿Tienen cuenta de Google (Gmail) de la empresa?</label><p class="hint">La necesitamos para crear su ficha, Google Ads y Analytics a su nombre.</p><div class="options">
+          <label><input type="radio" name="cuenta_google" value="Sí"> Sí</label>
+          <label><input type="radio" name="cuenta_google" value="No"> No</label>
+        </div></div>
+        <div class="q"><label class="label">¿Tienen cuenta de Facebook o Instagram Business? ¿Quién es el administrador actual?</label><input name="cuenta_meta" placeholder="Ej. Sí, la administro yo desde mi perfil personal."></div>
+        <div class="q"><label class="label">¿Tienen correo con el dominio de la empresa, por ejemplo ventas@suempresa.com?</label><div class="options">
+          <label><input type="radio" name="correo_dominio" value="Sí"> Sí</label>
+          <label><input type="radio" name="correo_dominio" value="No"> No</label>
+        </div></div>
+        <div class="q"><label class="label">¿Tienen aviso de privacidad?</label><p class="hint">El sitio debe tener uno si recoge datos de clientes.</p><div class="options">
+          <label><input type="radio" name="aviso_privacidad" value="Sí"> Sí</label>
+          <label><input type="radio" name="aviso_privacidad" value="No"> No</label>
+          <label><input type="radio" name="aviso_privacidad" value="No sé"> No sé</label>
+        </div></div>
+        <div class="q"><label class="label"><span class="star">★</span> ¿Quién será nuestro contacto principal y quién aprobará los textos y diseños?</label><input name="contacto_aprobacion" placeholder="Ej. Mariana (aprobación) y Carlos (contacto operativo)"></div>
+        <div class="q"><label class="label"><span class="star">★</span> ¿Quién va a atender las cotizaciones y mensajes que lleguen por el sitio y los anuncios?</label><input name="atiende_mensajes" placeholder="Ej. Nuestro equipo de ventas en WhatsApp"></div>
+        <div class="q"><label class="label">¿Quieren aprender a manejar su sitio y sus campañas por sí mismos? ¿Cuánto tiempo a la semana podrían dedicar?</label><input name="aprender_campanas" placeholder="Ej. Sí, un par de horas los sábados."></div>
+        <div class="q"><label class="label">¿Prefieren juntas, mensajes o correos? ¿Cada cuánto les gustaría un reporte de resultados?</label><input name="preferencia_comunicacion" placeholder="Ej. Mensajes de WhatsApp y reporte mensual en PDF."></div>
+        <div class="q"><label class="label">¿Hay algo que no les preguntamos y creen que deberíamos saber?</label><textarea name="datos_extra" placeholder="Cualquier información útil para el proyecto..."></textarea></div>
+        <div class="q"><label class="label">¿Qué sería lo peor que podría pasar con este proyecto? ¿Y lo mejor?</label><textarea name="peor_mejor" placeholder="Ej. Lo peor: gastar y que no lleguen cotizaciones reales. Lo mejor: ser proveedores de 3 escuelas."></textarea></div>
+        <div class="q"><label class="label">¿Cuándo les gustaría ver una primera propuesta del sitio y arrancar las campañas?</label><input name="tiempos_arranque" placeholder="Ej. Para principios del mes que entra."></div>
+        <div class="nav"><button class="btn secondary" type="button" data-prev>← Atrás</button><button class="btn" type="button" data-next>Continuar →</button></div>
+      </section>
+
+      <section class="step" data-step="10">
+        <div id="reviewContent">
+          <div class="step-head">
+            <span class="step-no">10 · Confirmación</span>
+            <h2>Revise antes de descargar</h2>
+            <p>Generaremos un PDF con estas respuestas. Si necesita cambiar algo, vuelva a la sección correspondiente.</p>
+          </div>
+          <div id="summary" class="summary"></div>
+          <div class="finish"><strong>Privacidad:</strong> Esta información se usará únicamente para diseñar su sitio web y su publicidad.</div>
+          <div class="actions"><button class="btn" type="button" id="downloadBtn">Descargar PDF</button><button class="btn secondary" type="button" data-prev>← Editar respuestas</button><button class="btn secondary" type="button" id="clearBtn" style="color:var(--danger)">Borrar mis respuestas de este dispositivo</button></div>
+          <p id="status" class="note">Descargue el documento y después envíelo por WhatsApp como archivo.</p>
+        </div>
+        <div id="completion" class="completion" hidden>
+          <div class="completion-logos"><img src="logo-hummingx.png" alt="HummingX BI"></div>
+          <h2>¡Gracias por compartir su información!</h2>
+          <p>Su diagnóstico ya está listo. Descargue el PDF y envíelo por WhatsApp para que podamos revisar cómo ayudarle.</p>
+          <div class="actions"><button class="btn" type="button" id="downloadAgainBtn">Volver a descargar PDF</button><a class="btn secondary" id="whatsappBtn" href="#" target="_blank" rel="noopener">Abrir WhatsApp</a><button class="btn secondary" type="button" id="editBtn">Editar respuestas</button></div>
+          <p class="note">Adjunte el PDF descargado en el chat de WhatsApp.</p>
+        </div>
+      </section>
+    </form>
+    
+    <div class="footer">Cuestionario confidencial · <span id="footerClientName"></span> · <span id="year"></span></div>
+  </main>
+  
+  <script>
+    const CLIENT_NAME = "Alfonso";
+    const WHATSAPP_NUMBER = "+52 1 55 1850 2518".replace(/\D/g, '');
+    const PDF_FILE_PREFIX = "cuestionario_arranque";
+    const STORAGE_KEY = "cuestionario_maletas";
+
+    document.title = `Cuestionario de arranque | ${CLIENT_NAME} · HummingX BI`;
+    document.getElementById('heroEyebrow').textContent = `Cuestionario de arranque · ${CLIENT_NAME}`;
+    document.getElementById('footerClientName').textContent = CLIENT_NAME;
+
+    const steps = [...document.querySelectorAll('.step')], form = document.getElementById('form'), total = steps.length; 
+    let current = 0;
+    
+    const groups = [
+      {
+        title: '01 · Su empresa',
+        fields: {
+          nombre_puesto: 'Su nombre y puesto',
+          nombre_comercial: 'Nombre comercial de la empresa',
+          razon_social: 'Razón social',
+          anio_inicio: 'Año en que comenzó la empresa',
+          historia: 'Historia de la empresa',
+          direccion: 'Dirección completa',
+          maps: 'Liga de Google Maps',
+          reciben_visitas: '¿Reciben visitas de clientes?',
+          telefono: 'WhatsApp o teléfono',
+          correo: 'Correo',
+          horario: 'Horario de atención',
+          certificaciones: 'Certificaciones, reconocimientos, clientes o marcas conocidas que podamos mencionar'
+        }
+      },
+      {
+        title: '02 · Productos',
+        fields: {
+          productos_fabrican: '¿Qué productos fabrican?',
+          productos_categoria_extra: 'Categorías extra',
+          productos_estrella: 'Sus 3 productos estrella',
+          materiales: 'Materiales y acabados',
+          materiales_extra: 'Materiales extra',
+          personalizado: '¿Hacen producto personalizado o maquila?',
+          minimo_personalizar: 'Mínimo para personalizar',
+          tipo_marca: '¿Venden bajo su propia marca, fabrican para otras marcas, o ambas?',
+          existencia: '¿Qué modelos tienen en existencia y cuáles se fabrican al pedir?',
+          existencia_extra: 'Aclaraciones sobre existencia',
+          diferenciadores: '¿Qué los hace mejores que otros fabricantes?',
+          catalogo: '¿Tienen catálogo?',
+          catalogo_modelos: 'Modelos en catálogo y temporadas',
+          mostrar_precios: '¿Mostrarían precios en el sitio?',
+          no_promover: 'Productos que NO quieren promover'
+        }
+      },
+      {
+        title: '03 · Reparación de maletas',
+        fields: {
+          ofrecen_reparacion: '¿Ofrecen reparación de maletas?',
+          que_reparan: '¿Qué reparan?',
+          a_quien_reparan: '¿A quién se lo hacen?',
+          tiempo_reparacion: 'Tiempo promedio de reparación y precios aproximados',
+          promover_reparacion: '¿Quieren promoverlo en el sitio y en los anuncios?'
+        }
+      },
+      {
+        title: '04 · Clientes y ventas',
+        fields: {
+          compran_hoy: '¿Quiénes les compran hoy?',
+          cliente_ideal: '¿Cuál de esos clientes les gustaría tener más?',
+          quien_decide: 'En ese cliente ideal, ¿quién decide la compra?',
+          pedidos_montos: 'Pedido mínimo (piezas o monto) y pedido promedio de un buen cliente',
+          zonas_entrega: '¿A qué zonas entregan hoy y a cuáles quieren llegar?',
+          envios: '¿Hacen envíos? ¿Con qué paquetería y quién paga el flete?',
+          formas_pago: 'Formas de pago que aceptan y si piden anticipo',
+          facturan: '¿Facturan?',
+          origen_clientes: '¿Cómo les llegan sus clientes actuales?',
+          origen_clientes_extra: 'Detalle de origen de clientes',
+          dudas_clientes: '¿Qué dudas frenan a un cliente antes de comprarles?',
+          recurrencia: '¿Los clientes vuelven a comprar? ¿Cada cuánto?',
+          temporadas: '¿Hay temporadas fuertes?',
+          temporadas_extra: 'Detalle de temporadas fuertes'
+        }
+      },
+      {
+        title: '05 · Proceso y capacidad',
+        fields: {
+          proceso_cotizacion: 'Proceso desde que un cliente pide cotización hasta que recibe su pedido',
+          capacidad_produccion: '¿Cuántas piezas pueden producir por semana o por mes?',
+          tiempos_respuesta: '¿Cuánto tarda una cotización y quién la responde?',
+          muestras: '¿Ofrecen muestras? ¿Tienen costo?',
+          politica_garantia: 'Política de garantía, devoluciones o cambios'
+        }
+      },
+      {
+        title: '06 · Presencia y competencia',
+        fields: {
+          instagram_actual: 'Instagram',
+          facebook_actual: 'Facebook',
+          otros_directorios: 'TikTok, WhatsApp Business u otro directorio donde aparezcan',
+          tiene_sitio: '¿Tienen sitio web hoy?',
+          sitio_actual: 'Liga de su sitio y qué les gusta y no les gusta',
+          ficha_google: '¿Tienen ficha en Google (Google Business Profile)?',
+          manejo_redes: '¿Quién maneja hoy sus redes y con qué frecuencia publican?',
+          publicidad_anterior: '¿Han hecho publicidad antes?',
+          registro_ventas: '¿Llevan registro de sus ventas y de dónde vino cada cliente?',
+          competidores: 'Sus 3 principales competidores',
+          competidores_analisis: '¿Qué hacen mejor y qué hacen peor que ustedes?',
+          sitios_inspiracion: '2 o 3 sitios web que les gusten, y qué les gusta de cada uno',
+          sitios_no_gustan: 'Sitios que NO les gustan y por qué'
+        }
+      },
+      {
+        title: '07 · Internet, objetivos y presupuesto',
+        fields: {
+          busquedas_google: 'Si usted quisiera comprar a mayoreo lo que ustedes fabrican, ¿qué escribiría en Google?',
+          palabras_clientes: '¿Qué palabras usan sus clientes cuando piden cotización?',
+          palabras_clientes_extra: 'Detalle de otras palabras',
+          palabras_negativas: 'Palabras que NO quieren que se asocien con ustedes',
+          vende_menudeo: '¿Venden también por pieza (menudeo)?',
+          exito_3_meses: '¿Qué significaría para usted que esto "funcionó" en 3 meses?',
+          clientes_maximos: '¿Cuántos clientes nuevos al mes pueden atender sin que se les complique?',
+          presupuesto_ads: 'Inversión mensual en anuncios',
+          ganancia_cliente: 'Ganancia aproximada de un cliente nuevo en su primer pedido',
+          objetivo_principal: '¿Qué es lo más importante para ustedes?'
+        }
+      },
+      {
+        title: '08 · Marca y materiales',
+        fields: {
+          materiales_actuales: '¿Qué materiales ya tienen?',
+          tono_marca: '¿Qué tono quieren que tenga la marca?',
+          colores_deseados: '¿Qué colores les gustaría o quieren evitar?',
+          elementos_indispensables: '¿Hay algo del sitio o publicidad que sí o sí quieren que aparezca?'
+        }
+      },
+      {
+        title: '09 · Accesos y participación',
+        fields: {
+          dominio: '¿Tienen dominio?',
+          cuenta_google: '¿Tienen cuenta de Google (Gmail) de la empresa?',
+          cuenta_meta: '¿Tienen cuenta de Facebook o Instagram Business?',
+          correo_dominio: '¿Tienen correo con el dominio de la empresa?',
+          aviso_privacidad: '¿Tienen aviso de privacidad?',
+          contacto_aprobacion: '¿Quién será nuestro contacto principal y quién aprobará textos y diseños?',
+          atiende_mensajes: '¿Quién va a atender las cotizaciones y mensajes?',
+          aprender_campanas: '¿Quieren aprender a manejar su sitio y sus campañas por sí mismos?',
+          preferencia_comunicacion: '¿Prefieren juntas, mensajes o correos?',
+          datos_extra: '¿Hay algo que no les preguntamos y creen que deberíamos saber?',
+          peor_mejor: '¿Qué sería lo peor que podría pasar con este proyecto? ¿Y lo mejor?',
+          tiempos_arranque: '¿Cuándo les gustaría ver una primera propuesta y arrancar?'
+        }
+      }
+    ];
+
+    function values(name){return [...form.querySelectorAll(`[name="${name}"]:checked`)].map(x=>x.value).join(', ')}
+    function value(name){const els=[...form.querySelectorAll(`[name="${name}"]`)]; if(els.some(x=>x.type==='checkbox')) return values(name); const el=els.find(x=>x.checked)||els[0]; return el?.value?.trim()||''}
+
+    const budget=document.getElementById('budget'),budgetValue=document.getElementById('budgetValue');
+    function updateBudget(){
+      if(!budget) return;
+      const n=Number(budget.value);
+      budgetValue.textContent=n>=20000?'$20,000 MXN o más':`$${n.toLocaleString('es-MX')} MXN`;
+    }
+    if (budget) { budget.addEventListener('input',updateBudget); }
+
+    try {
+      const savedStr = localStorage.getItem(STORAGE_KEY);
+      if (savedStr) {
+        const saved = JSON.parse(savedStr);
+        if (saved.data) {
+          Object.entries(saved.data).forEach(([k, v]) => {
+            const els = [...form.querySelectorAll(`[name="${k}"]`)];
+            if (!els.length) return;
+            if (els[0].type === 'checkbox' || els[0].type === 'radio') {
+              const arr = Array.isArray(v) ? v : [v];
+              els.forEach(el => el.checked = arr.includes(el.value));
+            } else if (els[0].type === 'range') {
+              els[0].value = v;
+            } else {
+              els[0].value = v;
+            }
+          });
+        }
+        if (typeof saved.step === 'number') {
+          current = Math.max(0, Math.min(total-1, saved.step));
+        }
+      }
+    } catch (e) {
+      console.warn('No se pudo restaurar el progreso', e);
+    }
+    
+    updateBudget(); 
+
+    let saveTimeout;
+    function saveData() {
+      const data = {};
+      const fd = new FormData(form);
+      for (const [k, v] of fd.entries()) {
+        if (data[k]) {
+          if (!Array.isArray(data[k])) data[k] = [data[k]];
+          data[k].push(v);
+        } else {
+          data[k] = v;
+        }
+      }
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ data, step: current }));
+      } catch (e) {
+        console.warn('No se pudo guardar el progreso', e);
+      }
+    }
+    
+    form.addEventListener('input', () => { clearTimeout(saveTimeout); saveTimeout = setTimeout(saveData, 400); });
+    form.addEventListener('change', () => { clearTimeout(saveTimeout); saveTimeout = setTimeout(saveData, 400); });
+    
+    function setStep(n){
+      current = Math.max(0, Math.min(total-1, n));
+      steps.forEach((s, i) => s.classList.toggle('active', i === current));
+      document.getElementById('counter').textContent = `${current+1} / ${total}`;
+      document.getElementById('progressFill').style.width = `${(current+1)/total*100}%`;
+      window.scrollTo({top:0, behavior:'smooth'});
+      if (current === total-1) renderSummary();
+      saveData();
+    }
+    
+    setStep(current);
+    
+    function validate(){
+      const required = [...steps[current].querySelectorAll('[required]')]; 
+      for(const el of required){
+        if(!el.checkValidity()){
+          el.reportValidity();
+          return false;
+        }
+      }
+      return true;
+    }
+    
+    document.querySelectorAll('[data-next]').forEach(b=>b.addEventListener('click', () => { if(validate()) setStep(current+1) }));
+    document.querySelectorAll('[data-prev]').forEach(b=>b.addEventListener('click', () => setStep(current-1)));
+    
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      if(confirm('¿Seguro que desea borrar todas sus respuestas? Esto no se puede deshacer.')){
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+      }
+    });
+
+    function getLabelElement(inputName) {
+      const el = form.querySelector(`[name="${inputName}"]`);
+      if (!el) return null;
+      let parent = el.parentElement;
+      while (parent && parent !== form) {
+        const label = parent.querySelector(':scope > .label') || parent.querySelector('.label');
+        if (label) return label;
+        parent = parent.parentElement;
+      }
+      return null;
+    }
+
+    function getGroupedData() {
+      const out = [];
+      const unansweredPriority = [];
+      
+      for (const g of groups) {
+        const groupData = [];
+        for (const [k, labelTextRaw] of Object.entries(g.fields)) {
+          const labelEl = getLabelElement(k);
+          const isPriority = labelEl ? !!labelEl.querySelector('.star') : false;
+          let finalLabel = labelTextRaw;
+          if (isPriority) finalLabel += ' (Prioritaria)';
+          
+          const v = value(k);
+          if (v) {
+            groupData.push({ label: finalLabel, val: v });
+          } else if (isPriority) {
+            unansweredPriority.push(labelTextRaw);
+          }
+        }
+        if (groupData.length > 0) out.push({ title: g.title, data: groupData });
+      }
+      return { grouped: out, unanswered: unansweredPriority };
+    }
+
+    function renderSummary() {
+      const { grouped } = getGroupedData();
+      let html = '';
+      for (const g of grouped) {
+        html += `<h3 style="margin:20px 0 10px; font-size:16px; border-bottom:1px solid var(--line); padding-bottom:5px; color:var(--gold); font-weight:600;">${g.title}</h3>`;
+        html += g.data.map(d => `<div class="summary-row"><b>${d.label.replace(' (Prioritaria)','')}</b><span>${escapeHtml(d.val)}</span></div>`).join('');
+      }
+      document.getElementById('summary').innerHTML = html || '<p>No hay datos respondidos.</p>';
+    }
+    
+    function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+    function fileName(){
+      const base = (value('nombre_comercial') || CLIENT_NAME).normalize('NFD').replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/gi,'_');
+      return `${PDF_FILE_PREFIX}_${base}.pdf`;
+    }
+    
+    function loadImage(url){return new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=url})}
+    
+    async function makePdf(){
+      const PDF = window.jspdf?.jsPDF;
+      if (!PDF) return null;
+      const doc = new PDF({unit:'mm',format:'a4'}), margin=16, width=210-margin*2;
+      let y=15;
+      
+      const imgH = await loadImage('logo-hummingx.png');
+      if (imgH) doc.addImage(imgH,'PNG',margin,y,14,14);
+      
+      y += 26;
+      doc.setTextColor(17,17,17);
+      doc.setFont('helvetica','bold');
+      doc.setFontSize(18);
+      doc.text('Cuestionario de arranque', margin, y);
+      y += 8;
+      doc.setFont('helvetica','normal');
+      doc.setFontSize(11);
+      doc.setTextColor(80,80,80);
+      doc.text(`${CLIENT_NAME} · HummingX BI`, margin, y);
+      y += 5;
+      doc.text(new Date().toLocaleDateString('es-MX'), margin, y);
+      y += 8;
+      doc.setDrawColor(217,119,6);
+      doc.setLineWidth(1.2);
+      doc.line(margin, y, 210-margin, y);
+      y += 10;
+      
+      const { grouped, unanswered } = getGroupedData();
+      
+      function checkPage(needed) {
+        if (y + needed > 275) { doc.addPage(); y = 20; }
+      }
+
+      for(const group of grouped) {
+        checkPage(15);
+        doc.setFont('helvetica','bold');
+        doc.setFontSize(14);
+        doc.setTextColor(217,119,6);
+        doc.text(group.title, margin, y);
+        y += 2;
+        doc.setDrawColor(217,119,6);
+        doc.setLineWidth(0.5);
+        doc.line(margin, y, 210-margin, y);
+        y += 8;
+        
+        for (const item of group.data) {
+          const labelLines = doc.splitTextToSize(item.label, width);
+          const valLines = doc.splitTextToSize(item.val, width);
+          
+          checkPage(12);
+          
+          doc.setFont('helvetica','bold');
+          doc.setFontSize(10);
+          doc.setTextColor(17,17,17);
+          for(const l of labelLines){
+            if(y > 278){ doc.addPage(); y = 20; }
+            doc.text(l, margin, y);
+            y += 5;
+          }
+          
+          doc.setFont('helvetica','normal');
+          doc.setTextColor(35,35,35);
+          for(const l of valLines){
+            if(y > 278){ doc.addPage(); y = 20; }
+            doc.text(l, margin, y);
+            y += 5;
+          }
+          y += 4;
+        }
+        y += 4;
+      }
+      
+      if (unanswered.length > 0) {
+        checkPage(20);
+        y += 6;
+        doc.setFont('helvetica','bold');
+        doc.setFontSize(14);
+        doc.setTextColor(220,38,38); 
+        doc.text("Preguntas prioritarias sin responder", margin, y);
+        y += 2;
+        doc.setDrawColor(220,38,38);
+        doc.line(margin, y, 210-margin, y);
+        y += 8;
+        doc.setFont('helvetica','normal');
+        doc.setFontSize(10);
+        doc.setTextColor(17,17,17);
+        for (const un of unanswered) {
+          const unLines = doc.splitTextToSize("• " + un, width);
+          checkPage(unLines.length * 5 + 4);
+          doc.text(unLines, margin, y);
+          y += unLines.length * 5 + 2;
+        }
+      }
+      
+      const pageCount = doc.internal.getNumberOfPages();
+      for(let i=1; i<=pageCount; i++) {
+        doc.setPage(i);
+        doc.setFont('helvetica','normal');
+        doc.setFontSize(8);
+        doc.setTextColor(100,100,100);
+        doc.text(`Documento confidencial · ${CLIENT_NAME} · Página ${i} de ${pageCount}`, margin, 288);
+      }
+      
+      return doc;
+    }
+    
+    async function pdfBlob(){const doc=await makePdf();return doc?doc.output('blob'):null}
+    
+    function showCompletion(){
+      document.getElementById('reviewContent').hidden = true;
+      document.getElementById('completion').hidden = false;
+      document.getElementById('whatsappBtn').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hola, te comparto el cuestionario de arranque de ${CLIENT_NAME}. Adjunto el PDF con mis respuestas.`)}`;
+    }
+    
+    async function download(){
+      const status = document.getElementById('status');
+      const button = document.getElementById('downloadBtn');
+      if (button) button.disabled = true;
+      if (status) status.textContent = 'Preparando su PDF diseñado...';
+      try{
+        if(!window.jspdf?.jsPDF) throw new Error('jsPDF no cargo');
+        const blob = await pdfBlob();
+        if(!blob) throw new Error('No se pudo crear el PDF');
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = fileName();
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 500);
+        showCompletion();
+      }catch(error){
+        console.error('Error al generar PDF:', error);
+        if(status) status.textContent = 'No se pudo generar el PDF diseñado. Recargue la página e inténtelo de nuevo.';
+      }finally{
+        if(button) button.disabled = false;
+      }
+    }
+    
+    document.getElementById('downloadBtn').addEventListener('click', download);
+    document.getElementById('downloadAgainBtn').addEventListener('click', download);
+    document.getElementById('editBtn').addEventListener('click', () => {
+      document.getElementById('completion').hidden = true;
+      document.getElementById('reviewContent').hidden = false;
+      setStep(total - 2); 
+    });
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
