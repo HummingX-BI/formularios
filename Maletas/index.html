@@ -77,6 +77,7 @@
           <label><input type="checkbox" name="productos_fabrican" value="Otros"> Otros</label>
         </div><textarea name="productos_categoria_extra" placeholder="Detalles adicionales..."></textarea></div>
         <div class="q"><label class="label"><span class="star">★</span> Sus 3 productos estrella: los que más venden o más les gustaría vender</label><textarea name="productos_estrella" placeholder="Ej. Mochila escolar modelo X, Maleta de viaje de 24 pulgadas, Lonchera térmica..."></textarea></div>
+        <div class="q"><label class="label">¿Qué producto o línea les deja mejor ganancia?</label><input name="producto_ganancia" placeholder="Ej. Las mochilas personalizadas de nylon..."></div>
         <div class="q"><label class="label">Materiales y acabados</label><div class="options">
           <label><input type="checkbox" name="materiales" value="Nylon"> Nylon</label>
           <label><input type="checkbox" name="materiales" value="Piel"> Piel</label>
@@ -101,6 +102,11 @@
           <label><input type="radio" name="existencia" value="Casi todo bajo pedido"> Casi todo bajo pedido</label>
         </div><textarea name="existencia_extra" placeholder="Opcional: aclaraciones sobre stock..."></textarea></div>
         <div class="q"><label class="label"><span class="star">★</span> ¿Qué los hace mejores que otros fabricantes?</label><p class="hint">Dé ejemplos concretos de calidad, precio, tiempos, diseño o atención.</p><textarea name="diferenciadores" placeholder="Ej. Entregamos en 7 días, damos garantía de 1 año en cierres, somos fabricantes directos sin intermediarios..."></textarea></div>
+        <div class="q"><label class="label">Frente a la competencia, sus precios son:</label><div class="options">
+          <label><input type="radio" name="precios_competencia" value="Más bajos"> Más bajos</label>
+          <label><input type="radio" name="precios_competencia" value="Parecidos"> Parecidos</label>
+          <label><input type="radio" name="precios_competencia" value="Más altos"> Más altos</label>
+        </div></div>
         <div class="q"><label class="label">¿Tienen catálogo?</label><div class="options">
           <label><input type="checkbox" name="catalogo" value="PDF"> PDF</label>
           <label><input type="checkbox" name="catalogo" value="Fotos"> Fotos</label>
@@ -167,7 +173,12 @@
           <label><input type="checkbox" name="compran_hoy" value="Público en general"> Público en general</label>
           <label><input type="checkbox" name="compran_hoy" value="Otros"> Otros</label>
         </div></div>
-        <div class="q"><label class="label"><span class="star">★</span> ¿Cuál de esos clientes les gustaría tener más?</label><p class="hint">Es decir, el que deja mejor ganancia o es más fácil de atender.</p><textarea name="cliente_ideal" placeholder="Ej. Tiendas departamentales o corporativos que pidan volumen..."></textarea></div>
+        <div class="q"><label class="label"><span class="star">★</span> ¿Cuál de esos clientes les gustaría tener más y cuéntenos cómo les llegó su mejor cliente?</label><p class="hint">Es decir, el que deja mejor ganancia o es más fácil de atender.</p><textarea name="cliente_ideal" placeholder="Ej. Tiendas departamentales o corporativos que pidan volumen..."></textarea></div>
+        <div class="q grid">
+          <div><label class="label"><span class="star">★</span> Cotizaciones recibidas al mes</label><input name="cotizaciones_mes" type="number" placeholder="Ej. 50"></div>
+          <div><label class="label"><span class="star">★</span> ¿Cuántas se cierran (ventas)?</label><input name="cierres_mes" type="number" placeholder="Ej. 10"></div>
+        </div>
+        <div class="q"><label class="label">¿Qué tipo de cliente o pedido NO les conviene?</label><p class="hint">Ej. Pedidos muy chicos, quien solo regatea o pide crédito.</p><textarea name="cliente_no_conviene" placeholder="Ej. No nos conviene el cliente que pide 5 piezas y exige entrega inmediata..."></textarea></div>
         <div class="q"><label class="label">En ese cliente ideal, ¿quién decide la compra?</label><div class="options">
           <label><input type="checkbox" name="quien_decide" value="El dueño"> El dueño</label>
           <label><input type="checkbox" name="quien_decide" value="Un comprador o encargado de compras"> Comprador / encargado</label>
@@ -410,6 +421,7 @@
           productos_fabrican: '¿Qué productos fabrican?',
           productos_categoria_extra: 'Categorías extra',
           productos_estrella: 'Sus 3 productos estrella',
+          producto_ganancia: '¿Qué producto o línea les deja mejor ganancia?',
           materiales: 'Materiales y acabados',
           materiales_extra: 'Materiales extra',
           personalizado: '¿Hacen producto personalizado o maquila?',
@@ -418,6 +430,7 @@
           existencia: '¿Qué modelos tienen en existencia y cuáles se fabrican al pedir?',
           existencia_extra: 'Aclaraciones sobre existencia',
           diferenciadores: '¿Qué los hace mejores que otros fabricantes?',
+          precios_competencia: 'Frente a la competencia, sus precios son',
           catalogo: '¿Tienen catálogo?',
           catalogo_modelos: 'Modelos en catálogo y temporadas',
           mostrar_precios: '¿Mostrarían precios en el sitio?',
@@ -438,7 +451,10 @@
         title: '04 · Clientes y ventas',
         fields: {
           compran_hoy: '¿Quiénes les compran hoy?',
-          cliente_ideal: '¿Cuál de esos clientes les gustaría tener más?',
+          cliente_ideal: '¿Cuál de esos clientes les gustaría tener más y cómo llegó su mejor cliente?',
+          cotizaciones_mes: 'Cotizaciones recibidas al mes',
+          cierres_mes: 'Cotizaciones cerradas (ventas)',
+          cliente_no_conviene: '¿Qué tipo de cliente o pedido NO les conviene?',
           quien_decide: 'En ese cliente ideal, ¿quién decide la compra?',
           pedidos_montos: 'Pedido mínimo (piezas o monto) y pedido promedio de un buen cliente',
           zonas_entrega: '¿A qué zonas entregan hoy y a cuáles quieren llegar?',
