@@ -10,9 +10,8 @@
   <script src="jspdf.umd.min.js"></script>
   <style>
     :root {
-      --green: #111111;
-      --green-dark: #000000;
-      --mint: #fffde6;
+      --black: #111111;
+      --black-dark: #000000;
       --gold: #e2b900;
       --gold-dark: #b89600;
       --bg: #ffffff;
@@ -20,9 +19,6 @@
       --ink: #111111;
       --ink-soft: #4a4a4a;
       --line: #e0e0e0;
-      --notice-bg: #f4f8fa;
-      --notice-border: #b8d9ea;
-      --notice-ink: #0f4561;
     }
     *{box-sizing:border-box}
     body{
@@ -56,17 +52,18 @@
 
     /* BANNER COMPACTO DEMO EN VIVO */
     .demo-hero-banner{
-      background:linear-gradient(135deg,#0e0e0e 0%,#202020 100%);
-      border:1px solid #333333;
-      border-left:5px solid var(--gold);
+      background:#000000;
+      background:linear-gradient(135deg,#000000 0%,#181818 100%);
+      border:1px solid #282828;
+      border-left:6px solid var(--gold);
       border-radius:3px;
-      padding:16px 20px;
+      padding:18px 22px;
       margin:0 0 24px;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:16px;
-      box-shadow:0 6px 20px rgba(0,0,0,.08);
+      box-shadow:0 8px 24px rgba(0,0,0,.15);
     }
     .demo-hero-content{flex:1}
     .demo-hero-title{
@@ -78,7 +75,7 @@
     .demo-hero-action{display:inline-flex;align-items:center}
     .demo-hero-btn{
       background:var(--gold);
-      color:#111;
+      color:#111111;
       text-decoration:none;
       font-weight:700;
       font-size:12.5px;
@@ -91,9 +88,9 @@
       display:inline-flex;
       align-items:center;
       gap:8px;
-      box-shadow:0 3px 10px rgba(226,185,0,.3);
+      box-shadow:0 3px 10px rgba(226,185,0,.35);
     }
-    .demo-hero-btn:hover{background:#fff;color:#000;transform:translateY(-1px)}
+    .demo-hero-btn:hover{background:#ffffff;color:#000000;transform:translateY(-1px)}
 
     /* PASOS */
     .step{display:none;background:var(--panel);border:1px solid var(--line);padding:32px 32px 28px;box-shadow:0 6px 24px rgba(0,0,0,.03);border-radius:3px}
@@ -176,8 +173,8 @@
       line-height:1.4;
     }
     .options label:hover{border-color:#b5b5b5;background:#f5f5f5}
-    .options label:has(input:checked){border-color:var(--gold);background:var(--mint);color:#000;font-weight:500}
-    .options input{accent-color:var(--gold);margin-top:2px}
+    .options label:has(input:checked){border-color:#111111;background:#fffdf0;color:#000000;font-weight:600}
+    .options input{accent-color:#111111;margin-top:2px}
 
     /* TARJETAS DE TIPOS DE CITA */
     .appointment-card{
@@ -187,24 +184,24 @@
 
     /* CAJA DE AVISO DE ARCHIVOS ADJUNTOS */
     .attachment-box{
-      background:var(--notice-bg);border:1px solid var(--notice-border);border-left:4px solid #2a7da3;padding:12px 14px;margin:10px 0 12px;border-radius:2px;display:flex;flex-direction:column;gap:6px
+      background:#f8f8f8;border:1px solid #e0e0e0;border-left:4px solid #111111;padding:12px 14px;margin:10px 0 12px;border-radius:2px;display:flex;flex-direction:column;gap:6px
     }
     .attachment-tag{
-      align-self:flex-start;font:600 10px 'IBM Plex Mono',monospace;text-transform:uppercase;background:#0f4561;color:#fff;padding:2px 7px;border-radius:2px;letter-spacing:.08em;display:inline-flex;align-items:center
+      align-self:flex-start;font:600 10px 'IBM Plex Mono',monospace;text-transform:uppercase;background:#111111;color:#ffffff;padding:2px 7px;border-radius:2px;letter-spacing:.08em;display:inline-flex;align-items:center
     }
-    .attachment-desc{margin:0;font-size:13px;color:var(--notice-ink);line-height:1.45}
+    .attachment-desc{margin:0;font-size:13px;color:#333333;line-height:1.45}
     .attachment-checkbox{
-      display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#0e3a50;cursor:pointer;background:#ffffff;padding:7px 10px;border:1px solid #c2deec;border-radius:2px;margin-top:2px
+      display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#111111;cursor:pointer;background:#ffffff;padding:7px 10px;border:1px solid #d0d0d0;border-radius:2px;margin-top:2px
     }
-    .attachment-checkbox input{accent-color:#0f4561;cursor:pointer}
+    .attachment-checkbox input{accent-color:#111111;cursor:pointer}
 
     /* BOTONES Y NAVEGACIÓN */
     .nav{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:22px}
     .btn{
-      border:1px solid var(--green);background:var(--green);color:#fff;padding:11px 20px;cursor:pointer;font-weight:600;font-size:14px;border-radius:2px;transition:background .2s,border .2s,color .2s;display:inline-flex;align-items:center;gap:8px
+      border:1px solid #111111;background:#111111;color:#fff;padding:11px 20px;cursor:pointer;font-weight:600;font-size:14px;border-radius:2px;transition:background .2s,border .2s,color .2s;display:inline-flex;align-items:center;gap:8px
     }
     .btn:hover{background:var(--gold);border-color:var(--gold);color:#111}
-    .btn.secondary{background:transparent;color:var(--green);border-color:#c8c8c8}
+    .btn.secondary{background:transparent;color:#111111;border-color:#c8c8c8}
     .btn.secondary:hover{background:#f0f0f0;color:#000;border-color:#999}
     .btn:disabled{opacity:.4;cursor:not-allowed}
 
@@ -234,8 +231,8 @@
     .actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:18px}
 
     .footer{text-align:center;color:var(--ink-soft);font-size:12px;padding:30px 0 10px}
-    .footer a{color:var(--green);text-decoration:none;font-weight:600}
-    .footer a:hover{text-decoration:underline}
+    .footer a{color:#111111;text-decoration:none;font-weight:600}
+    .footer a:hover{text-decoration:underline;color:var(--gold-dark)}
 
     @media(max-width:680px){
       main{padding-left:14px;padding-right:14px}
