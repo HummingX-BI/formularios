@@ -258,7 +258,7 @@
       </div>
       <div class="top-actions">
         <span class="step-pill" style="margin-right:6px;background:#f5f5f5;border:1px solid #dcdcdc;color:#333;font-weight:600;font-size:11.5px;">Autoguardado</span>
-        <span class="step-pill" style="margin-right:6px;background:#f5f5f5;border:1px solid #dcdcdc;color:#444;font-weight:600;">3–5 min aprox.</span>
+        <span class="step-pill" style="margin-right:6px;background:#f5f5f5;border:1px solid #dcdcdc;color:#444;font-weight:600;">5–7 min aprox.</span>
         <span id="counter" class="step-pill" style="background:#111;color:#fff;">Paso 1 de 5</span>
       </div>
     </div>
@@ -270,7 +270,7 @@
       <img class="client-logo" src="logo-cliente.png" alt="Logo de JM Nutriólogo" onerror="this.classList.add('is-missing')">
       <p class="eyebrow">Validación Ejecutiva y Tarifas · JM Nutriólogo</p>
       <h1>Cuestionario de Validación y Decisiones</h1>
-      <p>Diseñado para responderse en menos de 5 minutos. Con base en tu diagnóstico previo, ya contamos con tus datos de contacto, cédula UNITEC, diplomados y ubicación. En este formulario únicamente confirmamos tus tarifas oficiales, agenda y parámetros clínicos para el lanzamiento.</p>
+      <p>Diseñado para responderse en 5 a 7 minutos. Con base en tu diagnóstico previo, ya contamos con tus datos de contacto, cédula UNITEC, diplomados y ubicación. En este formulario únicamente confirmamos tus tarifas oficiales, agenda y parámetros clínicos para el lanzamiento.</p>
     </section>
 
     <!-- BANNER COMPACTO DEMO EN VIVO -->
@@ -347,6 +347,21 @@
           </div>
         </div>
 
+        <div class="q">
+          <label class="label">1.3 Sala de Trofeos: Medallero vs. Fotos de Atletas con Testimonios (Sección 05: Resultados)</label>
+          <p class="hint">Actualmente tenemos la sala de trofeos numérica (medallero interactivo de Oro, Plata y Bronce). Tenemos pensado agregar fotos de tus pacientes que ganaron estos reconocimientos para poner un carrusel fotográfico en lugar de que sea solo numérico, y también si quieres que cada foto incluya un breve testimonio del paciente, solo las fotos, o conservar el medallero como está actualmente. ¿Cómo prefieres presentarlo?</p>
+          <div class="options">
+            <label><input type="radio" name="trofeos_formato" value="Carrusel de fotos reales de atletas en podios + testimonio breve de cada uno" checked> Carrusel de fotos reales de atletas en podios + testimonio breve de cada uno (Recomendado)</label>
+            <label><input type="radio" name="trofeos_formato" value="Solo carrusel de fotos reales de atletas en podios (sin testimonios)"> Solo carrusel de fotos reales de atletas en podios (sin testimonios)</label>
+            <label><input type="radio" name="trofeos_formato" value="Conservar el medallero numérico actual de la demo"> Conservar el medallero numérico actual de la demo</label>
+          </div>
+          <div class="attachment-box" id="box_trofeos_fotos" style="margin-top:10px;">
+            <span class="attachment-tag">Fotos de atletas por adjuntar</span>
+            <p class="attachment-desc">Compártenos por WhatsApp fotos de tus atletas en competencias o podios (nosotros las editamos y adaptamos al formato web).</p>
+            <label class="attachment-checkbox"><input type="checkbox" name="adjunto_trofeos_fotos" value="Sí, enviaré fotos de atletas en podios por WhatsApp" checked> Confirmar que compartiré fotos de atletas/podios por WhatsApp</label>
+          </div>
+        </div>
+
         <div class="nav">
           <span></span>
           <button class="btn" type="button" data-next>Continuar a Agenda e Historial →</button>
@@ -357,7 +372,7 @@
       <section class="step" data-step="2">
         <div class="step-head">
           <span class="step-no">02 · Agenda y Pacientes</span>
-          <h2>Historial Clínico Previo y Flujo de Citas</h2>
+          <h2>Historial Clínico, Check-in y Flujo de Citas</h2>
           <p>Automatización de la captura del paciente para ahorrar tiempo en consultorio y sincronización de agenda.</p>
         </div>
 
@@ -379,7 +394,27 @@
         </div>
 
         <div class="q">
-          <label class="label">2.2 Flujo Operativo de Agendamiento y Bloqueos de Agenda</label>
+          <label class="label">2.2 Preguntas del Check-in Móvil en Sala de Espera (&lt;45 segundos)</label>
+          <p class="hint">En la demo el paciente responde 5 preguntas rápidas en su celular antes de pasar a consulta: <strong>1.</strong> Días entrenados en el mes · <strong>2.</strong> Molestias o dolores (mapa corporal táctil) · <strong>3.</strong> Cambios en suplementos o medicamentos · <strong>4.</strong> Fecha de próxima competencia · <strong>5.</strong> Objetivo urgente a resolver hoy.<br><em>Nota indispensable: La pregunta 1 (días entrenados) es necesaria para que el reporte JM se vea y grafique el hábito tal cual lo presentamos en la demo.</em> Revisa las preguntas: ¿deseas mantenerlas o cambiar/agregar alguna?</p>
+          <div class="options">
+            <label><input type="radio" name="checkin_preguntas_status" value="Aprobadas las 5 preguntas tal como están en la demo" checked> Aprobadas las 5 preguntas tal como están en la demo (Recomendado)</label>
+            <label><input type="radio" name="checkin_preguntas_status" value="Deseo ajustar alguna pregunta o agregar opciones"> Deseo ajustar alguna pregunta o agregar opciones</label>
+          </div>
+          <textarea id="box_checkin_detalle" style="margin-top:10px;display:none;" name="checkin_preguntas_detalle" placeholder="Describe qué pregunta te gustaría cambiar o qué otra opción agregar (ej. horas de sueño, nivel de estrés, digestión)..."></textarea>
+        </div>
+
+        <div class="q">
+          <label class="label">2.3 Atención y Recordatorios a Atletas Menores de Edad (15 a 17 años)</label>
+          <p class="hint">Cuando un atleta juvenil se registre en la agenda web, ¿a quién debemos dirigir los recordatorios de cita por WhatsApp y el enlace a su reporte clínico?</p>
+          <div class="options">
+            <label><input type="radio" name="menores_contacto" value="Enviar recordatorios y reportes al padre, madre o tutor registrado" checked> Enviar recordatorios y reportes al padre, madre o tutor registrado (Recomendado)</label>
+            <label><input type="radio" name="menores_contacto" value="Enviar directo al teléfono del atleta (con copia o notificación al tutor)"> Enviar directo al teléfono del atleta (con copia o notificación al tutor)</label>
+            <label><input type="radio" name="menores_contacto" value="Tratarlos igual que a cualquier paciente adulto (directo al teléfono del atleta)"> Tratarlos igual que a cualquier paciente adulto (directo al teléfono del atleta)</label>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="label">2.4 Flujo Operativo de Agendamiento y Bloqueos de Agenda</label>
           <p class="hint">El flujo planteado es: <strong>1.</strong> El paciente entra a la web y selecciona su horario disponible para primera vez · <strong>2.</strong> Si hay días que no trabajas, festivos o imprevistos, tanto tú como tu asistente pueden bloquear horarios con antelación desde sus portales · <strong>3.</strong> Las citas de seguimiento se acuerdan directamente en el consultorio y tú las anotas en el sistema. ¿Te parece adecuado este flujo?</p>
           <div class="options">
             <label><input type="radio" name="flujo_operativo_status" value="Excelente, este flujo es claro y se adapta a mi rutina" checked> Excelente, este flujo es claro y se adapta a mi rutina (Recomendado)</label>
@@ -389,7 +424,7 @@
         </div>
 
         <div class="q">
-          <label class="label">2.3 Sincronización con Google Calendar</label>
+          <label class="label">2.5 Sincronización con Google Calendar</label>
           <p class="hint">¿Deseas que cada cita que se confirme en el sistema se refleje automáticamente en tu cuenta personal de Google Calendar?</p>
           <div class="options">
             <label><input type="radio" name="google_cal_sync" value="Sí, sincronizar a mi cuenta mayamartinezjoanalejandro@gmail.com" checked> Sí, sincronizar automáticamente a <code>mayamartinezjoanalejandro@gmail.com</code> (Recomendado)</label>
@@ -441,7 +476,17 @@
         </div>
 
         <div class="q">
-          <label class="label">3.3 Protocolo de Medición Antropométrica (Pliegues y Somatocarta)</label>
+          <label class="label">3.3 Métricas Avanzadas en el Recap Mensual del Paciente (InBody / ISAK)</label>
+          <p class="hint">En la demo el recap estilo historias muestra: días entrenados, cambio destacado, antes/después músculo/grasa, silueta segmental InBody, VO2 Max y somatocarta ISAK. Al ser tú quien más conoce a fondo los datos clínicos de InBody e ISAK: ¿te gustaría proponer o incluir alguna métrica adicional para enriquecer el reporte mensual (ej. ángulo de fase, retención de agua extracelular ECW/TBW, masa magra seca, perímetros específicos)?</p>
+          <div class="options">
+            <label><input type="radio" name="recap_metricas_status" value="Las métricas actuales de la demo son las ideales (músculo, grasa, segmental, somatocarta, VO2 Max)" checked> Las métricas actuales de la demo son las ideales (músculo, grasa, segmental, somatocarta, VO2 Max · Recomendado)</label>
+            <label><input type="radio" name="recap_metricas_status" value="Deseo proponer métricas clínicas adicionales de InBody o ISAK"> Deseo proponer métricas clínicas adicionales de InBody o ISAK</label>
+          </div>
+          <textarea id="box_recap_metricas_detalle" style="margin-top:10px;display:none;" name="recap_metricas_detalle" placeholder="Anota qué métricas adicionales te gustaría que interpretemos y grafiquemos en el reporte mensual..."></textarea>
+        </div>
+
+        <div class="q">
+          <label class="label">3.4 Protocolo de Medición Antropométrica (Pliegues y Somatocarta)</label>
           <p class="hint">En la maqueta visual mostramos <em>"Suma de 8 pliegues"</em> y el gráfico de somatocarta (somatotipo), pero en algunos reportes de ejemplo se muestra suma de 6 pliegues y no incluye somatotipo. ¿Cuál es el protocolo o la forma exacta en la que realizas las mediciones a tus pacientes?</p>
           <div class="options">
             <label><input type="radio" name="isak_pliegues_protocolo" value="Suma de 8 pliegues + Somatocarta (Protocolo ISAK completo)" checked> Suma de 8 pliegues + Somatocarta (Protocolo ISAK completo · Recomendado)</label>
@@ -455,7 +500,7 @@
         </div>
 
         <div class="q">
-          <label class="label">3.4 Reportes Reales para Calibración del Lector Automático</label>
+          <label class="label">3.5 Reportes Reales para Calibración del Lector Automático</label>
           <p class="hint">Para calibrar con precisión milimétrica el algoritmo que lee y extrae tus mediciones:</p>
           <div class="attachment-box" id="box_reportes_calibracion">
             <span class="attachment-tag">3 a 4 Reportes por adjuntar</span>
@@ -618,21 +663,28 @@
       servicios_comentarios: '1.1 Ajustes Catálogo / Cita Adicional',
       foto_nutriologo: '1.2 Fotografía Profesional de Joan',
       adjunto_foto_nutriologo: 'Confirmación Foto Profesional',
+      trofeos_formato: '1.3 Formato Sala de Trofeos y Testimonios',
+      adjunto_trofeos_fotos: 'Confirmación Fotos Atletas/Podios',
 
       historial_clinico_campos: '2.1 Campos Requeridos Historial Clínico',
       historia_clinica_modo: '2.1 Modo Formato Historia Clínica',
       adjunto_historia_clinica: 'Confirmación Formato Historia Clínica',
-      flujo_operativo_status: '2.2 Flujo de Agendamiento y Bloqueos',
-      flujo_operativo_detalle: '2.2 Detalle Flujo Agendamiento',
-      google_cal_sync: '2.3 Sincronización Google Calendar',
-      google_calendar: '2.3 Otra Cuenta Google Calendar',
+      checkin_preguntas_status: '2.2 Validación Preguntas Check-in Móvil',
+      checkin_preguntas_detalle: '2.2 Ajustes Preguntas Check-in',
+      menores_contacto: '2.3 Recordatorios y Contacto Pacientes Menores',
+      flujo_operativo_status: '2.4 Flujo de Agendamiento y Bloqueos',
+      flujo_operativo_detalle: '2.4 Detalle Flujo Agendamiento',
+      google_cal_sync: '2.5 Sincronización Google Calendar',
+      google_calendar: '2.5 Otra Cuenta Google Calendar',
 
       portales_status: '3.1 Validación Portales Joan y Asistente',
       portales_detalle: '3.1 Ajustes Portales Joan y Asistente',
       pacientes_estimados: '3.2 Pacientes Activos al Mes (Capacidad)',
-      isak_pliegues_protocolo: '3.3 Protocolo Antropométrico (Pliegues)',
-      isak_forma_medicion: '3.3 Detalle de Metodología de Medición',
-      adjunto_reportes_calibracion: '3.4 Confirmación Reportes Calibración (3-4 PDFs)',
+      recap_metricas_status: '3.3 Validación Métricas Recap Mensual',
+      recap_metricas_detalle: '3.3 Propuesta Métricas InBody / ISAK',
+      isak_pliegues_protocolo: '3.4 Protocolo Antropométrico (Pliegues)',
+      isak_forma_medicion: '3.4 Detalle de Metodología de Medición',
+      adjunto_reportes_calibracion: '3.5 Confirmación Reportes Calibración (3-4 PDFs)',
 
       suplementos_modo: '4.1 Modo Catálogo Suplementos',
       adjunto_suplementos_fotos: 'Confirmación Fotos Celular de Productos',
@@ -671,6 +723,16 @@
         if (!show && chkFoto) chkFoto.checked = false;
       }
 
+      // 1.3 Trofeos fotos
+      const trofVal = value('trofeos_formato');
+      const boxTrof = document.getElementById('box_trofeos_fotos');
+      const chkTrof = form.querySelector('[name="adjunto_trofeos_fotos"]');
+      if (boxTrof) {
+        const show = trofVal && !trofVal.includes('Conservar el medallero numérico');
+        boxTrof.style.display = show ? 'block' : 'none';
+        if (!show && chkTrof) chkTrof.checked = false;
+      }
+
       // 2.1 Historia clínica formato propio
       const histModo = value('historia_clinica_modo');
       const boxHist = document.getElementById('box_historia_clinica');
@@ -681,14 +743,21 @@
         if (!show && chkHist) chkHist.checked = false;
       }
 
-      // 2.2 Flujo operativo detalle
+      // 2.2 Check-in preguntas detalle
+      const chkInVal = value('checkin_preguntas_status');
+      const boxChkIn = document.getElementById('box_checkin_detalle');
+      if (boxChkIn) {
+        boxChkIn.style.display = (chkInVal && chkInVal.includes('Deseo ajustar')) ? 'block' : 'none';
+      }
+
+      // 2.4 Flujo operativo detalle
       const fOpVal = value('flujo_operativo_status');
       const boxFOp = document.getElementById('box_flujo_operativo_detalle');
       if (boxFOp) {
         boxFOp.style.display = (fOpVal && fOpVal.includes('Deseo modificar')) ? 'block' : 'none';
       }
 
-      // 2.3 Google Calendar otro correo
+      // 2.5 Google Calendar otro correo
       const gcalVal = value('google_cal_sync');
       const boxGcal = document.getElementById('box_google_cal_otro');
       if (boxGcal) {
@@ -700,6 +769,13 @@
       const boxPort = document.getElementById('box_portales_detalle');
       if (boxPort) {
         boxPort.style.display = (portVal && portVal.includes('Deseo ajustar')) ? 'block' : 'none';
+      }
+
+      // 3.3 Recap métricas detalle
+      const recapVal = value('recap_metricas_status');
+      const boxRecap = document.getElementById('box_recap_metricas_detalle');
+      if (boxRecap) {
+        boxRecap.style.display = (recapVal && recapVal.includes('Deseo proponer')) ? 'block' : 'none';
       }
 
       // 4.1 Suplementos fotos y excel
@@ -837,6 +913,11 @@
       const fotoVal = value('foto_nutriologo');
       if (fotoVal && !fotoVal.includes('Mantener la foto actual')) {
         list.push('Fotografía profesional de Joan (para renovación o retoque en sección sobre mí)');
+      }
+
+      const trofVal = value('trofeos_formato');
+      if (trofVal && !trofVal.includes('Conservar el medallero numérico') && value('adjunto_trofeos_fotos')) {
+        list.push('Fotografías de atletas en podios o competencias para carrusel');
       }
 
       const histModo = value('historia_clinica_modo');
