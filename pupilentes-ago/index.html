@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnóstico Estratégico · Pupilentes AGO | HummingX BI</title>
+  <meta name="description" content="Formulario estratégico y diagnóstico de negocio para Pupilentes AGO. Preparado por HummingX BI.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Work+Sans:wght@400;600&family=Poppins:wght@400;600&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <script src="./jspdf.umd.min.js"></script>
+  <style>
+    :root {
+      --gold: #C5A059;
+      --gold-dark: #9A7B3E;
+      --gold-bright: #D4AF37;
+      --gold-subtle: #FAF6ED;
+      --gold-border: #E5DAC2;
+      --gold-glow: rgba(197, 160, 89, 0.18);
+      --carbon: #141414;
+      --carbon-surface: #1E1E1E;
+      --carbon-muted: #2A2A2A;
+      --bg: #FBFBF9;
+      --panel: #FFFFFF;
+      --ink: #161616;
+      --ink-soft: #5C5851;
+      --line: #E8E4DC;
+      --line-hover: #D0C8B8;
+      --radius: 6px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+    }
+
+    /* BARRA SUPERIOR */
+    .top {
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      z-index: 50;
+    }
+
+    .top-in {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 13px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand img {
+      height: 28px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .brand span {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--carbon);
+    }
+
+    .brand span b {
+      color: var(--gold-dark);
+      font-weight: 600;
+    }
+
+    .step-pill {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 600;
+      background: var(--carbon);
+      color: var(--gold-bright);
+      padding: 4px 12px;
+      border-radius: 3px;
+      letter-spacing: 0.05em;
+    }
+
+    .progress {
+      height: 2px;
+      background: var(--line);
+      position: relative;
+    }
+
+    .progress i {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, var(--gold-dark) 0%, var(--gold) 60%, var(--gold-bright) 100%);
+      transition: width 0.3s ease;
+      width: 16.66%;
+    }
+
+    /* CONTENEDOR PRINCIPAL */
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+    }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 16px 12px 28px;
+    }
+
+    .hero-logo-wrap {
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    .client-logo {
+      width: 105px;
+      height: 105px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+      filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.12));
+      transition: transform 0.25s ease;
+    }
+
+    .client-logo:hover {
+      transform: scale(1.02);
+    }
+
+    .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      margin: 0 0 8px;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(34px, 5.5vw, 46px);
+      line-height: 1.1;
+      font-weight: 600;
+      color: var(--carbon);
+      margin: 0 auto 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .hero p {
+      font-size: 15px;
+      color: var(--ink-soft);
+      max-width: 580px;
+      margin: 0 auto;
+      line-height: 1.55;
+    }
+
+    /* INTRODUCCIÓN */
+    .intro-box {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--gold);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+    }
+
+    .intro-box p {
+      margin: 0;
+      font-size: 13.5px;
+      color: var(--ink-soft);
+      line-height: 1.5;
+    }
+
+    .intro-box strong {
+      color: var(--carbon);
+    }
+
+    /* PASOS */
+    .step {
+      display: none;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 34px 32px 28px;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.025);
+    }
+
+    .step.active {
+      display: block;
+      animation: fadeIn 0.25s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .step-head {
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 16px;
+      margin-bottom: 16px;
+    }
+
+    .step-no {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gold-dark);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .step h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 28px;
+      line-height: 1.15;
+      color: var(--carbon);
+      margin: 0 0 6px;
+      font-weight: 600;
+    }
+
+    .step-head p {
+      color: var(--ink-soft);
+      font-size: 13.5px;
+      margin: 0;
+    }
+
+    /* PREGUNTAS */
+    .q {
+      padding: 20px 0;
+      border-bottom: 1px solid #F3EFE9;
+    }
+
+    .q:last-of-type {
+      border-bottom: 0;
+    }
+
+    .label {
+      display: block;
+      font-weight: 600;
+      font-size: 14.5px;
+      color: var(--carbon);
+      margin-bottom: 6px;
+      line-height: 1.45;
+    }
+
+    .hint {
+      font-size: 13px;
+      color: var(--ink-soft);
+      margin: -2px 0 10px;
+      line-height: 1.5;
+    }
+
+    .req {
+      color: var(--gold-dark);
+      font-weight: 700;
+    }
+
+    /* INPUTS & TEXTAREAS */
+    input[type=text],
+    input[type=email],
+    input[type=tel],
+    input[type=number],
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #FAFAF8;
+      color: var(--ink);
+      border-radius: 4px;
+      padding: 11px 13px;
+      font-size: 14px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--gold);
+      background: #FFFFFF;
+      box-shadow: 0 0 0 3px var(--gold-glow);
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    /* OPCIONES (RADIO Y CHECKBOX) */
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .options.grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .options label {
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 11px 14px;
+      cursor: pointer;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      background: #FFFFFF;
+      color: var(--ink);
+      font-size: 13.5px;
+      transition: all 0.18s ease;
+      line-height: 1.45;
+    }
+
+    .options label:hover {
+      border-color: var(--line-hover);
+      background: var(--gold-subtle);
+    }
+
+    .options label:has(input:checked) {
+      border-color: var(--gold);
+      background: var(--gold-subtle);
+      box-shadow: 0 2px 8px rgba(197, 160, 89, 0.1);
+    }
+
+    .options input[type=radio],
+    .options input[type=checkbox] {
+      accent-color: var(--gold-dark);
+      margin-top: 2px;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .option-title {
+      font-weight: 600;
+      color: var(--carbon);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .option-desc {
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      line-height: 1.4;
+      display: block;
+    }
+
+    /* TARJETAS DE ESTILO VISUAL (TIPOGRAFÍA + PALETA) */
+    .style-options.options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .style-card { flex-direction: column; }
+    .swatch-row { display: flex; gap: 6px; margin-top: 8px; }
+    .swatch-row i { width: 20px; height: 20px; border-radius: 50%; display: inline-block; }
+    @media (max-width: 650px) { .style-options.options { grid-template-columns: 1fr; } }
+
+    /* SLIDER TÁCTIL DE PRESUPUESTO (ESTILO HUMMINGX) */
+    .budget-line {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      background: #FFFFFF;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 16px 18px;
+      margin-top: 8px;
+    }
+
+    .budget-line input[type=range] {
+      flex: 1;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 8px;
+      background: #EAE6DE;
+      border-radius: 4px;
+      outline: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .budget-line input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: 3px solid #FFFFFF;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .budget-line input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+      background: var(--gold-dark);
+    }
+
+    .budget-line output {
+      min-width: 130px;
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--carbon);
+      font-weight: 700;
+      font-size: 17px;
+      text-align: right;
+    }
+
+    .budget-scale {
+      display: flex;
+      justify-content: space-between;
+      color: var(--ink-soft);
+      font: 11px 'IBM Plex Mono', monospace;
+      margin-top: 6px;
+      padding: 0 4px;
+    }
+
+    /* NAVEGACIÓN Y BOTONES */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding-top: 22px;
+      margin-top: 10px;
+      border-top: 1px solid var(--line);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid var(--carbon);
+      background: var(--carbon);
+      color: #FFFFFF;
+      padding: 12px 22px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      font-size: 13.5px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+    }
+
+    .btn:hover {
+      background: var(--gold-dark);
+      border-color: var(--gold-dark);
+      color: #FFFFFF;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(154, 123, 62, 0.25);
+    }
+
+    .btn.secondary {
+      background: transparent;
+      color: var(--carbon);
+      border-color: var(--line);
+    }
+
+    .btn.secondary:hover {
+      background: var(--gold-subtle);
+      border-color: var(--gold);
+      color: var(--gold-dark);
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    /* RESUMEN DE RESPUESTAS */
+    .summary {
+      border-top: 1px solid var(--line);
+      margin-top: 20px;
+    }
+
+    .summary-row {
+      display: grid;
+      grid-template-columns: 36% 64%;
+      gap: 14px;
+      padding: 10px 0;
+      border-bottom: 1px dashed var(--line);
+      font-size: 13.5px;
+    }
+
+    .summary-row b {
+      color: var(--carbon);
+      font-weight: 600;
+    }
+
+    .summary-row span {
+      color: var(--ink-soft);
+      white-space: pre-wrap;
+    }
+
+    .summary-row.highlight {
+      background: var(--gold-subtle);
+      padding: 12px 14px;
+      border-radius: 4px;
+      border: 1px solid var(--gold-border);
+      margin: 8px 0;
+    }
+
+    .summary-row.highlight span {
+      color: var(--gold-dark);
+      font-weight: 700;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 14.5px;
+    }
+
+    .info-box {
+      background: var(--gold-subtle);
+      border-left: 3px solid var(--gold);
+      padding: 14px 18px;
+      margin: 20px 0;
+      font-size: 13px;
+      color: var(--carbon);
+      line-height: 1.5;
+      border-radius: 0 4px 4px 0;
+    }
+
+    /* COMPLETADO Y ACCIONES */
+    .completion {
+      text-align: center;
+      padding: 20px 10px 10px;
+    }
+
+    .completion-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 28px;
+      margin: 10px auto 24px;
+    }
+
+    .completion-logos img {
+      height: 64px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .completion-divider {
+      width: 1px;
+      height: 44px;
+      background: var(--line);
+    }
+
+    .completion h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 32px;
+      color: var(--carbon);
+      margin: 0 0 10px;
+      font-weight: 600;
+    }
+
+    .completion p {
+      max-width: 520px;
+      margin: 0 auto 24px;
+      color: var(--ink-soft);
+      font-size: 14.5px;
+    }
+
+    .completion .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .note {
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      margin-top: 14px;
+    }
+
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      color: var(--ink-soft);
+      font-size: 12px;
+      padding-top: 32px;
+      border-top: 1px solid var(--line);
+      margin-top: 44px;
+    }
+
+    .footer a {
+      color: var(--carbon);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      color: var(--gold-dark);
+      text-decoration: underline;
+    }
+
+    .reset-link {
+      color: #A0988C;
+      font-size: 11.5px;
+      text-decoration: underline;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: inherit;
+      margin-top: 10px;
+      display: inline-block;
+    }
+
+    .reset-link:hover {
+      color: #903030;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 650px) {
+      main {
+        padding: 18px 16px 50px;
+      }
+      .top-in {
+        padding: 10px 16px;
+      }
+      .step {
+        padding: 22px 16px 20px;
+      }
+      .grid-2, .options.grid-2 {
+        grid-template-columns: 1fr;
+      }
+      .nav {
+        flex-direction: column-reverse;
+      }
+      .nav .btn {
+        width: 100%;
+      }
+      .summary-row {
+        grid-template-columns: 1fr;
+        gap: 3px;
+      }
+      .completion-logos {
+        gap: 16px;
+      }
+      .completion-logos img {
+        height: 50px;
+      }
+      .completion .actions {
+        flex-direction: column;
+      }
+      .completion .actions .btn {
+        width: 100%;
+      }
+    }
+
+    @media print {
+      .top, .hero, .intro-box, .nav, .actions, .note, .footer, .reset-link {
+        display: none !important;
+      }
+      .step {
+        display: block !important;
+        border: 0;
+        box-shadow: none;
+        padding: 0;
+      }
+      body {
+        background: #FFFFFF;
+      }
+      .summary-row {
+        break-inside: avoid;
+      }
+    }
+
+    /* REDISEÑO AGO · dirección visual del logotipo: obsidiana + dorado metálico */
+    :root {
+      --gold: #C9A35D;
+      --gold-dark: #9B7637;
+      --gold-bright: #F0D18A;
+      --gold-subtle: #FBF7EF;
+      --gold-border: #E7D7B8;
+      --gold-glow: rgba(201, 163, 93, .20);
+      --carbon: #171512;
+      --carbon-surface: #24211C;
+      --bg: #F6F4EF;
+      --line: #E6E0D5;
+      --radius: 12px;
+    }
+
+    body { background: radial-gradient(circle at 50% -12%, #fff 0, var(--bg) 42%); }
+    .top { background: rgba(23, 21, 18, .97); border-bottom: 0; color: #fff; }
+    .top-in { padding-top: 15px; padding-bottom: 15px; }
+    .brand span { color: #F7F0E2; }
+    .brand span b { color: var(--gold-bright); }
+    .brand img { filter: brightness(0) invert(1); opacity: .9; }
+    .step-pill { background: var(--gold); color: var(--carbon); border-radius: 999px; padding: 5px 13px; }
+    .progress { height: 3px; background: #3A342C; }
+    .progress i { background: linear-gradient(90deg, #8D672F, var(--gold), var(--gold-bright)); }
+    main { padding-top: 42px; }
+    .hero { padding: 18px 12px 34px; }
+    .hero-logo-wrap { padding: 9px; border-radius: 50%; background: #1B1916; box-shadow: 0 16px 34px rgba(23,21,18,.2); }
+    .client-logo { width: 122px; height: 122px; filter: none; }
+    .eyebrow { color: var(--gold-dark); letter-spacing: .22em; }
+    .hero h1, .step h2, .completion h2 { color: var(--carbon); font-weight: 700; }
+    .hero p { font-size: 15.5px; }
+    .intro-box { background: var(--carbon); color: #F9F4E9; border: 0; border-left: 5px solid var(--gold); border-radius: var(--radius); padding: 18px 22px; box-shadow: 0 12px 26px rgba(23,21,18,.10); }
+    .intro-box p, .intro-box strong { color: inherit; }
+    .intro-box strong { color: var(--gold-bright); }
+    .step { border: 1px solid #E1D9CC; border-radius: 16px; box-shadow: 0 16px 40px rgba(52,43,30,.07); padding: 38px 36px 30px; }
+    .step-head { border-bottom: 0; padding-bottom: 10px; margin-bottom: 5px; }
+    .step-no { color: var(--gold-dark); }
+    .step-head p { background: var(--gold-subtle); border-left: 3px solid var(--gold); padding: 10px 13px; border-radius: 0 8px 8px 0; }
+    .q { padding: 22px 0; border-bottom-color: #EEE9E0; }
+    .label { font-size: 14px; }
+    .req { color: #A36F21; }
+    input[type=text], input[type=email], input[type=tel], input[type=number], textarea, select { border-color: #DDD6CA; background: #FCFBF8; border-radius: 8px; min-height: 46px; }
+    textarea { min-height: 104px; }
+    .options { gap: 10px; }
+    .options label { border-color: #DDD6CA; border-radius: 9px; padding: 12px 14px; background: #FCFBF8; }
+    .options label:hover, .options label:has(input:checked) { border-color: var(--gold); background: var(--gold-subtle); }
+    .options label:has(input:checked) { box-shadow: 0 4px 12px rgba(155,118,55,.12); }
+    .btn { border-radius: 999px; padding: 13px 24px; background: var(--carbon); border-color: var(--carbon); }
+    .btn:hover { background: var(--gold); border-color: var(--gold); color: var(--carbon); }
+    .btn.secondary { border-color: #D9D0C1; }
+    .summary-row.highlight { border-radius: 9px; }
+    .footer { color: #777064; }
+    @media (max-width: 650px) { .step { padding: 26px 18px 22px; } main { padding-top: 22px; } .hero-logo-wrap { margin-bottom: 12px; } }
+  </style>
+</head>
+<body>
+
+  <!-- BARRA SUPERIOR -->
+  <header class="top">
+    <div class="top-in">
+      <div class="brand">
+        <img src="logo-hummingx.png" alt="HummingX BI">
+        <span>HummingX BI <b>·</b> Diagnóstico</span>
+      </div>
+      <span id="counter" class="step-pill">1 / 6</span>
+    </div>
+    <div class="progress">
+      <i id="progressFill"></i>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-logo-wrap">
+        <img class="client-logo" src="logo-cliente.png" alt="Pupilentes AGO" onerror="this.src='logo-circular.png'">
+      </div>
+      <p class="eyebrow">Diagnóstico Estratégico · Pupilentes AGO</p>
+      <h1>Conozcamos tu negocio y visión digital</h1>
+      <p>Un diagnóstico breve para convertir tu operación real en una propuesta web clara, útil y alineada con Pupilentes AGO.</p>
+    </section>
+
+    <!-- INTRODUCCIÓN -->
+    <div class="intro-box">
+      <p><strong>Tiempo estimado: 4 a 6 minutos.</strong> No hay respuestas correctas. Cada bloque tiene un objetivo: cuéntanos cómo trabajas hoy y qué quieres mejorar; con eso generaremos un PDF formal para tu propuesta.</p>
+    </div>
+
+    <!-- FORMULARIO -->
+    <form id="form" novalidate>
+
+      <!-- PASO 1: CONTACTO Y OPERACIÓN -->
+      <section class="step active" data-step="1">
+        <div class="step-head">
+          <span class="step-no">01 · Contacto y Operación</span>
+          <h2>Tu Marca y Equipo de Trabajo</h2>
+          <p><strong>Objetivo:</strong> identificar quién decide, cómo opera el negocio y qué nivel de acompañamiento necesita.</p>
+        </div>
+
+        <div class="q">
+          <label class="label">Nombre completo de contacto <span class="req">*</span></label>
+          <input type="text" required name="nombre_contacto" placeholder="Ej. Andrea González">
+        </div>
+
+        <div class="q">
+          <label class="label">Cargo o rol en Pupilentes AGO <span class="req">*</span></label>
+          <input type="text" required name="rol_contacto" placeholder="Ej. Fundadora / Dirección de Marca">
+        </div>
+
+        <div class="q grid-2">
+          <div>
+            <label class="label">Correo de contacto <span class="req">*</span></label>
+            <input type="email" required name="correo_contacto" placeholder="contacto@pupilentesago.com">
+          </div>
+          <div>
+            <label class="label">WhatsApp directo <span class="req">*</span></label>
+            <input type="tel" required name="whatsapp_contacto" placeholder="10 dígitos">
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="label">Puntos de entrega o local en CDMX</label>
+          <p class="hint">¿Cuentas con local físico, showroom o realizas entregas en puntos acordados de CDMX? (Si tienes ubicación en Google Maps, puedes pegarla aquí).</p>
+          <input type="text" name="ubicacion_cdmx" placeholder="Ej. Entregas en puntos de metro céntricos / Showroom en CDMX / Envíos por paquetería...">
+        </div>
+
+        <div class="q">
+          <label class="label">¿Quiénes operan actualmente el negocio? <span class="req">*</span></label>
+          <p class="hint">Nos ayuda a dimensionar la operativa de tu marca y considerar si tu flujo requerirá herramientas compartidas en equipo.</p>
+          <div class="options">
+            <label>
+              <input type="radio" required name="equipo_operacion" value="Yo sola">
+              <div>
+                <span class="option-title">Yo sola</span>
+                <span class="option-desc">Atiendo clientes, empaque, pedidos y existencias de manera personal.</span>
+              </div>
+            </label>
+            <label>
+              <input type="radio" name="equipo_operacion" value="Con 1 o 2 colaboradoras">
+              <div>
+                <span class="option-title">Con 1 o 2 colaboradoras</span>
+                <span class="option-desc">Tengo apoyo para responder mensajes, preparar paquetes o realizar entregas.</span>
+              </div>
+            </label>
+            <label>
+              <input type="radio" name="equipo_operacion" value="Equipo de 3 o más personas">
+              <div>
+                <span class="option-title">Equipo de 3 o más personas</span>
+                <span class="option-desc">Operamos con diferentes roles de atención, almacén y envíos.</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="nav">
+          <span></span>
+          <button class="btn" type="button" data-next>Continuar a Experiencia Web →</button>
+        </div>
+      </section>
+
+      <!-- PASO 2: PLATAFORMA WEB Y CATÁLOGO -->
+      <section class="step" data-step="2">
+        <div class="step-head">
+          <span class="step-no">02 · Experiencia Digital</span>
+          <h2>Visión Web y Catálogo</h2>
+          <p><strong>Objetivo:</strong> traducir la identidad de AGO en una experiencia web y un catálogo que reduzcan preguntas repetitivas.</p>
+        </div>
+
+        <div class="info-box">
+          <strong>Enfoque HummingX BI:</strong> Diseñamos soluciones digitales enfocadas en resultados de negocio. Queremos entender primero qué tienes en mente:
+        </div>
+
+        <div class="q">
+          <label class="label">¿Qué estilo visual se siente más "Pupilentes AGO"? <span class="req">*</span></label>
+          <p class="hint">Cada estilo incluye la tipografía y la paleta de color que usaríamos. Elige el que más te represente.</p>
+          <div class="options style-options">
+            <label class="style-card">
+              <input type="radio" required name="estilo_visual" value="Elegante Boutique — tipografía Cormorant Garamond (serif) + Plus Jakarta Sans, paleta carbón y dorado metálico" data-colors="#171512,#C9A35D,#F0D18A,#F6F4EF">
+              <div>
+                <span class="option-title" style="font-family:'Cormorant Garamond',serif; font-size:17px;">Elegante Boutique</span>
+                <span class="option-desc">Tipografía serif (Cormorant Garamond) + sans de apoyo. Transmite lujo discreto y confianza.</span>
+                <span class="swatch-row">
+                  <i style="background:#171512"></i><i style="background:#C9A35D"></i><i style="background:#F0D18A"></i><i style="background:#F6F4EF"></i>
+                </span>
+              </div>
+            </label>
+            <label class="style-card">
+              <input type="radio" name="estilo_visual" value="Minimalista Clínico — tipografía Inter / Work Sans, paleta blanco, gris y azul confianza" data-colors="#FFFFFF,#E4E7EC,#2B6CB0,#1A202C">
+              <div>
+                <span class="option-title" style="font-family:'Work Sans',sans-serif; font-size:17px;">Minimalista Clínico</span>
+                <span class="option-desc">Tipografía sans limpia (Inter/Work Sans). Transmite higiene, precisión y orden.</span>
+                <span class="swatch-row">
+                  <i style="background:#FFFFFF;border:1px solid #ddd"></i><i style="background:#E4E7EC"></i><i style="background:#2B6CB0"></i><i style="background:#1A202C"></i>
+                </span>
+              </div>
+            </label>
+            <label class="style-card">
+              <input type="radio" name="estilo_visual" value="Juvenil y Colorido — tipografía Poppins (redondeada), paleta rosa, lila y turquesa pastel" data-colors="#FF8FAB,#B497F7,#5CD6C0,#FFF6F9">
+              <div>
+                <span class="option-title" style="font-family:'Poppins',sans-serif; font-size:17px;">Juvenil y Colorido</span>
+                <span class="option-desc">Tipografía redondeada (Poppins). Transmite frescura y cercanía con público joven.</span>
+                <span class="swatch-row">
+                  <i style="background:#FF8FAB"></i><i style="background:#B497F7"></i><i style="background:#5CD6C0"></i><i style="background:#FFF6F9;border:1px solid #ddd"></i>
+                </span>
+              </div>
+            </label>
+            <label class="style-card">
+              <input type="radio" name="estilo_visual" value="Natural y Cálido — tipografía Nunito, paleta verde salvia, terracota y beige" data-colors="#8BA888,#C98455,#EFE6D8,#3E3A33">
+              <div>
+                <span class="option-title" style="font-family:'Nunito',sans-serif; font-size:17px;">Natural y Cálido</span>
+                <span class="option-desc">Tipografía suave (Nunito). Transmite cuidado natural y bienestar.</span>
+                <span class="swatch-row">
+                  <i style="background:#8BA888"></i><i style="background:#C98455"></i><i style="background:#EFE6D8"></i><i style="background:#3E3A33"></i>
+                </span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="label">Detalles adicionales sobre el estilo (opcional)</label>
+          <p class="hint">¿Algo puntual que quieras agregar sobre la sensación, funcionalidad o referencia visual?</p>
+          <textarea name="web_ideal" placeholder="Ej. Que se vea confiable para graduación exacta, fotos grandes de producto..."></textarea>
+        </div>
+
+        <div class="q">
+          <label class="label">¿Qué te gustaría mejorar de tu catálogo actual? <span class="req">*</span></label>
+          <div class="options">
+            <label>
+              <input type="radio" required name="catalogo_interactivo" value="Encontrar productos más fácilmente">
+              <div>
+                <span class="option-title">Encontrar productos más fácilmente</span>
+                <span class="option-desc">Que mis clientas ubiquen rápido el modelo que buscan.</span>
+              </div>
+            </label>
+            <label>
+              <input type="radio" name="catalogo_interactivo" value="Mostrar mejor modelos y existencias">
+              <div>
+                <span class="option-title">Mostrar mejor modelos y existencias</span>
+                <span class="option-desc">Presentar la información de cada producto de forma más clara.</span>
+              </div>
+            </label>
+            <label>
+              <input type="radio" name="catalogo_interactivo" value="Actualizarlo más fácilmente">
+              <div>
+                <span class="option-title">Actualizarlo más fácilmente</span>
+                <span class="option-desc">Poder agregar modelos, colores o graduaciones sin rehacer todo.</span>
+              </div>
+            </label>
+            <label>
+              <input type="radio" name="catalogo_interactivo" value="Por ahora no necesito cambios">
+              <div>
+                <span class="option-title">Por ahora no necesito cambios</span>
+                <span class="option-desc">Mi formato actual funciona bien para mi operación.</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="label">¿Te interesaría que tus clientas pudieran filtrar los productos por color, tipo y graduación?</label>
+          <div class="options">
+            <label><input type="radio" name="catalogo_filtros" value="Sí, sería muy útil"> Sí, sería muy útil</label>
+            <label><input type="radio" name="catalogo_filtros" value="Me gustaría conocer cómo funcionaría"> Me gustaría conocer cómo funcionaría</label>
+            <label><input type="radio" name="catalogo_filtros" value="No lo necesito por ahora"> No lo necesito por ahora</label>
+          </div>
+        </div>
+
+        <div class="nav">
+          <button class="btn secondary" type="button" data-prev>← Anterior</button>
+          <button class="btn" type="button" data-next>Continuar a Canales de Venta →</button>
+        </div>
+      </section>
+
+      <!-- PASO 3: MODELO DE NEGOCIO Y PROCESO DE VENTA -->
+      <section class="step" data-step="3">
+        <div class="step-head">
+          <span class="step-no">03 · Canales Comerciales</span>
+          <h2>Modelo de Venta y Enlaces</h2>
+          <p><strong>Objetivo:</strong> mapear de dónde llegan las clientas, cómo compran y qué enlaces conviene centralizar.</p>
+        </div>
+
+        <div class="q">
+          <label class="label">Actualmente, ¿por dónde cierras la mayoría de tus ventas? <span class="req">*</span></label>
+          <p class="hint">Selecciona todos los canales que utilices habitualmente.</p>
+          <div class="options grid-2">
+            <label>
+              <input type="checkbox" name="canales_ventas" value="Mensajes de Instagram/TikTok">
+              <div>
+                <span class="option-title">Instagram / TikTok</span>
+                <span class="option-desc">Mensajes directos en redes.</span>
+              </div>
+            </label>
+            <label>
+              <input type="checkbox" name="canales_ventas" value="WhatsApp">
+              <div>
+                <span class="option-title">WhatsApp</span>
+                <span class="option-desc">Atención y cotización directa.</span>
+              </div>
+            </label>
+            <label>
+              <input type="checkbox" name="canales_ventas" value="Mercado Libre">
+              <div>
+                <span class="option-title">Mercado Libre</span>
+                <span class="option-desc">Venta por marketplace.</span>
+              </div>
+            </label>
+            <label>
+              <input type="checkbox" name="canales_ventas" value="Entregas personales en CDMX">
+              <div>
+                <span class="option-title">Entregas en CDMX</span>
+                <span class="option-desc">Encuentros personales y pago directo.</span>
+              </div>
+            </label>
+            <label>
+              <input type="checkbox" name="canales_ventas" value="Sitio web previo">
+              <div>
+                <span class="option-title">Tienda en línea previa</span>
+                <span class="option-desc">Plataforma anterior.</span>
+              </div>
+            </label>
+            <label>
+              <input type="checkbox" name="canales_ventas" value="Recomendaciones boca a boca">
+              <div>
+                <span class="option-title">Recomendaciones</span>
+                <span class="option-desc">Clientas recurrentes y referidos.</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="label">Aproximadamente, ¿cuántos pedidos realizas al mes? <span class="req">*</span></label>
+          <p class="hint">Nos ayuda a dimensionar si necesitas automatizaciones o si un panel manual es suficiente por ahora.</p>
+          <div class="options grid-2">
+            <label><input type="radio" required name="volumen_mensual" value="Menos de 20 pedidos al mes"> Menos de 20 pedidos al mes</label>
+            <label><input type="radio" name="volumen_mensual" value="Entre 20 y 50 pedidos al mes"> Entre 20 y 50 pedidos al mes</label>
+            <label><input type="radio" name="volumen_mensual" value="Entre 50 y 100 pedidos al mes"> Entre 50 y 100 pedidos al mes</label>
+            <label><input type="radio" name="volumen_mensual" value="Más de 100 pedidos al mes"> Más de 100 pedidos al mes</label>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="label">¿Cómo es el proceso habitual desde que una clienta te contacta hasta que recibe su pedido? <span class="req">*</span></label>
+          <p class="hint">Descríbenos tu flujo: cómo le muestras disponibilidad, cómo acuerdan el pago, cómo confirmas graduación y cómo realizas el envío o entrega.</p>
+          <textarea required name="proceso_venta" placeholder="Ej. Me escriben por Instagram o WhatsApp preguntando por un color, les mando fotos o el PDF de Canva, reviso si tengo su graduación disponible, me transfieren y acordamos punto de entrega en CDMX o envío por paquetería..."></textarea>
+        </div>
+
+        <div class="nav">
+          <button class="btn secondary" type="button" data-prev>← Anterior</button>
+          <button class="btn" type="button" data-next>Continuar a Inventario →</button>
+        </div>
+      </section>
+
+      <!-- PASO 4: CONTROL DE INVENTARIO Y GRADUACIONES -->
+      <section class="step" data-step="4">
+        <div class="step-head">
+          <span class="step-no">04 · Inventario y Operativa</span>
+          <h2>Graduaciones y Control de Stock</h2>
+          <p><strong>Objetivo:</strong> detectar cómo controlar modelos, graduaciones y existencias para evitar ventas de productos agotados.</p>
+        </div>
+
+        <div class="q">
+          <label class="label">En los pupilentes graduados para miopía (-0.50 al -8.00), ¿cómo administras actualmente qué graduaciones tienes en existencia para no vender algo agotado? <span class="req">*</span></label>
+          <p class="hint">Al existir existencias físicas específicas por cada número de dioptría, ¿cuál es tu método de control?</p>
+          <div class="options">
+            <label>
+              <input type="radio" required name="gestion_graduaciones" value="En libreta o notas del celular">
+              <div>
+                <span class="option-title">En libreta o notas del celular</span>
+                <span class="option-desc">Anoto las existencias que voy vendiendo y restando.</span>
+              </div>
+            </label>
+            <label>
+              <input type="radio" name="gestion_graduaciones" value="En Excel o Google Sheets">
+              <div>
+                <span class="option-title">En Excel o Google Sheets</span>
+                <span class="option-desc">Tabla con columnas por modelo y número de graduación.</span>
+              </div>
+            </label>
+            <label>
+              <input type="radio" name="gestion_graduaciones" value="De memoria o revisando las cajas al momento">
+              <div>
+                <span class="option-title">De memoria o revisando las cajas al momento</span>
+                <span class="option-desc">Confirmo físicamente en mi inventario cuando la clienta me pregunta.</span>
+              </div>
+            </label>
+            <label>
+              <input type="radio" name="gestion_graduaciones" value="Solo manejo modelos estéticos sin graduación">
+              <div>
+                <span class="option-title">Solo manejo modelos estéticos sin graduación</span>
+                <span class="option-desc">Mis modelos son exclusivamente cosméticos neutros (0.00).</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="label">Muchas clientas tienen graduaciones distintas en cada ojo. ¿Cómo manejas actualmente cuando una clienta te pide graduación diferente para ojo izquierdo y derecho? <span class="req">*</span></label>
+          <div class="options">
+            <label>
+              <input type="radio" required name="graduacion_ojos_separado" value="Les ofrezco dos paquetes o cajas diferentes">
+              <div>
+                <span class="option-title">Les ofrezco dos paquetes o cajas diferentes</span>
+                <span class="option-desc">Para que tengan un par completo de cada graduación.</span>
+              </div>
+            </label>
+            <label>
+              <input type="radio" name="graduacion_ojos_separado" value="Reviso si puedo combinar piezas individuales">
+              <div>
+                <span class="option-title">Reviso si puedo combinar piezas individuales</span>
+                <span class="option-desc">Si el formato del producto me permite armar el par mixto.</span>
+              </div>
+            </label>
+            <label>
+              <input type="radio" name="graduacion_ojos_separado" value="Confirmo caso por caso por mensaje">
+              <div>
+                <span class="option-title">Confirmo caso por caso por mensaje</span>
+                <span class="option-desc">Reviso disponibilidad exacta en el momento y le doy la opción disponible.</span>
+              </div>
+            </label>
+            <label>
+              <input type="radio" name="graduacion_ojos_separado" value="No es algo que maneje con frecuencia">
+              <div>
+                <span class="option-title">No es algo que maneje con frecuencia</span>
+                <span class="option-desc">La mayoría me pide graduación idéntica o modelos neutros.</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="nav">
+          <button class="btn secondary" type="button" data-prev>← Anterior</button>
+          <button class="btn" type="button" data-next>Continuar a Inversión →</button>
+        </div>
+      </section>
+
+      <!-- PASO 5: MÓDULOS DE CRECIMIENTO, INVERSIÓN Y CIERRE -->
+      <section class="step" data-step="5">
+        <div class="step-head">
+          <span class="step-no">05 · Crecimiento e Inversión</span>
+          <h2>Herramientas y Presupuesto</h2>
+          <p><strong>Objetivo:</strong> priorizar las funciones que sí aportan valor y ubicar el rango de inversión adecuado.</p>
+        </div>
+
+        <div class="q">
+          <label class="label">Además de la tienda web, en HummingX BI contamos con módulos adicionales para marcas de belleza. ¿Cuáles de estas herramientas te llamaría la atención conocer?</label>
+          <p class="hint">Selección opcional: no es un compromiso, solo nos ayuda a saber qué ideas te resultan interesantes.</p>
+          <div class="options">
+            <label>
+              <input type="checkbox" name="funciones_ecosistema" value="Programa de puntos o lealtad">
+              <div>
+                <span class="option-title">Programa de puntos o lealtad</span>
+                <span class="option-desc">Que tus clientas acumulen recompensas por compras recurrentes para canjear por estuches o descuentos.</span>
+              </div>
+            </label>
+            <label>
+              <input type="checkbox" name="funciones_ecosistema" value="Recordatorio de renovación">
+              <div>
+                <span class="option-title">Recordatorio de renovación</span>
+                <span class="option-desc">Avisos automáticos cuando sus pupilentes o solución estén por caducar para incentivar la recompra.</span>
+              </div>
+            </label>
+            <label>
+              <input type="checkbox" name="funciones_ecosistema" value="Recomendador interactivo">
+              <div>
+                <span class="option-title">Recomendador interactivo</span>
+                <span class="option-desc">Cuestionario visual donde la clienta elija su tono de piel o color de ojos y la página le sugiera modelos ideales.</span>
+              </div>
+            </label>
+            <label>
+              <input type="checkbox" name="funciones_ecosistema" value="Solo enfocarme en la tienda web por ahora">
+              <div>
+                <span class="option-title">Solo enfocarme en la tienda web por ahora</span>
+                <span class="option-desc">Prefiero priorizar el catálogo y la tienda básica sin módulos adicionales.</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="label">¿Qué rango de inversión tienes contemplado para este proyecto? <span class="req">*</span></label>
+          <p class="hint">Desliza la barra para indicar un monto estimado. Este dato nos ayuda a recomendar una solución realista y proporcional a tus prioridades.</p>
+          
+          <div class="budget-line">
+            <input id="budget" name="rango_presupuesto" type="range" min="0" max="40000" step="1000" value="0">
+            <output id="budgetValue">$0 MXN</output>
+          </div>
+          <div class="budget-scale">
+            <span>$0</span>
+            <span>$40,000 MXN o más</span>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="label">¿Hay marcas o sitios web que te gusten como referencia? (opcional)</label>
+          <p class="hint">Pueden ser de pupilentes, belleza o cualquier otra industria cuyo estilo te inspire.</p>
+          <textarea name="referencias_competencia" placeholder="Ej. Me gusta cómo luce la página de..."></textarea>
+        </div>
+
+        <div class="q">
+          <label class="label">Comentarios adicionales o dudas que nos quieras compartir</label>
+          <textarea name="comentarios_adicionales" placeholder="Cualquier duda sobre tiempos de entrega deseados, requerimientos específicos o detalles que consideres clave para tu proyecto..."></textarea>
+        </div>
+
+        <div class="nav">
+          <button class="btn secondary" type="button" data-prev>← Anterior</button>
+          <button class="btn" type="button" data-next>Revisar Respuestas y Generar PDF →</button>
+        </div>
+      </section>
+
+      <!-- PASO 6: REVISIÓN Y DESCARGA DE PDF -->
+      <section class="step" data-step="6">
+        <div id="reviewContent">
+          <div class="step-head">
+            <span class="step-no">06 · Confirmación</span>
+            <h2>Resumen de Respuestas</h2>
+            <p>Revisa la información antes de generar el documento formal.</p>
+          </div>
+
+          <div id="summary" class="summary"></div>
+
+          <div class="info-box">
+            <strong>Confidencialidad:</strong> Tus respuestas se utilizarán exclusivamente por el equipo de HummingX BI para estructurar la propuesta técnica y cotización formal de Pupilentes AGO.
+          </div>
+
+          <div class="nav" style="border-top: none; padding-top: 10px;">
+            <button class="btn secondary" type="button" data-prev>← Editar respuestas</button>
+            <button class="btn" type="button" id="downloadBtn">Descargar PDF Oficial</button>
+          </div>
+
+          <p id="status" class="note" style="text-align: center;">
+            Al descargar el archivo PDF, se habilitará el acceso directo para compartirlo por WhatsApp con nuestro equipo.
+          </p>
+        </div>
+
+        <!-- PANTALLA TRAS DESCARGA -->
+        <div id="completion" class="completion" hidden>
+          <div class="completion-logos">
+            <img src="logo-hummingx.png" alt="HummingX BI">
+            <div class="completion-divider"></div>
+            <img src="logo-cliente.png" alt="Pupilentes AGO">
+          </div>
+          <h2>Diagnóstico Generado</h2>
+          <p>El documento PDF se ha descargado en tu dispositivo. Puedes enviarlo por WhatsApp para coordinar tu propuesta técnica y cotización.</p>
+          <div class="actions">
+            <a class="btn" id="whatsappBtn" href="#" target="_blank" rel="noopener">
+              Abrir WhatsApp con Propuesta
+            </a>
+            <button class="btn secondary" type="button" id="downloadAgainBtn">
+              Volver a descargar PDF
+            </button>
+            <button class="btn secondary" type="button" id="editBtn">
+              Editar respuestas
+            </button>
+          </div>
+          <p class="note">Recuerda adjuntar el archivo PDF descargado en la ventana de chat.</p>
+        </div>
+      </section>
+
+    </form>
+
+    <!-- PIE DE PÁGINA -->
+    <div class="footer">
+      <div>Diagnóstico estratégico preparado por <a href="https://hummingxbi.com" target="_blank" rel="noopener">HummingX BI</a> para Pupilentes AGO · <span id="year">2026</span></div>
+      <button class="reset-link" id="resetDraftBtn" type="button">Restablecer formulario y borrar respuestas guardadas</button>
+    </div>
+  </main>
+
+  <!-- LÓGICA JAVASCRIPT -->
+  <script>
+    const form = document.getElementById('form');
+    const steps = [...document.querySelectorAll('.step')];
+    const total = steps.length;
+    let current = 0;
+
+    const STORAGE_KEY = 'pupilentes_ago_diagnostic_v5';
+
+    const labels = {
+      nombre_contacto: '1. Nombre de contacto',
+      rol_contacto: '2. Cargo o rol en Pupilentes AGO',
+      correo_contacto: 'Correo electrónico',
+      whatsapp_contacto: 'WhatsApp directo',
+      ubicacion_cdmx: '3. Punto de entrega o showroom CDMX',
+      equipo_operacion: '4. Operativa y equipo actual',
+      estilo_visual: '5. Estilo visual (tipografía y paleta)',
+      web_ideal: '6. Detalles adicionales de estilo',
+      catalogo_interactivo: '7. Catálogo interactivo con filtros',
+      canales_ventas: '8. Canales habituales de venta',
+      volumen_mensual: '9. Volumen aproximado de pedidos al mes',
+      proceso_venta: '10. Recorrido habitual de venta',
+      gestion_graduaciones: '11. Control de existencias para miopía',
+      graduacion_ojos_separado: '12. Manejo de graduación mixta por ojo',
+      funciones_ecosistema: '13. Módulos complementarios de interés',
+      rango_presupuesto: '14. Rango de presupuesto contemplado',
+      referencias_competencia: '15. Referencias o marcas que le gustan',
+      comentarios_adicionales: '16. Comentarios adicionales o dudas'
+    };
+
+    // Paleta de color asociada a cada opción de estilo visual (para mostrarla en el PDF)
+    function getEstiloColors() {
+      const checked = form.querySelector('[name="estilo_visual"]:checked');
+      if (!checked) return null;
+      const raw = checked.getAttribute('data-colors');
+      return raw ? raw.split(',') : null;
+    }
+
+    // CONTROL DEL SLIDER DE PRESUPUESTO
+    const budgetInput = document.getElementById('budget');
+    const budgetOutput = document.getElementById('budgetValue');
+
+    function updateBudget() {
+      const val = Number(budgetInput.value);
+      if (val >= 40000) {
+        budgetOutput.textContent = '$40,000 MXN o más';
+      } else if (val === 0) {
+        budgetOutput.textContent = '$0 MXN';
+      } else {
+        budgetOutput.textContent = `$${val.toLocaleString('es-MX')} MXN`;
+      }
+      saveDraft();
+    }
+
+    if (budgetInput && budgetOutput) {
+      budgetInput.addEventListener('input', updateBudget);
+      updateBudget();
+    }
+
+    function getCheckboxValues(name) {
+      return [...form.querySelectorAll(`[name="${name}"]:checked`)].map(x => x.value).join(', ');
+    }
+
+    function getValue(name) {
+      if (name === 'rango_presupuesto') {
+        return budgetOutput?.textContent || '$15,000 MXN';
+      }
+      const els = [...form.querySelectorAll(`[name="${name}"]`)];
+      if (!els.length) return '';
+      if (els.some(x => x.type === 'checkbox')) return getCheckboxValues(name);
+      const checked = els.find(x => x.checked);
+      if (checked) return checked.value.trim();
+      return els[0]?.value?.trim() || '';
+    }
+
+    function setStep(n) {
+      current = Math.max(0, Math.min(total - 1, n));
+      steps.forEach((s, i) => s.classList.toggle('active', i === current));
+
+      const counterEl = document.getElementById('counter');
+      if (counterEl) {
+        counterEl.textContent = `${current + 1} / ${total}`;
+      }
+
+      const progressFill = document.getElementById('progressFill');
+      if (progressFill) {
+        progressFill.style.width = `${((current + 1) / total) * 100}%`;
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (current === total - 1) {
+        renderSummary();
+      }
+      saveDraft();
+    }
+
+    function validateCurrentStep() {
+      const currentStepEl = steps[current];
+      const requiredInputs = [...currentStepEl.querySelectorAll('[required]')];
+
+      for (const el of requiredInputs) {
+        if (!el.checkValidity()) {
+          el.reportValidity();
+          return false;
+        }
+      }
+
+      const checkGroups = new Set();
+      currentStepEl.querySelectorAll('input[type=checkbox]').forEach(cb => {
+        if (cb.name) checkGroups.add(cb.name);
+      });
+
+      for (const name of checkGroups) {
+        const boxes = [...currentStepEl.querySelectorAll(`input[name="${name}"]`)];
+        const isRequired = boxes.some(b => b.hasAttribute('required') || b.closest('.q')?.querySelector('.req'));
+        if (isRequired && !boxes.some(b => b.checked)) {
+          alert('Por favor selecciona al menos una opción para continuar.');
+          boxes[0].focus();
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    document.querySelectorAll('[data-next]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (validateCurrentStep()) setStep(current + 1);
+      });
+    });
+
+    document.querySelectorAll('[data-prev]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        setStep(current - 1);
+      });
+    });
+
+    function saveDraft() {
+      try {
+        const data = {
+          currentStep: current,
+          fields: {}
+        };
+        const elements = form.querySelectorAll('[name]');
+        const processed = new Set();
+
+        elements.forEach(el => {
+          const name = el.name;
+          if (!name || processed.has(name)) return;
+          processed.add(name);
+
+          const group = [...form.querySelectorAll(`[name="${name}"]`)];
+          const first = group[0];
+
+          if (first.type === 'radio') {
+            const checked = group.find(r => r.checked);
+            data.fields[name] = checked ? checked.value : '';
+          } else if (first.type === 'checkbox') {
+            data.fields[name] = group.filter(c => c.checked).map(c => c.value);
+          } else if (first.type === 'range') {
+            data.fields[name] = first.value;
+          } else {
+            data.fields[name] = first.value;
+          }
+        });
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      } catch (e) {
+        console.warn('Error al guardar borrador:', e);
+      }
+    }
+
+    function loadDraft() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return false;
+        const data = JSON.parse(raw);
+        if (!data || !data.fields) return false;
+
+        Object.entries(data.fields).forEach(([name, val]) => {
+          const group = [...form.querySelectorAll(`[name="${name}"]`)];
+          if (!group.length) return;
+          const first = group[0];
+
+          if (first.type === 'radio') {
+            group.forEach(r => { r.checked = (r.value === val); });
+          } else if (first.type === 'checkbox') {
+            if (Array.isArray(val)) {
+              group.forEach(c => { c.checked = val.includes(c.value); });
+            } else {
+              first.checked = Boolean(val);
+            }
+          } else if (first.type === 'range') {
+            first.value = val;
+            updateBudget();
+          } else {
+            first.value = val;
+          }
+        });
+
+        if (typeof data.currentStep === 'number' && data.currentStep >= 0 && data.currentStep < total) {
+          setStep(data.currentStep);
+        } else {
+          setStep(0);
+        }
+        return true;
+      } catch (e) {
+        console.warn('Error al cargar borrador:', e);
+        return false;
+      }
+    }
+
+    form.addEventListener('change', saveDraft);
+    form.addEventListener('input', saveDraft);
+
+    function escapeHtml(s) {
+      return String(s || '').replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[c]));
+    }
+
+    function getAllData() {
+      const out = [];
+      Object.keys(labels).forEach(key => {
+        const val = getValue(key);
+        if (val) out.push({ key, label: labels[key], value: val });
+      });
+      return out;
+    }
+
+    function renderSummary() {
+      const summaryEl = document.getElementById('summary');
+      const data = getAllData();
+
+      let html = '';
+      const estiloColors = getEstiloColors();
+
+      data.forEach(item => {
+        const isBudget = item.key === 'rango_presupuesto';
+        let swatches = '';
+        if (item.key === 'estilo_visual' && estiloColors) {
+          swatches = `<div class="swatch-row" style="margin-top:4px;">${estiloColors.map(c => `<i style="background:${c};border:1px solid #ddd"></i>`).join('')}</div>`;
+        }
+        html += `
+          <div class="summary-row ${isBudget ? 'highlight' : ''}">
+            <b>${escapeHtml(item.label)}</b>
+            <span>${escapeHtml(item.value)}${swatches}</span>
+          </div>
+        `;
+      });
+
+      summaryEl.innerHTML = html || '<p style="color:var(--ink-soft); padding:14px 0;">No se han capturado respuestas aún.</p>';
+    }
+
+    function loadImage(url) {
+      return new Promise(resolve => {
+        const img = new Image();
+        img.crossOrigin = 'Anonymous';
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null);
+        img.src = url;
+      });
+    }
+
+    function hexToRgb(hex) {
+      const h = hex.trim().replace('#', '');
+      const n = parseInt(h.length === 3 ? h.split('').map(c => c + c).join('') : h, 16);
+      return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+    }
+
+    async function makePdf() {
+      const PDF = window.jspdf?.jsPDF;
+      if (!PDF) return null;
+
+      const doc = new PDF({
+        unit: 'mm',
+        format: 'a4',
+        compress: true
+      });
+
+      const margin = 16;
+      const pageWidth = 210;
+      const contentWidth = pageWidth - (margin * 2);
+      let y = 16;
+
+      const imgH = await loadImage('logo-hummingx.png');
+      const imgC = await loadImage('logo-cliente.png');
+
+      if (imgH) doc.addImage(imgH, 'PNG', margin, y, 15, 15);
+      if (imgC) doc.addImage(imgC, 'PNG', pageWidth - margin - 22, y - 3, 22, 22);
+
+      y += 22;
+
+      doc.setTextColor(20, 20, 20);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(15);
+      doc.text('Diagnóstico Estratégico y Propuesta de Plataforma', margin, y);
+
+      y += 6;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.setTextColor(90, 85, 80);
+      doc.text('Pupilentes AGO · HummingX BI', margin, y);
+
+      y += 5;
+      const fecha = new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+      doc.setFontSize(8.5);
+      doc.setTextColor(130, 125, 120);
+      doc.text(`Fecha: ${fecha} · Elaborado por HummingX BI`, margin, y);
+
+      y += 6;
+      doc.setDrawColor(197, 160, 89);
+      doc.setLineWidth(1);
+      doc.line(margin, y, pageWidth - margin, y);
+
+      y += 9;
+      doc.setFontSize(9);
+
+      const items = getAllData();
+
+      const estiloColorsPdf = getEstiloColors();
+
+      for (const item of items) {
+        const isHighlight = item.key === 'rango_presupuesto';
+        const hasSwatches = item.key === 'estilo_visual' && estiloColorsPdf;
+
+        const labelLines = doc.splitTextToSize(item.label, contentWidth);
+        const valLines = doc.splitTextToSize(item.value, contentWidth);
+        const needed = (labelLines.length * 4.2) + (valLines.length * 4.2) + (isHighlight ? 12 : 6) + (hasSwatches ? 7 : 0);
+
+        if (y + needed > 275) {
+          doc.addPage();
+          y = 18;
+        }
+
+        if (isHighlight) {
+          const boxTop = y - 2;
+          const boxHeight = needed;
+          doc.setFillColor(250, 246, 237);
+          doc.rect(margin, boxTop, contentWidth, boxHeight, 'F');
+          doc.setDrawColor(197, 160, 89);
+          doc.setLineWidth(0.6);
+          doc.rect(margin, boxTop, contentWidth, boxHeight, 'S');
+
+          y += 3.5;
+          doc.setFont('helvetica', 'bold');
+          doc.setTextColor(20, 20, 20);
+          doc.text(labelLines, margin + 4, y);
+
+          y += labelLines.length * 4.2 + 1;
+          doc.setFont('helvetica', 'bold');
+          doc.setTextColor(154, 123, 62);
+          doc.setFontSize(10.5);
+          doc.text(valLines, margin + 4, y);
+          doc.setFontSize(9);
+
+          // Deja el siguiente registro completamente fuera del marco.
+          y = boxTop + boxHeight + 3;
+        } else {
+          doc.setFont('helvetica', 'bold');
+          doc.setTextColor(24, 24, 24);
+          doc.text(labelLines, margin, y);
+
+          y += labelLines.length * 4.2;
+
+          doc.setFont('helvetica', 'normal');
+          doc.setTextColor(75, 70, 65);
+          doc.text(valLines, margin, y);
+
+          y += valLines.length * 4.2 + 4;
+
+          if (hasSwatches) {
+            let sx = margin;
+            estiloColorsPdf.forEach(hex => {
+              const [r, g, b] = hexToRgb(hex);
+              doc.setFillColor(r, g, b);
+              doc.setDrawColor(210, 205, 195);
+              doc.setLineWidth(0.3);
+              doc.circle(sx + 2, y, 2, 'FD');
+              sx += 6;
+            });
+            y += 7;
+          }
+        }
+      }
+
+      const totalPages = doc.internal.getNumberOfPages();
+      for (let p = 1; p <= totalPages; p++) {
+        doc.setPage(p);
+        doc.setFontSize(7.5);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(140, 135, 130);
+        doc.text('Documento confidencial · Diseñado por HummingX BI para Pupilentes AGO.', margin, 288);
+        doc.text(`Página ${p} de ${totalPages}`, pageWidth - margin - 16, 288);
+      }
+
+      return doc;
+    }
+
+    async function handleDownload() {
+      const statusEl = document.getElementById('status');
+      const btn = document.getElementById('downloadBtn');
+
+      if (btn) btn.disabled = true;
+      if (statusEl) statusEl.textContent = 'Generando tu documento PDF...';
+
+      try {
+        if (!window.jspdf?.jsPDF) throw new Error('jsPDF no disponible');
+        const doc = await makePdf();
+        if (!doc) throw new Error('Error al construir PDF');
+
+        const cleanName = (getValue('nombre_contacto') || 'pupilentes_ago')
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-z0-9]+/g, '_')
+          .slice(0, 25);
+
+        const fileName = `diagnostico_pupilentes_ago_${cleanName}_${new Date().toISOString().slice(0,10)}.pdf`;
+
+        const blob = doc.output('blob');
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 700);
+
+        showCompletion();
+      } catch (err) {
+        console.error(err);
+        if (statusEl) statusEl.textContent = 'Error al generar el PDF. Por favor intenta recargar la página.';
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    function showCompletion() {
+      document.getElementById('reviewContent').hidden = true;
+      document.getElementById('completion').hidden = false;
+
+      const nombre = getValue('nombre_contacto') || 'Pupilentes AGO';
+      const presupuesto = getValue('rango_presupuesto') || 'Por definir';
+
+      const waMsg = encodeURIComponent(
+        `Hola Equipo HummingX BI, soy ${nombre} de Pupilentes AGO. ` +
+        `Acabo de completar el diagnóstico estratégico para nuestro proyecto (Presupuesto contemplado: ${presupuesto}). ` +
+        `Adjunto el archivo PDF descargado para revisar la propuesta técnica.`
+      );
+
+      const whatsappBtn = document.getElementById('whatsappBtn');
+      if (whatsappBtn) {
+        whatsappBtn.href = `https://wa.me/525575084267?text=${waMsg}`;
+      }
+    }
+
+    document.getElementById('downloadBtn').addEventListener('click', handleDownload);
+    document.getElementById('downloadAgainBtn').addEventListener('click', handleDownload);
+
+    document.getElementById('editBtn').addEventListener('click', () => {
+      document.getElementById('completion').hidden = true;
+      document.getElementById('reviewContent').hidden = false;
+      setStep(4);
+    });
+
+    const resetBtn = document.getElementById('resetDraftBtn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        if (confirm('¿Deseas reiniciar el formulario? Se borrarán las respuestas guardadas en este navegador.')) {
+          localStorage.removeItem(STORAGE_KEY);
+          window.location.reload();
+        }
+      });
+    }
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+    if (!loadDraft()) {
+      setStep(0);
+    }
+  </script>
+</body>
+</html>
