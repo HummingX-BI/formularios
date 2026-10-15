@@ -1,91 +1,78 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Seguimiento Estratégico · JM Nutriólogo | HummingX BI</title>
-  <meta name="description" content="Formulario interactivo de seguimiento estratégico, validación de contenidos y requerimientos para JM Nutriólogo.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cuestionario Ejecutivo de Seguimiento · JM Nutriólogo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <script src="./jspdf.umd.min.js?v=2"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="jspdf.umd.min.js"></script>
   <style>
-    :root{
-      --ink:#111111;
-      --ink-soft:#565656;
-      --paper:#ffffff;
-      --panel:#ffffff;
-      --line:#e0e0e0;
-      --green:#111111;
-      --green-dark:#000000;
-      --mint:#fff9d6;
-      --gold:#e2b900;
-      --gold-dark:#b39200;
-      --danger:#9b5148;
-      --notice-bg:#f4f8fa;
-      --notice-border:#b8d9ea;
-      --notice-ink:#0f4561;
-      --badge-bg:#e9f4ea;
-      --badge-ink:#1e6b27;
+    :root {
+      --green: #0a4f3c;
+      --green-dark: #07382b;
+      --mint: #e8f3ef;
+      --gold: #e2b900;
+      --gold-dark: #b89600;
+      --bg: #f5f4ef;
+      --panel: #ffffff;
+      --ink: #111111;
+      --ink-soft: #4a4a4a;
+      --line: #e3e1d9;
+      --notice-bg: #eef6fa;
+      --notice-border: #b8dcec;
+      --notice-ink: #12435b;
     }
     *{box-sizing:border-box}
-    body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 'DM Sans',sans-serif}
-    button,input,textarea,select{font:inherit}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:'Plus Jakarta Sans',sans-serif;
+      -webkit-font-smoothing:antialiased;
+      line-height:1.55;
+    }
 
-    /* BARRA SUPERIOR */
-    .top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-    .top-in{max-width:880px;margin:auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .brand{display:flex;align-items:center;gap:12px;font:600 11px 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--green)}
-    .brand img{width:28px;height:28px;object-fit:contain}
-    .top-actions{display:flex;align-items:center;gap:14px}
-    .step-pill{font:600 11.5px 'IBM Plex Mono',monospace;color:var(--ink-soft);background:#f2f2f2;padding:4px 10px;border-radius:20px;letter-spacing:.06em}
-    .progress{height:3px;background:#ebebeb}
-    .progress i{display:block;height:100%;width:0;background:var(--gold);transition:width .35s ease}
+    /* TOP BAR */
+    .top{position:sticky;top:0;background:rgba(245,244,239,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);z-index:50}
+    .top-in{max-width:880px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand img{height:34px;width:auto;object-fit:contain}
+    .brand span{font:600 13px 'IBM Plex Mono',monospace;letter-spacing:-.01em;color:var(--ink)}
+    .top-actions{display:flex;align-items:center}
+    .step-pill{font:600 12px 'IBM Plex Mono',monospace;background:var(--mint);color:var(--green);padding:5px 12px;border-radius:2px;letter-spacing:.04em}
+    .progress{height:3px;background:var(--line);position:relative}
+    .progress i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .3s ease}
 
-    /* CONTENEDOR PRINCIPAL */
-    main{max-width:880px;margin:auto;padding:0 24px 80px}
-    .hero{text-align:center;padding:42px 12px 26px}
-    .client-logo{height:95px;max-width:320px;object-fit:contain;margin:0 auto 18px;display:block}
+    /* MAIN CONTAINER */
+    main{max-width:880px;margin:0 auto;padding:32px 24px 80px}
+    .hero{text-align:center;padding:12px 0 24px}
+    .client-logo{width:88px;height:88px;object-fit:contain;margin:0 auto 14px;display:block}
     .client-logo.is-missing{display:none}
-    .eyebrow{font:600 11px 'IBM Plex Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-dark);margin:0 0 10px}
-    .hero h1{font:400 clamp(30px,5.5vw,46px)/1.15 'DM Serif Display',serif;margin:0 auto 14px;letter-spacing:-.02em}
-    .hero p{max-width:660px;margin:auto;color:var(--ink-soft);font-size:15.5px}
+    .eyebrow{font:600 12px 'IBM Plex Mono',monospace;color:var(--gold-dark);letter-spacing:.12em;text-transform:uppercase;margin:0 0 10px}
+    .hero h1{font:400 clamp(28px,5vw,42px)/1.15 'DM Serif Display',serif;margin:0 auto 12px;letter-spacing:-.02em}
+    .hero p{font-size:15px;color:var(--ink-soft);max-width:680px;margin:0 auto;line-height:1.55}
 
-    /* BANNER PRINCIPAL DE APOYO VISUAL */
+    /* BANNER COMPACTO DEMO EN VIVO */
     .demo-hero-banner{
-      background:linear-gradient(135deg,#0a0a0a 0%,#181818 100%);
-      color:#fff;
-      border:1px solid #383838;
-      border-left:7px solid var(--gold);
-      padding:26px 30px;
-      margin-bottom:26px;
-      border-radius:4px;
-      box-shadow:0 12px 32px rgba(0,0,0,.10);
+      background:linear-gradient(135deg,#0a4f3c 0%,#07382b 100%);
+      border:1px solid rgba(226,185,0,.3);
+      border-radius:3px;
+      padding:16px 20px;
+      margin:0 0 24px;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:24px;
-      flex-wrap:wrap;
+      gap:16px;
+      box-shadow:0 6px 20px rgba(10,79,60,.12);
     }
-    .demo-hero-content{flex:1;min-width:300px}
-    .demo-hero-tag{
-      font:700 11.5px 'IBM Plex Mono',monospace;
-      text-transform:uppercase;
-      letter-spacing:.14em;
-      color:var(--gold);
-      margin-bottom:8px;
-      display:inline-block;
-    }
+    .demo-hero-content{flex:1}
     .demo-hero-title{
-      font:400 clamp(20px,3vw,26px)/1.25 'DM Serif Display',serif;
-      margin:0 0 8px;
+      font:400 clamp(16px,2.5vw,19px)/1.3 'DM Serif Display',serif;
+      margin:0;
       color:#ffffff;
       letter-spacing:-.01em;
-    }
-    .demo-hero-desc{
-      margin:0;
-      font-size:14px;
-      color:#dcdcdc;
-      line-height:1.55;
     }
     .demo-hero-action{display:inline-flex;align-items:center}
     .demo-hero-btn{
@@ -93,88 +80,127 @@
       color:#111;
       text-decoration:none;
       font-weight:700;
-      font-size:13.5px;
+      font-size:12.5px;
       font-family:'IBM Plex Mono',monospace;
-      padding:14px 24px;
+      padding:10px 18px;
       border-radius:3px;
-      letter-spacing:.04em;
+      letter-spacing:.03em;
       transition:all .2s ease;
       white-space:nowrap;
       display:inline-flex;
       align-items:center;
-      gap:10px;
-      box-shadow:0 4px 14px rgba(226,185,0,.35);
+      gap:8px;
+      box-shadow:0 3px 10px rgba(226,185,0,.3);
     }
-    .demo-hero-btn:hover{background:#fff;color:#000;transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,255,255,.25)}
-
-    .quick-tip{background:#fdfcf6;border:1px solid #ebdca3;border-left:4px solid var(--gold);padding:14px 18px;margin-bottom:26px;border-radius:2px;font-size:13.5px;color:#3d3618}
-    .quick-tip strong{color:#1a1705}
+    .demo-hero-btn:hover{background:#fff;color:#000;transform:translateY(-1px)}
 
     /* PASOS */
-    .step{display:none;background:var(--panel);border:1px solid var(--line);padding:34px 34px 30px;box-shadow:0 8px 30px rgba(0,0,0,.04);border-radius:3px}
-    .step.active{display:block;animation:rise .3s ease}
-    @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+    .step{display:none;background:var(--panel);border:1px solid var(--line);padding:32px 32px 28px;box-shadow:0 6px 24px rgba(0,0,0,.03);border-radius:3px}
+    .step.active{display:block;animation:rise .25s ease}
+    @keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
-    .step-head{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:12px}
+    .step-head{border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:12px}
     .step-no{font:600 11px 'IBM Plex Mono',monospace;color:var(--gold-dark);letter-spacing:.14em;text-transform:uppercase}
-    .step h2{font:400 27px/1.2 'DM Serif Display',serif;margin:6px 0 8px}
-    .step-head p{color:var(--ink-soft);margin:0;font-size:14.5px}
+    .step h2{font:400 25px/1.2 'DM Serif Display',serif;margin:4px 0 6px}
+    .step-head p{color:var(--ink-soft);margin:0;font-size:14px}
 
     /* PREGUNTAS */
-    .q{padding:22px 0;border-bottom:1px solid #f0f0f0}
+    .q{padding:20px 0;border-bottom:1px solid #f2f2f2}
     .q:last-of-type{border-bottom:0}
-    .label{display:block;font-weight:600;margin-bottom:8px;font-size:15px;color:var(--ink)}
-    .hint{font-size:13.5px;color:var(--ink-soft);margin:-4px 0 12px;line-height:1.48}
+    .label{display:block;font-weight:600;margin-bottom:6px;font-size:15px;color:var(--ink)}
+    .hint{font-size:13.5px;color:var(--ink-soft);margin:-2px 0 12px;line-height:1.5}
     .hint strong{color:var(--ink)}
 
     input:not([type=checkbox]):not([type=radio]):not([type=button]):not([type=submit]),textarea,select{
-      width:100%;border:1px solid #d5d5d5;background:#fafafa;color:var(--ink);border-radius:3px;padding:11px 13px;outline:none;box-shadow:none;transition:border .2s,background .2s,box-shadow .2s;font-size:14px;-webkit-appearance:none;appearance:none
+      width:100%;
+      padding:10px 12px;
+      font:400 14px 'Plus Jakarta Sans',sans-serif;
+      border:1px solid #d5d5d5;
+      border-radius:3px;
+      background:#fafafa;
+      color:var(--ink);
+      transition:border-color .15s,box-shadow .15s;
     }
-    textarea{min-height:90px;resize:vertical}
-    input:not([type=checkbox]):not([type=radio]):focus,textarea:focus,select:focus{border-color:var(--gold);background:#fff;box-shadow:0 0 0 3px rgba(226,185,0,.18)}
+    input:focus,textarea:focus,select:focus{
+      outline:none;
+      border-color:var(--gold-dark);
+      background:#fff;
+      box-shadow:0 0 0 3px rgba(226,185,0,.15);
+    }
+    textarea{resize:vertical;min-height:75px}
 
-    /* SLIDER PERSONALIZADO */
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+
+    /* SLIDER TÁCTIL */
     input[type=range]{
-      -webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:4px;background:#e5e5e5;outline:none;padding:0;margin:14px 0
+      -webkit-appearance:none;
+      appearance:none;
+      width:100%;
+      height:8px;
+      background:#e8e8e8;
+      border-radius:4px;
+      outline:none;
+      border:none;
+      margin:14px 0 8px;
+      padding:0;
     }
     input[type=range]::-webkit-slider-thumb{
-      -webkit-appearance:none;appearance:none;width:24px;height:24px;border-radius:50%;background:var(--gold);cursor:pointer;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.25);transition:transform .15s
+      -webkit-appearance:none;
+      appearance:none;
+      width:24px;
+      height:24px;
+      border-radius:50%;
+      background:var(--gold);
+      border:3px solid #ffffff;
+      box-shadow:0 2px 8px rgba(0,0,0,.25);
+      cursor:pointer;
+      transition:transform .15s,background .15s;
     }
     input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
 
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
-    .options{display:flex;flex-wrap:wrap;gap:10px}
+    /* OPCIONES RADIO / CHECKBOX */
+    .options{display:flex;flex-direction:column;gap:7px;margin:8px 0}
     .options label{
-      border:1px solid var(--line);padding:9px 13px;cursor:pointer;display:inline-flex;gap:8px;align-items:center;background:#fafafa;color:var(--ink-soft);font-size:13.5px;border-radius:2px;transition:all .15s ease
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      padding:9px 12px;
+      border:1px solid var(--line);
+      border-radius:3px;
+      background:#fbfbfb;
+      cursor:pointer;
+      font-size:13.5px;
+      transition:all .15s ease;
+      line-height:1.4;
     }
     .options label:hover{border-color:#b5b5b5;background:#f5f5f5}
     .options label:has(input:checked){border-color:var(--gold);background:var(--mint);color:#000;font-weight:500}
-    .options input{accent-color:var(--gold)}
+    .options input{accent-color:var(--gold);margin-top:2px}
 
     /* TARJETAS DE TIPOS DE CITA */
     .appointment-card{
-      background:#fcfcfc;border:1px solid var(--line);border-left:4px solid var(--gold);padding:14px 16px;border-radius:2px
+      background:#fcfcfc;border:1px solid var(--line);border-left:4px solid var(--gold);padding:12px 14px;border-radius:2px
     }
-    .appointment-card h4{margin:0 0 10px;font-size:14px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;color:#222;letter-spacing:.06em}
+    .appointment-card h4{margin:0 0 8px;font-size:13px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;color:#222;letter-spacing:.05em}
 
     /* CAJA DE AVISO DE ARCHIVOS ADJUNTOS */
     .attachment-box{
-      background:var(--notice-bg);border:1px solid var(--notice-border);border-left:4px solid #2a7da3;padding:13px 15px;margin:12px 0 14px;border-radius:2px;display:flex;flex-direction:column;gap:8px
+      background:var(--notice-bg);border:1px solid var(--notice-border);border-left:4px solid #2a7da3;padding:12px 14px;margin:10px 0 12px;border-radius:2px;display:flex;flex-direction:column;gap:6px
     }
     .attachment-tag{
-      align-self:flex-start;font:600 10.5px 'IBM Plex Mono',monospace;text-transform:uppercase;background:#0f4561;color:#fff;padding:3px 8px;border-radius:2px;letter-spacing:.08em;display:inline-flex;align-items:center
+      align-self:flex-start;font:600 10px 'IBM Plex Mono',monospace;text-transform:uppercase;background:#0f4561;color:#fff;padding:2px 7px;border-radius:2px;letter-spacing:.08em;display:inline-flex;align-items:center
     }
     .attachment-desc{margin:0;font-size:13px;color:var(--notice-ink);line-height:1.45}
     .attachment-checkbox{
-      display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#0e3a50;cursor:pointer;background:#ffffff;padding:8px 12px;border:1px solid #c2deec;border-radius:2px;margin-top:2px
+      display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#0e3a50;cursor:pointer;background:#ffffff;padding:7px 10px;border:1px solid #c2deec;border-radius:2px;margin-top:2px
     }
     .attachment-checkbox input{accent-color:#0f4561;cursor:pointer}
 
     /* BOTONES Y NAVEGACIÓN */
-    .nav{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:26px}
+    .nav{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:22px}
     .btn{
-      border:1px solid var(--green);background:var(--green);color:#fff;padding:12px 22px;cursor:pointer;font-weight:600;border-radius:2px;transition:background .2s,border .2s,color .2s;display:inline-flex;align-items:center;gap:8px
+      border:1px solid var(--green);background:var(--green);color:#fff;padding:11px 20px;cursor:pointer;font-weight:600;font-size:14px;border-radius:2px;transition:background .2s,border .2s,color .2s;display:inline-flex;align-items:center;gap:8px
     }
     .btn:hover{background:var(--gold);border-color:var(--gold);color:#111}
     .btn.secondary{background:transparent;color:var(--green);border-color:#c8c8c8}
@@ -182,43 +208,43 @@
     .btn:disabled{opacity:.4;cursor:not-allowed}
 
     /* RESUMEN Y FINAL */
-    .summary-card{background:#fafafa;border:1px solid var(--line);padding:20px;border-radius:2px;margin:20px 0}
-    .summary-title{font:600 12px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--gold-dark);margin:0 0 12px;border-bottom:1px solid var(--line);padding-bottom:8px}
-    .summary-row{display:grid;grid-template-columns:38% 62%;gap:14px;padding:9px 0;border-bottom:1px solid #eeeeee;font-size:13.5px}
+    .summary-card{background:#fafafa;border:1px solid var(--line);padding:18px;border-radius:2px;margin:18px 0}
+    .summary-title{font:600 11.5px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--gold-dark);margin:0 0 10px;border-bottom:1px solid var(--line);padding-bottom:6px}
+    .summary-row{display:grid;grid-template-columns:35% 65%;gap:12px;padding:8px 0;border-bottom:1px solid #eeeeee;font-size:13px}
     .summary-row:last-child{border-bottom:0}
-    .summary-row b{color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500}
+    .summary-row b{color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:500}
     .summary-row span{white-space:pre-wrap;color:var(--ink)}
 
     .files-checklist-box{
-      background:#fffef0;border:1px solid #ebdca3;border-left:5px solid var(--gold);padding:20px 22px;margin:24px 0;border-radius:2px
+      background:#fffef0;border:1px solid #ebdca3;border-left:4px solid var(--gold);padding:18px 20px;margin:20px 0;border-radius:2px
     }
-    .files-checklist-box h3{margin:0 0 10px;font-size:17px;font-family:'DM Serif Display',serif;color:#2c2607}
-    .files-checklist-box p{margin:0 0 14px;font-size:13.5px;color:#4f440c;line-height:1.45}
-    .files-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
-    .files-list li{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:#2c2607}
-    .files-list li span.bullet{color:var(--gold-dark);font-weight:bold;font-size:16px;line-height:1}
+    .files-checklist-box h3{margin:0 0 8px;font-size:16px;font-family:'DM Serif Display',serif;color:#2c2607}
+    .files-checklist-box p{margin:0 0 12px;font-size:13px;color:#4f440c;line-height:1.45}
+    .files-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+    .files-list li{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:#2c2607}
+    .files-list li span.bullet{color:var(--gold-dark);font-weight:bold;font-size:15px;line-height:1}
 
-    .completion{text-align:center;padding:30px 10px 15px}
-    .completion-logos{display:flex;justify-content:center;align-items:center;gap:26px;margin:0 auto 20px}
-    .completion-logos img{width:85px;height:65px;object-fit:contain}
-    .completion h2{font:400 32px/1.2 'DM Serif Display',serif;margin:0 0 12px}
-    .completion p{max-width:540px;margin:0 auto 24px;color:var(--ink-soft);font-size:15px}
+    .completion{text-align:center;padding:26px 10px 10px}
+    .completion-logos{display:flex;justify-content:center;align-items:center;gap:24px;margin:0 auto 16px}
+    .completion-logos img{width:80px;height:60px;object-fit:contain}
+    .completion h2{font:400 30px/1.2 'DM Serif Display',serif;margin:0 0 10px}
+    .completion p{max-width:520px;margin:0 auto 20px;color:var(--ink-soft);font-size:14.5px}
 
-    .actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:20px}
+    .actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:18px}
 
-    .footer{text-align:center;color:var(--ink-soft);font-size:12px;padding:35px 0 10px}
+    .footer{text-align:center;color:var(--ink-soft);font-size:12px;padding:30px 0 10px}
     .footer a{color:var(--green);text-decoration:none;font-weight:600}
     .footer a:hover{text-decoration:underline}
 
     @media(max-width:680px){
-      main{padding-left:16px;padding-right:16px}
-      .top-in{padding:10px 16px}
-      .step{padding:22px 16px}
+      main{padding-left:14px;padding-right:14px}
+      .top-in{padding:10px 14px}
+      .step{padding:20px 14px}
       .grid,.grid-3{grid-template-columns:1fr}
       .nav{flex-direction:column-reverse}
       .nav .btn{width:100%;justify-content:center}
-      .summary-row{grid-template-columns:1fr;gap:4px}
-      .demo-hero-banner{padding:20px 18px}
+      .summary-row{grid-template-columns:1fr;gap:3px}
+      .demo-hero-banner{flex-direction:column;align-items:flex-start;padding:16px 14px}
       .demo-hero-btn{width:100%;justify-content:center}
     }
   </style>
@@ -234,8 +260,8 @@
       </div>
       <div class="top-actions">
         <span class="step-pill" style="margin-right:6px;background:#eef7ee;color:#2e7d32;font-weight:600;font-size:11.5px;">Autoguardado</span>
-        <span class="step-pill" style="margin-right:6px;background:#f0efe9;color:#555;font-weight:600;">10–15 min aprox.</span>
-        <span id="counter" class="step-pill">Paso 1 de 8</span>
+        <span class="step-pill" style="margin-right:6px;background:#f0efe9;color:#555;font-weight:600;">3–5 min aprox.</span>
+        <span id="counter" class="step-pill">Paso 1 de 5</span>
       </div>
     </div>
     <div class="progress"><i id="progressFill"></i></div>
@@ -244,42 +270,73 @@
   <main>
     <section class="hero">
       <img class="client-logo" src="logo-cliente.png" alt="Logo de JM Nutriólogo" onerror="this.classList.add('is-missing')">
-      <p class="eyebrow">Validación Técnica y Contenidos · JM Nutriólogo · Tiempo estimado: 10–15 min</p>
+      <p class="eyebrow">Validación Ejecutiva y Tarifas · JM Nutriólogo</p>
       <h1>Cuestionario de Validación y Decisiones</h1>
-      <p>Diseñado para responderse de forma ágil (tiempo aproximado: 10–15 minutos). Las opciones recomendadas de la demo ya vienen pre-seleccionadas; solo confirma o modifica los puntos donde desees ajustar tu información.</p>
+      <p>Diseñado para responderse en menos de 5 minutos. Con base en tu diagnóstico previo, ya contamos con tus datos de contacto, cédula UNITEC, diplomados y ubicación. En este formulario únicamente confirmamos tus tarifas oficiales, agenda y parámetros clínicos para el lanzamiento.</p>
     </section>
 
-    <!-- BANNER DESTACADO DE REFERENCIA VISUAL A LA DEMO -->
+    <!-- BANNER COMPACTO DEMO EN VIVO -->
     <div class="demo-hero-banner">
       <div class="demo-hero-content">
-        <span class="demo-hero-tag">Herramienta de Apoyo Visual</span>
-        <h2 class="demo-hero-title">Referencia visual: Consulta la maqueta en vivo mientras respondes cada pregunta</h2>
-        <p class="demo-hero-desc">Te servirá para ir visualizando en tiempo real lo que te vamos planteando en cada pregunta (puedes alternar entre las 5 vistas de la barra superior: Sitio web, Portal Asistente, Portal Joan, Check-in y Mi Reporte JM). Te sugerimos abrir la demo presentada en una pestaña al lado mientras respondes.</p>
+        <h2 class="demo-hero-title">Te sugerimos abrir la demo presentada en una pestaña al lado mientras respondes</h2>
       </div>
       <div class="demo-hero-action">
         <a class="demo-hero-btn" href="https://kilt-yellow-79125081.figma.site/" target="_blank" rel="noopener">
-          Ver demo interactiva presentada →
+          Abrir demo interactiva →
         </a>
       </div>
     </div>
 
-    <div class="quick-tip">
-      <strong>Respuesta ágil:</strong> Las preguntas cuentan con respuestas predeterminadas acordes a la demo presentada. Si estás de acuerdo con la propuesta, basta con dar clic en <strong>Continuar</strong>; únicamente deténte a escribir o ajustar cuando requieras actualizar o personalizar tus datos.
-    </div>
-
     <form id="form">
 
-      <!-- PASO 1: IDENTIDAD Y LANDING PAGE -->
+      <!-- PASO 1: SERVICIOS, TARIFAS Y FOTOGRAFÍA -->
       <section class="step active" data-step="1">
         <div class="step-head">
-          <span class="step-no">01 · Landing Page</span>
-          <h2>Identidad, Marca y Presencia Digital (Página Web Pública)</h2>
-          <p>Validación de tu imagen profesional, credenciales académicas verificables y datos de contacto oficial.</p>
+          <span class="step-no">01 · Servicios y Marca</span>
+          <h2>Tarifas Oficiales, VO2 Max y Fotografía</h2>
+          <p>Definición de precios de consulta y confirmación de imagen profesional. (Nota: Tu cédula UNITEC 13205612, tus 7 diplomados y WhatsApp 5655267405 ya están confirmados e integrados).</p>
         </div>
 
         <div class="q">
-          <label class="label">1.1 Fotografía del Nutriólogo (Sección 01: "Quién soy y a qué me dedico")</label>
-          <p class="hint">En la sección sobre ti colocamos tu fotografía profesional con un distintivo que dice <em>"Nutriólogo Clínico y Deportivo"</em>. ¿Deseas mantener esa misma foto tuya o prefieres enviarnos una nueva toma?</p>
+          <label class="label">1.1 Tipos de Cita, Tarifas Oficiales y Evaluación VO2 Max</label>
+          <p class="hint">En tu diagnóstico confirmaste que manejas Consulta Inicial (InBody + ISAK 2 + plan personalizado), Consulta de Seguimiento y actualmente sumaste la prueba de esfuerzo VO2 Max. Confirma o edita los precios y duraciones aproximadas sugeridas para cada servicio:</p>
+          <div class="grid-3" style="margin-bottom:14px;">
+            <div class="appointment-card">
+              <h4>Cita 1 · Primera Vez</h4>
+              <label style="font-size:11.5px;font-weight:600;display:block;margin-bottom:2px;">Duración estimada:</label>
+              <input type="text" name="cita1_duracion" value="2 horas" style="margin-bottom:8px;">
+              <label style="font-size:11.5px;font-weight:600;display:block;margin-bottom:2px;">Tarifa ($ MXN):</label>
+              <input type="text" name="cita1_precio" value="$850">
+            </div>
+            <div class="appointment-card">
+              <h4>Cita 2 · Seguimiento</h4>
+              <label style="font-size:11.5px;font-weight:600;display:block;margin-bottom:2px;">Duración estimada:</label>
+              <input type="text" name="cita2_duracion" value="1 hora" style="margin-bottom:8px;">
+              <label style="font-size:11.5px;font-weight:600;display:block;margin-bottom:2px;">Tarifa ($ MXN):</label>
+              <input type="text" name="cita2_precio" value="$500">
+            </div>
+            <div class="appointment-card">
+              <h4>Cita 3 · Prueba VO2 Max</h4>
+              <label style="font-size:11.5px;font-weight:600;display:block;margin-bottom:2px;">Duración estimada:</label>
+              <input type="text" name="cita3_duracion" value="1 hora y media" style="margin-bottom:8px;">
+              <label style="font-size:11.5px;font-weight:600;display:block;margin-bottom:2px;">Tarifa ($ MXN):</label>
+              <input type="text" name="cita3_precio" value="$900">
+            </div>
+          </div>
+          <div style="margin-bottom:12px;">
+            <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px;">Modalidad de la prueba VO2 Max en la web:</label>
+            <div class="options">
+              <label><input type="radio" name="servicios_estructura" value="Separar evaluación de VO2 Max como servicio y cita independiente con su tarifa" checked> Separar evaluación de VO2 Max como servicio y cita independiente con su propia tarifa (Recomendado)</label>
+              <label><input type="radio" name="servicios_estructura" value="VO2 Max va incluida dentro de la consulta inicial (sin costo extra)"> VO2 Max va incluida dentro de la consulta inicial</label>
+              <label><input type="radio" name="servicios_estructura" value="Ajustar catálogo de servicios"> Ajustar catálogo de servicios o agregar otro tipo de cita</label>
+            </div>
+            <textarea style="margin-top:10px;display:none;" id="box_servicios_comentarios" name="servicios_comentarios" placeholder="Detalla si deseas agregar otro tipo de cita (ej. Consulta online: 45 min · $600) o ajustar los servicios..."></textarea>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="label">1.2 Fotografía Profesional de Joan (Sección 01: Sobre Mí)</label>
+          <p class="hint">En la sección sobre ti colocamos tu fotografía profesional con el distintivo <em>"Nutriólogo Clínico y Deportivo"</em>. ¿Deseas mantener esa misma foto tuya de la demo o prefieres enviarnos una nueva toma?</p>
           <div class="options">
             <label><input type="radio" name="foto_nutriologo" value="Mantener la foto actual de la demo (no subir foto)" checked> Mantener la foto actual de la demo</label>
             <label><input type="radio" name="foto_nutriologo" value="Enviaré una nueva foto profesional"> Enviaré una nueva foto profesional</label>
@@ -292,153 +349,40 @@
           </div>
         </div>
 
-        <div class="q">
-          <label class="label">1.2 Cédula Profesional y Formación Académica (Sección 01: Sobre Mí)</label>
-          <p class="hint">En la demo enlazamos tu ficha con el portal oficial de la SEP con los siguientes datos:<br>• Formación: <strong>Licenciatura en Nutrición · UNITEC</strong><br>• Cédula profesional: <strong>13205612</strong><br>• Certificación: <strong>Antropometrista ISAK nivel 2</strong><br>¿Son correctos estos datos exactos o hay alguna corrección en número o universidad?</p>
-          <div class="options">
-            <label><input type="radio" name="cedula_status" value="Datos 100% correctos (Licenciatura UNITEC · Cédula 13205612 · ISAK 2)" checked> Datos 100% correctos (Licenciatura UNITEC · Cédula 13205612 · ISAK 2)</label>
-            <label><input type="radio" name="cedula_status" value="Requiere corrección de datos"> Requiere corrección en cédula o institución</label>
-          </div>
-          <div id="box_cedula_correccion" style="display:none;margin-top:10px;">
-            <input type="text" name="cedula_detalle" placeholder="Indica número de cédula correcto, universidad exacta y certificaciones...">
-          </div>
-        </div>
-
-        <div class="q">
-          <label class="label">1.3 Diplomados y Especialidades (Sección 01: Credenciales)</label>
-          <p class="hint">En la maqueta listamos los siguientes 6 diplomados en etiquetas limpias: <em>1. Nutrición deportiva · 2. Deportes de rendimiento (Francis Holway) · 3. Cineantropometría (Anthropométrica) · 4. Ayudas ergogénicas (ACAFFEM) · 5. Farmacología (INAF) · 6. Nutrición para fisicoculturismo</em>. ¿Deseas conservar esta lista exacta o prefieres insignias gráficas oficiales?</p>
-          <div class="options">
-            <label><input type="radio" name="formato_diplomados" value="Conservar estos 6 diplomados en texto plano limpio (como en la demo)" checked> Conservar estos 6 diplomados en texto plano limpio (como en la demo)</label>
-            <label><input type="radio" name="formato_diplomados" value="Insignias o imágenes gráficas de diplomas oficiales"> Insignias / imágenes gráficas de diplomas oficiales</label>
-            <label><input type="radio" name="formato_diplomados" value="Modificar lista de diplomados"> Modificar lista de diplomados</label>
-          </div>
-          <div class="attachment-box" id="box_diplomados" style="display:none;">
-            <span class="attachment-tag">Diplomas e insignias por adjuntar</span>
-            <p class="attachment-desc">Si eliges insignias o imágenes gráficas de diplomas oficiales, adjúntalas al finalizar el cuestionario junto con el PDF descargado con una breve descripción.</p>
-            <label class="attachment-checkbox"><input type="checkbox" name="adjunto_diplomados" value="Sí, enviaré imágenes de diplomas oficiales con el PDF"> Confirmar que enviaré las imágenes de diplomas oficiales por WhatsApp junto con el PDF</label>
-          </div>
-          <textarea id="box_diplomados_texto" style="margin-top:10px;display:none;" name="detalle_diplomados" placeholder="Escribe aquí los diplomados o certificaciones exactas que deseas mostrar..."></textarea>
-        </div>
-
-        <div class="q">
-          <label class="label">1.4 Sección de Artículos / Tips Educativos (Sección 08)</label>
-          <p class="hint">En la parte inferior de la web colocamos un bloque de "Tips" con artículos muestra (<em>Por qué tu peso no cuenta toda la historia, Creatina: la guía honesta, Qué comer la semana de competencia</em>). ¿Cómo prefieres manejar este contenido?</p>
-          <div class="options">
-            <label><input type="radio" name="blog_activo" value="Enlazar directamente a mis mejores Reels y publicaciones educativas de Instagram" checked> Enlazar directamente a mis mejores Reels y posts educativos de Instagram (Recomendado)</label>
-            <label><input type="radio" name="blog_activo" value="Mantener sección de Blog con artículos redactados"> Mantener sección de Blog con artículos redactados</label>
-            <label><input type="radio" name="blog_activo" value="Omitir sección de tips por ahora y enfocar solo en citas"> Omitir sección de tips por ahora y enfocar solo en citas</label>
-          </div>
-        </div>
-
-        <div class="q">
-          <label class="label">1.5 Dirección y Horarios de Atención (Sección 09: Contacto)</label>
-          <p class="hint">En el mapa interactivo y pie de página figura:<br>• Dirección: <strong>Av. Juárez 50, Las Palmas, 57440 Cd. Nezahualcóyotl, Méx.</strong><br>• Horarios: <strong>Lunes a viernes 8:00–20:00 | Sábado 8:00–14:00 | Domingo cerrado</strong><br>¿La dirección es exacta (número interior, piso o referencia)? ¿Los horarios de consulta presencial coinciden con tu rutina?</p>
-          <div class="options">
-            <label><input type="radio" name="direccion_status" value="Dirección y horarios 100% correctos" checked> Dirección y horarios 100% correctos</label>
-            <label><input type="radio" name="direccion_status" value="Ajustar dirección u horarios"> Ajustar dirección u horarios</label>
-          </div>
-          <div id="box_direccion_ajuste" style="display:none;margin-top:10px;" class="grid">
-            <input type="text" name="direccion_consultorio" value="Av. Juárez 50, Las Palmas, 57440 Cd. Nezahualcóyotl, Méx." placeholder="Dirección completa, referencias, número interior">
-            <input type="text" name="horarios_atencion" value="Lunes a viernes 8:00–20:00 | Sábado 8:00–14:00 | Domingo cerrado" placeholder="Horarios de atención presencial">
-          </div>
-        </div>
-
-        <div class="q grid">
-          <div>
-            <label class="label">1.6 WhatsApp Oficial para Citas</label>
-            <p class="hint">En la demo figura <code>55 1234 5678</code>. Indícanos el número telefónico oficial de WhatsApp donde se recibirán las solicitudes y citas:</p>
-            <input type="text" name="whatsapp_oficial" placeholder="Ej. 55 7508 4267">
-          </div>
-          <div>
-            <label class="label">1.6b Correo Electrónico del Consultorio</label>
-            <p class="hint">Tenemos registrado tu correo personal, pero no contamos con un correo formal del consultorio o para informes de pacientes. Si tienes uno anótalo aquí; si prefieres usar otro donde lleguen informes indícalo, y si no tienes ninguno anota <strong>"No tengo"</strong>:</p>
-            <input type="text" name="correo_contacto" placeholder="Ej. contacto@jmnutriologo.com o 'No tengo'">
-          </div>
-        </div>
-
         <div class="nav">
           <span></span>
-          <button class="btn" type="button" data-next>Continuar a Servicios y Agenda →</button>
+          <button class="btn" type="button" data-next>Continuar a Agenda e Historial →</button>
         </div>
       </section>
 
-      <!-- PASO 2: SERVICIOS, AGENDA Y PRECIOS -->
+      <!-- PASO 2: AGENDA E HISTORIAL CLÍNICO PREVIO -->
       <section class="step" data-step="2">
         <div class="step-head">
-          <span class="step-no">02 · Servicios</span>
-          <h2>Catálogo de Servicios, Agenda y Precios (Página Web Pública)</h2>
-          <p>Estructura de la Sección 02: Servicios, tipos de consulta, tarifas oficiales y flujo de agendamiento.</p>
+          <span class="step-no">02 · Agenda y Pacientes</span>
+          <h2>Historial Clínico Previo y Flujo de Citas</h2>
+          <p>Automatización de la captura del paciente para ahorrar tiempo en consultorio y sincronización de agenda.</p>
         </div>
 
         <div class="q">
-          <label class="label">2.1 Catálogo de Servicios (Sección 02: Servicios)</label>
-          <p class="hint">Nosotros anotamos los servicios que ofreces e incluimos en la consulta inicial el análisis InBody, la cineantropometría ISAK y también la prueba de esfuerzo VO2 Max. Si la prueba de VO2 Max es una consulta aparte y es otro servicio independiente, indícanoslo para colocarlo así en la web. Si eliges <strong>"Ajustar catálogo de servicios"</strong>, escribe si VO2 Max va como cita aparte o cualquier otro servicio que desees ofrecer:</p>
-          <div class="options">
-            <label><input type="radio" name="servicios_estructura" value="Mantener estos 4 servicios (VO2 Max incluida en la consulta inicial)" checked> Mantener estos 4 servicios (VO2 Max incluida en consulta inicial)</label>
-            <label><input type="radio" name="servicios_estructura" value="Separar evaluación de VO2 Max como servicio y cita independiente"> Separar evaluación de VO2 Max como servicio y cita independiente (con su tarifa)</label>
-            <label><input type="radio" name="servicios_estructura" value="Ajustar catálogo de servicios (VO2 Max cita aparte u otros servicios)"> Ajustar catálogo de servicios (VO2 Max cita aparte u otros)</label>
-          </div>
-          <textarea style="margin-top:10px;display:none;" id="box_servicios_comentarios" name="servicios_comentarios" placeholder="Escribe aquí si VO2 Max va como cita aparte o detalla cualquier otro servicio que desees ofrecer..."></textarea>
-        </div>
-
-        <div class="q">
-          <label class="label">2.2 Tipos de Cita, Tarifas Oficiales y Duración Estimada</label>
-          <p class="hint">Nosotros planteamos como propuesta inicial estos 3 tipos de citas. Confirma o edita el nombre de cada cita, su precio y el tiempo aproximado por consulta (puedes modificar los tiempos sugeridos o agregar otro tipo de cita):</p>
-          <div class="grid-3" style="margin-bottom:14px;">
-            <div class="appointment-card">
-              <h4>Cita 1</h4>
-              <label style="font-size:12px;font-weight:600;display:block;margin-bottom:3px;">Nombre de la cita:</label>
-              <input type="text" name="cita1_nombre" value="Primera vez" style="margin-bottom:8px;">
-              <label style="font-size:12px;font-weight:600;display:block;margin-bottom:3px;">Duración estimada:</label>
-              <input type="text" name="cita1_duracion" value="2 horas" style="margin-bottom:8px;">
-              <label style="font-size:12px;font-weight:600;display:block;margin-bottom:3px;">Tarifa ($ MXN):</label>
-              <input type="text" name="cita1_precio" value="$850">
+          <label class="label">2.1 Formulario de Historial Clínico Previo (Resolviendo tu Principal Dolor de Captura)</label>
+          <p class="hint">En tu diagnóstico mencionaste que tu mayor carga operativa es dar de alta al paciente y capturar la historia clínica en consulta. Con esta plataforma, <strong>el paciente llenará su historial clínico desde su celular antes de llegar al consultorio</strong> para que tú lo tengas listo al recibirlo en tu pantalla. ¿Qué preguntas o antecedentes específicos requieres que contenga?</p>
+          <textarea name="historial_clinico_campos" placeholder="Describe aquí los campos o preguntas que consideres indispensables (ej. antecedentes patológicos, suplementos o medicamentos actuales, lesiones deportivas previas, digestión, hábitos)..."></textarea>
+          <div style="margin-top:10px;">
+            <div class="options">
+              <label><input type="radio" name="historia_clinica_modo" value="Usar formato clínico estándar propuesto (antecedentes, suplementos, digestión, lesiones)" checked> Utilizar formato clínico estándar propuesto (no subir archivo)</label>
+              <label><input type="radio" name="historia_clinica_modo" value="Enviaré mi formato propio en Word, PDF o foto de papel"> Enviaré mi formato propio de historia clínica (Word, PDF o foto de expediente en papel)</label>
             </div>
-            <div class="appointment-card">
-              <h4>Cita 2</h4>
-              <label style="font-size:12px;font-weight:600;display:block;margin-bottom:3px;">Nombre de la cita:</label>
-              <input type="text" name="cita2_nombre" value="Seguimiento" style="margin-bottom:8px;">
-              <label style="font-size:12px;font-weight:600;display:block;margin-bottom:3px;">Duración estimada:</label>
-              <input type="text" name="cita2_duracion" value="1 hora" style="margin-bottom:8px;">
-              <label style="font-size:12px;font-weight:600;display:block;margin-bottom:3px;">Tarifa ($ MXN):</label>
-              <input type="text" name="cita2_precio" value="$500">
-            </div>
-            <div class="appointment-card">
-              <h4>Cita 3</h4>
-              <label style="font-size:12px;font-weight:600;display:block;margin-bottom:3px;">Nombre de la cita:</label>
-              <input type="text" name="cita3_nombre" value="Prueba VO2 Max" style="margin-bottom:8px;">
-              <label style="font-size:12px;font-weight:600;display:block;margin-bottom:3px;">Duración estimada:</label>
-              <input type="text" name="cita3_duracion" value="1 hora y media" style="margin-bottom:8px;">
-              <label style="font-size:12px;font-weight:600;display:block;margin-bottom:3px;">Tarifa ($ MXN):</label>
-              <input type="text" name="cita3_precio" value="$900">
+            <div class="attachment-box" id="box_historia_clinica" style="display:none;margin-top:10px;">
+              <span class="attachment-tag">Formato clínico por adjuntar</span>
+              <p class="attachment-desc">Si eliges enviar tu formato en Word, PDF o foto en papel, compártelo al finalizar el cuestionario junto con el PDF descargado.</p>
+              <label class="attachment-checkbox"><input type="checkbox" name="adjunto_historia_clinica" value="Sí, enviaré mi formato de historia clínica con el PDF"> Confirmar que enviaré mi formato de historia clínica por WhatsApp</label>
             </div>
           </div>
-          <input type="text" name="cita_adicional" placeholder="Opcional: ¿Deseas agregar otro tipo de cita? (Ej. Consulta online: 45 min · $600)">
         </div>
 
         <div class="q">
-          <label class="label">2.3 Filtros de Agendamiento e Historial Clínico Previo (Sección 07)</label>
-          <p class="hint">En la demo, al agendar una cita por primera vez manejamos dos pasos o filtros:<br>
-          • <strong>Paso 1 (Filtro inicial):</strong> Le pedimos al paciente sus datos básicos: <em>Nombre, WhatsApp, Objetivo (Rendimiento, Control de salud, Bajar grasa, Ganar masa muscular, VO2 Max)</em> y <em>Deporte (Jiu-jitsu, Taekwondo, Halterofilia, Box, Natación, Fisicoculturismo, Running, Otro)</em>. ¿Estos datos y deportes están bien o deseas cambiarlos o agregar otros?<br>
-          • <strong>Paso 2 (Historial clínico previo):</strong> Al registrarse, se le pedirá al paciente llenar un historial clínico directamente desde su dispositivo antes de su cita para que tú lo veas en tu portal al recibirlo. ¿Qué campos o preguntas indispensables debe tener este formulario de historial clínico? (antecedentes médicos, lesiones previas, alergias, fármacos, digestión, hábitos):</p>
-          <div class="options">
-            <label><input type="radio" name="agenda_filtro1_status" value="Datos y deportes del Paso 1 están bien" checked> Datos y deportes del Paso 1 están bien</label>
-            <label><input type="radio" name="agenda_filtro1_status" value="Modificar datos o deportes del Paso 1"> Modificar datos o deportes del Paso 1</label>
-          </div>
-          <input type="text" id="box_agenda_filtro1_detalle" style="margin-top:10px;display:none;" name="agenda_filtro1_detalle" placeholder="Escribe los campos o deportes que deseas cambiar o agregar al Paso 1...">
-          <div style="margin-top:14px;">
-            <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px;">Campos indispensables para el historial clínico del paciente en el Paso 2:</label>
-            <textarea name="historial_clinico_campos_paso2" placeholder="Campos que debe llenar el paciente para que Joan conozca su expediente (antecedentes patológicos, fármacos/suplementos actuales, lesiones previas, digestión, hábitos)..."></textarea>
-          </div>
-        </div>
-
-        <div class="q">
-          <label class="label">2.4 Flujo Operativo de Agendamiento y Bloqueos de Agenda</label>
-          <p class="hint">El flujo planteado es el siguiente:<br>
-          1. El paciente entra a la web para agendar su cita de primera vez, ve los horarios disponibles en el calendario y selecciona el que mejor le acomode.<br>
-          2. Si hay algún día que no trabajas, días festivos, recesos o imprevistos, tanto tú desde tu portal como tu asistente desde el suyo pueden bloquear esos horarios con antelación para que no aparezcan disponibles para agendar.<br>
-          3. Las citas de seguimiento se acuerdan directamente en el consultorio al terminar la consulta presencial y se anotan en el sistema.<br>
-          ¿Te parece adecuado este flujo de trabajo o prefieres cambiarlo? Cuéntanos si te lo imaginas de otra forma:</p>
+          <label class="label">2.2 Flujo Operativo de Agendamiento y Bloqueos de Agenda</label>
+          <p class="hint">El flujo planteado es: <strong>1.</strong> El paciente entra a la web y selecciona su horario disponible para primera vez · <strong>2.</strong> Si hay días que no trabajas, festivos o imprevistos, tanto tú como tu asistente pueden bloquear horarios con antelación desde sus portales · <strong>3.</strong> Las citas de seguimiento se acuerdan directamente en el consultorio y tú las anotas en el sistema. ¿Te parece adecuado este flujo?</p>
           <div class="options">
             <label><input type="radio" name="flujo_operativo_status" value="Excelente, este flujo es claro y se adapta a mi rutina" checked> Excelente, este flujo es claro y se adapta a mi rutina (Recomendado)</label>
             <label><input type="radio" name="flujo_operativo_status" value="Deseo modificar el flujo de agendamiento"> Deseo modificar el flujo de agendamiento</label>
@@ -447,222 +391,50 @@
         </div>
 
         <div class="q">
-          <label class="label">2.5 Sincronización con Google Calendar</label>
-          <p class="hint">¿Deseas que cada cita que se confirme en el sistema se refleje automáticamente en tu cuenta personal de Google Calendar de forma unidireccional?</p>
+          <label class="label">2.3 Sincronización con Google Calendar</label>
+          <p class="hint">¿Deseas que cada cita que se confirme en el sistema se refleje automáticamente en tu cuenta personal de Google Calendar?</p>
           <div class="options">
-            <label><input type="radio" name="google_cal_sync" value="Sí, sincronizar citas confirmadas a Google Calendar" checked> Sí, sincronizar citas confirmadas</label>
+            <label><input type="radio" name="google_cal_sync" value="Sí, sincronizar a mi cuenta mayamartinezjoanalejandro@gmail.com" checked> Sí, sincronizar automáticamente a <code>mayamartinezjoanalejandro@gmail.com</code> (Recomendado)</label>
             <label><input type="radio" name="google_cal_sync" value="No es necesario sincronizar con Google Calendar"> No es necesario sincronizar</label>
+            <label><input type="radio" name="google_cal_sync" value="Usar otra cuenta de Gmail"> Usar otra cuenta de Gmail</label>
           </div>
-          <input type="email" style="margin-top:10px;" name="google_calendar" placeholder="correo@gmail.com para Calendar">
+          <input type="email" id="box_google_cal_otro" style="margin-top:10px;display:none;" name="google_calendar" placeholder="otro_correo@gmail.com">
         </div>
 
         <div class="nav">
           <button class="btn secondary" type="button" data-prev>← Atrás</button>
-          <button class="btn" type="button" data-next>Continuar a Portal Asistente →</button>
+          <button class="btn" type="button" data-next>Continuar a Portales y Reportes →</button>
         </div>
       </section>
 
-      <!-- PASO 3: PORTAL DEL ASISTENTE -->
+      <!-- PASO 3: PORTALES Y REPORTES CLÍNICOS -->
       <section class="step" data-step="3">
         <div class="step-head">
-          <span class="step-no">03 · Operación</span>
-          <h2>Portal del Asistente (Recepción y Operación del Consultorio)</h2>
-          <p>Módulos de recepción de pacientes, control de agenda diaria y despacho de pedidos de la tienda.</p>
+          <span class="step-no">03 · Consultorio y Métricas</span>
+          <h2>Portales de Operación y Reportes Interactivos</h2>
+          <p>Validación de funciones para ti y tu asistente, volumen de pacientes y protocolo de mediciones.</p>
         </div>
 
         <div class="q">
-          <label class="label">3.1 Pantallas Operativas de Recepción (Portal Asistente)</label>
-          <p class="hint">La demo del asistente contempla 4 módulos clave: <strong>1. Citas de hoy:</strong> Recepción de pacientes con botón <em>"Llegó"</em>, tiempo de espera en sala y semáforos (Historia clínica, Check-in y Confirmación) · <strong>2. Citas de mañana:</strong> Lista con botón para enviar recordatorio automático por WhatsApp (ayuno y ropa ligera) · <strong>3. Calendario semanal:</strong> Vista de bloques de consulta y receso de comida (14:00–16:00) · <strong>4. Pedidos:</strong> Control de suplementos apartados en la web para entregar en cita. ¿Este flujo cubre la operación de tu asistente?</p>
+          <label class="label">3.1 Validación de Operación en Portales (Joan y Asistente)</label>
+          <p class="hint">La demo contempla: <strong>Portal Asistente</strong> (recepción con semáforos, envío de recordatorios de WhatsApp con 1 clic y control de agenda, sin acceso a notas clínicas privadas) y <strong>Portal Joan</strong> (resumen del paciente en 10 segundos, arrastre de PDFs de InBody/ISAK con candado médico para revisar antes de liberar Mi Reporte JM). ¿Confirmas este flujo de trabajo?</p>
           <div class="options">
-            <label><input type="radio" name="asistente_modulos_ok" value="El flujo de 4 módulos cubre al 100% la operación de recepción" checked> El flujo de 4 módulos cubre al 100% la operación de recepción</label>
-            <label><input type="radio" name="asistente_modulos_ok" value="Deseo agregar alguna función adicional"> Deseo agregar alguna función adicional dentro del alcance</label>
+            <label><input type="radio" name="portales_status" value="Aprobado el flujo de ambos portales al 100%" checked> Aprobado el flujo de ambos portales al 100% (Recomendado)</label>
+            <label><input type="radio" name="portales_status" value="Deseo ajustar alguna función operativa"> Deseo ajustar alguna función operativa</label>
           </div>
-          <input type="text" id="box_asistente_extra" style="margin-top:10px;display:none;" name="asistente_extra" placeholder="Describe la función adicional (ej. registro rápido de cobro en efectivo, notas breves)...">
-        </div>
-
-        <div class="q grid">
-          <div>
-            <label class="label">3.2 Blindaje de Privacidad Clínica</label>
-            <p class="hint">En la demo, el portal del asistente está configurado como <em>"Sin información clínica"</em>: el asistente no tiene acceso a diagnósticos médicos, porcentajes de grasa ni notas confidenciales de los expedientes; solo gestiona horarios, asistencias y cobros. ¿Confirmas este nivel de privacidad?</p>
-            <div class="options">
-              <label><input type="radio" name="asistente_privacidad" value="Sí, confirmar blindaje de privacidad (asistente sin acceso a datos clínicos)" checked> Sí, confirmar blindaje de privacidad</label>
-              <label><input type="radio" name="asistente_privacidad" value="Permitir ver datos específicos"> Permitir ver datos específicos</label>
-            </div>
-          </div>
-          <div>
-            <label class="label">3.3 Permisos de Agenda para el Asistente</label>
-            <p class="hint">¿El asistente podrá bloquear horarios por imprevistos, citas personales o salidas de Joan y reagendar citas libremente en el calendario?</p>
-            <div class="options">
-              <label><input type="radio" name="asistente_permisos" value="Sí, control completo de bloqueos de horario y reagendas" checked> Sí, control completo de bloqueos y reagendas</label>
-              <label><input type="radio" name="asistente_permisos" value="Solo reagendar citas ya confirmadas"> Solo reagendar citas ya confirmadas</label>
-              <label><input type="radio" name="asistente_permisos" value="Solo lectura de calendario"> Solo lectura de calendario</label>
-            </div>
-          </div>
+          <input type="text" id="box_portales_detalle" style="margin-top:10px;display:none;" name="portales_detalle" placeholder="Describe qué función te gustaría ajustar en los portales...">
         </div>
 
         <div class="q">
-          <label class="label">3.4 Cuenta de Acceso para tu Asistente</label>
-          <p class="hint">Si tu asistente ya cuenta con un correo exclusivo solamente para JM Nutriólogo, lo podemos usar directamente para su cuenta. Si no cuenta con uno propio, simplemente anota un correo tipo <code>asistente@jmnutriologo.com</code>. <strong>Aclaración importante:</strong> nosotros no crearemos tal cual en Google esa cuenta de correo, sino que la utilizaremos únicamente como nombre de usuario para iniciar sesión en su sistema (no existirá para una bandeja de entrada tradicional):</p>
-          <input type="text" name="asistente_correos" placeholder="Ej. asistente@jmnutriologo.com o correo exclusivo de tu asistente">
-        </div>
-
-        <div class="nav">
-          <button class="btn secondary" type="button" data-prev>← Atrás</button>
-          <button class="btn" type="button" data-next>Continuar a Portal de Joan →</button>
-        </div>
-      </section>
-
-      <!-- PASO 4: PORTAL DE JOAN -->
-      <section class="step" data-step="4">
-        <div class="step-head">
-          <span class="step-no">04 · Consultorio Clínico</span>
-          <h2>Portal de Joan (Consultorio Clínico y Gestión Deportiva)</h2>
-          <p>Tu centro de control en consulta activa, modo presentación, candados médicos y retención de pacientes.</p>
-        </div>
-
-        <div class="q">
-          <label class="label">4.1 Resumen en 10 Segundos ("En Turno")</label>
-          <p class="hint">Al pasar el paciente a tu escritorio, la pantalla te muestra en tiempo real: • Minutos que esperó en sala • Objetivo principal y comparativa de cambios del mes pasado • Alertas médicas inmediatas (ej. prediabetes, asma, alergias, competencia próxima) • La respuesta textual de qué busca resolver hoy (del check-in previo) • Alerta amarilla en caso de que haya comprado suplementos en la web para entregárselos. ¿Te resulta práctico este formato al recibir al paciente?</p>
-          <div class="options">
-            <label><input type="radio" name="joan_resumen_turno" value="Excelente, el formato en 10 segundos es práctico y completo" checked> Excelente, el formato en 10 segundos es práctico y completo</label>
-            <label><input type="radio" name="joan_resumen_turno" value="Modificar orden o priorizar otros datos"> Modificar orden o priorizar otros datos</label>
-          </div>
-          <input type="text" id="box_joan_resumen_detalles" style="margin-top:10px;display:none;" name="joan_resumen_detalles" placeholder="¿Qué datos necesitas ver primero al recibir al paciente?...">
-        </div>
-
-        <div class="q grid">
-          <div>
-            <label class="label">4.2 Carga de Archivos InBody e ISAK y "Modo Presentación"</label>
-            <p class="hint">En la demo arrastras los PDFs de InBody y de tu software ISAK y el sistema extrae las medidas automáticamente. Diseñamos un botón de <strong>"Modo Presentación"</strong> para mostrarle en pantalla completa limpia los cambios al paciente con números grandes (<em>"Valeria, así vas"</em>). ¿Cómo le muestras sus resultados durante la consulta?</p>
-            <div class="options">
-              <label><input type="radio" name="joan_modo_pantalla" value="Volteo mi monitor principal hacia el paciente" checked> Volteo mi monitor principal hacia el paciente</label>
-              <label><input type="radio" name="joan_modo_pantalla" value="Uso o instalaré una pantalla / monitor secundario en consultorio"> Pantalla o monitor secundario en consultorio</label>
-              <label><input type="radio" name="joan_modo_pantalla" value="Prefiero enviarlo directamente a su celular"> Enviarlo directamente a su celular</label>
-            </div>
-          </div>
-          <div>
-            <label class="label">4.3 Confirmación Obligatoria antes de "Mi Reporte JM"</label>
-            <p class="hint">En la demo, <em>Mi Reporte JM</em> permanece <strong>bloqueado</strong> hasta que tú como especialista revises los datos leídos del PDF, corrijas cualquier valor con un clic (lápiz) y presiones <em>"Confirmar valores"</em>. Además, tienes un botón para <strong>desactivar la tarjeta para redes</strong> si por criterio médico no consideras adecuado que comparta su avance. ¿Confirmas este candado médico?</p>
-            <div class="options">
-              <label><input type="radio" name="joan_candado_medico" value="Sí, confirmar candado médico obligatorio antes de liberar el reporte" checked> Sí, confirmar candado médico obligatorio</label>
-              <label><input type="radio" name="joan_candado_medico" value="Liberación automática sin confirmación previa"> Liberación automática sin confirmación</label>
-            </div>
-          </div>
-        </div>
-
-        <div class="q">
-          <label class="label">4.4 Panel de Atletas y Competencias</label>
-          <p class="hint">Diseñamos un módulo específico para tus deportistas que muestra: nombre, disciplina, competencia, fecha y cuenta regresiva de días restantes (<em>"Semana clave"</em> si faltan 10 días o menos). ¿Qué otros datos clave te gustaría ver en esa tarjeta rápida?</p>
-          <div class="options">
-            <label><input type="checkbox" name="atletas_campos" value="Categoría de peso a dar en báscula" checked> Categoría de peso a dar en báscula</label>
-            <label><input type="checkbox" name="atletas_campos" value="Fecha y hora exacta de pesaje" checked> Fecha y hora exacta de pesaje</label>
-            <label><input type="checkbox" name="atletas_campos" value="Fase de carbohidratos (descarga / carga)" checked> Fase de carbohidratos (descarga / carga)</label>
-            <label><input type="checkbox" name="atletas_campos" value="Marca o total olímpico a superar" checked> Marca o total olímpico a superar</label>
-          </div>
-          <input type="text" style="margin-top:10px;" name="atletas_extras" placeholder="Otros datos deportivos que desees monitorear...">
-        </div>
-
-        <div class="q grid">
-          <div>
-            <label class="label">4.5 Reactivación de Pacientes Ausentes</label>
-            <p class="hint">En la demo hay una lista de pacientes con más de <strong>45 días sin cita</strong> con un botón de WhatsApp pre-redactado para invitarlos a revalorarse con 1 clic. ¿El umbral de 45 días te parece el ideal?</p>
-            <div class="options">
-              <label><input type="radio" name="plazo_reactivacion" value="45 días sin cita (Recomendado)" checked> 45 días sin cita (Recomendado)</label>
-              <label><input type="radio" name="plazo_reactivacion" value="30 días sin cita"> 30 días sin cita</label>
-              <label><input type="radio" name="plazo_reactivacion" value="60 días sin cita"> 60 días sin cita</label>
-            </div>
-          </div>
-          <div>
-            <label class="label">4.6 Retención de Expedientes Clínicos</label>
-            <p class="hint">¿Cuánto tiempo deseas conservar el expediente de un paciente que deja de asistir? ¿Lo dejamos predeterminado de por vida para que si vuelve después de varios años sus datos sigan ahí?</p>
-            <div class="options">
-              <label><input type="radio" name="retencion_expediente" value="Conservar expedientes de por vida (si vuelve en años sus datos siguen intactos)" checked> Conservar de por vida (Recomendado)</label>
-              <label><input type="radio" name="retencion_expediente" value="Archivar tras 5 años de inactividad"> Archivar tras 5 años</label>
-            </div>
-          </div>
-        </div>
-
-        <div class="q">
-          <label class="label">4.7 Notas Clínicas Privadas</label>
-          <p class="hint">¿Deseas una bitácora de notas clínicas privadas en el expediente, visibles exclusivamente para ti (ocultas para el paciente y para el asistente)?</p>
-          <div class="options">
-            <label><input type="radio" name="notas_privadas" value="Sí, indispensable bitácora privada" checked> Sí, indispensable bitácora privada</label>
-            <label><input type="radio" name="notas_privadas" value="No es necesaria"> No es necesaria</label>
-          </div>
-        </div>
-
-        <div class="nav">
-          <button class="btn secondary" type="button" data-prev>← Atrás</button>
-          <button class="btn" type="button" data-next>Continuar a Check-in Pre-Consulta →</button>
-        </div>
-      </section>
-
-      <!-- PASO 5: CHECK-IN PRE-CONSULTA -->
-      <section class="step" data-step="5">
-        <div class="step-head">
-          <span class="step-no">05 · Evaluación Previa</span>
-          <h2>Check-in Pre-Consulta (Formulario en el Celular del Paciente)</h2>
-          <p>Módulo interactivo que el paciente responde desde su celular 1 día antes o minutos antes de su consulta.</p>
-        </div>
-
-        <div class="q">
-          <label class="label">5.1 Las 5 Preguntas del Check-in Rápido (&lt;45 segundos en Celular)</label>
-          <p class="hint">En la demo el paciente responde en su celular antes de entrar a consulta:<br>1. <em>¿Qué días entrenaste este mes?</em> (calendario táctil de 30 días)<br>2. <em>¿Tuviste molestias o lesiones?</em> (zonas táctiles: Rodilla, Hombro, Espalda baja, Tobillo, Muñeca, Cadera, Cuello, Codo)<br>3. <em>¿Cambiaste medicamentos o suplementos?</em> (inicio, abandono o cambio de dosis)<br>4. <em>¿Tienes competencia próxima?</em> (fecha en calendario o botones rápidos de +7 a +60 días)<br>5. <em>¿Qué quieres resolver en esta consulta?</em> (botones de 1 clic como <em>Hambre nocturna, Más energía, Bajar categoría, Comer antes de competir</em> + texto libre).<br>¿Deseas ajustar alguna pregunta o agregar alguna opción frecuente?</p>
-          <div class="options">
-            <label><input type="radio" name="checkin_status" value="Las 5 preguntas y opciones táctiles están aprobadas al 100%" checked> Las 5 preguntas y opciones táctiles están aprobadas al 100%</label>
-            <label><input type="radio" name="checkin_status" value="Ajustar preguntas o zonas anatómicas"> Ajustar preguntas o zonas anatómicas</label>
-          </div>
-          <textarea id="box_checkin_modificaciones" style="margin-top:10px;display:none;" name="checkin_modificaciones" placeholder="Describe los ajustes o zonas adicionales que desees incluir..."></textarea>
-        </div>
-
-        <div class="q grid">
-          <div>
-            <label class="label">5.2 Atención a Pacientes Menores de Edad</label>
-            <p class="hint">En la demo contemplamos una alerta cuando el paciente es menor (ej. atletas juveniles de 16-17 años). ¿Los recordatorios de WhatsApp e historial deben dirigirse al padre, madre o tutor legal registrado?</p>
-            <div class="options">
-              <label><input type="radio" name="menores_tutor" value="Sí, a nombre y contacto del padre, madre o tutor legal" checked> Sí, a nombre del padre o tutor</label>
-              <label><input type="radio" name="menores_tutor" value="Directamente al paciente menor de edad"> Al paciente menor de edad</label>
-            </div>
-          </div>
-          <div>
-            <label class="label">5.3 Historia Clínica Completa de Primera Vez</label>
-            <p class="hint">Para pacientes de primera vez se contempla un formulario previo más profundo. Si cuentas con un formato en Word, PDF o foto en papel, proporciónanoslo para digitalizarlo con tus parámetros clínicos:</p>
-            <div class="options">
-              <label><input type="radio" name="historia_clinica_modo" value="Enviaré mi formato en Word, PDF o foto de papel"> Enviaré mi formato de historia clínica</label>
-              <label><input type="radio" name="historia_clinica_modo" value="No tengo formato / Utilizar formato clínico estándar propuesto" checked> Utilizar formato estándar propuesto (no subir archivo)</label>
-            </div>
-            <div class="attachment-box" id="box_historia_clinica" style="display:none;margin-top:10px;">
-              <span class="attachment-tag">Documento clínico por adjuntar</span>
-              <p class="attachment-desc">Si eliges enviar tu formato en Word, PDF o foto de papel, adjúntalo al finalizar el cuestionario junto con el PDF descargado.</p>
-              <label class="attachment-checkbox"><input type="checkbox" name="adjunto_historia_clinica" value="Sí, enviaré mi formato de historia clínica con el PDF"> Confirmar que enviaré mi formato de historia clínica por WhatsApp</label>
-            </div>
-          </div>
-        </div>
-
-        <div class="nav">
-          <button class="btn secondary" type="button" data-prev>← Atrás</button>
-          <button class="btn" type="button" data-next>Continuar a Mi Reporte JM →</button>
-        </div>
-      </section>
-
-      <!-- PASO 6: MI REPORTE JM -->
-      <section class="step" data-step="6">
-        <div class="step-head">
-          <span class="step-no">06 · Métricas y Reportes</span>
-          <h2>Mi Reporte JM (Experiencia del Paciente y Tarjeta para Redes)</h2>
-          <p>El portal interactivo que recibe tu paciente en WhatsApp tras cada consulta de seguimiento.</p>
-        </div>
-
-        <div class="q">
-          <label class="label">6.1 Estimación de Pacientes Activos al Mes</label>
-          <p class="hint">Aproximadamente, ¿cuántos pacientes totales atiendes en consulta cada mes? Esta estimación nos servirá para dimensionar la capacidad de usuarios que utilizarán la plataforma de reportes interactivos y check-in móvil:</p>
-          <div style="background:#fcfcfc;border:1px solid var(--line);border-radius:3px;padding:16px 20px;margin-top:10px;">
+          <label class="label">3.2 Estimación de Pacientes Activos al Mes (Capacidad de la Plataforma)</label>
+          <p class="hint">Aproximadamente, ¿cuántos pacientes totales atiendes en consulta cada mes? Desliza la bolita para estimar el volumen de clientes que usarán la plataforma de reportes interactivos y check-in móvil:</p>
+          <div style="background:#fcfcfc;border:1px solid var(--line);border-radius:3px;padding:14px 18px;margin-top:10px;">
             <div style="display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-size:13.5px;color:var(--ink-soft);">Pacientes mensuales aproximados:</span>
-              <span id="valPacientes" style="font-size:22px;font-weight:700;color:var(--gold-dark);font-family:'IBM Plex Mono',monospace;">80 pacientes / mes aprox.</span>
+              <span style="font-size:13px;color:var(--ink-soft);">Pacientes mensuales aproximados:</span>
+              <span id="valPacientes" style="font-size:20px;font-weight:700;color:var(--gold-dark);font-family:'IBM Plex Mono',monospace;">80 pacientes / mes aprox.</span>
             </div>
             <input type="range" id="sliderPacientes" name="pacientes_estimados" min="10" max="300" step="5" value="80">
-            <div style="display:flex;justify-content:space-between;font-size:11.5px;color:#888;font-family:'IBM Plex Mono',monospace;">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#888;font-family:'IBM Plex Mono',monospace;">
               <span>10 pacientes</span>
               <span>150 pacientes</span>
               <span>300+ pacientes</span>
@@ -671,35 +443,8 @@
         </div>
 
         <div class="q">
-          <label class="label">6.2 Acceso Seguro sin Contraseña (PIN de 4 Dígitos y Caducidad)</label>
-          <p class="hint">El paciente abre su reporte escaneando el QR en tu consultorio o por un enlace privado de WhatsApp (<code>jmnutriologo.mx/r/codigo</code>). Para entrar <strong>no necesita crear cuentas ni contraseñas</strong>, solo teclea los <strong>últimos 4 dígitos de su teléfono</strong>. El enlace caduca en <strong>72 horas o después de 3 aperturas</strong>. ¿Te parece óptima esta dinámica?</p>
-          <div class="options">
-            <label><input type="radio" name="revisar_acceso_pin" value="Excelente, acceso con últimos 4 dígitos y caducidad de 72 hrs / 3 aperturas" checked> Excelente, acceso con últimos 4 dígitos y caducidad 72 hrs (Recomendado)</label>
-            <label><input type="radio" name="revisar_acceso_pin" value="Enlace permanente sin caducidad de tiempo"> Enlace permanente sin caducidad</label>
-            <label><input type="radio" name="revisar_acceso_pin" value="Ajustar tiempo de vigencia"> Ajustar tiempo de vigencia</label>
-          </div>
-        </div>
-
-        <div class="q">
-          <label class="label">6.3 Estructura del "Recap del Mes" en Historias y Propuestas de Joan</label>
-          <p class="hint">En la demo el paciente ve su avance en formato interactivo (estilo Instagram Stories):<br>• Bienvenida con días entrenados en el mes<br>• Mayor cambio relativo destacado (ej. pérdida de grasa visceral)<br>• Barras de Antes/Después (músculo y grasa %)<br>• <strong>Silueta corporal interactiva</strong> con análisis segmental InBody (brazos, piernas, tronco)<br>• <strong>Gráfico de VO2 Max</strong> comparado contra baremos deportivos de su edad/sexo<br>• <strong>Somatocarta ISAK</strong> (triángulo con evolución de somatotipo).<br>Estos bloques son los que nosotros planteamos en la demo, pero <strong>al ser tú el especialista que conoce a fondo los datos de InBody e ISAK, queremos que nos propongas si te gustaría que aparezca alguna otra métrica o dato clave en este recap:</strong></p>
-          <div class="options">
-            <label><input type="checkbox" name="recap_elementos" value="Días entrenados del mes" checked> Días entrenados en el mes</label>
-            <label><input type="checkbox" name="recap_elementos" value="Mayor cambio logrado (Grasa visceral)" checked> Mayor cambio logrado (grasa visceral)</label>
-            <label><input type="checkbox" name="recap_elementos" value="Comparativa Antes / Después (músculo y grasa)" checked> Antes / Después (músculo y grasa %)</label>
-            <label><input type="checkbox" name="recap_elementos" value="Silueta interactiva con masa segmental InBody" checked> Silueta interactiva con masa segmental</label>
-            <label><input type="checkbox" name="recap_elementos" value="VO2 Max relativo y escala ACSM" checked> VO2 Max relativo y escala deportiva</label>
-            <label><input type="checkbox" name="recap_elementos" value="Somatocarta ISAK (triángulo de somatotipo)" checked> Somatocarta ISAK (somatotipo)</label>
-          </div>
-          <div style="margin-top:14px;">
-            <label class="label" style="font-size:13.5px;">Propuestas de Joan para el Recap (InBody / ISAK):</label>
-            <textarea name="recap_propuestas_joan" placeholder="Proponnos aquí si deseas que aparezca algún otro dato (ej. retención de líquidos / agua extracelular, ángulo de fase, masa magra seca, perímetros óseos/musculares, etc.)..."></textarea>
-          </div>
-        </div>
-
-        <div class="q">
-          <label class="label">6.4 Protocolo de Medición Antropométrica (Pliegues y Somatocarta)</label>
-          <p class="hint">En la maqueta visual del reporte mostramos <em>"Suma de 8 pliegues"</em> y el gráfico de somatocarta (somatotipo), pero en algunos reportes de ejemplo se muestra suma de 6 pliegues y no incluye somatotipo. ¿Cuál es el protocolo o la forma exacta en la que realizas las mediciones a tus pacientes?</p>
+          <label class="label">3.3 Protocolo de Medición Antropométrica (Pliegues y Somatocarta)</label>
+          <p class="hint">En la maqueta visual mostramos <em>"Suma de 8 pliegues"</em> y el gráfico de somatocarta (somatotipo), pero en algunos reportes de ejemplo se muestra suma de 6 pliegues y no incluye somatotipo. ¿Cuál es el protocolo o la forma exacta en la que realizas las mediciones a tus pacientes?</p>
           <div class="options">
             <label><input type="radio" name="isak_pliegues_protocolo" value="Suma de 8 pliegues + Somatocarta (Protocolo ISAK completo)" checked> Suma de 8 pliegues + Somatocarta (Protocolo ISAK completo · Recomendado)</label>
             <label><input type="radio" name="isak_pliegues_protocolo" value="Suma de 6 pliegues (Reporte sin somatocarta)"> Suma de 6 pliegues (Reporte sin somatocarta)</label>
@@ -711,98 +456,33 @@
           </div>
         </div>
 
-        <div class="q grid">
-          <div>
-            <label class="label">6.5 Tarjeta Descargable para Redes Sociales (Post 4:5 e Historia 9:16)</label>
-            <p class="hint">Al final del reporte el paciente puede compartir su logro en Instagram con las métricas que elija (hasta 5: % grasa, músculo, agua, visceral, suma de pliegues, VO2 Max, dinamometría). Por privacidad médica, <strong>el peso corporal viene oculto por defecto</strong> y el nombre aparece solo con iniciales (<em>"V. R."</em>). ¿Te parece adecuada esta configuración?</p>
-            <div class="options">
-              <label><input type="radio" name="tarjeta_privacidad" value="Sí, peso oculto por defecto e iniciales por privacidad" checked> Sí, peso oculto e iniciales por privacidad</label>
-              <label><input type="radio" name="tarjeta_privacidad" value="Mostrar peso si el paciente lo autoriza en consulta"> Mostrar peso si el paciente lo autoriza</label>
-            </div>
-          </div>
-          <div>
-            <label class="label">6.6 Reportes Reales para Calibración</label>
-            <p class="hint">Para calibrar el motor de extracción automática de datos:</p>
-            <div class="attachment-box" id="box_reportes_calibracion">
-              <span class="attachment-tag">Reportes por adjuntar</span>
-              <p class="attachment-desc">Adjunta de 3 a 4 reportes reales de InBody e ISAK (anónimos o tuyos) al finalizar el cuestionario junto con el PDF descargado para calibrar el algoritmo lector.</p>
-              <label class="attachment-checkbox"><input type="checkbox" name="adjunto_reportes_calibracion" value="Sí, enviaré 3-4 reportes reales de muestra con el PDF"> Confirmar que enviaré los 3-4 reportes reales por WhatsApp</label>
-            </div>
+        <div class="q">
+          <label class="label">3.4 Reportes Reales para Calibración del Lector Automático</label>
+          <p class="hint">Para calibrar con precisión milimétrica el algoritmo que lee y extrae tus mediciones:</p>
+          <div class="attachment-box" id="box_reportes_calibracion">
+            <span class="attachment-tag">3 a 4 Reportes por adjuntar</span>
+            <p class="attachment-desc">Adjunta de 3 a 4 reportes reales de InBody y de tu software ISAK (anónimos o tuyos) en PDF al finalizar el cuestionario junto con el PDF descargado para calibrar el algoritmo lector.</p>
+            <label class="attachment-checkbox"><input type="checkbox" name="adjunto_reportes_calibracion" value="Sí, enviaré 3-4 reportes reales de muestra con el PDF" checked> Confirmar que enviaré los 3-4 reportes reales en PDF por WhatsApp</label>
           </div>
         </div>
 
         <div class="nav">
           <button class="btn secondary" type="button" data-prev>← Atrás</button>
-          <button class="btn" type="button" data-next>Continuar a Equipos y Tienda →</button>
+          <button class="btn" type="button" data-next>Continuar a Tienda y Tecnología →</button>
         </div>
       </section>
 
-      <!-- PASO 7: EQUIPOS, TROFEOS, TESTIMONIOS Y TIENDA -->
-      <section class="step" data-step="7">
+      <!-- PASO 4: TIENDA DE SUPLEMENTOS Y TECNOLOGÍA -->
+      <section class="step" data-step="4">
         <div class="step-head">
-          <span class="step-no">07 · Tienda y Social</span>
-          <h2>Tecnología, Sala de Trofeos, Testimonios y Tienda de Suplementos</h2>
-          <p>Decisiones de presentación de tecnología en la web, testimonios reales y catálogo de suplementos.</p>
+          <span class="step-no">04 · Tienda y Tecnología</span>
+          <h2>Catálogo de Suplementos y Pruebas en la Web</h2>
+          <p>Gestión de suplementos en el consultorio y material demostrativo de evaluación deportiva.</p>
         </div>
 
         <div class="q">
-          <label class="label">7.1 Sección de Tecnología: ¿Reportes Muestra o Video Demostrativo? (Sección 03)</label>
-          <p class="hint">Hacemos referencia específica a la <strong>Sección 03: Tecnología</strong> de la página web presentada, donde mostramos las 3 pruebas (<em>VO2 Max, InBody, ISAK</em>) con un visor ampliable de reportes muestra. ¿Deseas conservarlo así o te gustaría que en la pestaña de <strong>VO2 Max</strong> integremos un video tuyo realizando la prueba de esfuerzo con mascarilla en banda (tomado de tus videos de redes sociales donde explicas qué es)?</p>
-          <div class="options">
-            <label><input type="radio" name="tecnologia_tipo" value="Dejar como está en la demo (reportes interactivos a un costado de cada tecnología)" checked> Dejar como está en la demo (reportes interactivos a un costado)</label>
-            <label><input type="radio" name="tecnologia_tipo" value="Integrar en VO2 Max mi video de redes sociales haciendo la prueba o explicando qué es"> Integrar en VO2 Max mi video de redes sociales haciendo la prueba o explicando qué es</label>
-            <label><input type="radio" name="tecnologia_tipo" value="Videos demostrativos en las 3 tecnologías"> Videos demostrativos en las 3 tecnologías</label>
-          </div>
-          <div class="attachment-box" id="box_reportes_muestra" style="display:none;">
-            <span class="attachment-tag">Material para tecnología por adjuntar</span>
-            <p class="attachment-desc">Si eliges integrar el video de VO2 Max o reportes propios, compártenos el enlace/video o los reportes muestra al finalizar el cuestionario junto con el PDF descargado.</p>
-            <label class="attachment-checkbox"><input type="checkbox" name="adjunto_reportes_muestra" value="Sí, enviaré el video de VO2 Max o reportes por WhatsApp con el PDF"> Confirmar que enviaré el video o enlace de VO2 Max por WhatsApp junto con el PDF</label>
-          </div>
-        </div>
-
-        <div class="q">
-          <label class="label">7.2 Sala de Trofeos y Medallero (Sección 05: Resultados)</label>
-          <p class="hint">En la demo colocamos un medallero interactivo (<em>Oro, Plata, Bronce, Internacionales</em>) filtrable por disciplinas (<em>Halterofilia, Jiu-jitsu, Taekwondo, Box, Natación</em>). ¿Prefieres mantener este medallero estadístico o prefieres un <strong>carrusel fotográfico de tus atletas reales en podios y competencias</strong>?</p>
-          <div class="options">
-            <label><input type="radio" name="trofeos_formato" value="Medallero estadístico interactivo (como en la demo, no subir fotos)" checked> Medallero estadístico interactivo (como en la demo, no subir fotos)</label>
-            <label><input type="radio" name="trofeos_formato" value="Carrusel fotográfico con atletas reales en podios y competencias"> Carrusel fotográfico con atletas reales en podios y competencias</label>
-            <label><input type="radio" name="trofeos_formato" value="Ambos integrados (medallero estadístico + carrusel de fotos)"> Ambos integrados (medallero estadístico + carrusel de fotos)</label>
-          </div>
-          <div class="attachment-box" id="box_fotos_atletas" style="display:none;">
-            <span class="attachment-tag">Fotos de atletas por adjuntar</span>
-            <p class="attachment-desc">Si eliges carrusel con fotos de atletas, adjúntalas al finalizar el cuestionario junto con el PDF descargado con una breve descripción.</p>
-            <label class="attachment-checkbox"><input type="checkbox" name="adjunto_fotos_atletas" value="Sí, enviaré fotos de atletas y competencias con el PDF"> Confirmar que enviaré las fotos de atletas por WhatsApp junto con el PDF</label>
-          </div>
-        </div>
-
-        <div class="q grid">
-          <div>
-            <label class="label">7.3 Testimonios de Atletas y Pacientes (Sección 05: Resultados)</label>
-            <p class="hint">En la demo mostramos testimonios demo de pacientes. Podemos hacer que las fotos que vayan apareciendo de diversas personas tengan un testimonio real. Solo que sí necesitaríamos la autorización de las personas, así como recabar su nombre y apellido completo:</p>
-            <div class="options">
-              <label><input type="radio" name="testimonios_foto" value="Mantener testimonios generales como están en la demo (no subir fotos ni testimonios)" checked> Mantener testimonios generales como están en la demo</label>
-              <label><input type="radio" name="testimonios_foto" value="Sí, testimonios con foto de cada persona, nombre y apellido (con su autorización)"> Sí, testimonios con foto de cada persona y nombre autorizado</label>
-              <label><input type="radio" name="testimonios_foto" value="Solo testimonios en texto con nombre y apellido (sin foto del paciente)"> Solo testimonios en texto con nombre (sin foto)</label>
-            </div>
-            <div class="attachment-box" id="box_testimonios" style="display:none;margin-top:10px;">
-              <span class="attachment-tag">Testimonios y fotos por adjuntar</span>
-              <p class="attachment-desc">Si eliges testimonios de pacientes reales, compártenos de 3 a 5 testimonios redactados con nombre, apellido y foto al finalizar el cuestionario junto con el PDF descargado.</p>
-              <label class="attachment-checkbox"><input type="checkbox" name="adjunto_testimonios" value="Sí, enviaré 3-5 testimonios autorizados por WhatsApp con el PDF"> Confirmar que enviaré los testimonios autorizados por WhatsApp junto con el PDF</label>
-            </div>
-          </div>
-          <div>
-            <label class="label">7.4 Reseñas de Google Maps (Sección 09: Contacto)</label>
-            <p class="hint">Al pie de la web mostramos una calificación destacada de 5 estrellas con botón a tu perfil de Google Maps. ¿Deseas que sincronicemos automáticamente las opiniones reales de tu perfil <em>"JM NUTRIOLOGO Nezahualcóyotl"</em> o prefieres que seleccionemos manualmente las mejores reseñas?</p>
-            <div class="options">
-              <label><input type="radio" name="google_reviews" value="Sincronizar automáticamente las reseñas reales de Google Maps" checked> Sincronizar automáticamente Google Maps</label>
-              <label><input type="radio" name="google_reviews" value="Seleccionar manualmente las mejores reseñas para la web"> Seleccionar manualmente las mejores reseñas</label>
-            </div>
-          </div>
-        </div>
-
-        <div class="q">
-          <label class="label">7.5 Catálogo de Suplementos y Control de Stock (Sección 06: Tienda)</label>
-          <p class="hint">Si tienes un archivo Excel, una base de datos o algún documento donde lleves el control de productos, marca la casilla correspondiente y compártenoslo por WhatsApp al mandar el PDF con tus respuestas. Si no tienes un archivo de control, puedes anotar tu lista preliminar aquí (nombre, marca, gramaje y precio). Para las fotografías, no se requieren fotos de estudio: fotos tomadas con tu celular con buena iluminación son suficientes y nosotros las mejoramos y recortamos:</p>
+          <label class="label">4.1 Catálogo de Suplementos y Control de Stock (Sección 06: Tienda)</label>
+          <p class="hint">En tu diagnóstico confirmaste que vendes suplementos y productos de nutrición. Si cuentas con un archivo en Excel, base de datos o documento de stock, marca la casilla y compártelo por WhatsApp al enviar el PDF. Si prefieres, puedes anotar tu lista preliminar aquí (nombre, marca, gramaje y precio):</p>
           <div class="attachment-box" style="margin-bottom:12px;">
             <label class="attachment-checkbox" style="background:#fff;">
               <input type="checkbox" name="adjunto_suplementos_excel" value="Sí, enviaré mi archivo Excel/base de datos de stock de suplementos por WhatsApp">
@@ -814,30 +494,35 @@
             <label><input type="radio" name="suplementos_modo" value="Enviaré información de stock y fotos tomadas con mi celular"> Enviaré información de stock y fotos tomadas con mi celular</label>
             <label><input type="radio" name="suplementos_modo" value="No habilitar tienda de suplementos por el momento"> No habilitar tienda de suplementos por el momento</label>
           </div>
-          <div class="attachment-box" id="box_suplementos" style="display:none;margin-top:12px;">
+          <div class="attachment-box" id="box_suplementos" style="display:none;margin-top:10px;">
             <span class="attachment-tag">Fotos de celular por adjuntar</span>
-            <p class="attachment-desc">Si eliges enviar fotos de celular, adjúntalas al finalizar el cuestionario junto con el PDF descargado.</p>
+            <p class="attachment-desc">Si eliges enviar fotos de celular con buena luz, adjúntalas al finalizar el cuestionario junto con el PDF descargado.</p>
             <label class="attachment-checkbox"><input type="checkbox" name="adjunto_suplementos_fotos" value="Sí, enviaré fotos de suplementos tomadas con celular"> Confirmar que enviaré las fotos de celular por WhatsApp junto con el PDF</label>
           </div>
-          <textarea style="margin-top:10px;" name="suplementos_detalle" placeholder="Lista preliminar de suplementos: Nombre, Marca, Gramaje/Presentación, Precio al público y piezas aproximadas en stock..."></textarea>
+          <textarea style="margin-top:10px;" name="suplementos_detalle" placeholder="Lista preliminar de suplementos: Nombre, Marca, Gramaje/Presentación y Precio al público..."></textarea>
         </div>
 
         <div class="q grid">
           <div>
-            <label class="label">7.6 ¿Quién Puede Apartar en la Tienda Web?</label>
-            <p class="hint">¿Quién podrá apartar suplementos y productos desde la página web?</p>
-            <div class="options">
-              <label><input type="radio" name="tienda_acceso_apartado" value="Cualquier persona que visite la web (con nombre y WhatsApp para recoger en cita)" checked> Cualquier persona que visite la web (con nombre y WhatsApp)</label>
-              <label><input type="radio" name="tienda_acceso_apartado" value="Exclusivamente pacientes registrados del consultorio"> Exclusivamente pacientes registrados del consultorio</label>
-            </div>
-          </div>
-          <div>
-            <label class="label">7.7 Mecánica de Cobro en la Tienda</label>
-            <p class="hint">En la demo la tienda funciona como apartado en línea y entrega en cita presencial. También podemos habilitar pagos en línea con PayPal si cuentas con cuenta activa:</p>
+            <label class="label">4.2 Mecánica de Cobro en la Tienda</label>
+            <p class="hint">En la demo la tienda funciona como apartado en línea y entrega en cita presencial:</p>
             <div class="options">
               <label><input type="radio" name="tienda_pagos" value="Modelo de la demo: apartado en la web y cobro 100% en consultorio (terminal / transferencia / efectivo)" checked> Apartado web y cobro 100% en consultorio</label>
               <label><input type="radio" name="tienda_pagos" value="Vincular PayPal: cobrar en línea desde la web mediante PayPal"> Cobrar en línea con PayPal desde la web</label>
               <label><input type="radio" name="tienda_pagos" value="Habilitar ambas modalidades (apartado en consultorio o pago online con PayPal)"> Habilitar ambas modalidades</label>
+            </div>
+          </div>
+          <div>
+            <label class="label">4.3 Sección de Tecnología: Video VO2 Max (Sección 03)</label>
+            <p class="hint">¿Deseas integrar en la pestaña de VO2 Max tu video de redes sociales haciendo la prueba con mascarilla en banda?</p>
+            <div class="options">
+              <label><input type="radio" name="tecnologia_tipo" value="Dejar como está en la demo (reportes interactivos a un costado de cada tecnología)" checked> Dejar como está en la demo (reportes interactivos)</label>
+              <label><input type="radio" name="tecnologia_tipo" value="Integrar en VO2 Max mi video de redes sociales haciendo la prueba o explicando qué es"> Integrar en VO2 Max mi video de redes sociales</label>
+            </div>
+            <div class="attachment-box" id="box_reportes_muestra" style="display:none;margin-top:10px;">
+              <span class="attachment-tag">Video por adjuntar</span>
+              <p class="attachment-desc">Compártenos el enlace o archivo de tu video de VO2 Max por WhatsApp al enviar el PDF.</p>
+              <label class="attachment-checkbox"><input type="checkbox" name="adjunto_reportes_muestra" value="Sí, enviaré el video o enlace de VO2 Max con el PDF"> Confirmar envío de video por WhatsApp</label>
             </div>
           </div>
         </div>
@@ -848,11 +533,11 @@
         </div>
       </section>
 
-      <!-- PASO 8: RESUMEN Y GENERACIÓN DE PDF -->
-      <section class="step" data-step="8">
+      <!-- PASO 5: RESUMEN Y GENERACIÓN DE PDF -->
+      <section class="step" data-step="5">
         <div id="reviewContent">
           <div class="step-head">
-            <span class="step-no">08 · Confirmación</span>
+            <span class="step-no">05 · Confirmación</span>
             <h2>Revisión Final y Archivos por Adjuntar</h2>
             <p>Revisa el resumen de tus respuestas antes de generar y descargar tu documento PDF oficial.</p>
           </div>
@@ -860,14 +545,15 @@
           <!-- LISTA DINÁMICA DE ARCHIVOS POR ADJUNTAR -->
           <div class="files-checklist-box">
             <h3>Lista de Fotografías y Archivos por Adjuntar al Enviar tu PDF</h3>
-            <p>Con base en tus respuestas seleccionadas, estos son los archivos o fotografías que te solicitamos adjuntar al enviar tu PDF por WhatsApp para integrarlos de inmediato al diseño:</p>
+            <p>Con base en tus respuestas seleccionadas, estos son los archivos que te solicitamos adjuntar al enviar tu PDF por WhatsApp para calibrar e integrar todo de inmediato:</p>
             <ul class="files-list" id="checklistReview">
               <!-- Se pobla dinámicamente -->
             </ul>
           </div>
 
+          <!-- RESUMEN COMPLETO DE RESPUESTAS -->
           <div class="summary-card">
-            <div class="summary-title">Resumen de Respuestas Capturadas</div>
+            <div class="summary-title">Resumen de Decisiones y Parámetros</div>
             <div id="summary"></div>
           </div>
 
@@ -885,7 +571,7 @@
             <img src="logo-cliente.png" alt="JM Nutriólogo">
           </div>
           <h2>¡Cuestionario Completado con Éxito!</h2>
-          <p>Tu PDF ha sido generado y descargado. Ahora solo compártelo por WhatsApp y adjunta las fotos o reportes solicitados con una breve descripción.</p>
+          <p>Tu PDF ha sido generado y descargado. Ahora solo compártelo por WhatsApp y adjunta los 3-4 reportes reales de InBody/ISAK solicitados para calibrar el lector.</p>
           <div class="actions">
             <button class="btn" type="button" id="downloadAgainBtn">Volver a descargar PDF</button>
             <a class="btn secondary" id="whatsappBtn" href="#" target="_blank" rel="noopener">Abrir WhatsApp con el equipo</a>
@@ -921,78 +607,39 @@
     }
 
     const labels = {
-      foto_nutriologo: '1.1 Fotografía de Joan',
-      adjunto_foto_nutriologo: 'Confirmación Foto de Joan',
-      cedula_status: '1.2 Cédula y Formación Académica',
-      cedula_detalle: 'Corrección de Cédula/Universidad',
-      formato_diplomados: '1.3 Diplomados y Credenciales',
-      adjunto_diplomados: 'Confirmación Diplomas/Insignias',
-      detalle_diplomados: 'Detalle de Certificaciones',
-      blog_activo: '1.4 Tips y Artículos Educativos',
-      direccion_status: '1.5 Dirección y Horarios',
-      direccion_consultorio: 'Dirección Física Consultorio',
-      horarios_atencion: 'Horarios de Atención',
-      whatsapp_oficial: '1.6 WhatsApp Oficial para Citas',
-      correo_contacto: '1.6b Correo del Consultorio',
-      servicios_estructura: '2.1 Catálogo de Servicios',
-      servicios_comentarios: 'Detalle de Servicios',
-      cita1_nombre: '2.2 Cita 1 Nombre',
-      cita1_duracion: '2.2 Cita 1 Duración',
-      cita1_precio: '2.2 Cita 1 Precio',
-      cita2_nombre: '2.2 Cita 2 Nombre',
-      cita2_duracion: '2.2 Cita 2 Duración',
-      cita2_precio: '2.2 Cita 2 Precio',
-      cita3_nombre: '2.2 Cita 3 Nombre',
-      cita3_duracion: '2.2 Cita 3 Duración',
-      cita3_precio: '2.2 Cita 3 Precio',
-      cita_adicional: '2.2 Cita Adicional Opcional',
-      agenda_filtro1_status: '2.3 Filtro Inicial Agenda Web',
-      agenda_filtro1_detalle: 'Ajustes Filtro Inicial',
-      historial_clinico_campos_paso2: '2.3 Campos Historial Clínico Paso 2',
-      flujo_operativo_status: '2.4 Flujo Operativo Agendamiento',
-      flujo_operativo_detalle: 'Detalle Flujo Agendamiento',
-      google_cal_sync: '2.5 Sincronización Google Calendar',
-      google_calendar: 'Cuenta Google Calendar',
-      asistente_modulos_ok: '3.1 Módulos Portal Asistente',
-      asistente_extra: 'Función Extra Asistente',
-      asistente_privacidad: '3.2 Blindaje Privacidad Asistente',
-      asistente_permisos: '3.3 Permisos Agenda Asistente',
-      asistente_correos: '3.4 Cuenta Acceso Asistente',
-      joan_resumen_turno: '4.1 Modo En Turno (10 segundos)',
-      joan_resumen_detalles: 'Detalle Modo En Turno',
-      joan_modo_pantalla: '4.2 Modo Presentación en Pantalla',
-      joan_candado_medico: '4.3 Candado Médico Mi Reporte JM',
-      atletas_campos: '4.4 Datos Panel de Atletas',
-      atletas_extras: 'Datos Extras Atletas',
-      plazo_reactivacion: '4.5 Plazo Reactivación Pacientes',
-      retencion_expediente: '4.6 Retención de Expedientes',
-      notas_privadas: '4.7 Notas Clínicas Privadas',
-      checkin_status: '5.1 Preguntas Check-in Móvil',
-      checkin_modificaciones: 'Ajustes a Check-in',
-      menores_tutor: '5.2 Atención a Menores de Edad',
-      historia_clinica_modo: '5.3 Modo Historia Clínica',
-      adjunto_historia_clinica: 'Confirmación Historia Clínica',
-      pacientes_estimados: '6.1 Pacientes Activos al Mes',
-      revisar_acceso_pin: '6.2 Acceso PIN y Caducidad Reporte',
-      recap_elementos: '6.3 Elementos Recap Paciente',
-      recap_propuestas_joan: '6.3 Propuestas Joan para Recap',
-      isak_pliegues_protocolo: '6.4 Protocolo de Medición Antropométrica',
-      isak_forma_medicion: 'Detalle de Forma de Medición / Otro Protocolo',
-      tarjeta_privacidad: '6.5 Privacidad Tarjeta Redes Sociales',
-      adjunto_reportes_calibracion: 'Confirmación Reportes Calibración',
-      tecnologia_tipo: '7.1 Sección Tecnología Web',
-      adjunto_reportes_muestra: 'Confirmación Video/Reportes VO2 Max',
-      trofeos_formato: '7.2 Medallero vs Atletas',
-      adjunto_fotos_atletas: 'Confirmación Fotos Atletas',
-      testimonios_foto: '7.3 Testimonios con Foto',
-      adjunto_testimonios: 'Confirmación Testimonios',
-      google_reviews: '7.4 Reseñas Google Maps',
+      cita1_precio: '1.1 Tarifa Consulta Primera Vez',
+      cita1_duracion: '1.1 Duración Primera Vez',
+      cita2_precio: '1.1 Tarifa Consulta Seguimiento',
+      cita2_duracion: '1.1 Duración Seguimiento',
+      cita3_precio: '1.1 Tarifa Prueba VO2 Max',
+      cita3_duracion: '1.1 Duración VO2 Max',
+      servicios_estructura: '1.1 Modalidad de VO2 Max',
+      servicios_comentarios: '1.1 Ajustes Catálogo / Cita Adicional',
+      foto_nutriologo: '1.2 Fotografía Profesional de Joan',
+      adjunto_foto_nutriologo: 'Confirmación Foto Profesional',
+
+      historial_clinico_campos: '2.1 Campos Requeridos Historial Clínico',
+      historia_clinica_modo: '2.1 Modo Formato Historia Clínica',
+      adjunto_historia_clinica: 'Confirmación Formato Historia Clínica',
+      flujo_operativo_status: '2.2 Flujo de Agendamiento y Bloqueos',
+      flujo_operativo_detalle: '2.2 Detalle Flujo Agendamiento',
+      google_cal_sync: '2.3 Sincronización Google Calendar',
+      google_calendar: '2.3 Otra Cuenta Google Calendar',
+
+      portales_status: '3.1 Validación Portales Joan y Asistente',
+      portales_detalle: '3.1 Ajustes Portales Joan y Asistente',
+      pacientes_estimados: '3.2 Pacientes Activos al Mes (Capacidad)',
+      isak_pliegues_protocolo: '3.3 Protocolo Antropométrico (Pliegues)',
+      isak_forma_medicion: '3.3 Detalle de Metodología de Medición',
+      adjunto_reportes_calibracion: '3.4 Confirmación Reportes Calibración (3-4 PDFs)',
+
       adjunto_suplementos_excel: 'Confirmación Excel/Base Stock',
-      suplementos_modo: '7.5 Modo Tienda Suplementos',
+      suplementos_modo: '4.1 Modo Catálogo Suplementos',
       adjunto_suplementos_fotos: 'Confirmación Fotos Celular Suplementos',
-      suplementos_detalle: 'Detalle Suplementos',
-      tienda_acceso_apartado: '7.6 Acceso Apartado Tienda',
-      tienda_pagos: '7.7 Mecánica de Cobro en Tienda'
+      suplementos_detalle: '4.1 Lista Preliminar de Suplementos',
+      tienda_pagos: '4.2 Mecánica de Cobro Tienda',
+      tecnologia_tipo: '4.3 Video Demostrativo VO2 Max',
+      adjunto_reportes_muestra: 'Confirmación Video VO2 Max'
     };
 
     function values(name) {
@@ -1007,7 +654,14 @@
     }
 
     function updateVisibility() {
-      // 1.1 Foto de Joan
+      // 1.1 Servicios comentarios
+      const servVal = value('servicios_estructura');
+      const boxServ = document.getElementById('box_servicios_comentarios');
+      if (boxServ) {
+        boxServ.style.display = (servVal && servVal.includes('Ajustar catálogo')) ? 'block' : 'none';
+      }
+
+      // 1.2 Foto de Joan
       const fotoVal = value('foto_nutriologo');
       const boxFoto = document.getElementById('box_foto_nutriologo');
       const chkFoto = form.querySelector('[name="adjunto_foto_nutriologo"]');
@@ -1017,77 +671,7 @@
         if (!show && chkFoto) chkFoto.checked = false;
       }
 
-      // 1.2 Cédula corrección
-      const cedVal = value('cedula_status');
-      const boxCed = document.getElementById('box_cedula_correccion');
-      if (boxCed) {
-        boxCed.style.display = cedVal.includes('Requiere corrección') ? 'block' : 'none';
-      }
-
-      // 1.3 Diplomados
-      const diploVal = value('formato_diplomados');
-      const boxDiplo = document.getElementById('box_diplomados');
-      const boxDiploTxt = document.getElementById('box_diplomados_texto');
-      const chkDiplo = form.querySelector('[name="adjunto_diplomados"]');
-      if (boxDiplo) {
-        const show = diploVal && diploVal.includes('Insignias o imágenes gráficas');
-        boxDiplo.style.display = show ? 'block' : 'none';
-        if (!show && chkDiplo) chkDiplo.checked = false;
-      }
-      if (boxDiploTxt) {
-        boxDiploTxt.style.display = (diploVal && diploVal.includes('Modificar lista')) ? 'block' : 'none';
-      }
-
-      // 1.5 Dirección
-      const dirVal = value('direccion_status');
-      const boxDir = document.getElementById('box_direccion_ajuste');
-      if (boxDir) {
-        boxDir.style.display = dirVal.includes('Ajustar dirección') ? 'grid' : 'none';
-      }
-
-      // 2.1 Servicios comentarios
-      const servVal = value('servicios_estructura');
-      const boxServ = document.getElementById('box_servicios_comentarios');
-      if (boxServ) {
-        boxServ.style.display = (servVal && servVal.includes('Ajustar catálogo')) ? 'block' : 'none';
-      }
-
-      // 2.3 Filtro 1 detalle
-      const f1Val = value('agenda_filtro1_status');
-      const boxF1 = document.getElementById('box_agenda_filtro1_detalle');
-      if (boxF1) {
-        boxF1.style.display = (f1Val && f1Val.includes('Modificar datos')) ? 'block' : 'none';
-      }
-
-      // 2.4 Flujo operativo detalle
-      const fOpVal = value('flujo_operativo_status');
-      const boxFOp = document.getElementById('box_flujo_operativo_detalle');
-      if (boxFOp) {
-        boxFOp.style.display = (fOpVal && fOpVal.includes('Deseo modificar')) ? 'block' : 'none';
-      }
-
-      // 3.1 Asistente extra
-      const asisVal = value('asistente_modulos_ok');
-      const boxAsis = document.getElementById('box_asistente_extra');
-      if (boxAsis) {
-        boxAsis.style.display = (asisVal && asisVal.includes('Deseo agregar')) ? 'block' : 'none';
-      }
-
-      // 4.1 Joan resumen detalles
-      const jResVal = value('joan_resumen_turno');
-      const boxJRes = document.getElementById('box_joan_resumen_detalles');
-      if (boxJRes) {
-        boxJRes.style.display = (jResVal && jResVal.includes('Modificar orden')) ? 'block' : 'none';
-      }
-
-      // 5.1 Checkin modificaciones
-      const chkVal = value('checkin_status');
-      const boxChk = document.getElementById('box_checkin_modificaciones');
-      if (boxChk) {
-        boxChk.style.display = (chkVal && chkVal.includes('Ajustar preguntas')) ? 'block' : 'none';
-      }
-
-      // 5.3 Historia clínica
+      // 2.1 Historia clínica formato propio
       const histModo = value('historia_clinica_modo');
       const boxHist = document.getElementById('box_historia_clinica');
       const chkHist = form.querySelector('[name="adjunto_historia_clinica"]');
@@ -1097,37 +681,28 @@
         if (!show && chkHist) chkHist.checked = false;
       }
 
-      // 7.1 Tecnología
-      const tecVal = value('tecnologia_tipo');
-      const boxTec = document.getElementById('box_reportes_muestra');
-      const chkTec = form.querySelector('[name="adjunto_reportes_muestra"]');
-      if (boxTec) {
-        const show = tecVal && !tecVal.includes('Dejar como está');
-        boxTec.style.display = show ? 'block' : 'none';
-        if (!show && chkTec) chkTec.checked = false;
+      // 2.2 Flujo operativo detalle
+      const fOpVal = value('flujo_operativo_status');
+      const boxFOp = document.getElementById('box_flujo_operativo_detalle');
+      if (boxFOp) {
+        boxFOp.style.display = (fOpVal && fOpVal.includes('Deseo modificar')) ? 'block' : 'none';
       }
 
-      // 7.2 Trofeos vs Atletas
-      const trofeoVal = value('trofeos_formato');
-      const boxAtletas = document.getElementById('box_fotos_atletas');
-      const chkAtletas = form.querySelector('[name="adjunto_fotos_atletas"]');
-      if (boxAtletas) {
-        const show = trofeoVal && !trofeoVal.includes('no subir fotos');
-        boxAtletas.style.display = show ? 'block' : 'none';
-        if (!show && chkAtletas) chkAtletas.checked = false;
+      // 2.3 Google Calendar otro correo
+      const gcalVal = value('google_cal_sync');
+      const boxGcal = document.getElementById('box_google_cal_otro');
+      if (boxGcal) {
+        boxGcal.style.display = (gcalVal && gcalVal.includes('Usar otra cuenta')) ? 'block' : 'none';
       }
 
-      // 7.3 Testimonios con Foto
-      const testiVal = value('testimonios_foto');
-      const boxTesti = document.getElementById('box_testimonios');
-      const chkTesti = form.querySelector('[name="adjunto_testimonios"]');
-      if (boxTesti) {
-        const show = testiVal && testiVal.includes('Sí, testimonios con foto');
-        boxTesti.style.display = show ? 'block' : 'none';
-        if (!show && chkTesti) chkTesti.checked = false;
+      // 3.1 Portales detalle
+      const portVal = value('portales_status');
+      const boxPort = document.getElementById('box_portales_detalle');
+      if (boxPort) {
+        boxPort.style.display = (portVal && portVal.includes('Deseo ajustar')) ? 'block' : 'none';
       }
 
-      // 7.5 Suplementos fotos
+      // 4.1 Suplementos fotos
       const supModo = value('suplementos_modo');
       const boxSup = document.getElementById('box_suplementos');
       const chkSup = form.querySelector('[name="adjunto_suplementos_fotos"]');
@@ -1136,9 +711,19 @@
         boxSup.style.display = show ? 'block' : 'none';
         if (!show && chkSup) chkSup.checked = false;
       }
+
+      // 4.3 Tecnología video
+      const tecVal = value('tecnologia_tipo');
+      const boxTec = document.getElementById('box_reportes_muestra');
+      const chkTec = form.querySelector('[name="adjunto_reportes_muestra"]');
+      if (boxTec) {
+        const show = tecVal && tecVal.includes('Integrar en VO2 Max mi video');
+        boxTec.style.display = show ? 'block' : 'none';
+        if (!show && chkTec) chkTec.checked = false;
+      }
     }
 
-    const STORAGE_KEY = 'jm_nutriologo_form_draft_v1';
+    const STORAGE_KEY = 'jm_nutriologo_form_draft_v2';
 
     function saveDraft() {
       try {
@@ -1238,35 +823,15 @@
       const list = [];
       const fotoVal = value('foto_nutriologo');
       if (fotoVal && !fotoVal.includes('Mantener la foto actual')) {
-        list.push('Fotografía profesional del nutriólogo (para renovación o retoque en sección 01)');
-      }
-
-      const diploVal = value('formato_diplomados');
-      if (diploVal && diploVal.includes('Insignias o imágenes gráficas')) {
-        list.push('Diplomas oficiales o insignias escaneadas (para credenciales académicas)');
+        list.push('Fotografía profesional de Joan (para renovación o retoque en sección sobre mí)');
       }
 
       const histModo = value('historia_clinica_modo');
-      if (histModo && histModo.includes('Enviaré mi formato')) {
-        list.push('Formato de historia clínica de primera vez (Word, PDF o foto de expediente en papel)');
+      if (histModo && histModo.includes('Enviaré mi formato propio')) {
+        list.push('Formato de historia clínica propio (Word, PDF o foto de expediente en papel)');
       }
 
-      list.push('3 a 4 reportes reales de InBody e ISAK (anónimos o tuyos) para calibración milimétrica del motor extractor');
-
-      const tecVal = value('tecnologia_tipo');
-      if (tecVal.includes('Integrar en VO2 Max mi video') || tecVal.includes('Videos demostrativos')) {
-        list.push('Video demostrativo de VO2 Max (archivo o enlace de redes sociales)');
-      }
-
-      const trofeoVal = value('trofeos_formato');
-      if (trofeoVal && !trofeoVal.includes('no subir fotos')) {
-        list.push('Fotografías de atletas y pacientes en competencias o con medallas para carrusel');
-      }
-
-      const testiVal = value('testimonios_foto');
-      if (testiVal && testiVal.includes('Sí, testimonios con foto')) {
-        list.push('3 a 5 testimonios redactados con nombre, apellido y fotos autorizadas de pacientes');
-      }
+      list.push('3 a 4 reportes reales de InBody y software ISAK (anónimos o tuyos) en PDF para calibrar el lector automático');
 
       if (value('adjunto_suplementos_excel')) {
         list.push('Archivo Excel o base de datos de control de inventario de suplementos');
@@ -1275,6 +840,11 @@
       const supModo = value('suplementos_modo');
       if (supModo && supModo.includes('Enviaré información de stock y fotos')) {
         list.push('Fotos de suplementos tomadas con celular para edición');
+      }
+
+      const tecVal = value('tecnologia_tipo');
+      if (tecVal.includes('Integrar en VO2 Max mi video')) {
+        list.push('Video demostrativo de VO2 Max (archivo o enlace de redes sociales)');
       }
 
       return list;
@@ -1384,7 +954,7 @@
       doc.setTextColor(17, 17, 17);
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(16);
-      doc.text('Cuestionario de Seguimiento Estratégico', margin, y);
+      doc.text('Cuestionario Ejecutivo de Validación y Decisiones', margin, y);
 
       y += 7;
       doc.setFont('helvetica', 'normal');
@@ -1444,7 +1014,7 @@
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(10.5);
       doc.setTextColor(30, 25, 5);
-      doc.text('RESUMEN DE ARCHIVOS Y FOTOGRAFÍAS QUE JOAN ENVIARÁ:', margin + 6, y);
+      doc.text('RESUMEN DE ARCHIVOS QUE JOAN ENVIARÁ:', margin + 6, y);
 
       y += 6;
       doc.setFont('helvetica', 'normal');
@@ -1492,7 +1062,7 @@
         if (!blob) throw new Error('Error al construir el PDF');
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = `seguimiento_estrategico_jm_nutriologo_${new Date().toISOString().slice(0,10)}.pdf`;
+        a.download = `seguimiento_ejecutivo_jm_nutriologo_${new Date().toISOString().slice(0,10)}.pdf`;
         document.body.appendChild(a);
         a.click();
         a.remove();
@@ -1511,8 +1081,9 @@
     document.getElementById('editBtn').addEventListener('click', () => {
       document.getElementById('completion').hidden = true;
       document.getElementById('reviewContent').hidden = false;
-      setStep(6);
+      setStep(3);
     });
+
     const resetBtn = document.getElementById('resetDraftBtn');
     if (resetBtn) {
       resetBtn.addEventListener('click', (e) => {
