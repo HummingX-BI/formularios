@@ -1192,8 +1192,8 @@
           <p class="hint">Desliza la barra para indicar un monto estimado. Este dato nos ayuda a recomendar una solución realista y proporcional a tus prioridades.</p>
           
           <div class="budget-line">
-            <input id="budget" name="rango_presupuesto" type="range" min="0" max="40000" step="1000" value="0">
-            <output id="budgetValue">$0 MXN</output>
+            <input id="budget" name="rango_presupuesto" type="range" min="0" max="40000" step="1000" value="5000">
+            <output id="budgetValue">$5,000 MXN</output>
           </div>
           <div class="budget-scale">
             <span>$0</span>
@@ -1341,7 +1341,7 @@
 
     function getValue(name) {
       if (name === 'rango_presupuesto') {
-        return budgetOutput?.textContent || '$15,000 MXN';
+        return budgetOutput?.textContent || '$5,000 MXN';
       }
       const els = [...form.querySelectorAll(`[name="${name}"]`)];
       if (!els.length) return '';
