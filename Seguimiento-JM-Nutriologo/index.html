@@ -10,19 +10,19 @@
   <script src="jspdf.umd.min.js"></script>
   <style>
     :root {
-      --green: #0a4f3c;
-      --green-dark: #07382b;
-      --mint: #e8f3ef;
+      --green: #111111;
+      --green-dark: #000000;
+      --mint: #fffde6;
       --gold: #e2b900;
       --gold-dark: #b89600;
-      --bg: #f5f4ef;
+      --bg: #ffffff;
       --panel: #ffffff;
       --ink: #111111;
       --ink-soft: #4a4a4a;
-      --line: #e3e1d9;
-      --notice-bg: #eef6fa;
-      --notice-border: #b8dcec;
-      --notice-ink: #12435b;
+      --line: #e0e0e0;
+      --notice-bg: #f4f8fa;
+      --notice-border: #b8d9ea;
+      --notice-ink: #0f4561;
     }
     *{box-sizing:border-box}
     body{
@@ -35,15 +35,15 @@
     }
 
     /* TOP BAR */
-    .top{position:sticky;top:0;background:rgba(245,244,239,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);z-index:50}
+    .top{position:sticky;top:0;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);z-index:50}
     .top-in{max-width:880px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
     .brand{display:flex;align-items:center;gap:12px}
     .brand img{height:34px;width:auto;object-fit:contain}
     .brand span{font:600 13px 'IBM Plex Mono',monospace;letter-spacing:-.01em;color:var(--ink)}
     .top-actions{display:flex;align-items:center}
-    .step-pill{font:600 12px 'IBM Plex Mono',monospace;background:var(--mint);color:var(--green);padding:5px 12px;border-radius:2px;letter-spacing:.04em}
-    .progress{height:3px;background:var(--line);position:relative}
-    .progress i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .3s ease}
+    .step-pill{font:600 12px 'IBM Plex Mono',monospace;background:#f2f2f2;color:#333;padding:5px 12px;border-radius:2px;letter-spacing:.04em}
+    .progress{height:3px;background:#ebebeb;position:relative}
+    .progress i{position:absolute;left:0;top:0;bottom:0;background:var(--gold);transition:width .3s ease}
 
     /* MAIN CONTAINER */
     main{max-width:880px;margin:0 auto;padding:32px 24px 80px}
@@ -56,8 +56,9 @@
 
     /* BANNER COMPACTO DEMO EN VIVO */
     .demo-hero-banner{
-      background:linear-gradient(135deg,#0a4f3c 0%,#07382b 100%);
-      border:1px solid rgba(226,185,0,.3);
+      background:linear-gradient(135deg,#0e0e0e 0%,#202020 100%);
+      border:1px solid #333333;
+      border-left:5px solid var(--gold);
       border-radius:3px;
       padding:16px 20px;
       margin:0 0 24px;
@@ -65,7 +66,7 @@
       align-items:center;
       justify-content:space-between;
       gap:16px;
-      box-shadow:0 6px 20px rgba(10,79,60,.12);
+      box-shadow:0 6px 20px rgba(0,0,0,.08);
     }
     .demo-hero-content{flex:1}
     .demo-hero-title{
@@ -259,9 +260,9 @@
         <span>HummingX BI · Seguimiento Estratégico</span>
       </div>
       <div class="top-actions">
-        <span class="step-pill" style="margin-right:6px;background:#eef7ee;color:#2e7d32;font-weight:600;font-size:11.5px;">Autoguardado</span>
-        <span class="step-pill" style="margin-right:6px;background:#f0efe9;color:#555;font-weight:600;">3–5 min aprox.</span>
-        <span id="counter" class="step-pill">Paso 1 de 5</span>
+        <span class="step-pill" style="margin-right:6px;background:#f5f5f5;border:1px solid #dcdcdc;color:#333;font-weight:600;font-size:11.5px;">Autoguardado</span>
+        <span class="step-pill" style="margin-right:6px;background:#f5f5f5;border:1px solid #dcdcdc;color:#444;font-weight:600;">3–5 min aprox.</span>
+        <span id="counter" class="step-pill" style="background:#111;color:#fff;">Paso 1 de 5</span>
       </div>
     </div>
     <div class="progress"><i id="progressFill"></i></div>
@@ -481,25 +482,28 @@
         </div>
 
         <div class="q">
-          <label class="label">4.1 Catálogo de Suplementos y Control de Stock (Sección 06: Tienda)</label>
-          <p class="hint">En tu diagnóstico confirmaste que vendes suplementos y productos de nutrición. Si cuentas con un archivo en Excel, base de datos o documento de stock, marca la casilla y compártelo por WhatsApp al enviar el PDF. Si prefieres, puedes anotar tu lista preliminar aquí (nombre, marca, gramaje y precio):</p>
-          <div class="attachment-box" style="margin-bottom:12px;">
-            <label class="attachment-checkbox" style="background:#fff;">
-              <input type="checkbox" name="adjunto_suplementos_excel" value="Sí, enviaré mi archivo Excel/base de datos de stock de suplementos por WhatsApp">
-              Tengo un archivo Excel o base de datos de control de productos (lo compartiré por WhatsApp junto con el PDF de respuestas)
-            </label>
-          </div>
+          <label class="label">4.1 Catálogo de Suplementos: Fotografías de Productos y Base de Stock (Sección 06: Tienda)</label>
+          <p class="hint">Los nombres, marcas, gramajes y precios los tomaremos de tu archivo de Excel o base de datos de stock. Para poder publicarlos en el catálogo web, <strong>lo indispensable son las fotografías de los productos</strong> (fotos directas tomadas con tu celular con buena iluminación; nuestro equipo aislará el fondo y optimizará las imágenes).</p>
+          
           <div class="options">
-            <label><input type="radio" name="suplementos_modo" value="Anotaré mi lista preliminar en el campo de texto (sin fotos por ahora)" checked> Anotaré mi lista preliminar en el campo de texto (sin fotos por ahora)</label>
-            <label><input type="radio" name="suplementos_modo" value="Enviaré información de stock y fotos tomadas con mi celular"> Enviaré información de stock y fotos tomadas con mi celular</label>
+            <label><input type="radio" name="suplementos_modo" value="Tengo archivo Excel / base de datos de stock y enviaré las fotos de los productos tomadas con mi celular" checked> Tengo archivo Excel / base de datos de stock y enviaré las fotos de los productos tomadas con mi celular (Recomendado)</label>
+            <label><input type="radio" name="suplementos_modo" value="Solo enviaré las fotos de los productos con sus precios por WhatsApp (sin archivo Excel)"> Solo enviaré las fotos de los productos con sus precios por WhatsApp (sin archivo Excel)</label>
             <label><input type="radio" name="suplementos_modo" value="No habilitar tienda de suplementos por el momento"> No habilitar tienda de suplementos por el momento</label>
           </div>
-          <div class="attachment-box" id="box_suplementos" style="display:none;margin-top:10px;">
-            <span class="attachment-tag">Fotos de celular por adjuntar</span>
-            <p class="attachment-desc">Si eliges enviar fotos de celular con buena luz, adjúntalas al finalizar el cuestionario junto con el PDF descargado.</p>
-            <label class="attachment-checkbox"><input type="checkbox" name="adjunto_suplementos_fotos" value="Sí, enviaré fotos de suplementos tomadas con celular"> Confirmar que enviaré las fotos de celular por WhatsApp junto con el PDF</label>
+
+          <!-- AVISO DESTACADO DE FOTOGRAFÍAS INDISPENSABLES -->
+          <div class="attachment-box" id="box_suplementos_fotos" style="margin-top:12px;border-left:4px solid var(--gold);background:#fffdf0;">
+            <span class="attachment-tag" style="background:#111111;color:#fff;">Fotografías · Requerimiento Indispensable</span>
+            <p class="attachment-desc" style="color:#222;">Para cada producto que desees publicar en la tienda necesitamos sus fotos tomadas con celular (frente del envase / empaque con buena luz). Adjúntalas por WhatsApp al enviar tu PDF de respuestas.</p>
+            <label class="attachment-checkbox"><input type="checkbox" name="adjunto_suplementos_fotos" value="Sí, enviaré las fotografías de los productos tomadas con celular" checked> Confirmar que enviaré las fotos de los suplementos tomadas con celular por WhatsApp</label>
           </div>
-          <textarea style="margin-top:10px;" name="suplementos_detalle" placeholder="Lista preliminar de suplementos: Nombre, Marca, Gramaje/Presentación y Precio al público..."></textarea>
+
+          <!-- ARCHIVO EXCEL DE STOCK -->
+          <div class="attachment-box" id="box_suplementos_excel" style="margin-top:10px;">
+            <span class="attachment-tag">Base de datos / Excel de inventario</span>
+            <p class="attachment-desc">Compártenos tu archivo de Excel, lista de precios o base de inventario con existencias actuales para cargar los datos técnicos.</p>
+            <label class="attachment-checkbox"><input type="checkbox" name="adjunto_suplementos_excel" value="Sí, enviaré mi archivo Excel o base de datos de stock por WhatsApp" checked> Confirmar que enviaré mi archivo Excel / base de datos de stock por WhatsApp</label>
+          </div>
         </div>
 
         <div class="q grid">
@@ -633,10 +637,9 @@
       isak_forma_medicion: '3.3 Detalle de Metodología de Medición',
       adjunto_reportes_calibracion: '3.4 Confirmación Reportes Calibración (3-4 PDFs)',
 
-      adjunto_suplementos_excel: 'Confirmación Excel/Base Stock',
       suplementos_modo: '4.1 Modo Catálogo Suplementos',
-      adjunto_suplementos_fotos: 'Confirmación Fotos Celular Suplementos',
-      suplementos_detalle: '4.1 Lista Preliminar de Suplementos',
+      adjunto_suplementos_fotos: 'Confirmación Fotos Celular de Productos',
+      adjunto_suplementos_excel: 'Confirmación Archivo Excel/Base de Stock',
       tienda_pagos: '4.2 Mecánica de Cobro Tienda',
       tecnologia_tipo: '4.3 Video Demostrativo VO2 Max',
       adjunto_reportes_muestra: 'Confirmación Video VO2 Max'
@@ -702,14 +705,27 @@
         boxPort.style.display = (portVal && portVal.includes('Deseo ajustar')) ? 'block' : 'none';
       }
 
-      // 4.1 Suplementos fotos
+      // 4.1 Suplementos fotos y excel
       const supModo = value('suplementos_modo');
-      const boxSup = document.getElementById('box_suplementos');
-      const chkSup = form.querySelector('[name="adjunto_suplementos_fotos"]');
-      if (boxSup) {
-        const show = supModo && supModo.includes('Enviaré información de stock y fotos');
-        boxSup.style.display = show ? 'block' : 'none';
-        if (!show && chkSup) chkSup.checked = false;
+      const boxSupFotos = document.getElementById('box_suplementos_fotos');
+      const boxSupExcel = document.getElementById('box_suplementos_excel');
+      const chkSupFotos = form.querySelector('[name="adjunto_suplementos_fotos"]');
+      const chkSupExcel = form.querySelector('[name="adjunto_suplementos_excel"]');
+
+      if (boxSupFotos && boxSupExcel) {
+        if (!supModo || supModo.includes('No habilitar tienda')) {
+          boxSupFotos.style.display = 'none';
+          boxSupExcel.style.display = 'none';
+          if (chkSupFotos) chkSupFotos.checked = false;
+          if (chkSupExcel) chkSupExcel.checked = false;
+        } else if (supModo.includes('Solo enviaré las fotos')) {
+          boxSupFotos.style.display = 'block';
+          boxSupExcel.style.display = 'none';
+          if (chkSupExcel) chkSupExcel.checked = false;
+        } else {
+          boxSupFotos.style.display = 'block';
+          boxSupExcel.style.display = 'block';
+        }
       }
 
       // 4.3 Tecnología video
@@ -833,13 +849,14 @@
 
       list.push('3 a 4 reportes reales de InBody y software ISAK (anónimos o tuyos) en PDF para calibrar el lector automático');
 
-      if (value('adjunto_suplementos_excel')) {
-        list.push('Archivo Excel o base de datos de control de inventario de suplementos');
-      }
-
       const supModo = value('suplementos_modo');
-      if (supModo && supModo.includes('Enviaré información de stock y fotos')) {
-        list.push('Fotos de suplementos tomadas con celular para edición');
+      if (supModo && !supModo.includes('No habilitar tienda')) {
+        if (value('adjunto_suplementos_fotos')) {
+          list.push('Fotografías de suplementos tomadas con celular (indispensables para catálogo web)');
+        }
+        if (value('adjunto_suplementos_excel')) {
+          list.push('Archivo Excel o base de datos de control de inventario de suplementos');
+        }
       }
 
       const tecVal = value('tecnologia_tipo');
