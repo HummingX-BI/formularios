@@ -14,6 +14,7 @@
 | **1.1** | **Tarifas Oficiales y Duraciones** | • **Primera vez:** 2 horas · *$850*<br>• **Seguimiento:** 1 hora · *$500*<br>• **Prueba VO2 Max:** 1 hora y media · *$900*<br>Modalidad VO2 Max:<br>• *Cita independiente con su propia tarifa (Recomendado)*<br>• *Incluida en la consulta inicial sin costo extra*<br>• *Ajustar catálogo o agregar otro tipo de cita* | Fase 2 |
 | **1.2** | **Tu Fotografía Profesional (Sobre Mí)** | • *Mantener la foto actual de la demo*<br>• *Enviaré una nueva foto profesional por WhatsApp*<br>• *Ajustar o retocar la foto actual* | Fase 8 |
 | **1.3** | **Sala de Trofeos y Testimonios de Atletas** | • *Carrusel de fotos de atletas en podios + testimonio breve (Recomendado)*<br>• *Solo carrusel de fotos de atletas en podios (sin testimonios)*<br>• *Conservar el medallero numérico actual de la demo* | Fase 2 |
+| **1.4** | **Sección de Tips y Artículos Educativos** | Diseñada para redactar artículos y tips nutricionales propios:<br>• *Mantener sección de Tips (redactaré artículos propios)*<br>• *Dejar para una segunda fase tras el lanzamiento (Recomendado)*<br>• *Quitar la sección de Tips de la web* | Fase 2 |
 
 ---
 
