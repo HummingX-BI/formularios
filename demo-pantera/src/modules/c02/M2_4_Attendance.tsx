@@ -1,170 +1,142 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { Card } from '@/ui/components/Cards';
 import { Button } from '@/ui/components/Buttons';
-import { Select } from '@/ui/components/Inputs';
-import { Badge } from '@/ui/components/DataDisplay';
-import { useDataset } from '@/data/hooks';
-import { useAppStore } from '@/app/store';
+import { CheckCircle2, XCircle, AlertTriangle, Target, Medal, Calendar, ShieldAlert } from 'lucide-react';
+
+const mockStudents = [
+  { id: 'S1', name: 'Sofía Martínez', status: 'present', technique: 85, effort: 90, readyToLevelUp: false },
+  { id: 'S2', name: 'Leo Hernández', status: 'absent', technique: 70, effort: 60, readyToLevelUp: false },
+  { id: 'S3', name: 'Valentina Ruiz', status: 'pending', technique: 95, effort: 98, readyToLevelUp: true },
+  { id: 'S4', name: 'Mateo Gómez', status: 'pending', technique: 60, effort: 85, readyToLevelUp: false },
+];
 
 export default function M2_4_Attendance() {
-  const dataset = useDataset();
-  const store = useAppStore();
+  const [students, setStudents] = useState(mockStudents);
 
-  const DAYS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-  const getDayName = (dayNum: number) => DAYS[dayNum - 1] || 'Lunes';
-
-  const groups = useMemo(
-    () =>
-      dataset.groups.slice(0, 15).map((g) => ({
-        label: `Grupo ${g.id.substring(0, 4)} - ${getDayName(g.dayOfWeek)} ${g.timeSlot}`,
-        value: g.id,
-      })),
-    [dataset],
-  );
-
-  const [selectedGroup, setSelectedGroup] = useState(groups[0]?.value || '');
-  const [selectedDate, setSelectedDate] = useState('2026-09-28');
-
-  // Local session state for attendance modifications
-  const [sessionAttendance, setSessionAttendance] = useState<Record<string, string>>({});
-
-  const groupStudents = useMemo(() => {
-    // Mock students for this group
-    return dataset.students.slice(0, 8).map((s, i) => ({
-      ...s,
-      consecutiveAbsences: i === 2 ? 3 : i === 5 ? 2 : 0,
-      initialStatus: i === 2 ? 'falta' : 'asistio',
-    }));
-  }, [dataset, selectedGroup]);
-
-  const handleStatusChange = (studentId: string, status: string) => {
-    setSessionAttendance((prev) => ({
-      ...prev,
-      [studentId]: status,
-    }));
+  const setStatus = (id: string, status: string) => {
+    setStudents(prev => prev.map(s => s.id === id ? { ...s, status } : s));
   };
 
-  const getStatus = (studentId: string, initial: string) => {
-    return sessionAttendance[studentId] || initial;
+  const setReady = (id: string, ready: boolean) => {
+    setStudents(prev => prev.map(s => s.id === id ? { ...s, readyToLevelUp: ready } : s));
   };
-
-  const handleNotify = (studentName: string) => {
-    store.addPlanAction({
-      type: 'notification',
-      target: studentName,
-      message: 'Aviso de inasistencia enviado',
-    });
-    alert(`Notificación simulada enviada a la familia de ${studentName}`);
-  };
-
-  const attendanceCount = groupStudents.filter(
-    (s) =>
-      getStatus(s.id, s.initialStatus) === 'asistio' ||
-      getStatus(s.id, s.initialStatus) === 'reposicion',
-  ).length;
-  const attendanceRate = Math.round((attendanceCount / groupStudents.length) * 100) || 0;
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
-      <div className="flex justify-between items-end">
+    <div className="space-y-6 h-full flex flex-col">
+      {/* HEADER */}
+      <div className="flex justify-between items-end border-b border-ice-200 pb-4 shrink-0">
         <div>
-          <h1 className="text-3xl font-jakarta font-bold text-navy-900">
-            Asistencia y Reposiciones
+          <h1 className="text-3xl font-jakarta font-extrabold text-navy-900 flex items-center gap-3">
+            <Target className="text-aqua-500" size={28} />
+            Portal del Instructor
           </h1>
-          <p className="text-lg text-secundario mt-1">Pase de lista y gestión de inasistencias</p>
+          <p className="text-lg text-secundario mt-1 font-medium">
+            Pase de lista y evaluación de progreso al final de la clase.
+          </p>
         </div>
       </div>
 
-      <Card className="p-6 bg-white border border-ice-100 shadow-sm flex gap-6 items-end">
-        <div className="flex-1">
-          <label className="block text-sm font-bold text-navy-900 mb-1">Grupo</label>
-          <Select
-            options={groups}
-            value={selectedGroup}
-            onChange={(e) => setSelectedGroup(e.target.value)}
-          />
+      <div className="bg-white rounded-xl shadow-sm border border-ice-100 flex-1 overflow-hidden flex flex-col">
+        {/* INFO CLASE */}
+        <div className="p-6 border-b border-ice-100 bg-gradient-to-r from-navy-900 to-slate-800 text-white flex justify-between items-center shrink-0">
+          <div>
+            <div className="flex gap-2 mb-2">
+              <span className="bg-white/20 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded backdrop-blur-sm border border-white/10">Clase Actual</span>
+            </div>
+            <h2 className="text-2xl font-bold font-jakarta mb-1">Natación Básico Infantil</h2>
+            <div className="flex gap-4 text-sm text-ice-300">
+              <span className="flex items-center gap-1"><Calendar size={16} /> Hoy, 16:00 - 17:00</span>
+              <span className="flex items-center gap-1"><Target size={16} /> Carril 3</span>
+            </div>
+          </div>
+          <Button variant="primary" className="bg-aqua-500 hover:bg-aqua-400 text-navy-900 font-extrabold shadow-lg">
+            Finalizar Sesión y Guardar
+          </Button>
         </div>
-        <div>
-          <label className="block text-sm font-bold text-navy-900 mb-1">Fecha</label>
-          <input
-            type="date"
-            value={selectedDate}
-            onChange={(e) => setSelectedDate(e.target.value)}
-            className="px-3 py-2 border border-ice-200 rounded outline-none focus:border-aqua-500 w-48"
-          />
-        </div>
-        <div className="bg-ice-50 px-6 py-2 rounded text-center border border-ice-200">
-          <div className="text-sm text-secundario">Asistencia hoy</div>
-          <div className="text-2xl font-bold text-aqua-500">{attendanceRate}%</div>
-        </div>
-      </Card>
 
-      <Card className="bg-white border border-ice-100 shadow-sm overflow-hidden">
-        <table className="w-full text-left">
-          <thead className="bg-ice-50 border-b border-ice-100">
-            <tr>
-              <th className="p-4 font-bold text-navy-900 text-sm">Alumno</th>
-              <th className="p-4 font-bold text-navy-900 text-sm w-64">Estado</th>
-              <th className="p-4 font-bold text-navy-900 text-sm text-center">Inasistencias</th>
-              <th className="p-4 font-bold text-navy-900 text-sm">Acciones</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-ice-100">
-            {groupStudents.map((s) => {
-              const currentStatus = getStatus(s.id, s.initialStatus);
-              return (
-                <tr key={s.id} className="hover:bg-ice-50 transition-colors">
+        {/* TABLA DE EVALUACIÓN */}
+        <div className="flex-1 overflow-y-auto p-0">
+          <table className="w-full text-left text-sm">
+            <thead className="bg-slate-50 border-b border-ice-200 sticky top-0 z-10">
+              <tr>
+                <th className="p-4 font-bold text-navy-900 w-1/3">Alumno</th>
+                <th className="p-4 font-bold text-navy-900 text-center">Asistencia</th>
+                <th className="p-4 font-bold text-navy-900 text-center">Eval. Técnica (0-100)</th>
+                <th className="p-4 font-bold text-navy-900 text-center">¿Sube de Nivel?</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-ice-100">
+              {students.map((student) => (
+                <tr key={student.id} className="hover:bg-ice-50 transition-colors group">
                   <td className="p-4">
-                    <div className="font-bold text-navy-900">{s.name}</div>
-                    <div className="text-xs text-secundario">{s.id}</div>
+                    <div className="font-bold text-navy-900 text-base">{student.name}</div>
+                    <div className="text-xs text-secundario">ID: {student.id}</div>
                   </td>
-                  <td className="p-4">
-                    <div className="flex bg-white rounded border border-ice-200 overflow-hidden w-fit">
-                      {['asistio', 'falta', 'justifico', 'reposicion'].map((st) => (
-                        <button
-                          key={st}
-                          onClick={() => handleStatusChange(s.id, st)}
-                          className={`px-3 py-1.5 text-xs font-bold capitalize border-r border-ice-200 last:border-0 ${currentStatus === st ? (st === 'falta' ? 'bg-coral text-white' : st === 'asistio' ? 'bg-green-500 text-white' : 'bg-aqua-500 text-white') : 'text-secundario hover:bg-ice-100'}`}
-                        >
-                          {st === 'asistio'
-                            ? 'Asistió'
-                            : st === 'falta'
-                              ? 'Faltó'
-                              : st === 'justifico'
-                                ? 'Justificó'
-                                : 'Repuso'}
-                        </button>
-                      ))}
+                  
+                  {/* ASISTENCIA */}
+                  <td className="p-4 text-center">
+                    <div className="inline-flex bg-ice-100 rounded-lg p-1">
+                      <button 
+                        onClick={() => setStatus(student.id, 'present')}
+                        className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-1 ${student.status === 'present' ? 'bg-green-500 text-white shadow-sm' : 'text-secundario hover:bg-white'}`}
+                      >
+                        <CheckCircle2 size={14} /> Asistió
+                      </button>
+                      <button 
+                        onClick={() => setStatus(student.id, 'absent')}
+                        className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-1 ${student.status === 'absent' ? 'bg-coral text-white shadow-sm' : 'text-secundario hover:bg-white'}`}
+                      >
+                        <XCircle size={14} /> Faltó
+                      </button>
                     </div>
                   </td>
+
+                  {/* EVALUACIÓN TÉCNICA */}
                   <td className="p-4 text-center">
-                    {s.consecutiveAbsences > 0 ? (
-                      <Badge
-                        color={
-                          s.consecutiveAbsences >= 3
-                            ? 'bg-coral text-white'
-                            : 'bg-amber-400 text-navy-900'
-                        }
-                      >
-                        {s.consecutiveAbsences} consecutivas
-                      </Badge>
-                    ) : (
-                      <span className="text-tenue">-</span>
-                    )}
+                    <div className="flex items-center justify-center gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
+                      <input 
+                        type="range" 
+                        min="0" max="100" 
+                        defaultValue={student.technique} 
+                        className="w-24 accent-aqua-500" 
+                        disabled={student.status === 'absent'}
+                      />
+                      <span className="w-8 font-bold text-navy-900 text-right">{student.status === 'absent' ? '--' : student.technique}</span>
+                    </div>
                   </td>
-                  <td className="p-4">
-                    {s.consecutiveAbsences >= 2 && (
-                      <Button variant="secondary" size="sm" onClick={() => handleNotify(s.name)}>
-                        Notificar Familia
-                      </Button>
-                    )}
+
+                  {/* NIVEL */}
+                  <td className="p-4 text-center">
+                    <button 
+                      onClick={() => setReady(student.id, !student.readyToLevelUp)}
+                      disabled={student.status === 'absent'}
+                      className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all border ${
+                        student.status === 'absent' 
+                          ? 'opacity-30 cursor-not-allowed bg-ice-50 border-ice-200 text-secundario'
+                          : student.readyToLevelUp 
+                            ? 'bg-amber-100 border-amber-300 text-amber-800 shadow-sm' 
+                            : 'bg-white border-ice-200 text-secundario hover:border-aqua-500 hover:text-aqua-600'
+                      }`}
+                    >
+                      <Medal size={16} className={student.readyToLevelUp ? 'text-amber-500' : ''} />
+                      {student.readyToLevelUp ? 'Aprobado para Cambio' : 'Mantener Nivel'}
+                    </button>
                   </td>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </Card>
+              ))}
+            </tbody>
+          </table>
+          
+          <div className="p-6 bg-amber-50 border-t border-amber-100 flex items-start gap-4">
+            <ShieldAlert className="text-amber-500 shrink-0 mt-1" />
+            <div>
+              <h4 className="font-bold text-amber-900 text-sm">Aviso de Reposiciones Automatizadas</h4>
+              <p className="text-amber-800 text-xs mt-1">Al marcar a un alumno como "Faltó", el sistema le enviará automáticamente un mensaje a la familia por WhatsApp con un enlace para que agenden su clase de reposición sin que intervenga recepción.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   );
 }

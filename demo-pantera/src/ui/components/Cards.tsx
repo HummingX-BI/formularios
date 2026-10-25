@@ -191,12 +191,19 @@ export const InsightBlock: React.FC<InsightBlockProps> = ({
         </div>
         <SeverityPill level={severity} />
       </div>
-      <p className="text-secundario text-base leading-relaxed mb-4">{conclusion}</p>
-      {whatToDo && (
-        <div className="bg-white/60 p-4 rounded-base border border-white/40 mb-4">
-          <h5 className="text-sm font-bold text-navy-900 mb-1">Qué hacer:</h5>
-          <p className="text-secundario text-sm">{whatToDo}</p>
-        </div>
+      {whatToDo ? (
+        <>
+          <div className="bg-white/80 p-4 rounded-base border border-white/60 mb-3">
+            <h5 className="text-base font-bold text-navy-900 mb-1">Acción Recomendada:</h5>
+            <p className="text-navy-900 text-base font-medium">{whatToDo}</p>
+          </div>
+          <div className="mb-4 text-sm bg-white/40 p-3 rounded-base">
+            <span className="font-bold text-secundario text-xs uppercase tracking-wider block mb-1">Por qué te sugerimos esto:</span>
+            <p className="text-secundario leading-relaxed">{conclusion}</p>
+          </div>
+        </>
+      ) : (
+        <p className="text-secundario text-base leading-relaxed mb-4">{conclusion}</p>
       )}
       {onAction && (
         <div className="flex justify-end">

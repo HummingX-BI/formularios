@@ -1,343 +1,172 @@
 import { useState } from 'react';
 import { Card } from '@/ui/components/Cards';
 import { Button } from '@/ui/components/Buttons';
-import { Select } from '@/ui/components/Inputs';
-import { Tabs } from '@/ui/components/Navigation';
-import { useDataset } from '@/data/hooks';
-import { useAppStore } from '@/app/store';
-import { formatCurrency } from '@/insights/templates';
+import { Search, UserPlus, Clock, Users, ArrowRight, CheckCircle2, AlertTriangle, Calendar } from 'lucide-react';
+
+const mockGroups = [
+  { id: 'g1', name: 'Natación Básico Infantil', schedule: 'Lu-Mi 16:00', instructor: 'Prof. Carlos', capacity: 15, enrolled: 15, waitlist: 4 },
+  { id: 'g2', name: 'Gimnasia Intermedio', schedule: 'Ma-Ju 17:00', instructor: 'Profa. Ana', capacity: 20, enrolled: 18, waitlist: 0 },
+  { id: 'g3', name: 'Estimulación Temprana', schedule: 'Sab 09:00', instructor: 'Prof. Luis', capacity: 10, enrolled: 5, waitlist: 0 },
+];
 
 export default function M2_2_Enrollment() {
-  const dataset = useDataset();
-  const store = useAppStore();
-  const [activeTabIdx, setActiveTabIdx] = useState(0);
-  const activeTab = ['nueva', 'reinscripcion', 'muestra', 'reposicion'][activeTabIdx];
-  const [step, setStep] = useState(1);
-  const [isConfirming, setIsConfirming] = useState(false);
-  const [confirmed, setConfirmed] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState(mockGroups[1]!);
+  const [showForm, setShowForm] = useState(false);
 
-  // Form State
-  const [formData, setFormData] = useState({
-    nombre: '',
-    edad: '',
-    tutor: '',
-    telefono: '',
-    plan: '2clases',
-    grupo: '',
-    descuento: 'ninguno',
-  });
+  if (!selectedGroup) return null;
 
-  const handleNext = () => setStep((s) => s + 1);
-  const handlePrev = () => setStep((s) => s - 1);
-
-  const plans = [
-    { label: '1 Clase / Semana ($1,100)', value: '1clase', price: 1100 },
-    { label: '2 Clases / Semana ($1,850)', value: '2clases', price: 1850 },
-    { label: '3 Clases / Semana ($2,400)', value: '3clases', price: 2400 },
-  ];
-
-  const groups = dataset.groups
-    .filter((g) => g.pool === 'infantil' || g.pool === 'principal')
-    .slice(0, 10)
-    .map((g) => ({
-      label: `${g.timeSlot} - Alberca ${g.pool} (Cupos: ${g.capacity - Math.floor(g.capacity * 0.8)})`,
-      value: g.id,
-    }));
-
-  const subtotal = plans.find((p) => p.value === formData.plan)?.price || 0;
-  const inscripcion = 500;
-  const discountMultiplier = formData.descuento === 'trimestral' ? 0.9 : 1;
-  const total =
-    (subtotal * (formData.descuento === 'trimestral' ? 3 : 1) + inscripcion) * discountMultiplier;
-
-  const handleConfirm = () => {
-    setIsConfirming(true);
-    setTimeout(() => {
-      setIsConfirming(false);
-      setConfirmed(true);
-      // Simulate adding to store
-      store.addPlanAction({ type: 'enrollment', studentName: formData.nombre, amount: total });
-    }, 1500);
-  };
-
-  const renderNewEnrollment = () => {
-    if (confirmed) {
-      return (
-        <div className="text-center py-16">
-          <div className="w-20 h-20 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">
-            ✓
-          </div>
-          <h2 className="text-2xl font-bold text-navy-900 mb-2">¡Inscripción Confirmada!</h2>
-          <p className="text-secundario mb-8">
-            El alumno {formData.nombre} ha sido inscrito en el sistema de sesión.
-          </p>
-          <div className="bg-ice-50 p-6 rounded text-left max-w-sm mx-auto mb-8 border border-ice-100">
-            <h4 className="font-bold text-navy-900 mb-4 border-b pb-2">Comprobante de Pago</h4>
-            <div className="flex justify-between text-sm mb-2">
-              <span className="text-secundario">Inscripción</span>
-              <span>{formatCurrency(inscripcion)}</span>
-            </div>
-            <div className="flex justify-between text-sm mb-2">
-              <span className="text-secundario">
-                Plan {formData.descuento === 'trimestral' ? 'Trimestral' : 'Mensual'}
-              </span>
-              <span>
-                {formatCurrency(subtotal * (formData.descuento === 'trimestral' ? 3 : 1))}
-              </span>
-            </div>
-            {formData.descuento === 'trimestral' && (
-              <div className="flex justify-between text-sm text-green-600 mb-2">
-                <span>Descuento 10%</span>
-                <span>-{formatCurrency(total * 0.1)}</span>
-              </div>
-            )}
-            <div className="flex justify-between font-bold text-lg mt-4 pt-2 border-t text-navy-900">
-              <span>Total cobrado</span>
-              <span>{formatCurrency(total)}</span>
-            </div>
-          </div>
-          <Button
-            variant="primary"
-            onClick={() => {
-              setConfirmed(false);
-              setStep(1);
-              setFormData({ ...formData, nombre: '', tutor: '' });
-            }}
-          >
-            Inscribir a otro alumno
-          </Button>
-        </div>
-      );
-    }
-
-    return (
-      <div className="max-w-2xl mx-auto py-8">
-        {/* Stepper */}
-        <div className="flex justify-between mb-8 relative">
-          <div className="absolute top-1/2 left-0 right-0 h-1 bg-ice-100 -z-10 -translate-y-1/2"></div>
-          {['Datos Generales', 'Selección de Grupo', 'Pago y Confirmación'].map((s, i) => (
-            <div key={s} className="flex flex-col items-center bg-white px-2">
-              <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-2 ${step > i + 1 ? 'bg-aqua-500 text-white border-aqua-500' : step === i + 1 ? 'border-aqua-500 text-aqua-500 bg-white' : 'border-ice-200 text-ice-200 bg-white'}`}
-              >
-                {step > i + 1 ? '✓' : i + 1}
-              </div>
-              <span className="text-xs font-bold text-navy-900 mt-2">{s}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* Form Steps */}
-        <Card className="p-8 bg-white border border-ice-100 shadow-sm">
-          {step === 1 && (
-            <div className="space-y-4">
-              <h3 className="text-xl font-bold text-navy-900 mb-4 font-jakarta">
-                Datos del Alumno
-              </h3>
-              <div>
-                <label className="block text-sm font-bold text-navy-900 mb-1">
-                  Nombre Completo del Alumno
-                </label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2 border border-ice-200 rounded focus:border-aqua-500 outline-none"
-                  value={formData.nombre}
-                  onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
-                  placeholder="Ej. Mateo Gómez"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-navy-900 mb-1">Edad</label>
-                <input
-                  type="number"
-                  className="w-full px-3 py-2 border border-ice-200 rounded focus:border-aqua-500 outline-none"
-                  value={formData.edad}
-                  onChange={(e) => setFormData({ ...formData, edad: e.target.value })}
-                  placeholder="Ej. 6"
-                />
-              </div>
-              <div className="border-t pt-4 mt-4 border-ice-100">
-                <h3 className="text-xl font-bold text-navy-900 mb-4 font-jakarta">
-                  Datos del Tutor
-                </h3>
-                <div>
-                  <label className="block text-sm font-bold text-navy-900 mb-1">
-                    Nombre del Tutor
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full px-3 py-2 border border-ice-200 rounded focus:border-aqua-500 outline-none"
-                    value={formData.tutor}
-                    onChange={(e) => setFormData({ ...formData, tutor: e.target.value })}
-                    placeholder="Ej. Luis Gómez"
-                  />
-                </div>
-                <div className="mt-4">
-                  <label className="block text-sm font-bold text-navy-900 mb-1">Teléfono</label>
-                  <input
-                    type="tel"
-                    className="w-full px-3 py-2 border border-ice-200 rounded focus:border-aqua-500 outline-none"
-                    value={formData.telefono}
-                    onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
-                    placeholder="555 123 4567"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-
-          {step === 2 && (
-            <div className="space-y-6">
-              <h3 className="text-xl font-bold text-navy-900 mb-4 font-jakarta">Plan y Horarios</h3>
-              <div>
-                <label className="block text-sm font-bold text-navy-900 mb-1">Plan de Clases</label>
-                <Select
-                  options={plans}
-                  value={formData.plan}
-                  onChange={(e) => setFormData({ ...formData, plan: e.target.value })}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-navy-900 mb-1">
-                  Seleccionar Grupo Principal
-                </label>
-                <Select
-                  options={groups}
-                  value={formData.grupo}
-                  onChange={(e) => setFormData({ ...formData, grupo: e.target.value })}
-                />
-                <p className="text-xs text-secundario mt-1">
-                  Los grupos mostrados tienen cupo disponible basado en la ocupación real.
-                </p>
-              </div>
-            </div>
-          )}
-
-          {step === 3 && (
-            <div className="space-y-6">
-              <h3 className="text-xl font-bold text-navy-900 mb-4 font-jakarta">Resumen de Pago</h3>
-              <div className="bg-ice-50 p-4 rounded border border-ice-100 mb-4">
-                <h4 className="font-bold text-navy-900 mb-2">Promociones</h4>
-                <Select
-                  options={[
-                    { label: 'Pago Mensual (Sin promoción)', value: 'ninguno' },
-                    { label: 'Pago Trimestral (10% de descuento)', value: 'trimestral' },
-                  ]}
-                  value={formData.descuento}
-                  onChange={(e) => setFormData({ ...formData, descuento: e.target.value })}
-                />
-              </div>
-
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-secundario">Inscripción anual</span>
-                  <span>{formatCurrency(inscripcion)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-secundario">
-                    Plan {plans.find((p) => p.value === formData.plan)?.label}{' '}
-                    {formData.descuento === 'trimestral' ? 'x 3 meses' : ''}
-                  </span>
-                  <span>
-                    {formatCurrency(subtotal * (formData.descuento === 'trimestral' ? 3 : 1))}
-                  </span>
-                </div>
-                {formData.descuento === 'trimestral' && (
-                  <div className="flex justify-between text-green-600 font-bold">
-                    <span>Descuento 10%</span>
-                    <span>-{formatCurrency(total * 0.1)}</span>
-                  </div>
-                )}
-                <div className="flex justify-between border-t border-ice-200 pt-2 text-lg font-bold text-navy-900 mt-2">
-                  <span>Total a cobrar hoy</span>
-                  <span className="text-blue-600">{formatCurrency(total)}</span>
-                </div>
-              </div>
-            </div>
-          )}
-        </Card>
-
-        {/* Actions */}
-        <div className="flex justify-between mt-6">
-          <Button variant="ghost" onClick={handlePrev} disabled={step === 1 || isConfirming}>
-            Atrás
-          </Button>
-          {step < 3 ? (
-            <Button
-              variant="primary"
-              onClick={handleNext}
-              disabled={!formData.nombre || !formData.tutor}
-            >
-              Siguiente
-            </Button>
-          ) : (
-            <Button
-              variant="primary"
-              onClick={handleConfirm}
-              disabled={isConfirming}
-              className="w-48 justify-center"
-            >
-              {isConfirming ? 'Procesando pago...' : 'Cobrar e Inscribir'}
-            </Button>
-          )}
-        </div>
-      </div>
-    );
-  };
+  const isFull = selectedGroup.enrolled >= selectedGroup.capacity;
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-jakarta font-bold text-navy-900">Inscripciones y Reservas</h1>
-        <p className="text-lg text-secundario mt-1">
-          Alta de alumnos, reinscripciones y clases sueltas
-        </p>
+    <div className="space-y-6 h-[calc(100vh-8rem)] flex flex-col">
+      {/* HEADER */}
+      <div className="flex justify-between items-end border-b border-ice-200 pb-4 shrink-0">
+        <div>
+          <h1 className="text-3xl font-jakarta font-extrabold text-navy-900 flex items-center gap-3">
+            <UserPlus className="text-aqua-500" size={28} />
+            Inscripciones y Lista de Espera
+          </h1>
+          <p className="text-lg text-secundario mt-1 font-medium">
+            Gestor de cupos, altas de alumnos y demanda en espera.
+          </p>
+        </div>
       </div>
 
-      <Tabs
-        tabs={[
-          'Nueva Inscripción',
-          'Reinscripción (1 Clic)',
-          'Reserva Clase Muestra',
-          'Agendar Reposición',
-        ]}
-        activeTab={activeTabIdx}
-        onChange={setActiveTabIdx}
-      />
-
-      {activeTab === 'nueva' && renderNewEnrollment()}
-
-      {activeTab === 'reinscripcion' && (
-        <Card className="p-16 text-center bg-white">
-          <h2 className="text-2xl font-bold text-navy-900 mb-4">Reinscripción Rápida</h2>
-          <p className="text-secundario mb-8 max-w-md mx-auto">
-            Busca un alumno inactivo para reactivar su suscripción en un solo paso usando su método
-            de pago guardado.
-          </p>
-          <div className="flex gap-4 max-w-md mx-auto">
-            <input
-              type="text"
-              placeholder="ID o Nombre del alumno..."
-              className="flex-1 px-4 py-2 border border-ice-200 rounded outline-none focus:border-aqua-500"
-            />
-            <Button variant="primary">Buscar</Button>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 overflow-hidden">
+        
+        {/* BUSCADOR DE GRUPOS */}
+        <div className="lg:col-span-4 flex flex-col bg-white rounded-xl shadow-sm border border-ice-100 overflow-hidden">
+          <div className="p-4 border-b border-ice-100 bg-ice-50">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-secundario" size={16} />
+              <input
+                type="text"
+                placeholder="Buscar grupo o disciplina..."
+                className="w-full pl-9 pr-3 py-2 bg-white border border-ice-200 rounded-lg focus:outline-none focus:border-aqua-500 text-sm"
+              />
+            </div>
           </div>
-        </Card>
-      )}
-
-      {(activeTab === 'muestra' || activeTab === 'reposicion') && (
-        <Card className="p-16 text-center bg-white">
-          <h2 className="text-2xl font-bold text-navy-900 mb-4">
-            Disponibilidad para {activeTab === 'muestra' ? 'Clase Muestra' : 'Reposición'}
-          </h2>
-          <p className="text-secundario mb-8 max-w-md mx-auto">
-            Calendario de cupos liberados por ausencias o grupos no llenos. Simulación de módulo.
-          </p>
-          <div className="h-64 bg-ice-50 rounded flex items-center justify-center border border-ice-100 text-secundario">
-            [Grilla de Calendario de Disponibilidad]
+          <div className="flex-1 overflow-y-auto p-2 space-y-2">
+            {mockGroups.map((group) => {
+              const full = group.enrolled >= group.capacity;
+              return (
+                <button
+                  key={group.id}
+                  onClick={() => { setSelectedGroup(group); setShowForm(false); }}
+                  className={`w-full text-left p-3 rounded-lg transition-all border ${selectedGroup.id === group.id ? 'bg-sky-50 border-aqua-300' : 'border-transparent hover:bg-ice-50'}`}
+                >
+                  <div className="flex justify-between items-start mb-1">
+                    <span className="font-bold text-navy-900 text-sm">{group.name}</span>
+                    {full ? (
+                      <span className="bg-coral/10 text-coral text-[10px] px-2 py-0.5 rounded font-bold">LLENO</span>
+                    ) : (
+                      <span className="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded font-bold">DISPONIBLE</span>
+                    )}
+                  </div>
+                  <div className="text-xs text-secundario mb-2">{group.schedule} • {group.instructor}</div>
+                  
+                  <div className="flex gap-4 text-xs">
+                    <div className="flex items-center gap-1 text-navy-900 font-medium">
+                      <Users size={12} className="text-aqua-500" /> {group.enrolled}/{group.capacity}
+                    </div>
+                    {group.waitlist > 0 && (
+                      <div className="flex items-center gap-1 text-amber-600 font-medium">
+                        <Clock size={12} /> {group.waitlist} en espera
+                      </div>
+                    )}
+                  </div>
+                </button>
+              )
+            })}
           </div>
-        </Card>
-      )}
+        </div>
+
+        {/* ÁREA DE ACCIÓN */}
+        <div className="lg:col-span-8 flex flex-col bg-white rounded-xl shadow-sm border border-ice-100 overflow-y-auto relative">
+          
+          <div className="p-6 border-b border-ice-100 bg-gradient-to-r from-navy-900 to-slate-800 text-white">
+            <h2 className="text-2xl font-bold font-jakarta mb-2">{selectedGroup.name}</h2>
+            <div className="flex gap-6 text-sm text-ice-300">
+              <span className="flex items-center gap-1"><Calendar size={16} /> {selectedGroup.schedule}</span>
+              <span className="flex items-center gap-1"><UserPlus size={16} /> {selectedGroup.instructor}</span>
+            </div>
+          </div>
+
+          <div className="p-8">
+            {/* INDICADOR DE CUPO */}
+            <div className={`mb-8 p-4 rounded-xl flex items-center justify-between border ${isFull ? 'bg-red-50 border-red-200' : 'bg-green-50 border-green-200'}`}>
+              <div className="flex items-center gap-4">
+                {isFull ? (
+                  <div className="w-12 h-12 bg-red-100 text-coral rounded-full flex items-center justify-center"><AlertTriangle size={24} /></div>
+                ) : (
+                  <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center"><CheckCircle2 size={24} /></div>
+                )}
+                <div>
+                  <h3 className={`text-lg font-bold ${isFull ? 'text-red-900' : 'text-green-900'}`}>
+                    {isFull ? 'Grupo Lleno (Capacidad Máxima)' : 'Lugares Disponibles'}
+                  </h3>
+                  <p className={`text-sm ${isFull ? 'text-red-700' : 'text-green-700'}`}>
+                    {isFull 
+                      ? `No hay lugares libres. Los interesados deben pasar a Lista de Espera.` 
+                      : `Quedan ${selectedGroup.capacity - selectedGroup.enrolled} lugares libres para inscripción inmediata.`}
+                  </p>
+                </div>
+              </div>
+              <div>
+                <Button 
+                  variant="primary" 
+                  onClick={() => setShowForm(true)}
+                  className={isFull ? 'bg-amber-500 hover:bg-amber-600 border-none' : 'bg-green-500 hover:bg-green-600 border-none'}
+                >
+                  {isFull ? <><Clock size={18} className="mr-2" /> Agregar a Lista de Espera</> : <><UserPlus size={18} className="mr-2" /> Inscribir Alumno</>}
+                </Button>
+              </div>
+            </div>
+
+            {/* FORMULARIO CONDICIONAL */}
+            {showForm ? (
+              <div className="border border-ice-200 rounded-xl p-6 bg-slate-50 animate-fade-in">
+                <h3 className="font-bold text-navy-900 mb-4 flex items-center gap-2">
+                  <ArrowRight size={18} className="text-aqua-500" />
+                  {isFull ? 'Formulario de Ingreso a Lista de Espera' : 'Formulario de Nueva Inscripción'}
+                </h3>
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div>
+                    <label className="block text-xs font-bold text-secundario mb-1">Nombre del Prospecto/Alumno</label>
+                    <input type="text" className="w-full border border-ice-200 rounded p-2 text-sm" placeholder="Ej. Juan Pérez" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-secundario mb-1">Teléfono (WhatsApp)</label>
+                    <input type="text" className="w-full border border-ice-200 rounded p-2 text-sm" placeholder="Ej. 55-1234-5678" />
+                  </div>
+                </div>
+                <div className="flex justify-end gap-2">
+                  <Button variant="ghost" onClick={() => setShowForm(false)}>Cancelar</Button>
+                  <Button variant="primary" className={isFull ? 'bg-amber-500' : 'bg-green-500'}>
+                    {isFull ? 'Confirmar en Espera' : 'Confirmar Inscripción'}
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <h3 className="font-bold text-navy-900 mb-4 text-sm uppercase tracking-wider text-secundario">Estado Actual del Grupo</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="border border-ice-200 rounded-lg p-4">
+                    <div className="text-3xl font-bold text-navy-900 mb-1">{selectedGroup.enrolled}</div>
+                    <div className="text-sm text-secundario">Alumnos Inscritos Activos</div>
+                  </div>
+                  <div className="border border-ice-200 rounded-lg p-4">
+                    <div className="text-3xl font-bold text-amber-500 mb-1">{selectedGroup.waitlist}</div>
+                    <div className="text-sm text-secundario">Personas en Lista de Espera</div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+          </div>
+        </div>
+
+      </div>
     </div>
   );
 }

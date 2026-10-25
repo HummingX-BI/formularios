@@ -75,7 +75,7 @@ export default function M13_2_Campaigns() {
           <p className="text-lg text-secundario mt-1">Automatización, segmentación y envío de mensajes</p> 
         </div> 
       </div> 
-      <div className="grid grid-cols-2 gap-6"> 
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6"> 
         <Card className="p-6 bg-white border border-ice-100 shadow-sm space-y-6"> 
           <h3 className="font-bold text-navy-900 font-jakarta border-b border-ice-100 pb-2">Composición del Mensaje</h3> 
           <div> 

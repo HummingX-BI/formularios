@@ -80,28 +80,28 @@ export default function M9_3_BinomialPoisson() {
 
   return (
     <LabLayout
-      title="Binomial y Poisson"
+      title="Probabilidad y Demanda"
       businessQuestion="¿Qué tan realistas son mis metas de inscripción y bajas?"
-      description="La distribución Binomial modela el número de éxitos (inscripciones) en un número fijo de intentos (visitas). La distribución de Poisson modela cuántas veces ocurre un evento raro (bajas) en un periodo de tiempo continuo (semana)."
-      formulas={`Binomial: P(X=k) = (n k) p^k (1-p)^(n-k)\nPoisson: P(X=k) = (λ^k e^-λ) / k!`}
-      assumptions="Binomial asume que cada visita es independiente y tiene la misma probabilidad de éxito. Poisson asume que los eventos ocurren a una tasa constante e independiente."
+      description="El Modelo de Conversión calcula cuántas inscripciones lograrás basado en el volumen de tus visitas. El Modelo de Riesgo proyecta la probabilidad de que ocurran eventos esporádicos (como cancelaciones o bajas) durante una semana típica."
+      formulas={`Conversión = Probabilidad compuesta por intentos\nRiesgo = Frecuencia base vs Variación natural`}
+      assumptions="El modelo asume que tu equipo de ventas mantiene su efectividad promedio, y que el comportamiento de los clientes no está siendo afectado temporalmente por crisis externas graves."
       findings={
         <div className="space-y-8">
           {/* Binomial Section */}
           <div>
             <h3 className="font-bold text-navy-900 mb-4 border-b border-ice-200 pb-2">
-              1. Modelo de Conversión (Binomial)
+              1. Escenarios de Conversión y Ventas
             </h3>
             <div className="grid grid-cols-3 gap-6 mb-4">
               <div className="bg-ice-50 p-3 rounded">
                 <label className="block text-xs font-bold text-secundario mb-2">
-                  n (Visitas guiadas agendadas)
+                  Visitas y Clases Muestra en la Semana
                 </label>
                 <Slider value={nVisits} onChangeValue={setNVisits} min={1} max={100} />
               </div>
               <div className="bg-ice-50 p-3 rounded">
                 <label className="block text-xs font-bold text-secundario mb-2">
-                  p (Probabilidad de cierre)
+                  Efectividad de Cierre de Mostrador (%)
                 </label>
                 <Slider
                   value={Math.round(pConv * 100)}
@@ -112,7 +112,7 @@ export default function M9_3_BinomialPoisson() {
               </div>
               <div className="bg-ice-50 p-3 rounded">
                 <label className="block text-xs font-bold text-secundario mb-2">
-                  k (Meta de inscripciones)
+                  Meta de Nuevos Alumnos Inscritos
                 </label>
                 <Slider value={kTarget} onChangeValue={setKTarget} min={0} max={nVisits} />
               </div>
@@ -121,17 +121,17 @@ export default function M9_3_BinomialPoisson() {
             <div className="flex gap-6">
               <div className="flex-1 h-64 border border-ice-200 rounded p-2">
                 <PlotChart
-                  id="binomial_pmf"
+                  id="conversion_model_pmf"
                   data={binomialData.chart as any}
                   layout={{ margin: { l: 40, r: 20, t: 10, b: 30 }, bargap: 0.1 }}
-                  altText="Distribución Binomial"
+                  altText="Modelo de Conversión"
                   tableData={{ columns: [], rows: [] }}
                 />
               </div>
               <div className="w-64 flex flex-col justify-center space-y-4">
                 <div className="text-center">
                   <div className="text-sm text-secundario mb-1">
-                    Probabilidad de Lograr la Meta P(X ≥ {kTarget})
+                    Certeza de Cumplir la Meta ({kTarget} o más alumnos)
                   </div>
                   <div
                     className={`text-4xl font-bold ${binomialData.probGeq > 0.7 ? 'text-green-500' : binomialData.probGeq > 0.3 ? 'text-amber-500' : 'text-coral'}`}
@@ -140,9 +140,9 @@ export default function M9_3_BinomialPoisson() {
                   </div>
                 </div>
                 <div className="p-3 bg-white border border-ice-200 rounded text-sm shadow-sm">
-                  <span className="block text-secundario mb-1">Lo normal esperado:</span>
+                  <span className="block text-secundario mb-1">Cierre Realista Esperado:</span>
                   <span className="font-bold text-navy-900">
-                    {binomialData.mean.toFixed(1)} ± {(binomialData.sd * 2).toFixed(1)} alumnos
+                    {binomialData.mean.toFixed(0)} alumnos nuevos
                   </span>
                 </div>
               </div>
@@ -152,11 +152,11 @@ export default function M9_3_BinomialPoisson() {
           {/* Poisson Section */}
           <div>
             <h3 className="font-bold text-navy-900 mb-4 border-b border-ice-200 pb-2">
-              2. Modelo de Bajas (Poisson)
+              2. Previsión de Cancelaciones Semanales
             </h3>
             <div className="w-1/3 bg-ice-50 p-3 rounded mb-4">
               <label className="block text-xs font-bold text-secundario mb-2">
-                λ (Tasa media de bajas por semana)
+                Promedio Histórico de Bajas por Semana
               </label>
               <Slider
                 value={lambdaDrops}
@@ -170,10 +170,10 @@ export default function M9_3_BinomialPoisson() {
             <div className="flex gap-6">
               <div className="flex-1 h-64 border border-ice-200 rounded p-2">
                 <PlotChart
-                  id="poisson_pmf"
+                  id="churn_model_pmf"
                   data={poissonData.chart as any}
                   layout={{ margin: { l: 40, r: 20, t: 10, b: 30 }, bargap: 0.1 }}
-                  altText="Distribución de Poisson vs Observado"
+                  altText="Predicción de Bajas vs Observado"
                   tableData={{ columns: [], rows: [] }}
                 />
               </div>
@@ -192,8 +192,8 @@ export default function M9_3_BinomialPoisson() {
       action={
         <div className="space-y-4 text-sm text-navy-900">
           <p>
-            <strong>Metas realistas:</strong> Si la probabilidad Binomial de lograr tu meta de
-            ventas es menor al 20%, tu equipo no está fallando, tu meta es estadísticamente
+            <strong>Metas realistas:</strong> Si la probabilidad estadística de lograr tu meta de
+            ventas es menor al 20%, tu equipo no está fallando, tu meta es matemáticamente
             imposible con el tráfico actual. Debes aumentar <em>n</em> (visitas) o <em>p</em>{' '}
             (calidad del prospecto/oferta).
           </p>
@@ -201,7 +201,7 @@ export default function M9_3_BinomialPoisson() {
             <strong>Diagnóstico de bajas:</strong> Si la prueba de bondad de ajuste marca
             sobredispersión, significa que las bajas te están pegando "en bloques" (ej. un
             instructor se va y se lleva alumnos, o el clima espanta a muchos a la vez). Si se ajusta
-            perfecto a Poisson, tus bajas son ruido blanco operativo normal.
+            perfectamente a las proyecciones, tus bajas son desgaste operativo normal.
           </p>
         </div>
       }

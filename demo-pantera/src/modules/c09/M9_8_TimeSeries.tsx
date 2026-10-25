@@ -88,20 +88,14 @@ export default function M9_8_TimeSeries() {
 
   return (
     <LabLayout
-      title="Series de Tiempo y Estacionalidad"
-      businessQuestion="¿Qué parte de mis altibajos es temporada y qué parte es tendencia?"
-      description="La descomposición estacional separa una serie histórica en tres fuerzas: la Tendencia (el rumbo de largo plazo), la Estacionalidad (los picos repetitivos de cada año) y el Ruido (los movimientos impredecibles)."
-      formulas={
-        method === 'additive'
-          ? `Y = Tendencia + Estacionalidad + Ruido\n(Los índices estacionales suman 0)`
-          : `Y = Tendencia × Estacionalidad × Ruido\n(Los índices estacionales promedian 1)`
-      }
-      assumptions="Requiere al menos 24 meses de datos históricos para extraer ciclos anuales confiables usando medias móviles centradas. No predice el futuro por sí sola (para eso se usa ARIMA o Prophet), sino que diagnostica el pasado."
+      title="Ciclos y Temporadas del Negocio"
+      businessQuestion="¿Qué bajas son temporales por temporada y cuáles son alertas de deserción real?"
+      description="El sistema separa el ruido cotidiano de tu escuela para mostrarte dos realidades clave: la dirección real del negocio a largo plazo y los meses en que la demanda sube o baja de forma cíclica."
       findings={
         <div className="space-y-6">
           <div className="flex gap-4 mb-4">
             <div className="w-1/2">
-              <label className="block text-xs font-bold text-navy-900 mb-1">Serie Histórica</label>
+              <label className="block text-xs font-bold text-navy-900 mb-1">Métrica a Evaluar</label>
               <Select
                 options={[
                   { label: 'Inscripciones (Altas)', value: 'inscripciones' },
@@ -115,15 +109,15 @@ export default function M9_8_TimeSeries() {
             </div>
             <div className="w-1/2">
               <label className="block text-xs font-bold text-navy-900 mb-1">
-                Modelo de Descomposición
+                Tipo de Medición
               </label>
               <Select
                 options={[
                   {
-                    label: 'Multiplicativo (Estacionalidad % proporcional)',
+                    label: 'Impacto Porcentual (% de subida o bajada)',
                     value: 'multiplicative',
                   },
-                  { label: 'Aditivo (Estacionalidad fija en volumen)', value: 'additive' },
+                  { label: 'Impacto Fijo (en número de alumnos o pesos)', value: 'additive' },
                 ]}
                 value={method}
                 onChange={(e) => setMethod(e.target.value as any)}
@@ -134,10 +128,10 @@ export default function M9_8_TimeSeries() {
           <div className="grid grid-cols-12 gap-6">
             <div className="col-span-8 flex flex-col gap-2">
               {[
-                { title: '1. Datos Originales', y: original, color: '#0B2A47' },
-                { title: '2. Tendencia (Movimiento Subyacente)', y: trend, color: '#F59E0B' },
-                { title: '3. Estacionalidad (Patrón Anual)', y: seasonal, color: '#2FB6D4' },
-                { title: '4. Ruido / Residuales', y: residual, color: '#64748B', type: 'bar' },
+                { title: '1. Historial Real', y: original, color: '#0B2A47' },
+                { title: '2. Rumbo Real del Negocio (Sin efecto de temporada)', y: trend, color: '#F59E0B' },
+                { title: '3. Efecto de Temporada (Meses altos y bajos repetitivos)', y: seasonal, color: '#2FB6D4' },
+                { title: '4. Imprevistos y Variaciones Aisladas', y: residual, color: '#64748B', type: 'bar' },
               ].map((panel, idx) => (
                 <div key={idx} className="h-32 border border-ice-200 rounded p-1">
                   <PlotChart
@@ -186,7 +180,7 @@ export default function M9_8_TimeSeries() {
                   ]}
                   layout={{
                     margin: { l: 30, r: 10, t: 30, b: 30 },
-                    title: { text: 'Perfil Estacional Promedio', font: { size: 12 } },
+                    title: { text: 'Impacto por Mes del Año', font: { size: 12 } },
                     shapes: [
                       {
                         type: 'line',
@@ -198,14 +192,14 @@ export default function M9_8_TimeSeries() {
                       },
                     ],
                   }}
-                  altText="Índices Estacionales"
+                  altText="Impacto por Mes"
                   tableData={{ columns: [], rows: [] }}
                 />
               </div>
 
               <div className="p-4 bg-white border border-ice-100 shadow-sm text-sm rounded">
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-secundario">Mes Pico:</span>
+                  <span className="text-secundario">Mejor Mes (Pico):</span>
                   <span className="font-bold text-green-700">
                     {peakMonth.month} (
                     {method === 'multiplicative'
@@ -215,7 +209,7 @@ export default function M9_8_TimeSeries() {
                   </span>
                 </div>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-secundario">Mes Valle:</span>
+                  <span className="text-secundario">Mes Más Flojo (Valle):</span>
                   <span className="font-bold text-red-700">
                     {valleyMonth.month} (
                     {method === 'multiplicative'
@@ -226,12 +220,12 @@ export default function M9_8_TimeSeries() {
                 </div>
 
                 <div className="mt-4 pt-3 border-t border-ice-100">
-                  <p className="text-xs text-navy-900 font-bold mb-1">Acción Sugerida:</p>
+                  <p className="text-xs text-navy-900 font-bold mb-1">Estrategia Recomendada:</p>
                   <p className="text-xs text-secundario leading-relaxed">
                     Tus campañas fuertes de captación deben lanzarse 3 a 4 semanas{' '}
-                    <strong>antes</strong> del pico de {peakMonth.month}. Para el valle de{' '}
-                    {valleyMonth.month}, planifica "Cursos de Verano" o Clínicas Intensivas para
-                    compensar el hueco de flujo.
+                    <strong>antes</strong> del mejor mes ({peakMonth.month}). Para el mes flojo de{' '}
+                    {valleyMonth.month}, planifica "Cursos Intensivos" o promociones anticipadas para
+                    evitar caídas de flujo.
                   </p>
                 </div>
               </div>
@@ -242,10 +236,11 @@ export default function M9_8_TimeSeries() {
       action={
         <div className="space-y-4 text-sm text-navy-900">
           <p>
-            No confundas <strong>Tendencia</strong> con <strong>Estacionalidad</strong>. Si en
-            Octubre bajan tus ingresos respecto a Septiembre, pero el modelo muestra que es el valle
-            histórico, no entres en pánico: es temporada baja. El pánico solo está justificado si la
-            línea amarilla (Tendencia) empieza a inclinarse hacia abajo a largo plazo.
+            No confundas una temporada baja con una crisis. Si en Septiembre u Octubre bajan tus
+            ingresos respecto a Agosto, pero el historial muestra que siempre ocurre por el regreso
+            a clases, no entres en pánico: es el ciclo natural de la escuela. La verdadera alarma solo
+            está justificada si la línea del rumbo real del negocio empieza a descender de forma
+            continua por varios meses seguidos.
           </p>
         </div>
       }

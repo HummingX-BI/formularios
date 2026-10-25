@@ -95,7 +95,7 @@ export default function M7_3_Cohorts() {
     <div className="space-y-6 h-full flex flex-col">
       <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-jakarta font-bold text-navy-900">Análisis de Cohortes</h1>
+          <h1 className="text-3xl font-jakarta font-bold text-navy-900">Retención por Generación</h1>
           <p className="text-lg text-secundario mt-1">
             ¿Mi operación mejora o empeora con el tiempo?
           </p>
@@ -190,7 +190,7 @@ export default function M7_3_Cohorts() {
 
         <div className="col-span-4 flex flex-col gap-6">
           <Card className="p-6 bg-white border border-ice-100 shadow-sm">
-            <h3 className="font-bold text-navy-900 mb-4">Comparativa de Cohortes (M6)</h3>
+            <h3 className="font-bold text-navy-900 mb-4">Comparativa de Generaciones (M6)</h3>
             <div className="flex justify-between mb-4">
               <div className="text-center">
                 <div className="text-xs text-secundario">{c1}</div>
@@ -249,7 +249,7 @@ export default function M7_3_Cohorts() {
               a un ritmo de {(slope * 100 * 12).toFixed(1)} puntos por año.
             </p>
             <div className="bg-amber-50 border border-amber-200 p-3 rounded text-sm text-amber-900">
-              <strong>Correlaciones de cohortes débiles:</strong>
+              <strong>Mapa de Causa y Efecto de cohortes débiles:</strong>
               <ul className="list-disc pl-4 mt-2">
                 <li>Mayor saturación en Nivel 3.</li>
                 <li>Alta rotación de instructores en los meses iniciales.</li>

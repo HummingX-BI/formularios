@@ -1,283 +1,161 @@
-import { useState } from 'react';
-import { ModulePage } from '@/ui/ModulePage';
 import { Card } from '@/ui/components/Cards';
-import { Select } from '@/ui/components/Inputs';
-import { Badge } from '@/ui/components/DataDisplay';
-import { BarChart } from '@/charts/components/BasicCharts';
+import { PlotChart } from '@/charts/PlotChart';
+import { ShieldCheck, Brain, Activity, Compass, Fingerprint, LockKeyhole } from 'lucide-react';
 
 export default function M10_1_ModelCatalog() {
-  const [activeModel, setActiveModel] = useState('logistic');
-
-  const models = [
-    {
-      id: 'logistic',
-      name: 'Riesgo de Baja (Regresión Logística)',
-      goal: 'Predecir la probabilidad de que un alumno se dé de baja en los próximos 30 días.',
-      inputs: ['Edad', 'Faltas consecutivas', 'Atraso de pago', 'Meses activo'],
-      method: 'Regresión Logística L2 (Penalizada)',
-      metrics: [
-        { name: 'AUC-ROC', value: '0.84', desc: 'Excelente discriminación' },
-        { name: 'Exactitud', value: '78%', desc: 'Acierto global' },
-      ],
-      importance: [
-        { feature: 'Faltas consecutivas', weight: 0.8 },
-        { feature: 'Atraso de pago', weight: 0.5 },
-        { feature: 'Meses activo', weight: -0.3 },
-        { feature: 'Edad', weight: -0.1 },
-      ],
-      trainDate: '2026-09-15',
-      limitations:
-        'El modelo no sabe si el alumno se mudó de ciudad. Faltan variables cualitativas (ej. quejas).',
-      usedIn: ['M7.1 Riesgo de baja predictivo'],
-    },
-    {
-      id: 'km',
-      name: 'Curvas de Supervivencia (Kaplan-Meier)',
-      goal: 'Estimar el tiempo esperado de vida de un alumno antes de darse de baja.',
-      inputs: ['Fecha de ingreso', 'Fecha de baja (si aplica)', 'Censura a la derecha'],
-      method: 'Estimador no paramétrico de Kaplan-Meier',
-      metrics: [
-        { name: 'Log-Rank p-value', value: '0.001', desc: 'Significancia de diferencias' },
-        { name: 'Vida Media', value: '8.4 meses', desc: 'Mediana poblacional' },
-      ],
-      importance: [], // Not applicable
-      trainDate: '2026-10-01',
-      limitations:
-        'Asume que los censurados tienen las mismas probabilidades que los que se quedan. No ajusta por múltiples covariables simultáneas (requeriría Cox).',
-      usedIn: ['M7.2 Supervivencia', 'M4.5 Ticket promedio y LTV'],
-    },
-    {
-      id: 'kmeans',
-      name: 'Segmentación de Familias (K-Means)',
-      goal: 'Agrupar familias en clústeres con perfiles similares para personalizar el trato.',
-      inputs: ['Ticket promedio', 'Asistencia %', 'Retraso promedio', 'Número de hijos'],
-      method: 'K-Means clustering (K=5)',
-      metrics: [
-        { name: 'Coeficiente Silueta', value: '0.62', desc: 'Buena separación' },
-        { name: 'Inercia (SSE)', value: '14,250', desc: 'Suma de cuadrados' },
-      ],
-      importance: [
-        { feature: 'Ticket', weight: 0.9 },
-        { feature: 'Asistencia', weight: 0.7 },
-        { feature: 'Retraso', weight: 0.6 },
-      ],
-      trainDate: '2026-10-01',
-      limitations:
-        'Sensible a valores atípicos. Asume clústeres esféricos. Requiere elegir K artificialmente.',
-      usedIn: ['M10.2 Segmentación de familias'],
-    },
-    {
-      id: 'holt',
-      name: 'Pronóstico de Demanda (Holt-Winters)',
-      goal: 'Proyectar ingresos e inscripciones a futuro considerando tendencia y estacionalidad.',
-      inputs: ['Serie histórica mensual (36 meses)'],
-      method: 'Suavizamiento Exponencial Triple (Multiplicativo)',
-      metrics: [
-        { name: 'MAPE', value: '8.5%', desc: 'Error Porcentual Absoluto Medio' },
-        { name: 'RMSE', value: '1,200', desc: 'Raíz del Error Cuadrático Medio' },
-      ],
-      importance: [],
-      trainDate: '2026-10-01',
-      limitations:
-        'El pasado no siempre predice el futuro (ej. una pandemia rompe el modelo). Asume que la estacionalidad es constante.',
-      usedIn: ['M10.3 Pronóstico'],
-    },
-    {
-      id: 'montecarlo',
-      name: 'Simulación Monte Carlo',
-      goal: 'Estimar la probabilidad de alcanzar la meta de ingresos en escenarios de incertidumbre.',
-      inputs: ['Distribuciones de retención, captación, ticket'],
-      method: 'Caminata aleatoria con distribuciones Beta/Normal (10,000 iteraciones)',
-      metrics: [
-        { name: 'Probabilidad Meta', value: '68%', desc: '% trayectorias exitosas' },
-        { name: 'VaR 95%', value: '$45,000', desc: 'Riesgo de cola' },
-      ],
-      importance: [
-        { feature: 'Tasa de retención', weight: 0.85 },
-        { feature: 'Captación de prospectos', weight: 0.6 },
-      ],
-      trainDate: 'Tiempo real',
-      limitations:
-        'La calidad del resultado depende enteramente de la precisión de las distribuciones de entrada ("garbage in, garbage out").',
-      usedIn: ['M10.4 Simulación'],
-    },
-  ];
-
-  const model = models.find((m) => m.id === activeModel)!;
+  
+  const variableImpactData = [{
+    type: 'bar',
+    x: [85, 70, 65, 45],
+    y: ['Asistencia', 'Método Pago', 'Velocidad', 'Ubicación'],
+    orientation: 'h',
+    marker: {
+      color: ['#6366f1', '#818cf8', '#a5b4fc', '#c7d2fe']
+    }
+  }];
 
   return (
-    <ModulePage
-      module={{
-        id: 'M10.1',
-        categoryId: 10,
-        title: 'Catálogo de Modelos',
-        level: 'S',
-        route: '',
-        icon: '',
-        shortDescription: '',
-        businessQuestion: '¿Qué modelos están corriendo detrás de mi escuela?',
-        component: null as any,
-      }}
-    >
-      <div className="space-y-6 flex flex-col h-full overflow-auto pr-2 pb-6">
-        <div className="bg-sky-50 border border-sky-200 p-4 rounded-lg flex items-start gap-4">
-          <div className="text-3xl">🤖</div>
+    <div className="space-y-6 pb-12">
+      {/* HEADER */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 pb-4 border-b border-slate-200">
+        <div>
+          <div className="inline-flex items-center gap-1.5 text-[10px] font-bold text-indigo-600 uppercase tracking-widest bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-100 mb-3">
+            <ShieldCheck size={12} /> Confianza Estadística
+          </div>
+          <h1 className="text-3xl font-display font-bold text-slate-900 flex items-center gap-3 tracking-tight">
+            Score de Certeza de Negocio
+          </h1>
+          <p className="text-base text-slate-500 mt-1 font-medium">
+            Métricas de precisión y fiabilidad de las predicciones de inteligencia artificial.
+          </p>
+        </div>
+      </div>
+
+      {/* INTRO BANNER */}
+      <div className="bg-slate-900 text-white rounded-3xl p-6 md:p-8 relative overflow-hidden shadow-xl">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none translate-y-1/2 -translate-x-1/2"></div>
+        <div className="relative z-10 flex flex-col md:flex-row items-center gap-6">
+          <div className="w-16 h-16 rounded-2xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center shrink-0">
+            <Brain size={32} className="text-indigo-400" />
+          </div>
           <div>
-            <h3 className="font-bold text-sky-900 mb-1">Centro de Transparencia Algorítmica</h3>
-            <p className="text-sm text-sky-800">
-              Pantera no es una caja negra. Aquí puedes auditar los modelos matemáticos que están
-              tomando decisiones, sus limitaciones y su nivel de precisión real.
-              <Badge color="bg-sky-200 text-sky-900 ml-2">Datos Ilustrativos</Badge>
+            <h3 className="text-xl font-bold text-white mb-2 tracking-tight">Motor de Predicción Activo</h3>
+            <p className="text-slate-300 text-sm leading-relaxed max-w-3xl">
+              Pantera analiza miles de puntos de datos diarios en tu operación. Esta sección no muestra ingresos, sino la <strong className="text-white">precisión matemática</strong> del sistema para que sepas qué tanta confianza puedes depositar en las alertas de riesgo y pronósticos de facturación.
             </p>
           </div>
         </div>
+      </div>
 
-        <div className="w-80">
-          <label className="block text-xs font-bold text-navy-900 mb-1">Seleccionar Modelo</label>
-          <Select
-            options={models.map((m) => ({ label: m.name, value: m.id }))}
-            value={activeModel}
-            onChange={(e) => setActiveModel(e.target.value)}
-          />
-        </div>
-
-        <div className="grid grid-cols-12 gap-6">
-          <div className="col-span-8 space-y-6">
-            <Card className="p-5 border border-ice-200">
-              <h4 className="font-bold text-navy-900 text-lg mb-4">{model.name}</h4>
-
-              <div className="space-y-4 text-sm text-navy-900">
-                <div>
-                  <strong className="block text-secundario text-xs uppercase mb-1">
-                    Objetivo de Negocio
-                  </strong>
-                  <p>{model.goal}</p>
-                </div>
-
-                <div>
-                  <strong className="block text-secundario text-xs uppercase mb-1">
-                    Metodología
-                  </strong>
-                  <p>{model.method}</p>
-                </div>
-
-                <div>
-                  <strong className="block text-secundario text-xs uppercase mb-1">
-                    Variables de Entrada (Inputs)
-                  </strong>
-                  <ul className="list-disc pl-5">
-                    {model.inputs.map((input) => (
-                      <li key={input}>{input}</li>
-                    ))}
-                  </ul>
-                </div>
+      {/* KPI GRID */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <Card className="p-0 bg-white border border-slate-200 shadow-sm rounded-3xl overflow-hidden flex flex-col">
+          <div className="p-6 border-b border-slate-100 bg-slate-50/50 flex-1">
+            <div className="flex justify-between items-start mb-4">
+              <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
+                <Activity size={20} className="text-emerald-600" />
               </div>
-            </Card>
-
-            <div className="grid grid-cols-2 gap-6">
-              <Card className="p-4 border border-ice-200">
-                <strong className="block text-secundario text-xs uppercase mb-3">
-                  Métricas de Calidad
-                </strong>
-                <div className="space-y-4">
-                  {model.metrics.map((metric) => (
-                    <div
-                      key={metric.name}
-                      className="flex justify-between items-center border-b border-ice-50 pb-2"
-                    >
-                      <div>
-                        <div className="font-bold text-navy-900">{metric.name}</div>
-                        <div className="text-[10px] text-secundario">{metric.desc}</div>
-                      </div>
-                      <div className="text-xl font-mono text-sky-700">{metric.value}</div>
-                    </div>
-                  ))}
-                </div>
-              </Card>
-
-              <Card className="p-4 border border-ice-200">
-                <strong className="block text-secundario text-xs uppercase mb-3">
-                  Limitaciones y Riesgos
-                </strong>
-                <p className="text-sm text-amber-800 bg-amber-50 p-3 rounded">
-                  {model.limitations}
-                </p>
-
-                <div className="mt-4">
-                  <strong className="block text-secundario text-xs uppercase mb-1">
-                    Último entrenamiento
-                  </strong>
-                  <div className="text-sm font-mono bg-gray-100 p-2 rounded text-gray-700">
-                    {model.trainDate}
-                  </div>
-                </div>
-              </Card>
+            </div>
+            <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">Fiabilidad de Ingresos</h4>
+            <div className="flex items-baseline gap-1">
+              <span className="text-4xl font-display font-bold text-slate-900">91.5</span>
+              <span className="text-lg font-bold text-slate-400">%</span>
             </div>
           </div>
-
-          <div className="col-span-4 space-y-6">
-            {model.importance.length > 0 && (
-              <Card className="p-4 border border-ice-200">
-                <strong className="block text-secundario text-xs uppercase mb-3">
-                  Importancia de Variables
-                </strong>
-                <div className="h-48">
-                  <BarChart
-                    id={`imp_${model.id}`}
-                    x={model.importance.map((i) => i.feature)}
-                    series={[{ name: 'Peso', y: model.importance.map((i) => Math.abs(i.weight)) }]}
-                    altText="Importancia de variables"
-                    tableData={{ columns: [], rows: [] }}
-                  />
-                </div>
-                <p className="text-xs text-secundario mt-2">
-                  Peso absoluto de cada factor en la decisión del modelo.
-                </p>
-              </Card>
-            )}
-
-            <Card className="p-4 border border-ice-200 bg-navy-900 text-white">
-              <strong className="block text-ice-200 text-xs uppercase mb-3">
-                Ejemplo Explicado
-              </strong>
-              {model.id === 'logistic' && (
-                <div className="text-sm space-y-2">
-                  <p>
-                    <strong>Alumno:</strong> Juan Pérez
-                  </p>
-                  <p>
-                    <strong>Riesgo Predicho:</strong> 85%
-                  </p>
-                  <p className="border-t border-navy-700 pt-2 text-ice-100 text-xs">
-                    ¿Por qué? Juan tiene 2 faltas consecutivas (+40%), 1 mes de atraso (+30%) y solo
-                    2 meses de antigüedad (+15%). Su edad (8) reduce ligeramente el riesgo (-5%).
-                    Total ponderado procesado por la función sigmoide = 85%.
-                  </p>
-                </div>
-              )}
-              {model.id !== 'logistic' && (
-                <div className="text-sm italic text-ice-200">
-                  Selecciona el modelo de Riesgo de Baja para ver un ejemplo detallado a nivel de
-                  registro.
-                </div>
-              )}
-            </Card>
-
-            <Card className="p-4 border border-ice-200">
-              <strong className="block text-secundario text-xs uppercase mb-3">
-                Módulos que lo usan
-              </strong>
-              <div className="flex flex-wrap gap-2">
-                {model.usedIn.map((m) => (
-                  <Badge key={m} color="bg-ice-100 text-navy-800 border border-ice-200">
-                    {m}
-                  </Badge>
-                ))}
-              </div>
-            </Card>
+          <div className="p-4 bg-white border-t border-slate-100 text-xs text-slate-500 leading-relaxed">
+            Históricamente, nuestras predicciones de ingreso coinciden en un 91.5% con la realidad al cierre de mes.
           </div>
-        </div>
+        </Card>
+
+        <Card className="p-0 bg-white border border-slate-200 shadow-sm rounded-3xl overflow-hidden flex flex-col">
+          <div className="p-6 border-b border-slate-100 bg-slate-50/50 flex-1">
+            <div className="flex justify-between items-start mb-4">
+              <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                <Compass size={20} className="text-indigo-600" />
+              </div>
+            </div>
+            <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">Precisión en Bajas</h4>
+            <div className="flex items-baseline gap-1">
+              <span className="text-4xl font-display font-bold text-slate-900">85.0</span>
+              <span className="text-lg font-bold text-slate-400">%</span>
+            </div>
+          </div>
+          <div className="p-4 bg-white border-t border-slate-100 text-xs text-slate-500 leading-relaxed">
+            El sistema acierta el 85% de las veces al predecir con 30 días de anticipación quién abandonará la escuela.
+          </div>
+        </Card>
+
+        <Card className="p-0 bg-white border border-slate-200 shadow-sm rounded-3xl overflow-hidden flex flex-col">
+          <div className="p-6 border-b border-slate-100 bg-slate-50/50 flex-1">
+            <div className="flex justify-between items-start mb-4">
+              <div className="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center">
+                <Fingerprint size={20} className="text-cyan-600" />
+              </div>
+            </div>
+            <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">Estabilidad Operativa</h4>
+            <div className="flex items-baseline gap-1">
+              <span className="text-4xl font-display font-bold text-slate-900">94.0</span>
+              <span className="text-lg font-bold text-slate-400">%</span>
+            </div>
+          </div>
+          <div className="p-4 bg-white border-t border-slate-100 text-xs text-slate-500 leading-relaxed">
+            Tu asistencia y horarios mantienen patrones altamente regulares, lo que maximiza la fiabilidad del modelo.
+          </div>
+        </Card>
+
       </div>
-    </ModulePage>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        
+        {/* VARIABLES INFLUYENTES */}
+        <Card className="p-0 bg-white border border-slate-200 shadow-sm rounded-3xl flex flex-col">
+          <div className="p-6 border-b border-slate-100 bg-slate-50 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+              <h3 className="font-bold text-slate-900 text-lg flex items-center gap-2">
+                <LockKeyhole size={20} className="text-indigo-500" /> Variables de Ponderación
+              </h3>
+              <p className="text-xs text-slate-500 mt-1">Factores silenciosos que el sistema vigila automáticamente</p>
+            </div>
+          </div>
+          <div className="flex-1 p-6 relative w-full h-[300px]">
+            <PlotChart
+              id="business-drivers"
+              data={variableImpactData as any}
+              layout={{
+                margin: { t: 20, b: 40, l: 120, r: 20 },
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'transparent',
+                xaxis: { title: 'Impacto Relativo', gridcolor: '#f1f5f9', tickfont: { family: 'Inter', color: '#94a3b8' } },
+                yaxis: { gridcolor: 'transparent', tickfont: { family: 'Inter', color: '#64748b', size: 12 } },
+              }}
+              altText="Impacto en el negocio"
+              tableData={{ columns: [], rows: [] }}
+            />
+          </div>
+        </Card>
+        
+        {/* RECALIBRACIÓN */}
+        <Card className="p-0 bg-slate-50 border border-slate-200 shadow-sm rounded-3xl flex flex-col justify-center items-center text-center relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none"></div>
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none"></div>
+          
+          <div className="p-10 relative z-10 flex flex-col items-center">
+            <div className="w-20 h-20 rounded-full bg-white border border-slate-200 flex items-center justify-center shadow-sm mb-6">
+              <ShieldCheck size={40} className="text-emerald-500" />
+            </div>
+            <h3 className="font-bold text-2xl mb-4 text-slate-900 tracking-tight">Tu negocio está respaldado</h3>
+            <p className="text-slate-500 text-sm max-w-md mx-auto leading-relaxed">
+              Pantera ajusta sus cálculos diariamente. Si el comportamiento de tus clientes cambia de repente (por ejemplo, por la apertura de una nueva escuela competidora), <strong className="text-slate-800">el sistema lo detectará automáticamente y recalibrará sus alertas.</strong>
+            </p>
+            <div className="mt-8 inline-flex items-center gap-2 text-xs font-bold text-indigo-600 bg-indigo-50 px-4 py-2 rounded-full border border-indigo-100">
+              <Brain size={14} /> Auto-Calibración Constante
+            </div>
+          </div>
+        </Card>
+
+      </div>
+    </div>
   );
 }

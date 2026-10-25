@@ -4,6 +4,7 @@ import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { MODULE_REGISTRY } from '@/modules/registry';
 import { useAppStore } from '@/app/store';
+import { TabbedModule } from '@/ui/TabbedModule';
 
 vi.mock('recharts', async () => {
   const OriginalRechartsModule = await vi.importActual('recharts');
@@ -47,12 +48,14 @@ describe('Route Tracing Audit (Prompt 30)', () => {
         useAppStore.getState().setSeed(seed);
         
         for (const mod of MODULE_REGISTRY) {
+          const ModComp = mod.component;
+          const TestEl = ModComp ? <ModComp /> : <TabbedModule moduleInfo={mod as any} />;
           const { unmount } = render(
             <MemoryRouter initialEntries={[mod.route]}>
               <Routes>
                 <Route path={mod.route} element={
                   <React.Suspense fallback={<div>Loading...</div>}>
-                    <mod.component />
+                    {TestEl}
                   </React.Suspense>
                 } />
               </Routes>

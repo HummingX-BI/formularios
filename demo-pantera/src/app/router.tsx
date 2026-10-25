@@ -8,6 +8,8 @@ import { MODULE_REGISTRY } from '@/modules/registry';
 import MLDebugPage from '@/modules/system/MLDebugPage';
 import ChartsGallery from '@/modules/system/ChartsGallery';
 import React, { Suspense } from 'react';
+import { TabbedModule } from '@/ui/TabbedModule';
+import { LegacyRedirect, LEGACY_ROUTES } from './legacyRoutes';
 
 export function AppRouter(): React.JSX.Element {
   return (
@@ -22,11 +24,21 @@ export function AppRouter(): React.JSX.Element {
               key={mod.id}
               path={mod.route}
               element={
-                <Suspense fallback={<div className="p-8">Cargando...</div>}>
-                  <mod.component />
-                </Suspense>
+                mod.tabs ? (
+                  <TabbedModule moduleInfo={mod} />
+                ) : (
+                  <Suspense fallback={<div className="p-8">Cargando...</div>}>
+                    <div className="max-w-7xl mx-auto w-full p-6 md:p-10 h-full min-h-[700px] animate-in fade-in slide-in-from-bottom-2 duration-500">
+                      {mod.component && <mod.component />}
+                    </div>
+                  </Suspense>
+                )
               }
             />
+          ))}
+          {/* Rutas legacy redirigidas a las nuevas */}
+          {Object.keys(LEGACY_ROUTES).map(legacyPath => (
+            <Route key={legacyPath} path={legacyPath} element={<LegacyRedirect />} />
           ))}
           <Route path="_data-audit" element={<DataAuditPage />} />
           <Route path="_ml-debug" element={<MLDebugPage />} />

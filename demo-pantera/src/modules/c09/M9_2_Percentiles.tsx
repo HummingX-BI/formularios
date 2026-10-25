@@ -53,10 +53,9 @@ export default function M9_2_Percentiles() {
 
   return (
     <LabLayout
-      title="Percentiles y Cuantiles"
-      businessQuestion="¿Dónde está un alumno, grupo o instructor respecto a los demás?"
-      description="Los percentiles dividen los datos ordenados en 100 partes iguales. Si alguien está en el percentil 90, significa que supera al 90% de la población. El percentil 50 es la mediana."
-      formulas={`Percentil k = (k / 100) * (n + 1)\nIQR = P75 - P25`}
+      title="Ranking y Desempeño Comparativo de Alumnos"
+      businessQuestion="¿Dónde se ubica un alumno o grupo respecto a todo el historial de la escuela?"
+      description="Esta herramienta compara el nivel o asistencia de cualquier alumno contra el resto de la escuela para identificar a los más destacados o a quienes necesitan apoyo antes de desertar."
       findings={
         <div className="space-y-6">
           <div className="w-64">
@@ -85,13 +84,13 @@ export default function M9_2_Percentiles() {
             </div>
 
             <div>
-              <h4 className="font-bold text-navy-900 mb-2">Tabla de Percentiles</h4>
+              <h4 className="font-bold text-navy-900 mb-2">Tabla de Desempeño y Posición Relativa</h4>
               <table className="w-full text-left text-sm border-collapse">
                 <thead>
                   <tr className="border-b border-ice-200 text-secundario">
-                    <th className="pb-1">Percentil</th>
+                    <th className="pb-1">Nivel / Rango</th>
                     <th className="pb-1 text-right">Valor</th>
-                    <th className="pb-1 text-right">Significado</th>
+                    <th className="pb-1 text-right">Interpretación en la Escuela</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -100,10 +99,18 @@ export default function M9_2_Percentiles() {
                       key={pt.p}
                       className={`border-b border-ice-50 ${pt.p === 50 ? 'bg-ice-50 font-bold text-navy-900' : ''}`}
                     >
-                      <td className="py-2">P{pt.p}</td>
+                      <td className="py-2">
+                        {pt.p === 50 ? 'Promedio Central (Top 50%)' : pt.p < 50 ? `Zona Baja (${pt.p}%)` : `Zona Alta (${pt.p}%)`}
+                      </td>
                       <td className="py-2 text-right">{pt.val.toFixed(1)}</td>
                       <td className="py-2 text-right text-xs text-secundario">
-                        {pt.p}% está debajo de esto
+                        {pt.p === 50
+                          ? 'Punto medio de la escuela'
+                          : pt.p < 30
+                          ? 'Alumnos que requieren seguimiento'
+                          : pt.p > 70
+                          ? 'Alumnos de rendimiento sobresaliente'
+                          : `Supera al ${pt.p}% de los alumnos`}
                       </td>
                     </tr>
                   ))}
@@ -113,7 +120,7 @@ export default function M9_2_Percentiles() {
           </div>
 
           <div className="border border-ice-200 rounded p-4 bg-ice-50">
-            <h4 className="font-bold text-navy-900 mb-4">Herramienta: Ubicar un valor</h4>
+            <h4 className="font-bold text-navy-900 mb-4">Herramienta: Evaluar y Clasificar a un Alumno</h4>
             <div className="flex gap-4 items-end">
               <div className="w-48">
                 <label className="block text-xs text-secundario mb-1">
@@ -128,9 +135,9 @@ export default function M9_2_Percentiles() {
               </div>
               <div className="flex-1 bg-white border border-ice-200 rounded p-2 flex items-center">
                 <span className="text-navy-900">
-                  Este registro está en el{' '}
-                  <strong className="text-blue-600 text-lg">Percentil {pFound}</strong>. Supera al{' '}
-                  {pFound}% de la base histórica.
+                  Este registro se ubica en el{' '}
+                  <strong className="text-blue-600 text-lg">Top {100 - pFound}% de la escuela</strong>. Supera al{' '}
+                  {pFound}% de los alumnos históricos.
                 </span>
               </div>
             </div>
@@ -139,10 +146,9 @@ export default function M9_2_Percentiles() {
       }
       action={
         <p className="text-sm text-navy-900">
-          Usa los percentiles extremos (P10 y P90) para crear reglas de alertas automáticas, en
-          lugar de umbrales fijos que quedan obsoletos con el tiempo. Así siempre detectarás al 10%
-          de peor o mejor desempeño, independientemente de si la escuela en general mejora o
-          empeora.
+          Usa los rangos de desempeño para detectar a tiempo al 10% de alumnos con menor asistencia o avance,
+          y programa llamadas de seguimiento antes de que se den de baja. Al mismo tiempo, reconoce al 10% superior
+          para incentivar su lealtad e invitarlos a equipos representativos.
         </p>
       }
     />

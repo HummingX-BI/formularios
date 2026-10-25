@@ -114,7 +114,7 @@ export default function PerfPage() {
         <Card className="p-6 bg-white border border-ice-100 shadow-sm">
           <h2 className="text-xl font-bold text-navy-900 mb-4">Optimización (Bundle)</h2>
           <ul className="text-sm space-y-2 text-secundario">
-            <li>✅ <strong>Code Splitting:</strong> Todos los 58 módulos usan <code>React.lazy</code>.</li>
+            <li>✅ <strong>Code Splitting:</strong> Las 62 vistas usan <code>React.lazy</code>.</li>
             <li>✅ <strong>Diferido:</strong> Gráficas Plotly cargadas asíncronamente en <code>PlotChart</code>.</li>
             <li>✅ <strong>Memoización:</strong> Zustand con selectores estables (useMetrics).</li>
             <li>✅ <strong>Heavy ML:</strong> Ejecutado en Web Worker simulado/real.</li>

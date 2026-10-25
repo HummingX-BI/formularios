@@ -90,19 +90,17 @@ export default function M9_6_Correlations() {
 
   return (
     <LabLayout
-      title="Correlaciones"
-      businessQuestion="¿Qué variables se mueven juntas en mi escuela?"
-      description="La correlación mide si dos variables tienden a subir juntas (positiva) o si una sube cuando la otra baja (negativa). Valores cercanos a 1 o -1 indican relaciones muy fuertes; valores cercanos a 0 indican que no hay relación."
-      formulas={`Pearson r = Cov(x,y) / (σx σy)\nSpearman ρ = Pearson sobre rangos`}
-      assumptions="Pearson asume relación lineal. Spearman solo asume relación monótona (útil si hay valores extremos o relaciones curvas simples)."
+      title="Mapa de Causa y Efecto Operativo"
+      businessQuestion="¿Qué factores de mi escuela influyen directamente en la asistencia y el abandono?"
+      description="Esta herramienta analiza qué variables del negocio van de la mano: por ejemplo, si el aumento de antigüedad o la edad del alumno impacta positiva o negativamente en la asistencia a clases."
       findings={
         <div className="space-y-6">
           <div className="w-64 mb-4">
-            <label className="block text-xs font-bold text-navy-900 mb-1">Método</label>
+            <label className="block text-xs font-bold text-navy-900 mb-1">Tipo de Análisis</label>
             <Select
               options={[
-                { label: 'Pearson (Lineal)', value: 'pearson' },
-                { label: 'Spearman (Rangos)', value: 'spearman' },
+                { label: 'Tendencia Directa', value: 'pearson' },
+                { label: 'Tendencia por Grupos', value: 'spearman' },
               ]}
               value={method}
               onChange={(e) => setMethod(e.target.value as any)}
@@ -118,14 +116,14 @@ export default function M9_6_Correlations() {
                   margin: { l: 80, r: 20, t: 20, b: 80 },
                   xaxis: { tickangle: -45 },
                 }}
-                altText="Matriz de correlación"
+                altText="Matriz de relaciones operativas"
                 tableData={{ columns: [], rows: [] }}
               />
             </div>
 
             <div className="flex flex-col gap-4">
               <h4 className="font-bold text-navy-900 border-b border-ice-200 pb-2">
-                Top 3 Relaciones Más Fuertes
+                Top 3 Factores que Más Impactan
               </h4>
               {topRelations.map((rel, idx) => (
                 <div
@@ -136,16 +134,14 @@ export default function M9_6_Correlations() {
                     {rel.v1} ↔ {rel.v2}
                   </div>
                   <div
-                    className={`text-lg font-bold mb-1 ${rel.r > 0 ? 'text-blue-600' : 'text-coral'}`}
+                    className={`text-sm font-bold mb-1 ${rel.r > 0 ? 'text-blue-600' : 'text-coral'}`}
                   >
-                    r = {rel.r > 0 ? '+' : ''}
-                    {rel.r.toFixed(2)}
+                    {Math.abs(rel.r) > 0.7 ? 'Impacto Muy Fuerte' : 'Impacto Moderado'} ({rel.r > 0 ? 'Relación Directa' : 'Relación Inversa'})
                   </div>
-                  <div className="text-xs text-secundario mb-2">Valor p: {rel.p.toFixed(4)}</div>
                   <p className="text-xs text-navy-900 bg-ice-50 p-2 rounded">
                     {rel.r > 0
-                      ? `Cuando ${rel.v1} es alto, ${rel.v2} tiende a ser alto.`
-                      : `Cuando ${rel.v1} es alto, ${rel.v2} tiende a ser bajo.`}
+                      ? `A mayor ${rel.v1}, mayor es la ${rel.v2} de los alumnos.`
+                      : `A mayor ${rel.v1}, tiende a disminuir la ${rel.v2}.`}
                   </p>
                 </div>
               ))}

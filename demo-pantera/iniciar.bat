@@ -1,18 +1,22 @@
 @echo off
-echo ==============================================
-echo  INICIANDO PANTERA DEMO (MODO SIN CONEXION)
-echo ==============================================
+echo ===================================================
+echo     INICIANDO DEMO PANTERA (VERSION PRODUCCION)
+echo ===================================================
 echo.
-echo Comprobando Node.js...
-node -v >nul 2>&1
-IF %ERRORLEVEL% NEQ 0 (
-  echo ERROR: Node.js no esta instalado.
-  echo Por favor instala Node.js para ejecutar la demostracion.
-  pause
-  exit /b 1
-)
+echo 1. Cerrando servidores anteriores...
+taskkill /F /IM node.exe >nul 2>&1
+
+echo 2. Preparando entorno optimizado...
+start cmd /c "npm run preview -- --port 8080 --host"
+
+echo 3. Esperando al servidor...
+timeout /t 3 /nobreak >nul
+
+echo 4. Abriendo la plataforma en el navegador...
+start http://localhost:8080/
 
 echo.
-echo Sirviendo la aplicacion localmente...
-start http://localhost:4173
-npx serve -s dist -p 4173
+echo ===================================================
+echo  SISTEMA EN LINEA. PUEDES MINIMIZAR ESTA VENTANA.
+echo ===================================================
+pause

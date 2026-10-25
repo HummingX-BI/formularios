@@ -30,7 +30,7 @@ export default function M12_2_Glossary() {
       </div> 
       <div className="mb-8 relative max-w-xl"> 
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-tenue" /> 
-        <input type="text" placeholder="Buscar un término (ej. Churn, CAC, Bayes)..." value={query} onChange={e => setQuery(e.target.value)} className="w-full pl-12 pr-4 py-3 bg-white border border-ice-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-400 shadow-sm transition-all" /> 
+        <input type="text" placeholder="Buscar un término (ej. Tasa de Bajas, Costo por Nuevo Alumno (CAC), IA Probabilística)..." value={query} onChange={e => setQuery(e.target.value)} className="w-full pl-12 pr-4 py-3 bg-white border border-ice-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-400 shadow-sm transition-all" /> 
       </div> 
       {!query && ( 
         <div className="flex flex-wrap gap-2 mb-8"> 

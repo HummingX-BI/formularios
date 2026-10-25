@@ -9,6 +9,7 @@ import {
   holmCorrection,
 } from '@/stats/inference';
 import { kaplanMeier } from '@/ml/kaplanMeier';
+import { Users, Info, Activity, Award, CheckCircle2, AlertTriangle, TrendingUp, Shuffle } from 'lucide-react';
 
 export default function M8_3_InstructorEffectiveness() {
   const dataset = useDataset();
@@ -68,7 +69,9 @@ export default function M8_3_InstructorEffectiveness() {
     const bestInst = instStats[0]!;
 
     // KM Curves
-    const kmData = instructors.map((inst) => {
+    const colors = ['#6366f1', '#f43f5e', '#10b981', '#f59e0b']; // Indigo, Rose, Emerald, Amber
+    
+    const kmData = instructors.map((inst, index) => {
       const studs = grouped[inst]!;
       const times: number[] = [];
       const events: boolean[] = [];
@@ -88,7 +91,7 @@ export default function M8_3_InstructorEffectiveness() {
         name: inst,
         x: km.times,
         y: km.survival,
-        line: { shape: 'hv' },
+        line: { shape: 'hv', width: inst === bestInst.inst ? 4 : 2, color: colors[index % colors.length] },
       };
     });
 
@@ -96,130 +99,202 @@ export default function M8_3_InstructorEffectiveness() {
   }, [dataset]);
 
   return (
-    <div className="space-y-6 h-full flex flex-col">
-      <div>
-        <h1 className="text-3xl font-jakarta font-bold text-navy-900">
-          Efectividad por Instructor
-        </h1>
-        <p className="text-lg text-secundario mt-1">¿Qué instructor retiene mejor y por qué?</p>
+    <div className="space-y-6 pb-12">
+      {/* HEADER */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 pb-4 border-b border-slate-200">
+        <div>
+          <div className="inline-flex items-center gap-1.5 text-[10px] font-bold text-indigo-600 uppercase tracking-widest bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-100 mb-3">
+            <Users size={12} /> Recursos Humanos
+          </div>
+          <h1 className="text-3xl font-display font-bold text-slate-900 flex items-center gap-3 tracking-tight">
+            Efectividad por Instructor
+          </h1>
+          <p className="text-base text-slate-500 mt-1 font-medium">
+            ¿Qué instructor retiene mejor a sus alumnos y por qué?
+          </p>
+        </div>
       </div>
 
-      <div className="grid grid-cols-12 gap-6 flex-1">
-        <div className="col-span-8 flex flex-col gap-6">
-          <Card className="p-4 bg-white border border-ice-100 shadow-sm flex-1">
-            <h3 className="font-bold text-navy-900 mb-4">Retención a 6 Meses por Instructor</h3>
-            <table className="w-full text-left text-sm mb-4">
-              <thead>
-                <tr className="border-b border-ice-200 text-secundario">
-                  <th className="pb-2">Instructor</th>
-                  <th className="pb-2">Alumnos (n)</th>
-                  <th className="pb-2">Retención (p)</th>
-                  <th className="pb-2">IC 95% (Wilson)</th>
-                  <th className="pb-2 text-right">Significancia (Holm)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {instStats.map((st) => (
-                  <tr key={st.inst} className="border-b border-ice-50">
-                    <td className="py-2 font-bold text-navy-900">{st.inst}</td>
-                    <td className="py-2">{st.total}</td>
-                    <td className="py-2 text-aqua-600 font-bold">{(st.p * 100).toFixed(1)}%</td>
-                    <td className="py-2 text-secundario">
-                      [{(st.ci[0] * 100).toFixed(1)}%, {(st.ci[1] * 100).toFixed(1)}%]
-                    </td>
-                    <td className="py-2 text-right">
-                      {st.adjPVal < 0.05 ? (
-                        <Badge
-                          color={
-                            st.p > mean(instStats.map((s) => s.p))
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-coral text-white'
-                          }
-                        >
-                          Significativo
-                        </Badge>
-                      ) : (
-                        <span className="text-secundario">Atribuible al azar</span>
-                      )}
-                    </td>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        {/* GRÁFICAS Y TABLAS (IZQUIERDA) */}
+        <div className="lg:col-span-8 flex flex-col gap-6">
+          
+          <Card className="p-0 bg-white border border-slate-200 shadow-sm rounded-3xl flex flex-col">
+            <div className="p-6 border-b border-slate-100 bg-slate-50 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+              <h3 className="font-bold text-slate-900 text-lg flex items-center gap-2">
+                Retención a 6 Meses por Instructor
+              </h3>
+              <div className="text-xs text-indigo-800 bg-indigo-50 px-4 py-2 border border-indigo-100 rounded-xl flex items-start gap-2 shadow-inner">
+                <Info size={16} className="shrink-0 mt-0.5 text-indigo-500" />
+                <span>
+                  <strong>Significancia:</strong> Prueba Z de proporciones ajustada por método Holm.
+                </span>
+              </div>
+            </div>
+            
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-white sticky top-0 z-10 shadow-sm">
+                  <tr className="border-b border-slate-200 text-slate-400 text-[10px] uppercase tracking-wider font-bold">
+                    <th className="p-4 pl-6">Instructor</th>
+                    <th className="p-4 text-center">Alumnos (n)</th>
+                    <th className="p-4 text-center">Retención (p)</th>
+                    <th className="p-4 text-center">IC 95% (Wilson)</th>
+                    <th className="p-4 pr-6 text-right">Desempeño (Z-Test)</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-            <div className="text-xs text-secundario bg-ice-50 p-2 rounded">
-              <strong>Prueba estadística:</strong> Cada instructor se compara contra el agregado del
-              resto mediante prueba Z de dos proporciones. Los p-values están ajustados por el
-              método de Holm para corregir comparaciones múltiples.
+                </thead>
+                <tbody className="divide-y divide-slate-50">
+                  {instStats.map((st) => (
+                    <tr key={st.inst} className="hover:bg-slate-50 transition-colors">
+                      <td className="p-4 pl-6 font-bold text-slate-800 flex items-center gap-2">
+                        {st.inst === bestInst.inst && <Award size={16} className="text-emerald-500" />}
+                        {st.inst}
+                      </td>
+                      <td className="p-4 text-center font-medium text-slate-500">{st.total}</td>
+                      <td className="p-4 text-center text-indigo-700 font-display font-bold bg-indigo-50/30">
+                        {(st.p * 100).toFixed(1)}%
+                      </td>
+                      <td className="p-4 text-center text-slate-400 font-medium">
+                        [{(st.ci[0] * 100).toFixed(1)}%, {(st.ci[1] * 100).toFixed(1)}%]
+                      </td>
+                      <td className="p-4 pr-6 text-right">
+                        {st.adjPVal < 0.05 ? (
+                          <span className={`inline-flex px-2.5 py-1 rounded-md border font-bold text-[10px] uppercase tracking-wider ${
+                            st.p > mean(instStats.map((s) => s.p))
+                              ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                              : 'bg-rose-50 border-rose-200 text-rose-700'
+                          }`}>
+                            Significativo
+                          </span>
+                        ) : (
+                          <span className="text-[10px] uppercase tracking-wider font-bold text-slate-400">
+                            Atribuible al azar
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </Card>
 
-          <Card className="p-4 bg-white border border-ice-100 shadow-sm h-72">
-            <PlotChart
-              id="inst_km"
-              data={kmData as any}
-              layout={{
-                title: 'Curvas de Supervivencia de Kaplan-Meier',
-                margin: { l: 40, r: 20, t: 30, b: 30 },
-                xaxis: { title: 'Meses desde inscripción' },
-                yaxis: { title: 'Probabilidad de retención' },
-              }}
-              altText="Curvas de supervivencia comparando instructores"
-              tableData={{ columns: [], rows: [] }}
-            />
+          <Card className="p-0 bg-white border border-slate-200 shadow-sm rounded-3xl flex flex-col">
+            <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+              <div>
+                <h3 className="font-bold text-slate-900 text-lg flex items-center gap-2">
+                  <Activity size={20} className="text-indigo-500" /> Curvas de Supervivencia (Kaplan-Meier)
+                </h3>
+              </div>
+            </div>
+            <div className="p-6 relative w-full h-[450px]">
+              <PlotChart
+                id="inst_km"
+                data={kmData as any}
+                layout={{
+                  margin: { l: 40, r: 20, t: 10, b: 40 },
+                  xaxis: { title: 'Meses desde inscripción', gridcolor: 'transparent' },
+                  yaxis: { title: 'Probabilidad de retención', gridcolor: '#f1f5f9' },
+                  paper_bgcolor: 'transparent',
+                  plot_bgcolor: 'transparent',
+                  font: { family: 'Inter', color: '#475569' },
+                  showlegend: true,
+                  legend: { orientation: 'h', y: -0.2 }
+                }}
+                altText="Curvas de supervivencia comparando instructores"
+                tableData={{ columns: [], rows: [] }}
+              />
+            </div>
           </Card>
         </div>
 
-        <div className="col-span-4 flex flex-col gap-6">
-          <Card className="p-6 bg-white border border-ice-100 shadow-sm">
-            <h3 className="font-bold text-navy-900 mb-2">¿Qué hace distinto a {bestInst.inst}?</h3>
-            <p className="text-sm text-secundario mb-4">
-              Comparación de variables observables contra el promedio de los demás instructores.
-            </p>
+        {/* SIDEBAR: INSIGHTS Y RECOMENDACIONES */}
+        <div className="lg:col-span-4 flex flex-col gap-6">
+          
+          {/* TOP PERFORMER INSIGHT */}
+          <Card className="p-8 bg-gradient-to-b from-emerald-900 to-slate-900 border border-emerald-800 shadow-xl rounded-3xl flex flex-col text-white relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div className="relative z-10">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center shrink-0 backdrop-blur-md">
+                  <Award size={24} className="text-emerald-400" />
+                </div>
+                <div>
+                  <p className="text-[10px] text-emerald-300 uppercase tracking-widest font-bold">Top Performer</p>
+                  <h3 className="font-display font-bold text-xl text-white">¿Por qué {bestInst.inst} retiene más?</h3>
+                </div>
+              </div>
 
-            <div className="space-y-3 mb-4">
-              <div className="flex justify-between items-center text-sm border-b border-ice-50 pb-2">
-                <span className="text-secundario">Tamaño medio de grupo</span>
-                <span className="font-bold text-green-600">
-                  4.2 <span className="text-xs text-secundario font-normal">(vs 5.1)</span>
-                </span>
-              </div>
-              <div className="flex justify-between items-center text-sm border-b border-ice-50 pb-2">
-                <span className="text-secundario">Asistencia</span>
-                <span className="font-bold text-green-600">
-                  92% <span className="text-xs text-secundario font-normal">(vs 85%)</span>
-                </span>
-              </div>
-              <div className="flex justify-between items-center text-sm border-b border-ice-50 pb-2">
-                <span className="text-secundario">Proporción en Nivel 3</span>
-                <span className="font-bold text-amber-500">
-                  22% <span className="text-xs text-secundario font-normal">(vs 35%)</span>
-                </span>
-              </div>
-            </div>
+              <p className="text-sm text-slate-300 mb-6 leading-relaxed">
+                Comparación de variables observables contra el promedio del resto del equipo:
+              </p>
 
-            <div className="bg-amber-50 border border-amber-200 p-3 rounded text-xs text-amber-900 italic">
-              <strong>Atención:</strong> Las diferencias son asociaciones estadísticas; no implican
-              necesariamente causalidad. {bestInst.inst} podría tener horarios más favorables o
-              alumnos más jóvenes.
+              <div className="space-y-3 mb-6">
+                <div className="flex justify-between items-center bg-white/5 border border-white/5 p-3 rounded-xl text-sm">
+                  <span className="text-slate-300">Tamaño medio de grupo</span>
+                  <span className="font-bold text-emerald-400">
+                    4.2 <span className="text-[10px] text-slate-500 uppercase tracking-wider ml-1">vs 5.1</span>
+                  </span>
+                </div>
+                <div className="flex justify-between items-center bg-white/5 border border-white/5 p-3 rounded-xl text-sm">
+                  <span className="text-slate-300">Asistencia</span>
+                  <span className="font-bold text-emerald-400">
+                    92% <span className="text-[10px] text-slate-500 uppercase tracking-wider ml-1">vs 85%</span>
+                  </span>
+                </div>
+                <div className="flex justify-between items-center bg-white/5 border border-white/5 p-3 rounded-xl text-sm">
+                  <span className="text-slate-300">Proporción en Nivel 3</span>
+                  <span className="font-bold text-amber-400">
+                    22% <span className="text-[10px] text-slate-500 uppercase tracking-wider ml-1">vs 35%</span>
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3 bg-emerald-950/50 border border-emerald-800/50 p-4 rounded-2xl text-xs text-emerald-200/80 italic leading-relaxed backdrop-blur-sm">
+                <AlertTriangle size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+                <p>
+                  <strong>Atención Científica:</strong> Las diferencias son asociaciones estadísticas; no implican
+                  necesariamente causalidad. {bestInst.inst} podría tener horarios con mejor perfil demográfico o
+                  alumnos más predispuestos.
+                </p>
+              </div>
             </div>
           </Card>
 
-          <Card className="p-6 bg-white border border-ice-100 shadow-sm flex-1">
-            <h3 className="font-bold text-navy-900 mb-4">Recomendaciones</h3>
-            <div className="space-y-4">
-              <div className="p-3 bg-ice-50 border border-ice-200 rounded text-sm">
-                <strong className="text-navy-900 block mb-1">Mentoría Cruzada</strong>
-                <span className="text-secundario">
-                  Asignar a los instructores con desempeño bajo al azar a sesiones de *shadowing*
-                  con {bestInst.inst}.
-                </span>
+          {/* ACTION PLAN */}
+          <Card className="p-0 bg-white border border-slate-200 shadow-sm rounded-3xl overflow-hidden flex-1 flex flex-col">
+            <div className="p-6 border-b border-slate-100 bg-slate-50">
+               <h3 className="font-bold text-slate-900 text-lg flex items-center gap-2">
+                Plan de Acción Operativo
+              </h3>
+            </div>
+            <div className="p-6 space-y-4 flex-1">
+              <div className="flex items-start gap-4 p-4 bg-white border border-slate-200 rounded-2xl hover:border-indigo-300 hover:shadow-md transition-all group">
+                <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center shrink-0 group-hover:bg-indigo-100 transition-colors">
+                  <Users size={18} className="text-indigo-600" />
+                </div>
+                <div>
+                  <strong className="text-slate-900 text-sm block mb-1">Mentoría Cruzada</strong>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    Asignar a los instructores con desempeño bajo al azar a sesiones pagadas de <em>shadowing</em>
+                    {' '}con <strong className="text-slate-700">{bestInst.inst}</strong> para observar su manejo de grupos.
+                  </p>
+                </div>
               </div>
-              <div className="p-3 bg-ice-50 border border-ice-200 rounded text-sm">
-                <strong className="text-navy-900 block mb-1">Balanceo de Carga</strong>
-                <span className="text-secundario">
-                  Verificar si la menor proporción de Nivel 3 de {bestInst.inst} se debe a
-                  asignación preferencial y re-balancear si es necesario.
-                </span>
+
+              <div className="flex items-start gap-4 p-4 bg-white border border-slate-200 rounded-2xl hover:border-indigo-300 hover:shadow-md transition-all group">
+                <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center shrink-0 group-hover:bg-slate-100 transition-colors">
+                  <Shuffle size={18} className="text-slate-600" />
+                </div>
+                <div>
+                  <strong className="text-slate-900 text-sm block mb-1">Balanceo de Carga</strong>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    Verificar si la menor proporción de Nivel 3 de {bestInst.inst} se debe a
+                    asignación preferencial y re-balancear si es necesario para equilibrar el desgaste.
+                  </p>
+                </div>
               </div>
             </div>
           </Card>

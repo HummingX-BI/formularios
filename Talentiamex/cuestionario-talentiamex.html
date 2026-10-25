@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuestionario — Talentiamex · HummingX BI</title>
+<meta name="description" content="Cuestionario confidencial para definir el MVP de Talentiamex. HummingX BI.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f5f4f0; --panel:#ffffff; --raised:#f9f8f5; --hairline:#e4e1da;
+    --navy:#14254a; --navy-2:#1f3566;
+    --violet:#5a2b86; --violet-soft:rgba(90,43,134,0.07); --violet-line:rgba(90,43,134,0.28);
+    --red:#9e1b32; --red-soft:rgba(158,27,50,0.35);
+    --text:#17202f; --text-muted:#566070; --text-faint:#959caa; --radius:4px;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; background:var(--bg); color:var(--text); font-family:'IBM Plex Sans',sans-serif; -webkit-font-smoothing:antialiased; }
+  body{ min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:0 0 64px; overflow-x:hidden; }
+
+  .topbar{ width:100%; position:sticky; top:0; z-index:20; background:rgba(245,244,240,0.92); backdrop-filter:blur(10px); border-bottom:1px solid var(--hairline); }
+  .topbar-inner{ max-width:740px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:15px 24px; }
+  .brand{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.16em; text-transform:uppercase; color:var(--navy); font-weight:500; }
+  .brand span{ color:var(--violet); }
+  .gauge{ display:flex; align-items:center; gap:5px; }
+  .gauge-tick{ width:24px; height:3px; background:var(--hairline); border-radius:2px; transition:background .35s ease; }
+  .gauge-tick.done{ background:var(--navy); }
+  .gauge-tick.current{ background:var(--violet); }
+
+  .shell{ width:100%; max-width:740px; padding:0 24px; position:relative; z-index:1; }
+
+  .panel{ position:relative; background:var(--panel); border:1px solid var(--hairline); border-radius:var(--radius);
+    padding:50px 46px 38px; margin-top:36px; overflow:hidden;
+    box-shadow:0 1px 2px rgba(20,37,74,0.04), 0 14px 34px -20px rgba(20,37,74,0.20); }
+  .panel::before{ content:""; position:absolute; top:0; left:0; right:0; height:3px;
+    background:linear-gradient(90deg, var(--navy) 0 64%, var(--violet) 64% 90%, var(--red) 90% 100%); }
+
+  .stamp{ position:absolute; top:26px; right:28px; border:1px solid var(--red-soft); color:var(--red);
+    font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; padding:5px 10px; border-radius:2px; pointer-events:none; }
+
+  h1.display{ font-family:'Newsreader',serif; font-weight:500; font-size:46px; line-height:1.06; letter-spacing:-0.015em; margin:0 0 18px; color:var(--navy); }
+  h1.display em{ font-style:italic; color:var(--violet); }
+  h2.display{ font-family:'Newsreader',serif; font-weight:500; font-size:31px; line-height:1.15; letter-spacing:-0.01em; margin:0 0 8px; color:var(--navy); }
+  .lede{ font-size:15.5px; line-height:1.7; color:var(--text-muted); max-width:520px; margin:0 0 6px; }
+
+  .section-tag{ display:inline-flex; align-items:center; gap:10px; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; color:var(--text-faint); margin-bottom:16px; }
+  .section-tag .num{ color:var(--violet); font-weight:500; letter-spacing:0.04em; }
+  .section-tag .num::after{ content:""; display:inline-block; width:18px; height:1px; background:var(--violet-line); vertical-align:middle; margin-left:10px; }
+
+  .q{ margin-top:30px; padding-top:26px; border-top:1px solid var(--hairline); }
+  .q-label{ font-size:15.5px; font-weight:500; margin-bottom:12px; line-height:1.45; color:var(--text); }
+  .q-label .opt{ font-size:12px; color:var(--text-faint); font-weight:400; margin-left:6px; }
+  .q-hint{ font-size:12.5px; color:var(--text-faint); margin:-6px 0 13px; line-height:1.55; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:9px; }
+  .chip{ font-size:13.5px; padding:9px 16px; border-radius:22px; border:1px solid var(--hairline); background:var(--raised);
+    color:var(--text-muted); cursor:pointer; transition:all .18s ease; user-select:none; }
+  .chip:hover{ border-color:var(--navy-2); color:var(--navy); background:#fff; }
+  .chip:active{ transform:scale(0.96); }
+  .chip.selected{ background:var(--navy); border-color:var(--navy); color:#fff; }
+  .chip.selected::before{ content:"✓  "; color:#cbb9e3; }
+
+  textarea,input[type="text"],input[type="email"]{ width:100%; background:transparent; border:none; border-bottom:1px solid var(--hairline);
+    color:var(--text); font-family:'IBM Plex Sans',sans-serif; font-size:14.5px; padding:8px 2px 10px; resize:none; transition:border-color .2s ease; }
+  textarea:focus,input:focus{ outline:none; border-bottom-color:var(--violet); }
+  textarea::placeholder,input::placeholder{ color:var(--text-faint); }
+
+  .conditional{ margin-top:16px; padding-left:16px; border-left:2px solid var(--violet-line); display:none; }
+  .conditional.show{ display:block; animation:slidein .3s ease; }
+  @keyframes slidein{ from{opacity:0; transform:translateX(-4px);} to{opacity:1; transform:translateX(0);} }
+
+  .nav{ display:flex; justify-content:space-between; align-items:center; margin-top:40px; }
+  .btn{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; padding:14px 26px;
+    border-radius:var(--radius); cursor:pointer; border:1px solid var(--hairline); background:transparent; color:var(--text-muted); transition:all .2s ease; }
+  .btn:hover{ border-color:var(--navy); color:var(--navy); }
+  .btn:active{ transform:scale(0.97); }
+  .btn-primary{ background:var(--navy); border-color:var(--navy); color:#fff; font-weight:500; }
+  .btn-primary:hover{ background:var(--violet); border-color:var(--violet); color:#fff; }
+  .btn-ghost{ border-color:transparent; padding-left:4px; }
+  .btn-ghost:hover{ border-color:transparent; }
+
+  .step{ display:none; }
+  .step.active{ display:block; animation:fadeSlide .45s cubic-bezier(.22,.68,0,1) forwards; }
+  @keyframes fadeSlide{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+
+  .intro-badge{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--text-faint); margin-bottom:20px; display:block; }
+  .intro-badge b{ color:var(--red); font-weight:500; }
+  .scope{ margin-top:32px; padding-top:22px; border-top:1px solid var(--hairline); }
+  .scope-k{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--text-faint); margin-bottom:12px; }
+  .scope-tags{ display:flex; flex-wrap:wrap; gap:8px; }
+  .scope-tags span{ font-size:12.5px; color:var(--navy); background:var(--violet-soft); border:1px solid rgba(90,43,134,0.14); padding:6px 12px; border-radius:2px; }
+  .meta-row{ display:flex; gap:38px; margin-top:28px; }
+  .meta-item{ font-size:10.5px; color:var(--text-faint); font-family:'IBM Plex Mono',monospace; letter-spacing:0.1em; text-transform:uppercase; }
+  .meta-item b{ color:var(--navy); display:block; font-size:24px; font-family:'Newsreader',serif; font-weight:500; text-transform:none; letter-spacing:0; margin-bottom:2px; }
+
+  .note{ font-size:13px; color:var(--text-muted); background:var(--violet-soft); border-left:2px solid var(--violet); border-radius:2px; padding:12px 14px; margin-top:22px; line-height:1.55; }
+
+  .summary-block{ margin-top:22px; }
+  .summary-item{ padding:11px 0; border-bottom:1px solid var(--hairline); font-size:13.5px; }
+  .summary-item .k{ color:var(--text-faint); display:block; font-size:11px; font-family:'IBM Plex Mono',monospace; letter-spacing:.05em; margin-bottom:3px; }
+  .summary-item .v{ color:var(--text); white-space:pre-wrap; }
+  .final-actions{ display:flex; flex-direction:column; gap:12px; margin-top:30px; }
+  .btn-block{ width:100%; text-align:center; padding:16px; font-size:12.5px; }
+  .copy-note{ font-size:12px; color:var(--text-faint); text-align:center; }
+
+  footer{ max-width:740px; width:100%; padding:30px 24px 0; display:flex; justify-content:space-between; align-items:center;
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--text-faint); letter-spacing:0.05em; }
+
+  @media (max-width:600px){
+    .panel{ padding:40px 22px 28px; }
+    h1.display{ font-size:33px; }
+    h2.display{ font-size:25px; }
+    .stamp{ top:16px; right:16px; }
+    .meta-row{ gap:24px; }
+    footer{ flex-direction:column; gap:6px; }
+  }
+  @media (prefers-reduced-motion:reduce){ .step.active,.conditional.show{ animation:none !important; } }
+</style>
+</head>
+<body>
+
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">HummingX<span> · BI</span></div>
+    <div class="gauge" id="gauge"></div>
+  </div>
+</div>
+
+<div class="shell">
+
+  <!-- STEP 0 — INTRO -->
+  <div class="step active" data-step="0">
+    <div class="panel">
+      <div class="stamp">Confidencial</div>
+      <img src="Logo HummingX BI png.png" alt="HummingX BI" style="max-height:44px; margin-bottom:32px; display:block;" onerror="this.style.display='none'">
+      <span class="intro-badge">Diagnóstico · <b>Talentiamex</b></span>
+      <h1 class="display">Entender el negocio<br><em>antes de construirlo.</em></h1>
+      <p class="lede">Revisamos su convocatoria. Estas preguntas nos permiten definir un MVP enfocado en lo que realmente mueve su negocio.</p>
+
+      <div class="scope">
+        <div class="scope-k">Su convocatoria, en resumen</div>
+        <div class="scope-tags">
+          <span>PWA móvil</span><span>Constructor de CV</span><span>Pagos y suscripciones</span><span>WhatsApp</span><span>Búsqueda por sector</span>
+        </div>
+      </div>
+
+      <div class="meta-row">
+        <div class="meta-item"><b>8 min</b>Duración</div>
+        <div class="meta-item"><b>7</b>Secciones</div>
+        <div class="meta-item"><b>100%</b>Confidencial</div>
+      </div>
+      <div class="nav" style="justify-content:flex-end;">
+        <button class="btn btn-primary" onclick="goTo(1)">Comenzar →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 1 — LA IDEA -->
+  <div class="step" data-step="1">
+    <div class="panel">
+      <div class="stamp">Confidencial</div>
+      <div class="section-tag"><span class="num">01</span> LA IDEA</div>
+      <h2 class="display">El negocio detrás del MVP</h2>
+      <p class="lede">Para entender en qué punto está Talentiamex y qué lo hace distinto.</p>
+
+      <div class="q">
+        <div class="q-label">¿En qué etapa está el proyecto hoy?</div>
+        <div class="chips" data-group="etapa">
+          <div class="chip" data-value="Es una idea, aún sin validar">Idea, aún sin validar</div>
+          <div class="chip" data-value="Ya platicamos con empresas o candidatos y hay interés">Ya validamos interés</div>
+          <div class="chip" data-value="Tenemos empresas listas para un piloto">Empresas listas para piloto</div>
+          <div class="chip" data-value="Ya lo hacemos de forma manual (WhatsApp, Excel, redes)">Ya lo hacemos de forma manual</div>
+        </div>
+        <div class="conditional" data-show-if="etapa=Ya lo hacemos de forma manual (WhatsApp, Excel, redes)">
+          <input type="text" placeholder="¿Cómo lo operan hoy y qué es lo que más trabajo les cuesta?" data-key="operacion_manual">
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">En una o dos frases: ¿qué problema resuelve Talentiamex y para quién?</div>
+        <div class="q-hint">Como se lo explicarían a alguien en un elevador.</div>
+        <textarea rows="2" placeholder="Ej. Las cocinas pierden personal cada mes y tardan semanas en reemplazarlo…" data-key="problema"></textarea>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Qué los hace distintos de las bolsas de trabajo grandes o de los grupos de Facebook?</div>
+        <textarea rows="2" placeholder="Ej. especialización por sector, rapidez, el CV, la confianza, el precio…" data-key="diferencial"></textarea>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Con qué sectores quieren arrancar? <span class="opt">(todos los que apliquen)</span></div>
+        <div class="chips" data-group="sectores" data-multi="true">
+          <div class="chip" data-value="Salud">Salud</div>
+          <div class="chip" data-value="Restaurantes y cocinas">Restaurantes y cocinas</div>
+          <div class="chip" data-value="Retail / tiendas">Retail / tiendas</div>
+          <div class="chip" data-value="Logística y almacén">Logística y almacén</div>
+          <div class="chip" data-value="Call center">Call center</div>
+          <div class="chip" data-value="Manufactura">Manufactura</div>
+          <div class="chip" data-value="Seguridad privada">Seguridad privada</div>
+          <div class="chip" data-value="Limpieza y mantenimiento">Limpieza</div>
+          <div class="chip" data-value="Hotelería">Hotelería</div>
+          <div class="chip" data-value="Construcción">Construcción</div>
+          <div class="chip" data-value="Otro">Otro</div>
+        </div>
+        <div class="conditional" data-show-if="sectores=Otro">
+          <input type="text" placeholder="¿Qué otro sector?" data-key="sectores_otro">
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Dónde lanzan primero?</div>
+        <div class="chips" data-group="zona">
+          <div class="chip" data-value="CDMX y Estado de México">CDMX y Edomex</div>
+          <div class="chip" data-value="Una ciudad específica">Una ciudad específica</div>
+          <div class="chip" data-value="Varias ciudades">Varias ciudades</div>
+          <div class="chip" data-value="Todo México desde el inicio">Todo México</div>
+        </div>
+        <div class="conditional" data-show-if-any="zona=Una ciudad específica|zona=Varias ciudades">
+          <input type="text" placeholder="¿Cuál o cuáles?" data-key="zona_detalle">
+        </div>
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-ghost" onclick="goTo(0)">← Atrás</button>
+        <button class="btn btn-primary" onclick="goTo(2)">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 — USUARIOS -->
+  <div class="step" data-step="2">
+    <div class="panel">
+      <div class="stamp">Confidencial</div>
+      <div class="section-tag"><span class="num">02</span> LOS USUARIOS</div>
+      <h2 class="display">Quién está de cada lado</h2>
+      <p class="lede">Una plataforma de reclutamiento tiene dos clientes: quien busca trabajo y quien contrata. El diseño cambia mucho según cómo se relacionan.</p>
+
+      <div class="q">
+        <div class="q-label">¿Quién paga en Talentiamex?</div>
+        <div class="chips" data-group="quien_paga">
+          <div class="chip" data-value="Principalmente los candidatos">Los candidatos</div>
+          <div class="chip" data-value="Principalmente las empresas">Las empresas</div>
+          <div class="chip" data-value="Ambos, por cosas distintas">Ambos</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Qué tipo de empresas imaginan como clientes?</div>
+        <div class="chips" data-group="tipo_empresas" data-multi="true">
+          <div class="chip" data-value="Negocios locales / PYMEs">Negocios locales / PYMEs</div>
+          <div class="chip" data-value="Cadenas y franquicias">Cadenas y franquicias</div>
+          <div class="chip" data-value="Agencias de reclutamiento u outsourcing">Agencias / outsourcing</div>
+          <div class="chip" data-value="Hospitales y clínicas">Hospitales y clínicas</div>
+          <div class="chip" data-value="Otro">Otro</div>
+        </div>
+        <div class="conditional" data-show-if="tipo_empresas=Otro">
+          <input type="text" placeholder="¿Qué otro tipo de empresa?" data-key="tipo_empresas_otro">
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Cómo describirían al candidato típico y su celular?</div>
+        <div class="q-hint">Esto define qué tan ligera y sencilla debe ser la plataforma.</div>
+        <div class="chips" data-group="perfil_candidato">
+          <div class="chip" data-value="Celular sencillo, datos limitados, poca experiencia con apps">Celular sencillo, datos limitados</div>
+          <div class="chip" data-value="Celular promedio, usa WhatsApp y redes todo el día">Celular promedio, muy de WhatsApp</div>
+          <div class="chip" data-value="Varía mucho según el sector">Varía según el sector</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Cómo se encuentran candidatos y empresas?</div>
+        <div class="chips" data-group="dinamica" data-multi="true">
+          <div class="chip" data-value="El candidato se postula a vacantes publicadas">El candidato se postula</div>
+          <div class="chip" data-value="La empresa busca perfiles y los contacta">La empresa busca y contacta</div>
+          <div class="chip" data-value="La plataforma sugiere coincidencias">La plataforma sugiere coincidencias</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Qué lado traen primero a la plataforma?</div>
+        <div class="q-hint">Sin candidatos no llegan empresas, y sin vacantes no llegan candidatos. Saber por dónde arrancan nos dice qué pulir primero.</div>
+        <div class="chips" data-group="lado_primero">
+          <div class="chip" data-value="Empresas — ya tenemos algunas interesadas">Empresas</div>
+          <div class="chip" data-value="Candidatos — el CV es el gancho">Candidatos (el CV como gancho)</div>
+          <div class="chip" data-value="Ambos al mismo tiempo">Ambos a la vez</div>
+          <div class="chip" data-value="Aún no lo tenemos claro">Aún no lo tenemos claro</div>
+        </div>
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-ghost" onclick="goTo(1)">← Atrás</button>
+        <button class="btn btn-primary" onclick="goTo(3)">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3 — CV -->
+  <div class="step" data-step="3">
+    <div class="panel">
+      <div class="stamp">Confidencial</div>
+      <div class="section-tag"><span class="num">03</span> CONSTRUCTOR DE CV</div>
+      <h2 class="display">El CV, el corazón del candidato</h2>
+      <p class="lede">Queremos entender si el CV es un producto en sí mismo, la puerta de entrada a la plataforma, o ambas cosas.</p>
+
+      <div class="q">
+        <div class="q-label">¿Qué papel juega el CV en la plataforma?</div>
+        <div class="chips" data-group="rol_cv">
+          <div class="chip" data-value="Es un producto: el candidato lo arma y lo descarga">Un producto que se descarga</div>
+          <div class="chip" data-value="Es el perfil que ven las empresas al buscar">El perfil que ven las empresas</div>
+          <div class="chip" data-value="Las dos cosas">Las dos cosas</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Qué es gratis y qué se cobra para el candidato?</div>
+        <div class="chips" data-group="cobro_cv">
+          <div class="chip" data-value="Armarlo es gratis, se paga por descargar el PDF">Gratis armarlo, se paga la descarga</div>
+          <div class="chip" data-value="Un diseño gratis, los otros de pago">Un diseño gratis, otros de pago</div>
+          <div class="chip" data-value="Todo gratis para el candidato">Todo gratis</div>
+          <div class="chip" data-value="Aún por definir">Por definir</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">Los 3 diseños de CV…</div>
+        <div class="chips" data-group="disenos_cv">
+          <div class="chip" data-value="Ya los tenemos diseñados">Ya los tenemos</div>
+          <div class="chip" data-value="Tenemos ejemplos o referencias que nos gustan">Tenemos referencias</div>
+          <div class="chip" data-value="Queremos que ustedes los propongan">Que ustedes los propongan</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿El CV cambia según el sector?</div>
+        <div class="q-hint">Ej. una enfermera necesita cédula profesional; un cocinero, constancia de manejo de alimentos; un repartidor, licencia.</div>
+        <div class="chips" data-group="cv_por_sector">
+          <div class="chip" data-value="Sí, cada sector pide datos propios">Sí, cada sector tiene lo suyo</div>
+          <div class="chip" data-value="No, un CV general para todos">No, uno general</div>
+          <div class="chip" data-value="No estoy seguro">No estoy seguro</div>
+        </div>
+        <div class="conditional" data-show-if="cv_por_sector=Sí, cada sector pide datos propios">
+          <textarea rows="2" placeholder="¿Qué datos especiales piden en los sectores principales?" data-key="cv_datos_sector"></textarea>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿El CV lleva foto?</div>
+        <div class="chips" data-group="cv_foto">
+          <div class="chip" data-value="Sí">Sí</div>
+          <div class="chip" data-value="Opcional">Opcional</div>
+          <div class="chip" data-value="No">No</div>
+        </div>
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-ghost" onclick="goTo(2)">← Atrás</button>
+        <button class="btn btn-primary" onclick="goTo(4)">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 — COBROS -->
+  <div class="step" data-step="4">
+    <div class="panel">
+      <div class="stamp">Confidencial</div>
+      <div class="section-tag"><span class="num">04</span> COBROS Y FACTURACIÓN</div>
+      <h2 class="display">Cómo entra el dinero</h2>
+      <p class="lede">El modelo de cobro define buena parte del sistema. También hay trámites que conviene arrancar desde ya para no frenar el lanzamiento.</p>
+
+      <div class="q">
+        <div class="q-label">¿Cómo imaginan la suscripción para empresas?</div>
+        <div class="chips" data-group="modelo_suscripcion">
+          <div class="chip" data-value="Un solo plan mensual">Un solo plan mensual</div>
+          <div class="chip" data-value="Varios niveles (básico, pro, etc.)">Varios niveles</div>
+          <div class="chip" data-value="Pago por vacante publicada">Pago por vacante</div>
+          <div class="chip" data-value="Combinación de suscripción y pagos sueltos">Combinación</div>
+          <div class="chip" data-value="Aún por definir">Por definir</div>
+        </div>
+        <input type="text" placeholder="Si ya tienen precios en mente, anótenlos aquí (opcional)" data-key="precios_estimados" style="margin-top:14px;">
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Habrá periodo de prueba gratis para empresas?</div>
+        <div class="chips" data-group="prueba_gratis">
+          <div class="chip" data-value="Sí">Sí</div>
+          <div class="chip" data-value="No">No</div>
+          <div class="chip" data-value="Por definir">Por definir</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Con qué plataforma de pagos prefieren trabajar?</div>
+        <div class="chips" data-group="pasarela">
+          <div class="chip" data-value="Stripe">Stripe</div>
+          <div class="chip" data-value="Mercado Pago">Mercado Pago</div>
+          <div class="chip" data-value="Ambas">Ambas</div>
+          <div class="chip" data-value="La que nos recomienden">La que nos recomienden</div>
+        </div>
+        <div class="q-label" style="font-size:14px; margin-top:20px;">¿Ya tienen cuenta abierta en alguna?</div>
+        <div class="chips" data-group="cuenta_pasarela">
+          <div class="chip" data-value="Sí, ya está activa">Sí, activa</div>
+          <div class="chip" data-value="En trámite">En trámite</div>
+          <div class="chip" data-value="No todavía">No todavía</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Cómo está constituido el negocio?</div>
+        <div class="q-hint">Las cuentas de cobro, la facturación y la verificación de WhatsApp piden datos fiscales.</div>
+        <div class="chips" data-group="constitucion">
+          <div class="chip" data-value="Persona moral (empresa constituida)">Persona moral</div>
+          <div class="chip" data-value="Persona física con actividad empresarial">Persona física</div>
+          <div class="chip" data-value="Aún no está constituido">Aún no</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">Para la factura automática (CFDI), ¿ya tienen proveedor de facturación?</div>
+        <div class="chips" data-group="facturacion">
+          <div class="chip" data-value="Sí, ya tenemos uno">Sí, ya tenemos</div>
+          <div class="chip" data-value="No, necesitamos recomendación">No, necesitamos recomendación</div>
+          <div class="chip" data-value="No necesitamos facturar en esta primera versión">No en esta versión</div>
+        </div>
+        <div class="conditional" data-show-if="facturacion=Sí, ya tenemos uno">
+          <input type="text" placeholder="¿Cuál usan?" data-key="facturacion_cual">
+        </div>
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-ghost" onclick="goTo(3)">← Atrás</button>
+        <button class="btn btn-primary" onclick="goTo(5)">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5 — VACANTES Y WHATSAPP -->
+  <div class="step" data-step="5">
+    <div class="panel">
+      <div class="stamp">Confidencial</div>
+      <div class="section-tag"><span class="num">05</span> VACANTES Y WHATSAPP</div>
+      <h2 class="display">El ciclo de una vacante</h2>
+      <p class="lede">Los recordatorios de los días 5, 3 y 0 nos dicen que las vacantes vencen. Queremos entender ese ciclo completo.</p>
+
+      <div class="q">
+        <div class="q-label">¿Cuánto tiempo dura publicada una vacante?</div>
+        <div class="chips" data-group="duracion_vacante">
+          <div class="chip" data-value="15 días">15 días</div>
+          <div class="chip" data-value="30 días">30 días</div>
+          <div class="chip" data-value="Depende del plan contratado">Depende del plan</div>
+          <div class="chip" data-value="La empresa lo decide">La empresa decide</div>
+          <div class="chip" data-value="Por definir">Por definir</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">Los recordatorios antes del vencimiento, ¿a quién le llegan?</div>
+        <div class="chips" data-group="destinatario_recordatorio" data-multi="true">
+          <div class="chip" data-value="A la empresa, para que renueve o pague">A la empresa, para renovar</div>
+          <div class="chip" data-value="A los candidatos, para que se postulen a tiempo">A los candidatos, para postularse</div>
+          <div class="chip" data-value="Otro">Otro</div>
+        </div>
+        <div class="conditional" data-show-if="destinatario_recordatorio=Otro">
+          <input type="text" placeholder="¿A quién más?" data-key="destinatario_otro">
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Qué otros avisos por WhatsApp serían valiosos?</div>
+        <div class="chips" data-group="otros_avisos" data-multi="true">
+          <div class="chip" data-value="A la empresa: llegó un candidato nuevo">Nuevo candidato (a la empresa)</div>
+          <div class="chip" data-value="Al candidato: hay una vacante que coincide con su perfil">Vacante que coincide (al candidato)</div>
+          <div class="chip" data-value="Confirmación de pago">Confirmación de pago</div>
+          <div class="chip" data-value="Suscripción por vencer">Suscripción por vencer</div>
+          <div class="chip" data-value="Solo los recordatorios de vencimiento por ahora">Solo los recordatorios</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Tienen un número de WhatsApp Business para la plataforma?</div>
+        <div class="chips" data-group="numero_whatsapp">
+          <div class="chip" data-value="Sí, verificado con Meta">Sí, verificado con Meta</div>
+          <div class="chip" data-value="Sí, pero en la app normal de WhatsApp Business">Sí, en la app normal</div>
+          <div class="chip" data-value="No tenemos todavía">No todavía</div>
+        </div>
+        <div class="note">Los mensajes automáticos requieren un número dedicado y aprobación de Meta. Nosotros los acompañamos en ese proceso; solo queremos saber de dónde partimos.</div>
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-ghost" onclick="goTo(4)">← Atrás</button>
+        <button class="btn btn-primary" onclick="goTo(6)">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 6 — ALCANCE Y TIEMPOS -->
+  <div class="step" data-step="6">
+    <div class="panel">
+      <div class="stamp">Confidencial</div>
+      <div class="section-tag"><span class="num">06</span> ALCANCE Y TIEMPOS</div>
+      <h2 class="display">Qué tiene que existir el día del lanzamiento</h2>
+      <p class="lede">Un buen MVP es lo mínimo que demuestra que la idea funciona. Ayúdennos a trazar esa línea.</p>
+
+      <div class="q">
+        <div class="q-label">Además de los 4 módulos, ¿algo más que imaginen para la primera versión?</div>
+        <div class="chips" data-group="extras_mvp" data-multi="true">
+          <div class="chip" data-value="Panel de administración para ustedes">Panel de administración</div>
+          <div class="chip" data-value="Postulación rápida en un clic">Postulación en un clic</div>
+          <div class="chip" data-value="Chat entre empresa y candidato">Chat empresa–candidato</div>
+          <div class="chip" data-value="Filtros o preguntas para descartar candidatos">Filtros de candidatos</div>
+          <div class="chip" data-value="Estadísticas para las empresas">Estadísticas para empresas</div>
+          <div class="chip" data-value="Nada más, solo lo mínimo para lanzar">Nada más, lo mínimo</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">Sobre las tecnologías de la convocatoria (React/Next.js, AWS…)</div>
+        <div class="chips" data-group="stack">
+          <div class="chip" data-value="Son requisito firme">Son requisito firme</div>
+          <div class="chip" data-value="Son una preferencia, abiertos a recomendación">Preferencia, abiertos a recomendación</div>
+        </div>
+        <div class="q-label" style="font-size:14px; margin-top:20px;">¿Ya tienen cuenta de AWS creada?</div>
+        <div class="chips" data-group="cuenta_aws">
+          <div class="chip" data-value="Sí">Sí</div>
+          <div class="chip" data-value="No">No</div>
+          <div class="chip" data-value="No sé">No sé</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Con qué cuentan de identidad visual?</div>
+        <div class="chips" data-group="identidad">
+          <div class="chip" data-value="Logo, colores y tipografía definidos">Marca completa</div>
+          <div class="chip" data-value="Ya hay pantallas diseñadas (Figma u otro)">Pantallas diseñadas</div>
+          <div class="chip" data-value="Solo el logo">Solo logo</div>
+          <div class="chip" data-value="Nada todavía">Nada todavía</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Ya tienen aviso de privacidad y términos y condiciones?</div>
+        <div class="q-hint">La plataforma va a guardar datos personales de candidatos; conviene tenerlo listo para el lanzamiento.</div>
+        <div class="chips" data-group="aviso_privacidad">
+          <div class="chip" data-value="Sí">Sí</div>
+          <div class="chip" data-value="En proceso">En proceso</div>
+          <div class="chip" data-value="No">No</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Hay una fecha o un evento que marque el lanzamiento?</div>
+        <div class="chips" data-group="motivo_fecha">
+          <div class="chip" data-value="Presentación con inversionistas">Inversionistas</div>
+          <div class="chip" data-value="Piloto con empresas">Piloto con empresas</div>
+          <div class="chip" data-value="Lanzamiento al público">Lanzamiento público</div>
+          <div class="chip" data-value="No hay fecha fija">Sin fecha fija</div>
+        </div>
+        <input type="text" placeholder="Fecha aproximada, si la tienen. Ej. finales de enero" data-key="fecha_limite" style="margin-top:14px;">
+      </div>
+
+      <div class="q">
+        <div class="q-label">Dentro de 3 meses de lanzado, ¿qué tendría que pasar para decir que el MVP funcionó?</div>
+        <textarea rows="2" placeholder="Ej. 20 empresas pagando, 1,000 CV descargados, cerrar ronda de inversión…" data-key="metrica_exito"></textarea>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Tienen un rango de inversión contemplado para el MVP? <span class="opt">(opcional)</span></div>
+        <div class="q-hint">Nos ayuda a proponer un alcance realista desde el principio.</div>
+        <div class="chips" data-group="presupuesto">
+          <div class="chip" data-value="Menos de $80,000 MXN">Menos de $80k</div>
+          <div class="chip" data-value="$80,000 a $150,000 MXN">$80k – $150k</div>
+          <div class="chip" data-value="$150,000 a $300,000 MXN">$150k – $300k</div>
+          <div class="chip" data-value="Más de $300,000 MXN">Más de $300k</div>
+          <div class="chip" data-value="Prefiero platicarlo">Prefiero platicarlo</div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Algo más que debamos saber antes de armar la propuesta?</div>
+        <textarea rows="3" placeholder="Dudas, expectativas, experiencias pasadas con otros desarrolladores, lo que sea…" data-key="comentarios_extra"></textarea>
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-ghost" onclick="goTo(5)">← Atrás</button>
+        <button class="btn btn-primary" onclick="goTo(7)">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 7 — CONTACTO -->
+  <div class="step" data-step="7">
+    <div class="panel">
+      <div class="stamp">Confidencial</div>
+      <div class="section-tag"><span class="num">07</span> SUS DATOS</div>
+      <h2 class="display">Para dirigir la propuesta</h2>
+      <p class="lede">Ya casi terminan. Solo confirmamos con quién vamos a trabajar.</p>
+
+      <div class="q">
+        <div class="q-label">¿Cuál es su nombre?</div>
+        <input type="text" placeholder="Nombre completo" data-key="nombre_contacto">
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Cuál es su rol en Talentiamex?</div>
+        <div class="chips" data-group="rol_contacto">
+          <div class="chip" data-value="Fundador / socio">Fundador / socio</div>
+          <div class="chip" data-value="Responsable de producto">Responsable de producto</div>
+          <div class="chip" data-value="Otro">Otro</div>
+        </div>
+        <div class="conditional" data-show-if="rol_contacto=Otro">
+          <input type="text" placeholder="¿Cuál es su rol?" data-key="rol_contacto_otro">
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-label">¿Hay más personas que tomen decisiones en el proyecto?</div>
+        <input type="text" placeholder="Ej. somos dos socios, hay un inversionista involucrado…" data-key="decisores">
+      </div>
+
+      <div class="q">
+        <div class="q-label">WhatsApp y correo para enviarles la propuesta</div>
+        <input type="text" placeholder="WhatsApp. Ej. 55 1234 5678" data-key="whatsapp_contacto">
+        <input type="email" placeholder="Correo electrónico" data-key="correo_contacto" style="margin-top:14px;">
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-ghost" onclick="goTo(6)">← Atrás</button>
+        <button class="btn btn-primary" onclick="goTo(8); buildSummary();">Revisar y enviar →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 8 — REVISIÓN -->
+  <div class="step" data-step="8">
+    <div class="panel">
+      <div class="stamp">Confidencial</div>
+      <div class="section-tag"><span class="num">✓</span> LISTO PARA ENVIAR</div>
+      <h2 class="display">Revisen sus respuestas</h2>
+      <p class="lede">Si algo no quedó como querían, regresen y ajústenlo. Cuando esté bien, envíenlo por WhatsApp.</p>
+
+      <div class="summary-block" id="summary"></div>
+
+      <div class="final-actions">
+        <button class="btn btn-primary btn-block" onclick="sendWhatsApp()">Enviar respuestas por WhatsApp →</button>
+        <button class="btn btn-block" onclick="copyAnswers()">Copiar respuestas</button>
+        <div class="copy-note" id="copyNote"></div>
+      </div>
+
+      <div class="nav" style="justify-content:flex-start; margin-top:26px;">
+        <button class="btn btn-ghost" onclick="goTo(7)">← Editar respuestas</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>HummingX BI · Software y consultoría digital</span>
+  <span>Documento confidencial</span>
+</footer>
+
+<script>
+  const state = {};
+
+  // ---- chips ----
+  document.querySelectorAll('.chips').forEach(group => {
+    const key = group.dataset.group;
+    const multi = group.dataset.multi === 'true';
+    if (multi) state[key] = [];
+    group.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const val = chip.dataset.value;
+        if (multi) {
+          chip.classList.toggle('selected');
+          const arr = state[key];
+          if (chip.classList.contains('selected')) arr.push(val);
+          else arr.splice(arr.indexOf(val), 1);
+        } else {
+          const wasSelected = chip.classList.contains('selected');
+          group.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+          if (wasSelected) { delete state[key]; }
+          else { chip.classList.add('selected'); state[key] = val; }
+        }
+        refreshConditionals();
+      });
+    });
+  });
+
+  // ---- inputs ----
+  document.querySelectorAll('input[data-key], textarea[data-key]').forEach(el => {
+    el.addEventListener('input', () => { state[el.dataset.key] = el.value; });
+  });
+
+  function matches(pair){
+    const i = pair.indexOf('=');
+    const k = pair.slice(0, i), v = pair.slice(i + 1);
+    const cur = state[k];
+    return Array.isArray(cur) ? cur.includes(v) : cur === v;
+  }
+  function refreshConditionals(){
+    document.querySelectorAll('.conditional').forEach(cond => {
+      let show = false;
+      if (cond.dataset.showIf) show = matches(cond.dataset.showIf);
+      else if (cond.dataset.showIfAny) show = cond.dataset.showIfAny.split('|').some(matches);
+      cond.classList.toggle('show', show);
+    });
+  }
+
+  // ---- navegación ----
+  function goTo(step){
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.querySelector(`.step[data-step="${step}"]`).classList.add('active');
+    renderGauge(step);
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  function renderGauge(step){
+    const g = document.getElementById('gauge');
+    g.innerHTML = '';
+    for (let i = 1; i <= 7; i++){
+      const t = document.createElement('div');
+      t.className = 'gauge-tick' + (i < step ? ' done' : (i === step ? ' current' : ''));
+      g.appendChild(t);
+    }
+  }
+  renderGauge(0);
+
+  // ---- etiquetas ----
+  const SECTIONS = [
+    ["LA IDEA", {
+      etapa:"Etapa del proyecto", operacion_manual:"Cómo lo operan hoy",
+      problema:"Problema que resuelve", diferencial:"Diferencial",
+      sectores:"Sectores para arrancar", sectores_otro:"Otro sector",
+      zona:"Zona de lanzamiento", zona_detalle:"Ciudades"
+    }],
+    ["LOS USUARIOS", {
+      quien_paga:"Quién paga", tipo_empresas:"Tipo de empresas", tipo_empresas_otro:"Otro tipo de empresa",
+      perfil_candidato:"Perfil del candidato", dinamica:"Cómo se encuentran", lado_primero:"Lado que traen primero"
+    }],
+    ["CONSTRUCTOR DE CV", {
+      rol_cv:"Papel del CV", cobro_cv:"Gratis vs. de pago", disenos_cv:"Diseños de CV",
+      cv_por_sector:"¿CV cambia por sector?", cv_datos_sector:"Datos especiales por sector", cv_foto:"Foto en el CV"
+    }],
+    ["COBROS Y FACTURACIÓN", {
+      modelo_suscripcion:"Modelo de suscripción", precios_estimados:"Precios estimados",
+      prueba_gratis:"Prueba gratis", pasarela:"Plataforma de pagos", cuenta_pasarela:"Cuenta de pagos",
+      constitucion:"Constitución del negocio", facturacion:"Proveedor de facturación", facturacion_cual:"Proveedor actual"
+    }],
+    ["VACANTES Y WHATSAPP", {
+      duracion_vacante:"Duración de vacante", destinatario_recordatorio:"Recordatorios dirigidos a",
+      destinatario_otro:"Otro destinatario", otros_avisos:"Otros avisos por WhatsApp", numero_whatsapp:"Número de WhatsApp Business"
+    }],
+    ["ALCANCE Y TIEMPOS", {
+      extras_mvp:"Extras para el MVP", stack:"Tecnologías", cuenta_aws:"Cuenta de AWS",
+      identidad:"Identidad visual", aviso_privacidad:"Aviso de privacidad y términos",
+      motivo_fecha:"Motivo del lanzamiento", fecha_limite:"Fecha aproximada",
+      metrica_exito:"Éxito a 3 meses", presupuesto:"Rango de inversión", comentarios_extra:"Comentarios adicionales"
+    }],
+    ["CONTACTO", {
+      nombre_contacto:"Nombre", rol_contacto:"Rol", rol_contacto_otro:"Rol (detalle)",
+      decisores:"Otros decisores", whatsapp_contacto:"WhatsApp", correo_contacto:"Correo"
+    }]
+  ];
+
+  function fmtVal(v){
+    if (Array.isArray(v)) return v.length ? v.join(', ') : '';
+    return (v === undefined || v === null) ? '' : String(v).trim();
+  }
+  function esc(s){ return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  function buildSummary(){
+    const el = document.getElementById('summary');
+    el.innerHTML = '';
+    let count = 0;
+    SECTIONS.forEach(([title, labels]) => {
+      Object.keys(labels).forEach(key => {
+        const val = fmtVal(state[key]);
+        if (!val) return;
+        count++;
+        const row = document.createElement('div');
+        row.className = 'summary-item';
+        row.innerHTML = `<span class="k">${esc(title)} · ${esc(labels[key])}</span><span class="v">${esc(val)}</span>`;
+        el.appendChild(row);
+      });
+    });
+    if (!count) el.innerHTML = '<div class="summary-item"><span class="v" style="color:var(--text-faint)">Aún no hay respuestas. Regresen para llenar el cuestionario.</span></div>';
+  }
+
+  function buildMessage(){
+    const contacto = fmtVal(state['nombre_contacto']);
+    let msg = `*Cuestionario — Talentiamex (MVP)*\n_Diagnóstico para HummingX BI_\n`;
+    if (contacto) msg += `_Contacto: ${contacto}_\n`;
+    SECTIONS.forEach(([title, labels]) => {
+      let block = '';
+      Object.keys(labels).forEach(key => {
+        const val = fmtVal(state[key]);
+        if (val) block += `*${labels[key]}:* ${val}\n`;
+      });
+      if (block) msg += `\n— ${title} —\n${block}`;
+    });
+    return msg.trim();
+  }
+
+  function sendWhatsApp(){
+    window.open(`https://wa.me/525575084267?text=${encodeURIComponent(buildMessage())}`, '_blank');
+    const panel = document.querySelector('.step[data-step="8"] .panel');
+    panel.innerHTML = `
+      <div style="text-align:center; padding:40px 10px;">
+        <img src="Logo HummingX BI png.png" alt="HummingX BI" style="max-height:60px; margin-bottom:24px;" onerror="this.style.display='none'">
+        <h3 style="font-family:'Newsreader',serif; font-size:30px; font-weight:500; color:var(--navy); margin:0 0 14px;">¡Gracias por la confianza!</h3>
+        <p style="color:var(--text-muted); line-height:1.65; font-size:15.5px; max-width:460px; margin:0 auto 24px;">Con sus respuestas vamos a preparar una propuesta a la medida de Talentiamex: alcance del MVP, tiempos y recomendaciones. En breve los contactamos.</p>
+        <p style="color:var(--text-faint); font-size:12px; margin:0 auto; cursor:pointer; text-decoration:underline; max-width:440px;" onclick="downloadAnswers()">Si el mensaje no se cargó completo en WhatsApp, haz clic aquí para descargar tus respuestas en un archivo de texto y enviarlo como documento.</p>
+        <div class="copy-note" id="copyNote" style="margin-top:12px;"></div>
+      </div>`;
+  }
+
+  function copyAnswers(){
+    navigator.clipboard.writeText(buildMessage()).then(() => {
+      document.getElementById('copyNote').textContent = 'Copiado — ya lo pueden pegar donde quieran.';
+    });
+  }
+
+  function downloadAnswers(){
+    const blob = new Blob([buildMessage()], {type:'text/plain;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'respuestas_diagnostico_talentiamex.txt';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    const n = document.getElementById('copyNote'); if (n) n.textContent = 'Archivo descargado.';
+  }
+</script>
+
+</body>
+</html>

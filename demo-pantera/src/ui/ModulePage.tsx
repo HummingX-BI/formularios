@@ -31,8 +31,8 @@ export function ModulePage({ module, children }: ModulePageProps) {
       <main className="flex-1 w-full">{children}</main>
 
       {/* Footer */}
-      <footer className="mt-8 pt-4 border-t text-sm text-text-tenue text-center">
-        Fórmulas usadas: <em>Pendiente</em>
+      <footer className="mt-8 pt-4 border-t text-xs text-text-tenue text-center">
+        Sistema de Inteligencia Pantera • Información operativa y proyecciones en tiempo real
       </footer>
     </div>
   );

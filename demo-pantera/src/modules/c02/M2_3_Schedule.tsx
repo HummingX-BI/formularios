@@ -107,7 +107,7 @@ export default function M2_3_Schedule() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-8rem)] gap-6">
+    <div className="flex flex-col xl:flex-row h-full min-h-[700px] gap-6">
       <div className="flex-1 flex flex-col min-w-0">
         <div className="flex justify-between items-end mb-4">
           <div>

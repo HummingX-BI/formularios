@@ -83,7 +83,7 @@ export default function M13_3_Config() {
       </div> 
       
       {activeTab === 'params' && ( 
-        <div className="grid grid-cols-2 gap-6"> 
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6"> 
           <Card className="p-6 bg-white border border-ice-100 shadow-sm space-y-6"> 
             <h3 className="font-bold text-navy-900 font-jakarta flex items-center gap-2 border-b border-ice-100 pb-2"> <DollarSign className="w-5 h-5 text-sky-500" /> Metas y Costos </h3> 
             <div> 
@@ -158,7 +158,7 @@ export default function M13_3_Config() {
       )} 
       
       {activeTab === 'pools' && ( 
-        <div className="grid grid-cols-2 gap-6"> 
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6"> 
           <Card className="p-6 bg-white border border-ice-100 shadow-sm space-y-4 opacity-75"> 
             <h3 className="font-bold text-navy-900 font-jakarta flex items-center gap-2 border-b border-ice-100 pb-2"> <Layers className="w-5 h-5" /> Albercas </h3> 
             {BUSINESS_CONFIG.pools.map(pool => ( 

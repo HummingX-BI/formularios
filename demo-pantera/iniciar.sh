@@ -1,25 +1,28 @@
 #!/bin/bash
-echo "=============================================="
-echo " INICIANDO PANTERA DEMO (MODO SIN CONEXION)"
-echo "=============================================="
+echo "==================================================="
+echo "    INICIANDO DEMO PANTERA (VERSION PRODUCCION)"
+echo "==================================================="
 echo ""
+echo "1. Cerrando servidores anteriores..."
+pkill -f "node"
 
-if ! command -v node &> /dev/null
-then
-    echo "ERROR: Node.js no esta instalado."
-    echo "Por favor instala Node.js para ejecutar la demostracion."
-    exit 1
-fi
+echo "2. Preparando entorno optimizado..."
+npm run preview -- --port 8080 --host &
 
-echo "Sirviendo la aplicacion localmente..."
+echo "3. Esperando al servidor..."
+sleep 3
 
-# Open browser depending on OS
+echo "4. Abriendo la plataforma en el navegador..."
 if which xdg-open > /dev/null
 then
-  xdg-open http://localhost:4173 &
+  xdg-open http://localhost:8080/
 elif which open > /dev/null
 then
-  open http://localhost:4173 &
+  open http://localhost:8080/
 fi
 
-npx serve -s dist -p 4173
+echo ""
+echo "==================================================="
+echo " SISTEMA EN LINEA. PUEDES MINIMIZAR ESTA VENTANA."
+echo "==================================================="
+wait

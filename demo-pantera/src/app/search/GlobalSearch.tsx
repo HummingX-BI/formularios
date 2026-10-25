@@ -34,30 +34,43 @@ export function GlobalSearch() {
     // Modules
     const isDebug = import.meta.env.VITE_SHOW_DEBUG === 'true';
     MODULE_REGISTRY.forEach(m => {
-      if (!isDebug && m.route.startsWith('/_')) return;
-      if (removeAccents(m.title.toLowerCase()).includes(q) || m.id.toLowerCase().includes(q)) {
+      if (!isDebug && (m.route.startsWith('/_') || m.visibility === 'demo')) return;
+      
+      let matchedParent = false;
+      if (removeAccents(m.title.toLowerCase()).includes(q) || m.id.toLowerCase().includes(q) || (m.legacyIds && m.legacyIds.some(id => id.toLowerCase().includes(q)))) {
         res.push({ type: 'module', id: m.id, title: m.title, icon: LayoutDashboard, route: m.route });
+        matchedParent = true;
+      }
+
+      if (m.tabs) {
+        m.tabs.forEach(t => {
+          const matchTitle = removeAccents(t.title.toLowerCase()).includes(q);
+          const matchLegacy = t.legacyIds && t.legacyIds.some(id => id.toLowerCase().includes(q));
+          if (!matchedParent && (matchTitle || matchLegacy)) {
+            res.push({ type: 'module_tab', id: t.slug, title: `${m.title} > ${t.title}`, icon: LayoutDashboard, route: `${m.route}?tab=${t.slug}` });
+          }
+        });
       }
     });
 
     // Students
     dataset.students.forEach(s => {
       if (removeAccents(s.name.toLowerCase()).includes(q)) {
-        res.push({ type: 'student', id: s.id, title: s.name, subtitle: `Estudiante - ${(s as any).levelId || 'N/A'}`, icon: Users, route: `/c02/m2-1?student=${s.id}` });
+        res.push({ type: 'student', id: s.id, title: s.name, subtitle: `Estudiante - ${(s as any).levelId || 'N/A'}`, icon: Users, route: `/alumnos/expediente?tab=perfil&student=${s.id}` });
       }
     });
     
     // Instructors
     dataset.instructors.forEach(i => {
       if (removeAccents(i.name.toLowerCase()).includes(q)) {
-        res.push({ type: 'instructor', id: i.id, title: i.name, subtitle: 'Instructor', icon: Target, route: `/c03/m3-3?instructor=${i.id}` });
+        res.push({ type: 'instructor', id: i.id, title: i.name, subtitle: 'Instructor', icon: Target, route: `/equipo/desempeno?tab=ficha&instructor=${i.id}` });
       }
     });
 
     // Groups
     dataset.groups.forEach(g => {
       if (g.id.toLowerCase().includes(q)) {
-        res.push({ type: 'group', id: g.id, title: g.id, subtitle: `Grupo - ${(g as any).levelId || 'N/A'}`, icon: Map, route: `/c02/m2-3?group=${g.id}` });
+        res.push({ type: 'group', id: g.id, title: g.id, subtitle: `Grupo - ${(g as any).levelId || 'N/A'}`, icon: Map, route: `/alumnos/horarios?group=${g.id}` });
       }
     });
 

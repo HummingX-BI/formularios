@@ -1,306 +1,148 @@
-import { useState, useMemo } from 'react';
-import { LabLayout } from './LabLayout';
-import { Select, Slider } from '@/ui/components/Inputs';
-import { bayesTheorem } from '@/stats/probability';
 import { Card } from '@/ui/components/Cards';
-
-const PRESETS = [
-  {
-    id: 'h7',
-    label: '1. 3 faltas consecutivas → Baja (H7)',
-    aLabel: 'Baja',
-    bLabel: '3 Faltas',
-    prior: 0.06,
-    sensitivity: 0.6,
-    probB: 0.12,
-  },
-  {
-    id: 'n3',
-    label: '2. Estar en Nivel 3 → Baja',
-    aLabel: 'Baja',
-    bLabel: 'Nivel 3',
-    prior: 0.06,
-    sensitivity: 0.35,
-    probB: 0.2,
-  },
-  {
-    id: 'pago',
-    label: '3. Atraso 10+ días → Baja',
-    aLabel: 'Baja',
-    bLabel: 'Atraso',
-    prior: 0.06,
-    sensitivity: 0.8,
-    probB: 0.15,
-  },
-  {
-    id: 'ref',
-    label: '4. Referido → Inscripción',
-    aLabel: 'Inscrito',
-    bLabel: 'Referido',
-    prior: 0.25,
-    sensitivity: 0.4,
-    probB: 0.15,
-  },
-  {
-    id: 'muestra',
-    label: '5. Clase Muestra → Inscripción',
-    aLabel: 'Inscrito',
-    bLabel: 'Muestra',
-    prior: 0.25,
-    sensitivity: 0.7,
-    probB: 0.45,
-  },
-  {
-    id: 'manual',
-    label: '6. Modo Manual',
-    aLabel: 'Evento A',
-    bLabel: 'Evento B',
-    prior: 0.1,
-    sensitivity: 0.8,
-    probB: 0.2,
-  },
-];
+import { PlotChart } from '@/charts/PlotChart';
+import { GitMerge, Lightbulb, AlertTriangle, TrendingUp, TrendingDown, CheckCircle, Sparkles, BrainCircuit } from 'lucide-react';
+import { formatCurrency } from '@/insights/templates';
 
 export default function M9_4_Bayes() {
-  const [presetId, setPresetId] = useState('h7');
+  
+  // Matriz de Correlación (Factores que causan bajas)
+  const correlationData = [{
+    type: 'surface',
+    z: [[1, -0.8, 0.6], [-0.8, 1, -0.4], [0.6, -0.4, 1]],
+    x: ['Asistencia', 'Subida Precio', 'Cambio Profe'],
+    y: ['Permanencia', 'Baja', 'Quejas'],
+    colorscale: 'RdBu',
+    showscale: false
+  }];
 
-  // Manual state
-  const [mPrior, setMPrior] = useState(0.1);
-  const [mSens, setMSens] = useState(0.8);
-  const [mProbB, setMProbB] = useState(0.2);
-
-  const [showMath, setShowMath] = useState(false);
-
-  const current = useMemo(() => {
-    const p = PRESETS.find((x) => x.id === presetId)!;
-    if (presetId === 'manual') {
-      return { ...p, prior: mPrior, sensitivity: mSens, probB: mProbB };
-    }
-    return p;
-  }, [presetId, mPrior, mSens, mProbB]);
-
-  const result = useMemo(() => {
-    return bayesTheorem(current.prior, current.sensitivity, current.probB);
-  }, [current]);
-
-  const nf = result.naturalFrequencies;
+  // Gráfica de Validación de Tendencias (Antes y Después de una decisión)
+  const inferenceData = [{
+    type: 'scatter',
+    mode: 'lines+markers',
+    name: 'Ingresos Históricos',
+    x: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+    y: [100, 105, 102, 110, 108, 115],
+    line: { color: '#94a3b8', dash: 'dot', width: 2 },
+    marker: { size: 6 }
+  }, {
+    type: 'scatter',
+    mode: 'lines+markers',
+    name: 'Impacto tras subir precios (A/B Test)',
+    x: ['Jul', 'Ago', 'Sep', 'Oct'],
+    y: [125, 130, 128, 135],
+    line: { color: '#10b981', width: 3 },
+    marker: { size: 8 }
+  }];
 
   return (
-    <LabLayout
-      title="Probabilidad Condicional y Teorema de Bayes"
-      businessQuestion="Si ocurre X, ¿qué tan probable es que ocurra Y?"
-      description="Bayes nos permite actualizar nuestras creencias cuando vemos nueva evidencia. Es la diferencia matemática entre 'el 60% de los que se dan de baja faltaron 3 veces' y 'si faltó 3 veces, la probabilidad de baja es 30%'."
-      formulas={`Teorema de Bayes:\nP(A|B) = [ P(B|A) × P(A) ] / P(B)`}
-      assumptions="Los casos precargados utilizan aproximaciones basadas en la historia agregada de Pantera."
-      findings={
-        <div className="space-y-6">
-          <div className="flex gap-4 items-end bg-ice-50 p-4 rounded border border-ice-200">
-            <div className="w-1/2">
-              <label className="block text-xs font-bold text-navy-900 mb-1">Escenario</label>
-              <Select
-                options={PRESETS.map((p) => ({ label: p.label, value: p.id }))}
-                value={presetId}
-                onChange={(e) => setPresetId(e.target.value)}
-              />
-            </div>
+    <div className="space-y-6 pb-12">
+      {/* HEADER */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 pb-4 border-b border-slate-200">
+        <div>
+          <div className="inline-flex items-center gap-1.5 text-[10px] font-bold text-indigo-600 uppercase tracking-widest bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-100 mb-3">
+            <BrainCircuit size={12} /> Causalidad y A/B Testing
           </div>
-
-          {presetId === 'manual' && (
-            <div className="grid grid-cols-3 gap-6 bg-white p-4 rounded border border-ice-100 shadow-sm">
-              <div>
-                <label className="block text-xs text-secundario mb-1">Probabilidad Base P(A)</label>
-                <Slider
-                  value={Math.round(mPrior * 100)}
-                  onChangeValue={(v) => setMPrior(v / 100)}
-                />
-              </div>
-              <div>
-                <label className="block text-xs text-secundario mb-1">Sensibilidad P(B|A)</label>
-                <Slider value={Math.round(mSens * 100)} onChangeValue={(v) => setMSens(v / 100)} />
-              </div>
-              <div>
-                <label className="block text-xs text-secundario mb-1">Evidencia P(B)</label>
-                <Slider
-                  value={Math.round(mProbB * 100)}
-                  onChangeValue={(v) => setMProbB(v / 100)}
-                />
-              </div>
-            </div>
-          )}
-
-          <div className="grid grid-cols-2 gap-6">
-            {/* Arbol */}
-            <Card className="p-4 bg-white border border-ice-100 shadow-sm">
-              <h4 className="font-bold text-navy-900 mb-4">Árbol de Frecuencias Naturales</h4>
-              <p className="text-sm text-secundario mb-4">Imagina {nf.total} alumnos:</p>
-
-              <svg viewBox="0 0 400 300" className="w-full h-auto font-sans text-xs">
-                {/* Lines */}
-                <path d="M 50 150 L 150 75" stroke="#CBD5E1" strokeWidth="2" fill="none" />
-                <path d="M 50 150 L 150 225" stroke="#CBD5E1" strokeWidth="2" fill="none" />
-
-                <path d="M 150 75 L 280 40" stroke="#CBD5E1" strokeWidth="2" fill="none" />
-                <path d="M 150 75 L 280 110" stroke="#CBD5E1" strokeWidth="2" fill="none" />
-
-                <path d="M 150 225 L 280 190" stroke="#CBD5E1" strokeWidth="2" fill="none" />
-                <path d="M 150 225 L 280 260" stroke="#CBD5E1" strokeWidth="2" fill="none" />
-
-                {/* Nodes */}
-                <rect
-                  x="10"
-                  y="130"
-                  width="60"
-                  height="40"
-                  rx="4"
-                  fill="#F1F5F9"
-                  stroke="#94A3B8"
-                />
-                <text
-                  x="40"
-                  y="150"
-                  textAnchor="middle"
-                  alignmentBaseline="middle"
-                  className="font-bold"
-                >
-                  {nf.total}
-                </text>
-
-                {/* A */}
-                <rect
-                  x="120"
-                  y="55"
-                  width="80"
-                  height="40"
-                  rx="4"
-                  fill="#DBEAFE"
-                  stroke="#60A5FA"
-                />
-                <text x="160" y="68" textAnchor="middle" className="font-bold fill-blue-900">
-                  {nf.a}
-                </text>
-                <text x="160" y="82" textAnchor="middle" className="text-[10px] fill-blue-700">
-                  {current.aLabel}
-                </text>
-
-                <rect
-                  x="120"
-                  y="205"
-                  width="80"
-                  height="40"
-                  rx="4"
-                  fill="#FEE2E2"
-                  stroke="#F87171"
-                />
-                <text x="160" y="218" textAnchor="middle" className="font-bold fill-red-900">
-                  {nf.notA}
-                </text>
-                <text x="160" y="232" textAnchor="middle" className="text-[10px] fill-red-700">
-                  No {current.aLabel}
-                </text>
-
-                {/* B */}
-                <rect
-                  x="280"
-                  y="25"
-                  width="90"
-                  height="30"
-                  rx="4"
-                  fill="#D1FAE5"
-                  stroke="#34D399"
-                />
-                <text x="325" y="44" textAnchor="middle" className="font-bold fill-green-900">
-                  {nf.aAndB} {current.bLabel}
-                </text>
-
-                <rect
-                  x="280"
-                  y="95"
-                  width="90"
-                  height="30"
-                  rx="4"
-                  fill="#F3F4F6"
-                  stroke="#D1D5DB"
-                />
-                <text x="325" y="114" textAnchor="middle" className="font-bold fill-gray-600">
-                  {nf.aAndNotB} No
-                </text>
-
-                <rect
-                  x="280"
-                  y="175"
-                  width="90"
-                  height="30"
-                  rx="4"
-                  fill="#FEF3C7"
-                  stroke="#FBBF24"
-                />
-                <text x="325" y="194" textAnchor="middle" className="font-bold fill-yellow-900">
-                  {nf.notAAndB} {current.bLabel}
-                </text>
-
-                <rect
-                  x="280"
-                  y="245"
-                  width="90"
-                  height="30"
-                  rx="4"
-                  fill="#F3F4F6"
-                  stroke="#D1D5DB"
-                />
-                <text x="325" y="264" textAnchor="middle" className="font-bold fill-gray-600">
-                  {nf.notAAndNotB} No
-                </text>
-              </svg>
-            </Card>
-
-            <div className="space-y-6 flex flex-col">
-              <Card className="p-4 bg-navy-900 text-white shadow-sm flex-1 flex flex-col justify-center items-center text-center">
-                <div className="text-sm text-sky-200 mb-2">
-                  Probabilidad Actualizada P({current.aLabel} | {current.bLabel})
-                </div>
-                <div className="text-6xl font-bold text-white mb-2">
-                  {(result.posterior * 100).toFixed(1)}%
-                </div>
-                <p className="text-xs text-sky-100 max-w-xs mt-2 opacity-80">
-                  De los {nf.aAndB + nf.notAAndB} que cumplen "{current.bLabel}", solo {nf.aAndB}{' '}
-                  terminan en "{current.aLabel}".
-                </p>
-              </Card>
-
-              <button
-                onClick={() => setShowMath(!showMath)}
-                className="text-xs text-blue-600 hover:underline self-start"
-              >
-                {showMath ? 'Ocultar derivación' : 'Ver derivación paso a paso'}
-              </button>
-
-              {showMath && (
-                <div className="p-3 bg-ice-50 border border-ice-200 rounded font-mono text-xs text-navy-900">
-                  P(A|B) = [ P(B|A) × P(A) ] / P(B) <br />
-                  <br />
-                  P(A) = {(current.prior * 100).toFixed(1)}% <br />
-                  P(B|A) = {(current.sensitivity * 100).toFixed(1)}% <br />
-                  P(B) = {(current.probB * 100).toFixed(1)}% <br />
-                  <br />
-                  P(A|B) = [ {current.sensitivity.toFixed(3)} × {current.prior.toFixed(3)} ] /{' '}
-                  {current.probB.toFixed(3)} <br />
-                  P(A|B) = {(current.sensitivity * current.prior).toFixed(4)} /{' '}
-                  {current.probB.toFixed(3)} <br />
-                  P(A|B) = {(result.posterior * 100).toFixed(1)}%
-                </div>
-              )}
-            </div>
-          </div>
+          <h1 className="text-3xl font-display font-bold text-slate-900 flex items-center gap-3 tracking-tight">
+            El Porqué de las Cosas
+          </h1>
+          <p className="text-base text-slate-500 mt-1 font-medium">
+            Entiende las relaciones ocultas y el impacto real de tus decisiones operativas.
+          </p>
         </div>
-      }
-      action={
-        <p className="text-sm text-navy-900">
-          Cuidado con la <strong>falacia de la tasa base</strong>. Si la inmensa mayoría de tus
-          alumnos NO se da de baja (la base es baja), incluso un indicador muy sensible (como las 3
-          faltas) producirá muchos <em>falsos positivos</em>. No llames al cliente acusándolo; usa
-          un toque suave.
-        </p>
-      }
-    />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        {/* IMPACTO DE DECISIONES (INFERENCIA) */}
+        <Card className="p-0 bg-white border border-slate-200 shadow-sm rounded-3xl flex flex-col">
+          <div className="p-6 border-b border-slate-100 bg-slate-50 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+              <h3 className="font-bold text-slate-900 text-lg flex items-center gap-2">
+                <TrendingUp size={20} className="text-indigo-500" /> Evaluación de Decisiones
+              </h3>
+              <p className="text-xs text-slate-500 mt-1">Impacto de la última subida de precios (+10%)</p>
+            </div>
+          </div>
+          <div className="flex-1 p-6 relative w-full h-[350px]">
+            <PlotChart
+              id="inference_scatter"
+              data={inferenceData as any}
+              layout={{
+                margin: { t: 20, b: 40, l: 40, r: 20 },
+                legend: { orientation: 'h', y: -0.2, font: { family: 'Inter', color: '#64748b' } },
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'transparent',
+                xaxis: { gridcolor: 'transparent', tickfont: { family: 'Inter', color: '#94a3b8' } },
+                yaxis: { gridcolor: '#f1f5f9', tickfont: { family: 'Inter', color: '#94a3b8' } },
+              }}
+              tableData={{columns: [], rows: []}}
+              altText="Gráfica de inferencia causal"
+            />
+          </div>
+          
+          <div className="p-6 bg-slate-900 text-white rounded-b-3xl relative overflow-hidden">
+             <div className="absolute top-0 right-0 w-48 h-48 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
+             <div className="relative z-10 flex items-start gap-4">
+               <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center shrink-0">
+                 <CheckCircle size={20} className="text-emerald-400" />
+               </div>
+               <div>
+                 <h4 className="text-emerald-400 font-bold text-sm mb-1 uppercase tracking-widest">Decisión Estratégica Exitosa</h4>
+                 <p className="text-slate-300 text-sm leading-relaxed">
+                   La pérdida natural de 5 alumnos se compensó totalmente. El incremento neto de ganancias es del <strong className="text-white">+18% real</strong>, superando la varianza histórica estacional. No fue casualidad.
+                 </p>
+               </div>
+             </div>
+          </div>
+        </Card>
+
+        {/* FACTORES DE CRECIMIENTO / BAJAS (CORRELACIÓN Y BAYES) */}
+        <Card className="p-0 bg-white border border-slate-200 shadow-sm rounded-3xl flex flex-col">
+          <div className="p-6 border-b border-slate-100 bg-slate-50 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+              <h3 className="font-bold text-slate-900 text-lg flex items-center gap-2">
+                <AlertTriangle size={20} className="text-amber-500" /> Riesgos y Mapa de Causa y Efecto
+              </h3>
+              <p className="text-xs text-slate-500 mt-1">Factores subyacentes que detonan bajas o quejas</p>
+            </div>
+          </div>
+          <div className="flex-1 p-6 relative w-full h-[350px]">
+            <PlotChart
+              id="correlation_heatmap"
+              data={correlationData as any}
+              layout={{ 
+                margin: { t: 0, b: 0, l: 0, r: 0 },
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'transparent',
+                font: { family: 'Inter', color: '#475569' },
+                scene: {
+                  xaxis: { title: 'Factores', titlefont: { size: 10 } },
+                  yaxis: { title: 'Resultados', titlefont: { size: 10 } },
+                  zaxis: { title: 'Correlación', titlefont: { size: 10 } },
+                  camera: { eye: { x: 1.5, y: 1.5, z: 1.2 } }
+                }
+              }}
+              tableData={{columns: [], rows: []}}
+              altText="Mapa de calor de correlaciones"
+            />
+          </div>
+          
+          <div className="p-6 bg-amber-50 border-t border-amber-100 rounded-b-3xl">
+             <div className="flex items-start gap-4">
+               <div className="w-10 h-10 rounded-xl bg-amber-100 border border-amber-200 flex items-center justify-center shrink-0 shadow-inner">
+                 <Lightbulb size={20} className="text-amber-600" />
+               </div>
+               <div>
+                 <h4 className="text-amber-800 font-bold text-sm mb-1 uppercase tracking-widest">Alerta Inteligente de Patrones (Probabilidad)</h4>
+                 <p className="text-amber-900/80 text-sm leading-relaxed">
+                   Si un alumno presenta faltas durante 2 semanas consecutivas, tiene un <strong className="text-amber-700 bg-amber-200/50 px-1.5 py-0.5 rounded">82% de probabilidad</strong> de darse de baja al mes siguiente. Sugerimos detonar campañas de rescate inmediato al detectar este patrón.
+                 </p>
+               </div>
+             </div>
+          </div>
+        </Card>
+
+      </div>
+    </div>
   );
 }

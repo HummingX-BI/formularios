@@ -1,5 +1,5 @@
 import { ModulePage } from '@/ui/ModulePage';
-
+import { Info } from 'lucide-react';
 export default function AboutDemoPage() {
   return (
     <ModulePage
@@ -18,7 +18,7 @@ export default function AboutDemoPage() {
       <div className="max-w-3xl mx-auto space-y-8 pb-12">
         <section className="bg-white p-6 rounded-xl border border-ice-100 shadow-sm">
           <h2 className="text-xl font-bold text-navy-900 mb-4 flex items-center gap-2">
-            <span className="text-2xl">🌊</span> Sobre Club Azulejo
+            <Info className="text-blue-500" size={24} /> Sobre Club Azulejo
           </h2>
           <p className="text-secundario leading-relaxed mb-4">
             Bienvenido a <strong>Club Azulejo CA</strong>. Todos los datos, alumnos, pagos y comportamientos que ves en este entorno han sido <strong>generados por un simulador matemático</strong> para ilustrar el poder de la analítica avanzada en el sector de natación.
@@ -46,7 +46,7 @@ export default function AboutDemoPage() {
             <li className="flex items-start gap-3">
               <span className="text-emerald-500 mt-0.5">✓</span>
               <div>
-                <strong>Interfaz Completa:</strong> Los 58 módulos están disponibles para navegar y explorar la profundidad del producto.
+                <strong>Interfaz Completa:</strong> Los 62 módulos y vistas están disponibles para navegar y explorar la profundidad del producto.
               </div>
             </li>
           </ul>

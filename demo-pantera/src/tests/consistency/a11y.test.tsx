@@ -5,6 +5,7 @@ import { MODULE_REGISTRY } from '@/modules/registry';
 import { axe } from 'vitest-axe';
 import * as matchers from 'vitest-axe/matchers';
 import { Suspense } from 'react';
+import { TabbedModule } from '@/ui/TabbedModule';
 
 expect.extend(matchers);
 
@@ -28,13 +29,14 @@ describe('A11y Audit (Prompt 32)', () => {
     for (const mod of MODULE_REGISTRY) {
       if (mod.route === '') continue; // Skip placeholders or external routes
 
-      const Component = mod.component as any;
+      const ModComp = mod.component;
+      const TestEl = ModComp ? <ModComp /> : <TabbedModule moduleInfo={mod as any} />;
 
       const { container } = render(
         <MemoryRouter initialEntries={[mod.route]}>
           <Suspense fallback={<div>Loading...</div>}>
             <Routes>
-              <Route path={mod.route} element={<Component />} />
+              <Route path={mod.route} element={TestEl} />
             </Routes>
           </Suspense>
         </MemoryRouter>

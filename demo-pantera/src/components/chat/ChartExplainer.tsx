@@ -24,7 +24,7 @@ export function ChartExplainer() {
   
   const handleGlossary = (termId: string) => { 
     setExplanationContext(null); 
-    navigate(`/c12/m12-2?term=${termId}`); 
+    navigate(`/inteligencia/asistente?tab=glosario&term=${termId}`); 
   }; 
   
   return ( 

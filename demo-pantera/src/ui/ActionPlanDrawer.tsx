@@ -56,7 +56,7 @@ export function ActionPlanDrawer() {
 
         <div className="p-4 border-t border-slate-100 bg-white">
           <button 
-            onClick={() => { toggleActionPlan(); navigate('/c11/m11-3'); }}
+            onClick={() => { toggleActionPlan(); navigate('/mando/plan'); }}
             className="w-full flex items-center justify-center gap-2 py-2 text-sm font-bold text-sky-600 bg-sky-50 rounded-lg hover:bg-sky-100 transition-colors"
           >
             Abrir tablero completo <ChevronRight className="w-4 h-4" />

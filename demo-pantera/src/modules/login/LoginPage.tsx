@@ -8,7 +8,7 @@ export function LoginPage() {
   const [loading, setLoading] = useState(false);
 
   if (loading) {
-    return <LoadingScreen onComplete={() => navigate('/c01/m1-1')} />;
+    return <LoadingScreen onComplete={() => navigate('/mando/resumen')} />;
   }
 
   return (

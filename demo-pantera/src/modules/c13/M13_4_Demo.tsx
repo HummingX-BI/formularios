@@ -41,7 +41,7 @@ export default function M13_4_Demo() {
           <p className="text-lg text-secundario mt-1">Simulación de interfaces satélite y parámetros globales</p> 
         </div> 
         <div className="flex gap-3"> 
-          <Button variant="ghost" className="flex items-center gap-2" onClick={() => navigate('/c03/m3-4')}> 
+          <Button variant="ghost" className="flex items-center gap-2" onClick={() => navigate('/equipo/portal')}> 
             <Database className="w-4 h-4" /> Auditoría de Datos 
           </Button> 
           <Button variant="primary" className="flex items-center gap-2" onClick={togglePresentation}> 

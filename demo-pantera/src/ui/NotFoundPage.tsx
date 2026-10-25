@@ -14,7 +14,7 @@ export function NotFoundPage() {
       <p className="text-text-secondary mb-6">
         El módulo o ruta que buscas no existe en esta demostración.
       </p>
-      <Button variant="primary" onClick={() => navigate('/c01/m1-1')}>
+      <Button variant="primary" onClick={() => navigate('/mando/resumen')}>
         Ir al inicio (M1.1)
       </Button>
     </div>

@@ -36,24 +36,6 @@ export function LabLayout({
               {findings}
             </Card>
 
-            {(formulas || assumptions) && (
-              <div className="grid grid-cols-2 gap-6">
-                {formulas && (
-                  <Card className="p-4 bg-ice-50 border border-ice-200 shadow-sm">
-                    <h4 className="text-xs font-bold text-secundario mb-2">FÓRMULAS USADAS</h4>
-                    <div className="text-sm font-mono text-navy-900 overflow-x-auto whitespace-pre">
-                      {formulas}
-                    </div>
-                  </Card>
-                )}
-                {assumptions && (
-                  <Card className="p-4 bg-ice-50 border border-ice-200 shadow-sm">
-                    <h4 className="text-xs font-bold text-secundario mb-2">SUPUESTOS</h4>
-                    <div className="text-sm text-secundario">{assumptions}</div>
-                  </Card>
-                )}
-              </div>
-            )}
           </div>
 
           <div className="col-span-4 flex flex-col gap-6">

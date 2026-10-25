@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import { Droplet } from 'lucide-react';
 
 export function DropConfetti({ active, onComplete }: { active: boolean, onComplete: () => void }) {
   const [drops, setDrops] = useState<{ id: number; left: number; delay: number }[]>([]);
@@ -35,7 +36,7 @@ export function DropConfetti({ active, onComplete }: { active: boolean, onComple
             color: '#38bdf8' // sky-400
           }}
         >
-          💧
+          <Droplet size={24} fill="currentColor" strokeWidth={1} />
         </div>
       ))}
       <style>{`

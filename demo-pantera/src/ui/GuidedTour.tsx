@@ -8,42 +8,42 @@ const TOUR_STEPS = [
   { 
     title: 'Punto de Partida', 
     desc: 'Comenzamos en el Panel General viendo el estado macro del negocio. La retención es la clave de nuestro caso de negocio.',
-    route: '/c01/m1-1'
+    route: '/mando/resumen'
   },
   { 
     title: 'Análisis de Retención', 
     desc: 'Observa cómo la supervivencia cae drásticamente después de 6 meses. Necesitamos averiguar por qué.',
-    route: '/c07/m7-2'
+    route: '/retencion/lealtad?tab=ciclo'
   },
   { 
     title: 'Segmentación de Familias', 
     desc: 'El algoritmo nos muestra que el grupo "Leales Sensibles" está en riesgo. Vamos a ver por qué.',
-    route: '/c10/m10-2'
+    route: '/retencion/segmentacion'
   },
   { 
     title: 'Saturación Operativa', 
     desc: 'Descubrimos que la alberca infantil los sábados está al 98% de capacidad. La calidad del servicio baja y los niños se van.',
-    route: '/c06/m6-2'
+    route: '/capacidad/oportunidades'
   },
   { 
     title: 'Propuesta del Optimizador', 
     desc: 'El optimizador matemático reasigna a los grupos menos rentables y abre espacio para 40 nuevos alumnos el sábado.',
-    route: '/c06/m6-3'
+    route: '/capacidad/optimizador'
   },
   { 
     title: 'Impacto Financiero', 
     desc: 'Simulamos el impacto: esta pequeña acción mejora la retención general en un 3% y aumenta los ingresos mensuales.',
-    route: '/c11/m11-2'
+    route: '/inteligencia/simulador?tab=escenarios'
   },
   { 
     title: 'Centro de Recomendaciones', 
     desc: 'El sistema convierte el hallazgo en una tarea lista para ser aprobada y enviada a los coordinadores.',
-    route: '/c11/m11-1'
+    route: '/mando/alertas?tab=recomendaciones'
   },
   { 
     title: 'El Plan en Acción', 
     desc: 'Finalmente, todas las aprobaciones se consolidan aquí, permitiendo dar seguimiento a la ejecución operativa real.',
-    route: '/c11/m11-3'
+    route: '/mando/plan'
   }
 ];
 

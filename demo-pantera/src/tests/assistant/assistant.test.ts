@@ -108,7 +108,7 @@ describe('Assistant NLP Engine', () => {
     // "receta de hotcakes" will likely have 0 confidence. So it should be desconocido. 
     const res = ask("receta de hotcakes", { turnsSinceLastIntent: 0 }, mockStore); 
     expect(res.intent).toBe('desconocido'); 
-    expect(res.answer.interpretacion).toContain('Lo siento, no logré entender'); 
+    expect(res.answer.interpretacion).toContain('Esa consulta no está soportada todavía.'); 
     expect(res.answer.preguntasSeguimiento.length).toBe(3); 
   });
 });

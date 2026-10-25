@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { chartTheme } from './theme';
-import { Download, Table as TableIcon, Maximize, MessageCircle } from 'lucide-react';
+import { Download, Table as TableIcon, Maximize, MessageCircle, FileSpreadsheet } from 'lucide-react';
 
 // Lazy load plotly to ensure it is in a separate chunk
 const loadPlotly = () => import('plotly.js-dist-min').then((m) => m.default || m);
@@ -200,7 +200,7 @@ export const PlotChart: React.FC<PlotChartProps> = ({
             title="Descargar datos en CSV"
             aria-label="Descargar CSV"
           >
-            <span className="text-xs font-bold mr-1">CSV</span>
+            <FileSpreadsheet size={18} />
           </button>
           {!viewTable && (
             <button

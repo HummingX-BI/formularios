@@ -58,21 +58,21 @@ export default function CheatsheetPage() {
             <tr>
               <td className="p-2 border border-slate-300 font-bold text-center">1</td>
               <td className="p-2 border border-slate-300 text-sky-700 font-mono text-xs">Atajo: 'P'</td>
-              <td className="p-2 border border-slate-300">Activa Modo Presentación (limpia menús laterales, agranda fuentes). Presenta el Dashboard (M1.1). Destaca Activos e Ingresos.</td>
+              <td className="p-2 border border-slate-300">Activa Modo Presentación (limpia menús laterales, agranda fuentes). Presenta el Dashboard (Resumen Ejecutivo). Destaca Activos e Ingresos.</td>
             </tr>
             <tr>
               <td className="p-2 border border-slate-300 font-bold text-center">2</td>
-              <td className="p-2 border border-slate-300">Ir a Operación &gt; Lista de Espera</td>
+              <td className="p-2 border border-slate-300">Ir a Alumnos &gt; Inscripciones &gt; Lista de Espera</td>
               <td className="p-2 border border-slate-300">Muestra saturación. Destaca que "Sábados a las 10AM" tiene X alumnos esperando.</td>
             </tr>
             <tr>
               <td className="p-2 border border-slate-300 font-bold text-center">3</td>
-              <td className="p-2 border border-slate-300">Ir a Prescriptivo &gt; Simulador de Aperturas</td>
+              <td className="p-2 border border-slate-300">Ir a Capacidad Operativa &gt; Optimizador de Horarios</td>
               <td className="p-2 border border-slate-300">Usa el simulador para resolver la lista de espera. Crea grupo sábado 10AM y ve cómo los ingresos proyectados suben de inmediato.</td>
             </tr>
             <tr>
               <td className="p-2 border border-slate-300 font-bold text-center">4</td>
-              <td className="p-2 border border-slate-300">Ir a Machine Learning &gt; Predicción Bajas</td>
+              <td className="p-2 border border-slate-300">Ir a Retención &gt; Riesgo de Baja</td>
               <td className="p-2 border border-slate-300">Muestra la tabla de probabilidad de baja. Señala un estudiante en rojo (riesgo alto).</td>
             </tr>
             <tr>

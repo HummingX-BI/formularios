@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import { Card } from '@/ui/components/Cards';
-import { Badge } from '@/ui/components/DataDisplay';
 import { PlotChart } from '@/charts/PlotChart';
 import { AppInsightBlock as InsightBlock } from '@/insights/components/AppInsightBlock';
 import { formatNum, formatPercent } from '@/insights/templates';
 import { useAppStore } from '@/app/store';
+import { Search, Filter, TrendingUp, ArrowUpRight, ArrowDownRight, Globe } from 'lucide-react';
 
 // Mock SEO Data generator (since it's not part of main dataset)
 const generateSeoData = (seed: number) => {
@@ -50,6 +50,7 @@ export default function M13_1_SEO() {
       y: [3000, 3200, 3500, 3300, 4000, 4200],
       type: 'scatter',
       stackgroup: 'one',
+      line: { color: '#6366f1' } // indigo-500
     },
     {
       name: 'Directo',
@@ -57,6 +58,7 @@ export default function M13_1_SEO() {
       y: [1000, 1100, 1050, 1200, 1150, 1300],
       type: 'scatter',
       stackgroup: 'one',
+      line: { color: '#8b5cf6' } // violet-500
     },
     {
       name: 'Social',
@@ -64,6 +66,7 @@ export default function M13_1_SEO() {
       y: [800, 950, 900, 850, 1100, 1050],
       type: 'scatter',
       stackgroup: 'one',
+      line: { color: '#a855f7' } // purple-500
     },
     {
       name: 'Referidos',
@@ -71,6 +74,7 @@ export default function M13_1_SEO() {
       y: [200, 250, 300, 280, 350, 400],
       type: 'scatter',
       stackgroup: 'one',
+      line: { color: '#d946ef' } // fuchsia-500
     },
   ];
   
@@ -83,7 +87,7 @@ export default function M13_1_SEO() {
         ? 'Oportunidades de tráfico orgánico detectadas'
         : 'Rendimiento orgánico saludable',
     summary:
-      'El análisis automatizado de palabras clave sugiere oportunidades de optimización (H13).',
+      'El análisis automatizado de palabras clave sugiere oportunidades de optimización para captar más tráfico de búsqueda.',
     bullets:
       opportunities.length > 0
         ? opportunities.map(
@@ -99,64 +103,90 @@ export default function M13_1_SEO() {
   } as const;
   
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-end">
+    <div className="space-y-6 pb-12">
+      {/* HEADER */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 pb-4 border-b border-slate-200">
         <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-jakarta font-bold text-navy-900">
-              SEO y Analítica Web
-            </h1>
-            <Badge color="bg-ice-100 text-secundario">Analítica del sitio simulada</Badge>
+          <div className="inline-flex items-center gap-1.5 text-[10px] font-bold text-indigo-600 uppercase tracking-widest bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-100 mb-3">
+            <Globe size={12} /> Tráfico y Conversión
           </div>
-          <p className="text-lg text-secundario mt-1">
+          <h1 className="text-3xl font-display font-bold text-slate-900 flex items-center gap-3 tracking-tight">
+            SEO y Analítica Web
+          </h1>
+          <p className="text-base text-slate-500 mt-1 font-medium">
             ¿Qué tan bien me encuentran en internet y qué tanto convierte mi sitio?
           </p>
         </div>
       </div>
       
-      <Card className="p-6 bg-white border border-ice-100 shadow-sm">
+      {/* INSIGHT */}
+      <Card className="p-0 bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
         <InsightBlock insight={insightData} />
       </Card>
       
-      <div className="grid grid-cols-3 gap-6">
-        <Card className="col-span-2 bg-white border border-ice-100 shadow-sm overflow-hidden p-6">
-          <PlotChart
-            id="seo_sessions_chart"
-            title="Sesiones por Fuente"
-            subtitle="Últimos 6 meses apilados"
-            data={sessionsAreaChart as any}
-            layout={{ showlegend: true, legend: { orientation: 'h', y: -0.2 } }}
-            altText="Gráfica de áreas apiladas de sesiones por fuente"
-            tableData={{ columns: [], rows: [] }}
-            onExplain={() => setExplanationContext('seo_sessions_chart')}
-          />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {/* AREA CHART */}
+        <Card className="lg:col-span-2 p-0 bg-white border border-slate-200 rounded-3xl shadow-sm flex flex-col overflow-hidden">
+          <div className="p-5 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <TrendingUp size={16} className="text-indigo-500" /> Sesiones por Fuente (Últimos 6 meses)
+            </h3>
+          </div>
+          <div className="min-h-[350px] p-5">
+            <PlotChart
+              id="seo_sessions_chart"
+              title=""
+              subtitle=""
+              data={sessionsAreaChart as any}
+              layout={{ 
+                showlegend: true, 
+                legend: { orientation: 'h', y: -0.2 }, 
+                margin: { t: 10, r: 10, l: 40, b: 20 },
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                yaxis: { gridcolor: '#f1f5f9' },
+                xaxis: { gridcolor: '#f1f5f9' }
+              }}
+              altText="Gráfica de áreas apiladas de sesiones por fuente"
+              tableData={{ columns: [], rows: [] }}
+              onExplain={() => setExplanationContext('seo_sessions_chart')}
+            />
+          </div>
         </Card>
         
-        <Card className="bg-white border border-ice-100 shadow-sm overflow-hidden p-6 flex flex-col items-center justify-center">
-          <h3 className="font-bold text-navy-900 font-jakarta self-start w-full mb-4">
-            Embudo de Conversión del Sitio
-          </h3>
-          <div className="w-full space-y-4">
+        {/* FUNNEL */}
+        <Card className="p-0 bg-white border border-slate-200 rounded-3xl shadow-sm flex flex-col overflow-hidden">
+          <div className="p-5 border-b border-slate-100 bg-slate-50/50">
+            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <Filter size={16} className="text-indigo-500" /> Embudo de Conversión
+            </h3>
+          </div>
+          <div className="p-6 flex-1 flex flex-col justify-center space-y-6">
             {funnelData.map((step, idx) => {
               const firstCount = funnelData[0]?.count || 1;
               const prevCount = funnelData[idx - 1]?.count || 1;
-              const width = Math.max(20, (step.count / firstCount) * 100);
+              const width = Math.max(15, (step.count / firstCount) * 100);
               const conversion = idx > 0 ? step.count / prevCount : null;
               return (
                 <div key={idx} className="flex flex-col items-center">
-                  <div
-                    className="h-10 bg-sky-400 rounded-md flex items-center justify-center text-white font-bold transition-all duration-500 shadow-sm"
-                    style={{ width: `${width}%` }}
-                  >
-                    {formatNum(step.count)}
+                  <div className="w-full flex justify-between items-end mb-1.5 px-1">
+                     <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">{step.stage}</span>
+                     <span className="text-xl font-display font-bold text-slate-900">{formatNum(step.count)}</span>
                   </div>
-                  <div className="text-sm font-semibold text-navy-900 mt-1">{step.stage}</div>
+                  <div className="w-full bg-slate-100 rounded-full h-10 overflow-hidden flex items-center shadow-inner relative">
+                    <div
+                      className="h-full bg-gradient-to-r from-indigo-500 to-indigo-400 rounded-full flex items-center justify-end pr-4 text-white text-xs font-bold transition-all duration-1000 shadow-sm"
+                      style={{ width: `${width}%` }}
+                    >
+                    </div>
+                  </div>
                   {conversion !== null && (
-                    <div className="text-xs text-secundario mt-2 mb-2 flex items-center gap-1">
-                      <span className="text-green-500 font-bold">
-                        ↓ {formatPercent(conversion * 100)}
+                    <div className="text-[10px] uppercase font-bold tracking-widest text-slate-400 mt-4 mb-2 flex items-center gap-1.5 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-100">
+                      <span className="text-emerald-600 flex items-center text-xs">
+                        <ArrowDownRight size={14} className="mr-0.5" /> {formatPercent(conversion * 100)}
                       </span>{' '}
-                      conversión
+                      tasa de conversión
                     </div>
                   )}
                 </div>
@@ -166,44 +196,45 @@ export default function M13_1_SEO() {
         </Card>
       </div>
       
-      <Card className="bg-white border border-ice-100 shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-ice-100 flex justify-between items-center bg-ice-50">
-          <h3 className="font-bold text-navy-900 font-jakarta">
-            Rendimiento de Palabras Clave
+      {/* KEYWORDS TABLE */}
+      <Card className="p-0 bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden flex flex-col">
+        <div className="p-5 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+          <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
+            <Search size={16} className="text-indigo-500" /> Rendimiento de Palabras Clave
           </h3>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead className="bg-ice-50 border-b border-ice-100">
+          <table className="w-full text-left border-collapse">
+            <thead className="bg-slate-50 border-b border-slate-200">
               <tr>
-                <th className="p-4 font-bold text-navy-900 text-sm">Palabra Clave</th>
-                <th className="p-4 font-bold text-navy-900 text-sm text-center">Posición</th>
-                <th className="p-4 font-bold text-navy-900 text-sm text-right">Impresiones</th>
-                <th className="p-4 font-bold text-navy-900 text-sm text-right">Clics</th>
-                <th className="p-4 font-bold text-navy-900 text-sm text-right">CTR</th>
+                <th className="px-5 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-bold">Palabra Clave</th>
+                <th className="px-5 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-bold text-center">Posición</th>
+                <th className="px-5 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-bold text-right">Impresiones</th>
+                <th className="px-5 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-bold text-right">Clics</th>
+                <th className="px-5 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-bold text-right">CTR</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-ice-100">
+            <tbody className="divide-y divide-slate-100">
               {keywords.map((kw, i) => (
-                <tr key={i} className="hover:bg-sky-50 transition-colors">
-                  <td className="p-4 font-semibold text-navy-900">{kw.kw}</td>
-                  <td className="p-4 text-center">
+                <tr key={i} className="hover:bg-slate-50 transition-colors">
+                  <td className="px-5 py-4 font-bold text-slate-900 text-sm">{kw.kw}</td>
+                  <td className="px-5 py-4 text-center">
                     <div className="flex items-center justify-center gap-2">
-                      <span className="text-lg font-bold">{kw.pos}</span>
+                      <span className="text-base font-display font-bold text-slate-700">{kw.pos}</span>
                       {kw.change !== 0 && (
                         <span
-                          className={`text-xs font-bold ${kw.change > 0 ? 'text-green-500' : 'text-coral'}`}
+                          className={`text-[10px] font-bold flex items-center px-2 py-0.5 rounded-md ${kw.change > 0 ? 'text-emerald-700 bg-emerald-50 border border-emerald-100' : 'text-rose-700 bg-rose-50 border border-rose-100'}`}
                         >
-                          {kw.change > 0 ? '↑' : '↓'} {Math.abs(kw.change)}
+                          {kw.change > 0 ? <ArrowUpRight size={12} className="mr-0.5" /> : <ArrowDownRight size={12} className="mr-0.5" />} {Math.abs(kw.change)}
                         </span>
                       )}
                     </div>
                   </td>
-                  <td className="p-4 tabular-figures text-right">{formatNum(kw.imp)}</td>
-                  <td className="p-4 tabular-figures text-right text-sky-600 font-bold">
+                  <td className="px-5 py-4 text-right font-mono text-sm text-slate-600">{formatNum(kw.imp)}</td>
+                  <td className="px-5 py-4 text-right font-mono text-sm font-bold text-indigo-600">
                     {formatNum(kw.clicks)}
                   </td>
-                  <td className="p-4 tabular-figures text-right font-medium">
+                  <td className="px-5 py-4 text-right font-mono text-sm font-bold text-slate-700">
                     {formatPercent(kw.ctr * 100)}
                   </td>
                 </tr>

@@ -20,7 +20,9 @@ import {
   MessageSquare,
   Settings,
   CheckSquare,
-  PlaySquare
+  PlaySquare,
+  Megaphone,
+  FileText
 } from 'lucide-react';
 import { cn } from './components/utils';
 import { GlobalSearch } from '@/app/search/GlobalSearch';
@@ -29,6 +31,8 @@ import { ActionPlanDrawer } from './ActionPlanDrawer';
 import { ToastContainer } from './components/Toast';
 import { ErrorBoundary } from './ErrorBoundary';
 import { GuidedTour } from './GuidedTour';
+import { ChatPanel } from '@/components/chat/ChatPanel';
+import { ExecutiveReportModal } from './ExecutiveReportModal';
 
 const iconMap: Record<string, React.ElementType> = {
   LayoutDashboard,
@@ -44,6 +48,7 @@ const iconMap: Record<string, React.ElementType> = {
   Lightbulb,
   MessageSquare,
   Settings,
+  Megaphone,
 };
 
 export function DashboardLayout(): React.JSX.Element {
@@ -66,6 +71,7 @@ export function DashboardLayout(): React.JSX.Element {
   } = useAppStore();
   const navigate = useNavigate();
   const location = useLocation();
+  const [isReportOpen, setIsReportOpen] = useState(false);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -86,7 +92,7 @@ export function DashboardLayout(): React.JSX.Element {
         togglePresentation();
       }
       if (e.key.toLowerCase() === 'h' && lastKey.toLowerCase() === 'g') {
-        navigate('/c01/m1-1');
+        navigate('/mando/resumen');
       }
       lastKey = e.key;
     };
@@ -119,13 +125,13 @@ export function DashboardLayout(): React.JSX.Element {
           aria-label="Menú principal"
         >
           <div
-            className="h-16 flex items-center justify-between px-4 border-b border-ice-100 cursor-pointer"
+            className="h-16 flex items-center justify-between px-5 border-b border-ice-100 cursor-pointer hover:bg-slate-50 transition-colors"
             onClick={toggleSidebar}
           >
             {!sidebarCollapsed && (
-              <span className="font-display font-bold text-blue-800">CA Admin</span>
+              <span className="font-display font-bold text-lg tracking-tight text-slate-800">Club Azulejo</span>
             )}
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold shrink-0">
+            <div className="w-8 h-8 bg-gradient-to-br from-sky-500 to-blue-700 shadow-sm rounded-md flex items-center justify-center text-white font-bold shrink-0 text-sm">
               CA
             </div>
           </div>
@@ -183,6 +189,15 @@ export function DashboardLayout(): React.JSX.Element {
 
               <div className="h-6 w-px bg-ice-100 mx-2"></div>
 
+              <button
+                onClick={() => setIsReportOpen(true)}
+                className="hidden lg:flex items-center gap-2 h-9 px-4 rounded-lg bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-500 transition-colors shadow-sm shadow-indigo-900/20 mr-2"
+                title="Generar Reporte Ejecutivo"
+              >
+                <FileText className="w-4 h-4" />
+                <span>Reporte Ejecutivo</span>
+              </button>
+
               <AlertsCenter />
 
               <button 
@@ -192,17 +207,6 @@ export function DashboardLayout(): React.JSX.Element {
                 aria-label="Abrir plan de acción"
               >
                 <CheckSquare className="w-5 h-5" aria-hidden="true" />
-              </button>
-
-              <button 
-                onClick={toggleGuidedTour}
-                className={cn(
-                  "p-2 transition-colors rounded",
-                  guidedTourActive ? "bg-sky-100 text-sky-600" : "text-text-secondary hover:text-blue-600"
-                )}
-                title="Guion de Presentación"
-              >
-                <PlaySquare className="w-5 h-5" />
               </button>
 
               <button 
@@ -234,46 +238,30 @@ export function DashboardLayout(): React.JSX.Element {
           </ErrorBoundary>
         </main>
 
-        {/* Footer */}
-        <footer className="bg-white border-t border-ice-100 py-2 px-6 flex items-center justify-between text-xs text-text-tenue shrink-0">
-          <span>Datos de demostración simulados</span>
+        <footer className="bg-white border-t border-ice-100 py-2 px-6 flex items-center justify-end text-xs text-text-tenue shrink-0">
           <div className="flex items-center gap-4">
             {sessionChanges > 0 && (
               <span className="text-amber-600 font-medium">
-                Sesión modificada ({sessionChanges} cambios)
+                Parámetros ajustados ({sessionChanges})
               </span>
             )}
-            <span>Seed: {seed}</span>
             <button
-              className="hover:text-state-coral transition-colors"
+              className="hover:text-coral transition-colors"
               onClick={() => useAppStore.getState().resetDemo()}
             >
-              Reiniciar demo
+              Reiniciar escenario
             </button>
           </div>
         </footer>
       </div>
 
       {/* Assistant Overlay */}
-      {assistantOpen && (
-        <div className="w-80 bg-white border-l border-ice-100 flex flex-col shadow-xl">
-          <div className="p-4 border-b border-ice-100 flex items-center justify-between">
-            <h3 className="font-bold flex items-center gap-2">
-              <Bot className="w-4 h-4 text-sky-400" /> Asistente Analítico
-            </h3>
-            <button onClick={toggleAssistant} className="text-text-tenue hover:text-text-primary" aria-label="Cerrar asistente">
-              ×
-            </button>
-          </div>
-          <div className="flex-1 p-4 flex items-center justify-center text-text-tenue text-sm">
-            Panel vacío (Próximamente)
-          </div>
-        </div>
-      )}
+      <ChatPanel />
       
       <ActionPlanDrawer />
       <ToastContainer />
       <GuidedTour />
+      <ExecutiveReportModal isOpen={isReportOpen} onClose={() => setIsReportOpen(false)} />
     </div>
   );
 }
@@ -285,39 +273,42 @@ function CategoryGroup({
   category: { id: number; title: string; icon: string };
   currentPath: string;
 }) {
-  const [open, setOpen] = useState(true);
   const isDebug = import.meta.env.VITE_SHOW_DEBUG === 'true';
-  const modules = MODULE_REGISTRY.filter((m) => m.categoryId === category.id && (isDebug || !m.route.startsWith('/_')));
-  const isActive = modules.some((m) => m.route === currentPath);
+  const modules = MODULE_REGISTRY.filter((m) => m.categoryId === category.id && (isDebug || (!m.route.startsWith('/_') && m.visibility !== 'demo')));
+  const isActiveGroup = modules.some((m) => m.route === currentPath);
+  
+  // Mantener abierto si el grupo contiene el módulo actual
+  const [open, setOpen] = useState(isActiveGroup || category.id === 1); 
+
   const navigate = useNavigate();
   const Icon = iconMap[category.icon] || LayoutDashboard;
 
   if (modules.length === 0) return null;
 
   return (
-    <div className="mb-1">
+    <div className="mb-2">
       <button
         onClick={() => setOpen(!open)}
         className={cn(
-          'w-full flex items-center justify-between px-4 py-2 text-sm font-medium transition-colors',
-          isActive
-            ? 'text-blue-800'
-            : 'text-text-secondary hover:text-text-primary hover:bg-ice-50',
+          'w-full flex items-center justify-between px-5 py-2.5 text-sm font-semibold transition-all group',
+          isActiveGroup
+            ? 'text-blue-900'
+            : 'text-slate-500 hover:text-slate-800',
         )}
       >
         <div className="flex items-center gap-3">
-          <Icon className="w-4 h-4" />
-          <span className="truncate">{category.title}</span>
+          <Icon className={cn("w-4 h-4 transition-colors", isActiveGroup ? "text-blue-600" : "text-slate-400 group-hover:text-slate-600")} />
+          <span className="truncate tracking-wide">{category.title}</span>
         </div>
         {open ? (
-          <ChevronDown className="w-4 h-4 opacity-50" />
+          <ChevronDown className="w-4 h-4 opacity-40 transition-transform" />
         ) : (
-          <ChevronRight className="w-4 h-4 opacity-50" />
+          <ChevronRight className="w-4 h-4 opacity-40 transition-transform" />
         )}
       </button>
 
       {open && (
-        <div className="mt-1 flex flex-col">
+        <div className="mt-1 mb-2 flex flex-col space-y-0.5">
           {modules.map((mod) => {
             const isModActive = currentPath === mod.route;
             return (
@@ -325,19 +316,22 @@ function CategoryGroup({
                 key={mod.id}
                 onClick={() => navigate(mod.route)}
                 className={cn(
-                  'flex items-center justify-between pl-11 pr-4 py-1.5 text-xs transition-colors',
+                  'flex items-center justify-between pl-12 pr-5 py-2 text-[13px] transition-all relative overflow-hidden',
                   isModActive
-                    ? 'bg-sky-50 text-blue-800 font-semibold border-r-2 border-blue-600'
-                    : 'text-text-secondary hover:text-text-primary hover:bg-ice-50',
+                    ? 'text-blue-700 font-semibold bg-blue-50/50'
+                    : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50/80',
                 )}
               >
+                {isModActive && (
+                  <span className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-r-md"></span>
+                )}
                 <span className="truncate flex-1 text-left">
-                  {mod.id} {mod.title.split(' [')[0]}
+                  {mod.title.split(' [')[0]}
                 </span>
                 {mod.level === 'E' && (
                   <span
-                    className="w-1.5 h-1.5 rounded-full bg-state-ambar shrink-0 ml-2"
-                    title="Estrella"
+                    className={cn("w-1.5 h-1.5 rounded-full shrink-0 ml-2 shadow-sm", isModActive ? "bg-amber-400" : "bg-amber-300")}
+                    title="Módulo Estratégico"
                   ></span>
                 )}
               </button>
