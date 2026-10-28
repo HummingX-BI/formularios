@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Diagnóstico | SAV Medical · HummingX BI</title>
+  <meta name="description" content="Diagnóstico estratégico para SAV Medical: medicina general, cirugía y ultrasonografía en Tláhuac, CDMX.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="./jspdf.umd.min.js?v=2"></script>
+  <style>
+    :root{--ink:#0b2545;--ink-soft:#5a6b80;--paper:#f6f9fc;--panel:#fff;--line:#dbe4ee;--navy:#0b2545;--blue:#0349a9;--teal:#16757f;--cyan:#4ec9d6;--mint:#e6f6f8;--danger:#9b3a3a}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 'DM Sans',sans-serif}button,input,textarea,select{font:inherit}
+    .top{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+    .top-in{max-width:820px;margin:auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:10px;font:500 11px 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--navy)}.brand img{width:28px;max-height:28px;object-fit:contain}
+    .progress{height:3px;background:var(--line)}.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .3s}.step-no{font:500 11px 'IBM Plex Mono',monospace;color:var(--teal);letter-spacing:.14em;text-transform:uppercase}
+    main{max-width:820px;margin:auto;padding:0 24px 70px}.hero{text-align:center;padding:56px 12px 38px}.client-logo{width:min(340px,80%);margin:0 auto 26px;display:block}.eyebrow{font:500 11px 'IBM Plex Mono',monospace;letter-spacing:.17em;text-transform:uppercase;color:var(--teal);margin:0 0 14px}.hero h1{font:400 clamp(34px,6.5vw,56px)/1.06 'DM Serif Display',serif;margin:0 auto 16px;letter-spacing:-.01em}.hero p{max-width:590px;margin:auto;color:var(--ink-soft);font-size:17px}
+    .intro{background:var(--navy);color:#dfe8f2;padding:22px 26px;margin-bottom:24px;border-top:5px solid var(--cyan);border-radius:4px}.intro strong{color:var(--cyan)}.intro p{margin:0}
+    .step{display:none;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:32px 34px 28px;box-shadow:0 12px 34px rgba(11,37,69,.06)}.step.active{display:block;animation:rise .35s ease}@keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+    .step-head{border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:4px}.step h2{font:400 30px/1.12 'DM Serif Display',serif;margin:7px 0}.step-head p{color:var(--ink-soft);margin:0}
+    .q{padding:20px 0;border-bottom:1px solid #eef2f6}.q:last-of-type{border-bottom:0}.label{display:block;font-weight:600;margin-bottom:9px}.hint{font-size:12.5px;color:var(--ink-soft);margin:-5px 0 10px}.req{color:var(--blue)}
+    input[type=text],input[type=email],input[type=tel],input[type=number],textarea{width:100%;border:1px solid var(--line);background:#f8fafc;color:var(--ink);border-radius:4px;padding:11px 13px;outline:none;transition:border .2s,box-shadow .2s}textarea{min-height:88px;resize:vertical}input:focus,textarea:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(3,73,169,.12)}
+    .options{display:flex;flex-wrap:wrap;gap:8px}.options label{border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer;display:flex;gap:7px;align-items:center;background:#f8fafc;color:var(--ink-soft);font-size:14px}.options label:has(input:checked){border-color:var(--blue);background:var(--mint);color:var(--navy);font-weight:600}.options input{accent-color:var(--blue);margin:0}.extra{margin-top:10px}
+    .nav{display:flex;justify-content:space-between;gap:12px;padding-top:24px}.btn{border:1px solid var(--navy);background:var(--navy);color:#fff;padding:12px 18px;cursor:pointer;font-weight:600;border-radius:4px;text-decoration:none;display:inline-block}.btn:hover{background:var(--blue);border-color:var(--blue)}.btn.secondary{background:transparent;color:var(--navy)}.btn.secondary:hover{background:var(--mint)}.btn:disabled{opacity:.45;cursor:not-allowed}
+    .budget-line{display:flex;align-items:center;gap:18px}.budget-line input{flex:1;accent-color:var(--blue)}.budget-line output{min-width:150px;color:var(--navy);font-weight:700;text-align:right}.budget-scale{display:flex;justify-content:space-between;color:var(--ink-soft);font:11px 'IBM Plex Mono',monospace;margin-top:6px}
+    .finish{background:var(--mint);padding:16px 18px;margin:20px 0;border-left:5px solid var(--teal);border-radius:4px}.summary{margin-top:18px}.summary h3{font:500 11px 'IBM Plex Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:22px 0 4px}.summary-row{display:grid;grid-template-columns:38% 62%;gap:15px;padding:10px 0;border-bottom:1px solid #eef2f6}.summary-row b{font-size:12.5px;color:var(--ink-soft);font-weight:500}.summary-row span{white-space:pre-wrap}
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}.completion{text-align:center;padding:20px 8px 8px}.completion-logos{display:flex;justify-content:center;align-items:center;gap:28px;margin:8px auto 22px}.completion-logos img{height:56px;object-fit:contain}.completion p{max-width:510px;margin:0 auto 20px;color:var(--ink-soft)}.completion .actions{justify-content:center}.note{font-size:13px;color:var(--ink-soft);margin-top:12px}.footer{text-align:center;color:var(--ink-soft);font-size:12px;padding-top:28px}.footer a{color:var(--blue)}
+    @media(max-width:620px){main{padding-left:14px;padding-right:14px}.top-in{padding:10px 14px}.hero{padding-top:40px}.step{padding:24px 18px}.nav{flex-direction:column-reverse}.nav .btn{width:100%}.summary-row{grid-template-columns:1fr;gap:3px}.actions .btn{width:100%;text-align:center}.budget-line{flex-direction:column;align-items:stretch}.budget-line output{text-align:left}}
+  </style>
+</head>
+<body>
+  <header class="top"><div class="top-in"><div class="brand"><img src="logo-hummingx.png" alt="HummingX BI">HummingX BI · Diagnóstico</div><span id="counter" class="step-no">1 / 10</span></div><div class="progress"><i id="progressFill"></i></div></header>
+  <main>
+    <section class="hero">
+      <img class="client-logo" src="logo-cliente.png" alt="SAV Medical">
+      <p class="eyebrow">Diagnóstico estratégico · SAV Medical</p>
+      <h1>Medicina que se ve,<br>se entiende y se recomienda.</h1>
+      <p>Queremos entender a fondo cómo trabajas —consulta, cirugía, ultrasonido móvil y alianzas con clínicas— para construir tu estrategia de marca, contenido y publicidad.</p>
+    </section>
+    <div class="intro"><p><strong>Tiempo estimado: 12–15 minutos.</strong> Casi todo es de tocar opciones; escribe solo donde quieras dar detalle. Si algo no lo sabes aún, déjalo en blanco y lo platicamos.</p></div>
+    <form id="form" autocomplete="on"></form>
+    <div class="footer">Diagnóstico confidencial preparado por <a href="https://hummingxbi.com" target="_blank" rel="noopener">HummingX BI</a> · <span id="year"></span></div>
+  </main>
+  <script>
+  const STEPS=[
+   {t:'Identidad',h:'Empecemos por ti',p:'Datos de contacto y cómo quieres que te conozcan.',q:[
+    {k:'nombre',l:'Nombre completo',ty:'t',req:1,p:'Ej. Salvador Axel Villafuerte Hernández'},
+    {k:'nombre_publico',l:'¿Con qué nombre quieres que te conozcan los pacientes y colegas?',h:'Hoy aparece distinto en receta, Instagram y publicaciones. Elegir uno nos ayuda a que la marca sea consistente.',ty:'r',o:['Dr. Axel Villafuerte','Dr. Salvador Villafuerte','Dr. Salvador Axel Villafuerte','Solo SAV Medical (marca)'],x:'Otro o comentarios'},
+    {k:'email',l:'Correo de contacto',ty:'t',type:'email',req:1,p:'tucorreo@dominio.com'},
+    {k:'whatsapp',l:'WhatsApp principal',ty:'t',type:'tel',req:1,p:'55 1025 0966'},
+    {k:'whatsapp_negocio',l:'¿Ese WhatsApp es personal o de negocio?',ty:'r',o:['Personal','WhatsApp Business','Tengo ambos']}]},
+   {t:'Credenciales',h:'Tu respaldo profesional',p:'La confianza en salud se construye con credenciales claras. Dinos qué podemos mostrar.',q:[
+    {k:'formacion',l:'Formación (escuela, año de egreso, posgrados)',ty:'ta',p:'Ej. Médico Cirujano UNAM (año), Ultrasonografía Médica – Universidad La Salle (diplomado / horas / año)...'},
+    {k:'estudiando',l:'¿Estás cursando o planeas alguna especialidad o certificación?',ty:'t',p:'Ej. Especialidad en..., certificación en Doppler...'},
+    {k:'experiencia',l:'Años de experiencia y lugares donde has trabajado',ty:'ta',p:'Hospitales, clínicas, internado, servicio social, guardias...'},
+    {k:'cofepris',l:'¿Tienes algún aviso o trámite de publicidad ante COFEPRIS (o lo tiene la clínica)?',h:'La publicidad de servicios de salud está regulada; necesitamos saberlo para cuidarte en anuncios.',ty:'r',o:['Sí, propio','Lo tiene la clínica','No','No sé qué es']},
+    {k:'mostrar',l:'¿Qué sí podemos mostrar públicamente?',ty:'c',o:['Cédula profesional','Universidad / títulos','Fotos en consultorio','Fotos en quirófano','Imágenes de ultrasonido (anónimas)','Casos y testimonios','Mi rostro en videos']}]},
+   {t:'Modelo de trabajo',h:'Cómo se reparte tu semana',p:'Tu modelo combina varios frentes. Esto es lo más importante para nosotros.',q:[
+    {k:'clinica_nombre',l:'Clínica de la tarde (4 a 10 pm): nombre y ubicación',ty:'t',p:'Nombre de la clínica, colonia, enlace de Google Maps si lo tienes'},
+    {k:'clinica_relacion',l:'¿Cuál es tu relación con esa clínica?',ty:'r',o:['Empleado con sueldo','Por porcentaje / comisión','Rento el espacio','Soy socio / dueño','Mixto'],x:'Detalle (opcional)'},
+    {k:'clinica_publicidad',l:'¿Puedes promocionar la clínica (su nombre, fotos, ubicación) en tu marca?',ty:'r',o:['Sí, sin problema','Sí, con permiso del dueño','Prefiero no mencionarla','No sé']},
+    {k:'consultorio_fijo',l:'Consultorio de San José, Tláhuac (Hoja Seca 33): ¿es el mismo lugar que la clínica de la tarde?',ty:'r',o:['Sí, es el mismo','No, es otro consultorio mío','No, es otro lugar compartido'],x:'Horarios del consultorio si es distinto'},
+    {k:'dias',l:'¿Qué días trabajas en cada frente?',ty:'ta',p:'Ej. L-V clínica 4-10 pm · L, Mi, V ultrasonidos 8-1 pm · sábado...'},
+    {k:'ingreso_mix',l:'Hoy, ¿de dónde viene la mayor parte de tus ingresos?',ty:'r',o:['Consulta general','Cirugías / internamientos','Ultrasonidos a clínicas','Ultrasonidos a pacientes directos','Domicilios','Más o menos parejo']},
+    {k:'mas_rentable',l:'¿Qué servicio te deja más ganancia por hora de tu tiempo?',ty:'t',p:'Ej. ultrasonido en consultorio aliado, cirugía de vesícula...'},
+    {k:'crecer',l:'Si mañana te llegan 10 pacientes extra, ¿a qué servicio quisieras que fueran?',ty:'t',p:'Esto define dónde ponemos la publicidad'}]},
+   {t:'Línea A · Alianzas',h:'Ultrasonido para clínicas y médicos',p:'Tu prioridad. Queremos entender tu oferta B2B como si fuéramos tu vendedor.',q:[
+    {k:'aliados_hoy',l:'¿Con cuántos consultorios / clínicas trabajas hoy?',ty:'r',o:['Ninguno aún','1–2','3–5','6–10','Más de 10']},
+    {k:'aliados_como',l:'¿Cómo conseguiste a esos aliados?',ty:'c',o:['Conocidos / colegas','Visité en persona','Me recomendaron','Redes sociales','Laboratorio me contactó'],x:'Detalle (opcional)'},
+    {k:'aliado_ideal',l:'¿Qué tipo de aliado quieres atraer?',ty:'c',o:['Médicos generales con consultorio','Consultorios de farmacia','Clínicas pequeñas','Laboratorios de análisis','Ginecólogos','Hospitales chicos','Asilos / casas de día','Otros especialistas']},
+    {k:'zona',l:'Zona de cobertura para ir con tu equipo',ty:'c',o:['Tláhuac','Iztapalapa','Xochimilco','Milpa Alta','Chalco','Valle de Chalco','Ixtapaluca','Coyoacán','Otra'],x:'¿Hasta dónde sí te mueves? (tiempo o km máximo)'},
+    {k:'modelo_b2b',l:'¿Cómo le cobras a la clínica?',ty:'c',o:['Por estudio realizado','La clínica cobra y me paga un porcentaje','Yo cobro al paciente y le dejo % a la clínica','Por jornada / bloque de horas','Aún no lo defino'],x:'Montos o porcentajes aproximados (opcional)'},
+    {k:'minimo',l:'¿Pides un mínimo de estudios por visita?',ty:'t',p:'Ej. mínimo 3 estudios para ir, o jornada de 4 horas'},
+    {k:'capacidad',l:'¿Cuántos estudios puedes hacer en una mañana?',ty:'r',o:['Hasta 5','6–10','11–15','Más de 15']},
+    {k:'agenda_b2b',l:'¿Cómo te agendan las clínicas?',ty:'c',o:['WhatsApp directo','Llamada','Me mandan lista del día','Día fijo a la semana','Aún no hay proceso']},
+    {k:'entrega',l:'¿Cómo entregas el reporte?',ty:'c',o:['Impreso el mismo día','PDF por WhatsApp','Imágenes impresas','Correo','USB / CD']},
+    {k:'referencia',l:'Además del ultrasonido, ¿qué buscas con los médicos aliados?',ty:'c',o:['Que me refieran pacientes para cirugía','Que me refieran internamientos','Que yo les refiera pacientes','Solo maquila de ultrasonidos']},
+    {k:'objecion',l:'¿Qué te dicen las clínicas cuando NO aceptan trabajar contigo?',ty:'ta',p:'Precio, ya tienen ultrasonografista, desconfianza, no tienen pacientes suficientes...'}]},
+   {t:'Equipo y estudios',h:'Tu equipo y lo que realizas',p:'Con esto armamos tu catálogo de estudios y el contenido técnico.',q:[
+    {k:'equipo',l:'Equipo de ultrasonido (marca y modelo)',ty:'t',p:'Ej. SonoScape (modelo)...'},
+    {k:'transductores',l:'¿Qué transductores tienes?',ty:'c',o:['Convexo','Lineal','Endocavitario','Sectorial / cardiaco','Microconvexo']},
+    {k:'doppler',l:'¿Haces Doppler?',ty:'r',o:['Sí, color y espectral','Solo color','No']},
+    {k:'estudios',l:'Estudios que SÍ realizas',ty:'c',o:['Abdominal completo','Hígado y vías biliares','Renal y vías urinarias','Prostático','Pélvico / ginecológico','Endovaginal','Obstétrico','Mamario','Tiroides','Testicular','Tejidos blandos','Musculoesquelético','Doppler venoso / arterial','FAST / urgencias','Guía para procedimientos'],x:'Otros'},
+    {k:'no_estudios',l:'Estudios que NO haces o no quieres anunciar',ty:'t',p:'Ej. obstétrico de 2º nivel, ecocardiograma...'},
+    {k:'precios_us',l:'Precio aproximado de tus 3 estudios más pedidos (paciente directo y a clínica)',ty:'ta',p:'Ej. Abdominal: $700 paciente / $450 clínica...'}]},
+   {t:'Línea B · Pacientes',h:'Consultorio, cirugía y domicilio',p:'Qué pacientes quieres atraer y bajo qué condiciones.',q:[
+    {k:'servicios_clinica',l:'Servicios que ofreces a pacientes',ty:'c',o:['Consulta general','Ultrasonido en consultorio','Aplicación de sueros','Internamiento','Curaciones','Retiro de puntos / lunares','Certificados médicos','Control de crónicos (diabetes, presión)','Cirugía con especialistas'],x:'Otros'},
+    {k:'cirugias',l:'¿Qué cirugías se hacen con los especialistas con los que operas?',ty:'c',o:['Vesícula','Hernias','Apéndice','Cesárea','Histerectomía','Circuncisión','Lipomas / quistes','Varices'],x:'Otras y costo aproximado de los paquetes'},
+    {k:'precio_consulta',l:'Precio de consulta general',ty:'t',p:'Ej. $250'},
+    {k:'paciente_ideal',l:'¿Qué paciente quieres atraer más?',ty:'ta',p:'Ej. adultos 35-60 de Tláhuac con dolor abdominal que necesitan ultrasonido y posible cirugía de vesícula...'},
+    {k:'domicilio_zonas',l:'Domicilio programado: ¿en qué zonas sí lo das?',ty:'t',p:'Colonias o alcaldías'},
+    {k:'domicilio_protocolo',l:'¿Qué incluye tu protocolo de domicilio?',h:'Ej. solo con cita previa, horario, acompañante, pago por adelantado, costo base + traslado.',ty:'ta',p:'Describe tus condiciones y costo...'},
+    {k:'seguridad',l:'Por seguridad, ¿qué NO quieres hacer?',ty:'c',o:['Domicilios de noche','Primeras visitas sin referencia','Zonas fuera de mi cobertura','Urgencias a domicilio','Publicar mi dirección exacta'],x:'Otro'}]},
+   {t:'Atención y ventas',h:'Del mensaje a la cita',p:'Aquí suele perderse dinero. Queremos ver dónde.',q:[
+    {k:'canales',l:'¿Por dónde te llegan pacientes hoy?',ty:'c',o:['Recomendación','Pasan por la clínica','WhatsApp','Instagram','Facebook','Google Maps','Doctoralia / directorios','Otros médicos']},
+    {k:'responde',l:'¿Quién responde los mensajes?',ty:'r',o:['Yo','Recepción de la clínica','Asistente','Nadie fijo']},
+    {k:'tiempo_resp',l:'¿En cuánto tiempo sueles contestar?',ty:'r',o:['Minutos','1–3 horas','El mismo día','Al día siguiente']},
+    {k:'preguntas',l:'¿Qué te preguntan más por mensaje?',ty:'ta',p:'Precios, si necesitan ayuno, si atienden hoy, si es a domicilio...'},
+    {k:'agenda',l:'¿Cómo llevas tu agenda y tus cobros?',ty:'c',o:['Libreta','WhatsApp','Google Calendar','Excel','Sistema de la clínica','Nada formal'],x:'Detalle (opcional)'},
+    {k:'pagos',l:'Formas de pago que aceptas',ty:'c',o:['Efectivo','Transferencia','Tarjeta','Meses sin intereses']}]},
+   {t:'Contenido y redes',h:'Videos, redes y anuncios',p:'Para planear grabaciones, edición y pauta.',q:[
+    {k:'redes',l:'¿En qué redes tienes o quieres tener presencia?',ty:'c',o:['Instagram','Facebook','TikTok','YouTube','Google Maps / Perfil de Negocio','LinkedIn','Página web']},
+    {k:'enlaces',l:'Enlaces o usuarios que ya existen',ty:'ta',p:'instagram.com/sav_medical, Facebook, Google Maps...'},
+    {k:'camara',l:'¿Qué tan cómodo te sientes frente a la cámara?',ty:'r',o:['Muy cómodo','Me animo con guion','Prefiero voz en off','Prefiero no salir']},
+    {k:'frecuencia',l:'¿Cuánto tiempo puedes dedicar a grabar?',ty:'r',o:['1 sesión al mes (varios videos)','1 hora por semana','Grabo yo en el día a día','Muy poco']},
+    {k:'grabar_donde',l:'¿Dónde podemos grabar?',ty:'c',o:['Consultorio','Clínica / quirófano (con permiso)','Clínicas aliadas','En traslados / unidad móvil','Exteriores']},
+    {k:'temas',l:'Temas que te gustaría tratar',ty:'c',o:['Qué detecta cada ultrasonido','Mitos y verdades','Preparación para estudios','Día a día del médico','Casos interesantes (anónimos)','Cirugías y recuperación','Prevención','Contenido para médicos / clínicas']},
+    {k:'ads',l:'¿Has pagado anuncios antes?',ty:'r',o:['Nunca','Sí, botón Promocionar','Sí, Meta Ads Manager','Sí, Google Ads'],x:'¿Qué resultado tuviste?'},
+    {k:'referentes',l:'Médicos o marcas que admires en redes',ty:'ta',p:'@usuario y qué te gusta de su contenido'}]},
+   {t:'Marca y objetivos',h:'Imagen, servicios y metas',p:'Para saber qué te proponemos y en qué orden.',q:[
+    {k:'colores',l:'Tus colores de marca hoy son azul y turquesa (receta). ¿Los mantenemos?',ty:'r',o:['Sí, mantenerlos','Mantener con ajustes','Abierto a proponer']},
+    {k:'estilo',l:'¿Qué quieres transmitir?',ty:'c',o:['Confianza','Tecnología','Cercanía','Rapidez','Experiencia','Precio accesible','Premium']},
+    {k:'materiales',l:'Materiales que ya tienes',ty:'c',o:['Logo en buena calidad (PNG/PDF)','Fotos profesionales','Videos','Tarjetas impresas','Testimonios','Imágenes de ultrasonido']},
+    {k:'tarjetas',l:'Las tarjetas de presentación, ¿ya las mandaste imprimir?',ty:'r',o:['Sí, ya están impresas','No, aún no','Quiero rediseñarlas']},
+    {k:'servicios_hx',l:'¿Qué te interesa que hagamos?',ty:'c',o:['Edición de videos','Plan y publicación de contenido','Campañas Meta Ads','Perfil de Google Maps','Página web','Material para clínicas (presentación / brochure)','Rediseño de tarjetas y papelería','Bot / agenda de WhatsApp','Sistema para registrar estudios y cobros']},
+    {k:'meta_3m',l:'En 3 meses, ¿qué tendría que pasar para que digas “valió la pena”?',ty:'ta',p:'Ej. 5 clínicas aliadas nuevas, 20 ultrasonidos más al mes, 2 cirugías al mes...'},
+    {k:'inicio',l:'¿Cuándo te gustaría arrancar?',ty:'r',o:['Lo antes posible','En 2–4 semanas','En 1–2 meses','Solo estoy explorando']}]},
+   {t:'Inversión',h:'Una inversión realista',p:'Sin compromiso: nos sirve para proponer algo proporcional a tu etapa.',q:[
+    {k:'inv_mensual',l:'Inversión mensual para gestión (contenido, edición, campañas)',ty:'range',min:0,max:15000,step:500,v:4000,top:'$15,000 o más'},
+    {k:'inv_ads',l:'Presupuesto mensual para pauta (lo que se paga directo a Meta / Google)',ty:'range',min:0,max:10000,step:250,v:1500,top:'$10,000 o más'},
+    {k:'inv_unica',l:'Si hubiera proyectos únicos (web, papelería, material para clínicas), ¿qué rango ves razonable?',ty:'range',min:0,max:25000,step:500,v:5000,top:'$25,000 o más'},
+    {k:'comentarios',l:'¿Algo más que debamos saber?',ty:'ta',p:'Ideas, miedos, dudas, lo que sea.'}]}
+  ];
+  const form=document.getElementById('form');const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const money=(n,max,top)=>n>=max?top+' MXN':`$${n.toLocaleString('es-MX')} MXN`;
+  function qHtml(q){let f='';const ph=q.p?` placeholder="${esc(q.p)}"`:'';
+    if(q.ty==='t')f=`<input type="${q.type||'text'}" name="${q.k}"${ph}${q.req?' required':''}>`;
+    else if(q.ty==='ta')f=`<textarea name="${q.k}"${ph}></textarea>`;
+    else if(q.ty==='c'||q.ty==='r'){const t=q.ty==='c'?'checkbox':'radio';f=`<div class="options">${q.o.map(o=>`<label><input type="${t}" name="${q.k}" value="${esc(o)}"> ${esc(o)}</label>`).join('')}</div>`+(q.x?`<input class="extra" type="text" name="${q.k}__x" placeholder="${esc(q.x)}">`:'')}
+    else if(q.ty==='range')f=`<div class="budget-line"><input type="range" name="${q.k}" min="${q.min}" max="${q.max}" step="${q.step}" value="${q.v}" data-max="${q.max}" data-top="${q.top}"><output>${money(q.v,q.max,q.top)}</output></div><div class="budget-scale"><span>$0</span><span>${q.top}</span></div>`;
+    return `<div class="q" data-k="${q.k}" data-ty="${q.ty}"><label class="label">${esc(q.l)}${q.req?' <span class="req">*</span>':''}</label>${q.h?`<p class="hint">${esc(q.h)}</p>`:''}${f}</div>`}
+  const N=STEPS.length+1;
+  form.innerHTML=STEPS.map((s,i)=>`<section class="step${i?'':' active'}"><div class="step-head"><span class="step-no">${String(i+1).padStart(2,'0')} · ${s.t}</span><h2>${s.h}</h2><p>${s.p}</p></div>${s.q.map(qHtml).join('')}<div class="nav">${i?'<button class="btn secondary" type="button" data-prev>← Atrás</button>':'<span></span>'}<button class="btn" type="button" data-next>${i===STEPS.length-1?'Revisar respuestas →':'Continuar →'}</button></div></section>`).join('')+
+   `<section class="step"><div id="reviewContent"><div class="step-head"><span class="step-no">${N} · Confirmación</span><h2>Revisa antes de descargar</h2><p>Generaremos un PDF con tus respuestas. Si quieres cambiar algo, regresa a la sección.</p></div><div id="summary" class="summary"></div><div class="finish"><strong>Privacidad:</strong> no incluyas nombres ni datos clínicos de pacientes. Esta información se usa solo para diseñar tu estrategia.</div><div class="actions"><button class="btn" type="button" id="downloadBtn">Descargar PDF</button><button class="btn secondary" type="button" data-prev>← Editar respuestas</button></div><p id="status" class="note">Descarga el documento y envíalo por WhatsApp como archivo.</p></div>
+   <div id="completion" class="completion" hidden><div class="completion-logos"><img src="logo-hummingx.png" alt="HummingX BI"><img src="logo-cliente.png" alt="SAV Medical"></div><h2>¡Gracias, doctor!</h2><p>Tu diagnóstico está listo. Envíanos el PDF por WhatsApp y te compartimos la propuesta.</p><div class="actions"><button class="btn" type="button" id="downloadAgainBtn">Volver a descargar PDF</button><a class="btn secondary" id="whatsappBtn" href="#" target="_blank" rel="noopener">Abrir WhatsApp</a><button class="btn secondary" type="button" id="editBtn">Editar respuestas</button></div><p class="note">Adjunta el PDF descargado en el chat de WhatsApp.</p></div></section>`;
+  form.querySelectorAll('input[type=range]').forEach(r=>{const o=r.nextElementSibling,u=()=>o.textContent=money(+r.value,+r.dataset.max,r.dataset.top);r.addEventListener('input',u)});
+  const steps=[...form.querySelectorAll('.step')];let cur=0;
+  function setStep(n){cur=Math.max(0,Math.min(N-1,n));steps.forEach((s,i)=>s.classList.toggle('active',i===cur));document.getElementById('counter').textContent=`${cur+1} / ${N}`;document.getElementById('progressFill').style.width=`${(cur+1)/N*100}%`;window.scrollTo({top:0,behavior:'smooth'});if(cur===N-1)renderSummary()}
+  function validate(){for(const el of steps[cur].querySelectorAll('[required]')){if(!el.checkValidity()){el.reportValidity();return false}}return true}
+  form.addEventListener('click',e=>{if(e.target.closest('[data-next]')&&validate())setStep(cur+1);if(e.target.closest('[data-prev]'))setStep(cur-1)});
+  function answer(q){const k=q.k;if(q.ty==='range'){const el=form.querySelector(`[name="${k}"]`);return money(+el.value,q.max,q.top)}
+    if(q.ty==='c'||q.ty==='r'){const v=[...form.querySelectorAll(`[name="${k}"]:checked`)].map(x=>x.value).join(', ');const x=form.querySelector(`[name="${k}__x"]`)?.value.trim();return [v,x].filter(Boolean).join(' — ')}
+    return form.querySelector(`[name="${k}"]`).value.trim()}
+  function allData(){return STEPS.map(s=>({t:s.t,rows:s.q.map(q=>[q.l,answer(q)]).filter(r=>r[1])})).filter(s=>s.rows.length)}
+  function renderSummary(){document.getElementById('summary').innerHTML=allData().map(s=>`<h3>${s.t}</h3>`+s.rows.map(([k,v])=>`<div class="summary-row"><b>${esc(k)}</b><span>${esc(v)}</span></div>`).join('')).join('')}
+  const loadImage=u=>new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=u});
+  async function makePdf(){const PDF=window.jspdf?.jsPDF;if(!PDF)return null;const doc=new PDF({unit:'mm',format:'a4'}),M=16,W=210-M*2;
+    const [h,c]=await Promise.all([loadImage('logo-hummingx.png'),loadImage('logo-cliente.png')]);
+    const footer=()=>{doc.setFontSize(8);doc.setTextColor(110,125,145);doc.text('SAV Medical · Diagnóstico confidencial preparado por HummingX BI · No incluye datos de pacientes.',M,289)};
+    let y=14;if(c){const cw=52,ch=cw*c.height/c.width;doc.addImage(c,'PNG',M,y,cw,ch)}if(h)doc.addImage(h,'PNG',210-M-13,y,13,13);y+=26;
+    doc.setTextColor(11,37,69);doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text('Diagnóstico estratégico',M,y);y+=7;doc.setFont('helvetica','normal');doc.setFontSize(10.5);doc.setTextColor(90,107,128);doc.text(`SAV Medical · HummingX BI · ${new Date().toLocaleDateString('es-MX')}`,M,y);y+=6;
+    doc.setDrawColor(3,73,169);doc.setLineWidth(1.1);doc.line(M,y,210-M,y);doc.setDrawColor(78,201,214);doc.line(M+W*0.7,y,210-M,y);y+=9;
+    for(const s of allData()){if(y>262){footer();doc.addPage();y=18}doc.setFillColor(230,246,248);doc.rect(M,y-5,W,8,'F');doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(22,117,127);doc.text(s.t.toUpperCase(),M+3,y);y+=9;
+      for(const [k,v] of s.rows){doc.setFontSize(9.5);const L=doc.splitTextToSize(k,W),R=doc.splitTextToSize(v,W),need=(L.length+R.length)*4.6+6;if(y+need>280){footer();doc.addPage();y=18}
+        doc.setFont('helvetica','bold');doc.setTextColor(11,37,69);doc.text(L,M,y);y+=L.length*4.6;doc.setFont('helvetica','normal');doc.setTextColor(40,52,68);doc.text(R,M,y);y+=R.length*4.6+5}y+=2}
+    footer();return doc}
+  function fileName(){return `diagnostico_sav_medical_${(answer({k:'nombre',ty:'t'})||'doctor').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'_')}.pdf`}
+  function showCompletion(){document.getElementById('reviewContent').hidden=true;document.getElementById('completion').hidden=false;document.getElementById('whatsappBtn').href=`https://wa.me/525575084267?text=${encodeURIComponent('Hola Emmanuel, te comparto mi diagnóstico de SAV Medical. Adjunto el PDF con mis respuestas.')}`}
+  async function download(){const st=document.getElementById('status'),b=document.getElementById('downloadBtn');b.disabled=true;st.textContent='Preparando tu PDF...';
+    try{const doc=await makePdf();if(!doc)throw new Error('jsPDF no cargó');const a=document.createElement('a');a.href=URL.createObjectURL(doc.output('blob'));a.download=fileName();document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),500);showCompletion()}
+    catch(e){console.error(e);st.textContent='No se pudo generar el PDF. Recarga la página e inténtalo de nuevo.'}finally{b.disabled=false}}
+  document.getElementById('downloadBtn').addEventListener('click',download);document.getElementById('downloadAgainBtn').addEventListener('click',download);
+  document.getElementById('editBtn').addEventListener('click',()=>{document.getElementById('completion').hidden=true;document.getElementById('reviewContent').hidden=false;setStep(0)});
+  document.getElementById('year').textContent=new Date().getFullYear();
+  </script>
+</body>
+</html>
