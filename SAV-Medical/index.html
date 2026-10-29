@@ -43,17 +43,14 @@
   </main>
   <script>
   const STEPS=[
-   {t:'Identidad',h:'Empecemos por ti',p:'Datos de contacto y cómo quieres que te conozcan.',q:[
-    {k:'nombre',l:'Nombre completo',ty:'t',req:1,p:'Ej. Salvador Axel Villafuerte Hernández'},
-    {k:'nombre_publico',l:'¿Con qué nombre quieres que te conozcan los pacientes y colegas?',h:'Hoy aparece distinto en receta, Instagram y publicaciones. Elegir uno nos ayuda a que la marca sea consistente.',ty:'r',o:['Dr. Axel Villafuerte','Dr. Salvador Villafuerte','Dr. Salvador Axel Villafuerte','Solo SAV Medical (marca)'],x:'Otro o comentarios'},
+   {t:'Identidad',h:'Empecemos por ti',p:'Tus datos de contacto.',q:[
+    {k:'nombre',l:'Nombre completo',ty:'t',req:1,p:'Tu nombre y apellidos'},
     {k:'email',l:'Correo de contacto',ty:'t',type:'email',req:1,p:'tucorreo@dominio.com'},
-    {k:'whatsapp',l:'WhatsApp principal',ty:'t',type:'tel',req:1,p:'55 1025 0966'},
-    {k:'whatsapp_negocio',l:'¿Ese WhatsApp es personal o de negocio?',ty:'r',o:['Personal','WhatsApp Business','Tengo ambos']}]},
+    {k:'whatsapp',l:'WhatsApp de contacto',ty:'t',type:'tel',req:1,p:'10 dígitos'}]},
    {t:'Credenciales',h:'Tu respaldo profesional',p:'La confianza en salud se construye con credenciales claras. Dinos qué podemos mostrar.',q:[
     {k:'formacion',l:'Formación (escuela, año de egreso, posgrados)',ty:'ta',p:'Ej. Médico Cirujano UNAM (año), Ultrasonografía Médica – Universidad La Salle (diplomado / horas / año)...'},
     {k:'estudiando',l:'¿Estás cursando o planeas alguna especialidad o certificación?',ty:'t',p:'Ej. Especialidad en..., certificación en Doppler...'},
     {k:'experiencia',l:'Años de experiencia y lugares donde has trabajado',ty:'ta',p:'Hospitales, clínicas, internado, servicio social, guardias...'},
-    {k:'cofepris',l:'¿Tienes algún aviso o trámite de publicidad ante COFEPRIS (o lo tiene la clínica)?',h:'La publicidad de servicios de salud está regulada; necesitamos saberlo para cuidarte en anuncios.',ty:'r',o:['Sí, propio','Lo tiene la clínica','No','No sé qué es']},
     {k:'mostrar',l:'¿Qué sí podemos mostrar públicamente?',ty:'c',o:['Cédula profesional','Universidad / títulos','Fotos en consultorio','Fotos en quirófano','Imágenes de ultrasonido (anónimas)','Casos y testimonios','Mi rostro en videos']}]},
    {t:'Modelo de trabajo',h:'Cómo se reparte tu semana',p:'Tu modelo combina varios frentes. Esto es lo más importante para nosotros.',q:[
     {k:'clinica_nombre',l:'Clínica de la tarde (4 a 10 pm): nombre y ubicación',ty:'t',p:'Nombre de la clínica, colonia, enlace de Google Maps si lo tienes'},
@@ -69,7 +66,7 @@
     {k:'aliados_como',l:'¿Cómo conseguiste a esos aliados?',ty:'c',o:['Conocidos / colegas','Visité en persona','Me recomendaron','Redes sociales','Laboratorio me contactó'],x:'Detalle (opcional)'},
     {k:'aliado_ideal',l:'¿Qué tipo de aliado quieres atraer?',ty:'c',o:['Médicos generales con consultorio','Consultorios de farmacia','Clínicas pequeñas','Laboratorios de análisis','Ginecólogos','Hospitales chicos','Asilos / casas de día','Otros especialistas']},
     {k:'zona',l:'Zona de cobertura para ir con tu equipo',ty:'c',o:['Tláhuac','Iztapalapa','Xochimilco','Milpa Alta','Chalco','Valle de Chalco','Ixtapaluca','Coyoacán','Otra'],x:'¿Hasta dónde sí te mueves? (tiempo o km máximo)'},
-    {k:'modelo_b2b',l:'¿Cómo le cobras a la clínica?',ty:'c',o:['Por estudio realizado','La clínica cobra y me paga un porcentaje','Yo cobro al paciente y le dejo % a la clínica','Por jornada / bloque de horas','Aún no lo defino'],x:'Montos o porcentajes aproximados (opcional)'},
+    {k:'modelo_b2b',l:'¿Cómo le cobras a la clínica?',ty:'c',o:['Por estudio realizado','La clínica cobra y me paga un porcentaje','Yo cobro al paciente y le dejo % a la clínica','Por jornada / bloque de horas','Aún no lo defino'],x:'Detalle (opcional)'},
     {k:'minimo',l:'¿Pides un mínimo de estudios por visita?',ty:'t',p:'Ej. mínimo 3 estudios para ir, o jornada de 4 horas'},
     {k:'capacidad',l:'¿Cuántos estudios puedes hacer en una mañana?',ty:'r',o:['Hasta 5','6–10','11–15','Más de 15']},
     {k:'agenda_b2b',l:'¿Cómo te agendan las clínicas?',ty:'c',o:['WhatsApp directo','Llamada','Me mandan lista del día','Día fijo a la semana','Aún no hay proceso']},
@@ -82,11 +79,11 @@
     {k:'doppler',l:'¿Haces Doppler?',ty:'r',o:['Sí, color y espectral','Solo color','No']},
     {k:'estudios',l:'Estudios que SÍ realizas',ty:'c',o:['Abdominal completo','Hígado y vías biliares','Renal y vías urinarias','Prostático','Pélvico / ginecológico','Endovaginal','Obstétrico','Mamario','Tiroides','Testicular','Tejidos blandos','Musculoesquelético','Doppler venoso / arterial','FAST / urgencias','Guía para procedimientos'],x:'Otros'},
     {k:'no_estudios',l:'Estudios que NO haces o no quieres anunciar',ty:'t',p:'Ej. obstétrico de 2º nivel, ecocardiograma...'},
-    {k:'precios_us',l:'Precio aproximado de tus 3 estudios más pedidos (paciente directo y a clínica)',ty:'ta',p:'Ej. Abdominal: $700 paciente / $450 clínica...'}]},
+    {k:'precios_us',l:'Precio aproximado de tus estudios más pedidos (opcional)',h:'Solo si quieres compartirlo; nos ayuda a dimensionar la propuesta.',ty:'ta',p:'Ej. Abdominal: $700 paciente / $450 clínica...'}]},
    {t:'Línea B · Pacientes',h:'Consultorio, cirugía y domicilio',p:'Qué pacientes quieres atraer y bajo qué condiciones.',q:[
     {k:'servicios_clinica',l:'Servicios que ofreces a pacientes',ty:'c',o:['Consulta general','Ultrasonido en consultorio','Aplicación de sueros','Internamiento','Curaciones','Retiro de puntos / lunares','Certificados médicos','Control de crónicos (diabetes, presión)','Cirugía con especialistas'],x:'Otros'},
-    {k:'cirugias',l:'¿Qué cirugías se hacen con los especialistas con los que operas?',ty:'c',o:['Vesícula','Hernias','Apéndice','Cesárea','Histerectomía','Circuncisión','Lipomas / quistes','Varices'],x:'Otras y costo aproximado de los paquetes'},
-    {k:'precio_consulta',l:'Precio de consulta general',ty:'t',p:'Ej. $250'},
+    {k:'cirugias',l:'¿Qué cirugías se hacen con los especialistas con los que operas?',ty:'c',o:['Vesícula','Hernias','Apéndice','Cesárea','Histerectomía','Circuncisión','Lipomas / quistes','Varices'],x:'Otras (opcional: costo aproximado)'},
+    {k:'precio_consulta',l:'Precio de consulta general (opcional)',ty:'t',p:'Ej. $250'},
     {k:'paciente_ideal',l:'¿Qué paciente quieres atraer más?',ty:'ta',p:'Ej. adultos 35-60 de Tláhuac con dolor abdominal que necesitan ultrasonido y posible cirugía de vesícula...'},
     {k:'domicilio_zonas',l:'Domicilio programado: ¿en qué zonas sí lo das?',ty:'t',p:'Colonias o alcaldías'},
     {k:'domicilio_protocolo',l:'¿Qué incluye tu protocolo de domicilio?',h:'Ej. solo con cita previa, horario, acompañante, pago por adelantado, costo base + traslado.',ty:'ta',p:'Describe tus condiciones y costo...'},
@@ -98,27 +95,26 @@
     {k:'preguntas',l:'¿Qué te preguntan más por mensaje?',ty:'ta',p:'Precios, si necesitan ayuno, si atienden hoy, si es a domicilio...'},
     {k:'agenda',l:'¿Cómo llevas tu agenda y tus cobros?',ty:'c',o:['Libreta','WhatsApp','Google Calendar','Excel','Sistema de la clínica','Nada formal'],x:'Detalle (opcional)'},
     {k:'pagos',l:'Formas de pago que aceptas',ty:'c',o:['Efectivo','Transferencia','Tarjeta','Meses sin intereses']}]},
-   {t:'Contenido y redes',h:'Videos, redes y anuncios',p:'Para planear grabaciones, edición y pauta.',q:[
+   {t:'Contenido y redes',h:'Videos, redes y anuncios',p:'Tú grabas clips sencillos con tu celular y nosotros los editamos y diseñamos tus publicaciones.',q:[
     {k:'redes',l:'¿En qué redes tienes o quieres tener presencia?',ty:'c',o:['Instagram','Facebook','TikTok','YouTube','Google Maps / Perfil de Negocio','LinkedIn','Página web']},
     {k:'enlaces',l:'Enlaces o usuarios que ya existen',ty:'ta',p:'instagram.com/sav_medical, Facebook, Google Maps...'},
-    {k:'camara',l:'¿Qué tan cómodo te sientes frente a la cámara?',ty:'r',o:['Muy cómodo','Me animo con guion','Prefiero voz en off','Prefiero no salir']},
-    {k:'frecuencia',l:'¿Cuánto tiempo puedes dedicar a grabar?',ty:'r',o:['1 sesión al mes (varios videos)','1 hora por semana','Grabo yo en el día a día','Muy poco']},
-    {k:'grabar_donde',l:'¿Dónde podemos grabar?',ty:'c',o:['Consultorio','Clínica / quirófano (con permiso)','Clínicas aliadas','En traslados / unidad móvil','Exteriores']},
+    {k:'camara',l:'¿Qué tan cómodo te sientes grabándote?',ty:'r',o:['Muy cómodo','Me animo con guion','Prefiero voz en off','Prefiero no salir']},
+    {k:'frecuencia',l:'¿Qué tan seguido podrías mandarnos clips o fotos de tu día a día?',ty:'r',o:['Varias veces por semana','1 vez por semana','1–2 veces al mes','Muy poco: prefiero solo publicaciones de diseño']},
+    {k:'grabar_donde',l:'¿Dónde podrías grabar tus clips?',ty:'c',o:['Consultorio','Clínica / quirófano (con permiso)','Clínicas aliadas','En traslados / unidad móvil','Exteriores']},
     {k:'temas',l:'Temas que te gustaría tratar',ty:'c',o:['Qué detecta cada ultrasonido','Mitos y verdades','Preparación para estudios','Día a día del médico','Casos interesantes (anónimos)','Cirugías y recuperación','Prevención','Contenido para médicos / clínicas']},
     {k:'ads',l:'¿Has pagado anuncios antes?',ty:'r',o:['Nunca','Sí, botón Promocionar','Sí, Meta Ads Manager','Sí, Google Ads'],x:'¿Qué resultado tuviste?'},
     {k:'referentes',l:'Médicos o marcas que admires en redes',ty:'ta',p:'@usuario y qué te gusta de su contenido'}]},
    {t:'Marca y objetivos',h:'Imagen, servicios y metas',p:'Para saber qué te proponemos y en qué orden.',q:[
     {k:'colores',l:'Tus colores de marca hoy son azul y turquesa (receta). ¿Los mantenemos?',ty:'r',o:['Sí, mantenerlos','Mantener con ajustes','Abierto a proponer']},
     {k:'estilo',l:'¿Qué quieres transmitir?',ty:'c',o:['Confianza','Tecnología','Cercanía','Rapidez','Experiencia','Precio accesible','Premium']},
-    {k:'materiales',l:'Materiales que ya tienes',ty:'c',o:['Logo en buena calidad (PNG/PDF)','Fotos profesionales','Videos','Tarjetas impresas','Testimonios','Imágenes de ultrasonido']},
+    {k:'materiales',l:'Materiales que ya tienes',ty:'c',o:['Fotos profesionales','Videos','Tarjetas impresas','Testimonios','Imágenes de ultrasonido']},
     {k:'tarjetas',l:'Las tarjetas de presentación, ¿ya las mandaste imprimir?',ty:'r',o:['Sí, ya están impresas','No, aún no','Quiero rediseñarlas']},
-    {k:'servicios_hx',l:'¿Qué te interesa que hagamos?',ty:'c',o:['Edición de videos','Plan y publicación de contenido','Campañas Meta Ads','Perfil de Google Maps','Página web','Material para clínicas (presentación / brochure)','Rediseño de tarjetas y papelería','Bot / agenda de WhatsApp','Sistema para registrar estudios y cobros']},
+    {k:'servicios_hx',l:'¿Qué te gustaría que resolviera tu proyecto?',h:'Marca todo lo que te llame la atención; con esto armamos una propuesta integral.',ty:'c',o:['Página web profesional','Agenda en línea para pacientes','Agenda para clínicas aliadas (pedir ultrasonidos)','Portal de administrador (citas, estudios, cobros, reportes)','Entrega de reportes de ultrasonido en línea','Bot / respuestas automáticas en WhatsApp','Publicaciones para redes','Edición de videos que tú grabes','Campañas en Meta Ads','Perfil de Google Maps','Material para presentarte con clínicas','Rediseño de tarjetas y papelería','No sé, quiero su recomendación']},
     {k:'meta_3m',l:'En 3 meses, ¿qué tendría que pasar para que digas “valió la pena”?',ty:'ta',p:'Ej. 5 clínicas aliadas nuevas, 20 ultrasonidos más al mes, 2 cirugías al mes...'},
     {k:'inicio',l:'¿Cuándo te gustaría arrancar?',ty:'r',o:['Lo antes posible','En 2–4 semanas','En 1–2 meses','Solo estoy explorando']}]},
-   {t:'Inversión',h:'Una inversión realista',p:'Sin compromiso: nos sirve para proponer algo proporcional a tu etapa.',q:[
-    {k:'inv_mensual',l:'Inversión mensual para gestión (contenido, edición, campañas)',ty:'range',min:0,max:15000,step:500,v:4000,top:'$15,000 o más'},
-    {k:'inv_ads',l:'Presupuesto mensual para pauta (lo que se paga directo a Meta / Google)',ty:'range',min:0,max:10000,step:250,v:1500,top:'$10,000 o más'},
-    {k:'inv_unica',l:'Si hubiera proyectos únicos (web, papelería, material para clínicas), ¿qué rango ves razonable?',ty:'range',min:0,max:25000,step:500,v:5000,top:'$25,000 o más'},
+   {t:'Inversión',h:'Una inversión realista',p:'Sin compromiso: con tus respuestas armamos una propuesta y te la presentamos con precio claro.',q:[
+    {k:'inv_proyecto',l:'Inversión para tu proyecto integral (pago único)',h:'Es el desarrollo completo de lo que marcaste antes: por ejemplo página web + portal de administrador + agenda para pacientes y clínicas + automatizaciones. No incluye lo que se paga directo a Meta por anuncios.',ty:'range',min:0,max:30000,step:500,v:8000,top:'$30,000 o más'},
+    {k:'inv_mensual',l:'Si te interesa que te llevemos redes, ¿cuánto invertirías al mes? (opcional)',h:'Diseño de publicaciones y edición de los videos que nos mandes. Déjalo en $0 si por ahora no te interesa.',ty:'range',min:0,max:10000,step:500,v:0,top:'$10,000 o más'},
     {k:'comentarios',l:'¿Algo más que debamos saber?',ty:'ta',p:'Ideas, miedos, dudas, lo que sea.'}]}
   ];
   const form=document.getElementById('form');const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -150,7 +146,7 @@
     let y=14;if(c){const cw=52,ch=cw*c.height/c.width;doc.addImage(c,'PNG',M,y,cw,ch)}if(h)doc.addImage(h,'PNG',210-M-13,y,13,13);y+=26;
     doc.setTextColor(11,37,69);doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text('Diagnóstico estratégico',M,y);y+=7;doc.setFont('helvetica','normal');doc.setFontSize(10.5);doc.setTextColor(90,107,128);doc.text(`SAV Medical · HummingX BI · ${new Date().toLocaleDateString('es-MX')}`,M,y);y+=6;
     doc.setDrawColor(3,73,169);doc.setLineWidth(1.1);doc.line(M,y,210-M,y);doc.setDrawColor(78,201,214);doc.line(M+W*0.7,y,210-M,y);y+=9;
-    for(const s of allData()){if(y>262){footer();doc.addPage();y=18}doc.setFillColor(230,246,248);doc.rect(M,y-5,W,8,'F');doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(22,117,127);doc.text(s.t.toUpperCase(),M+3,y);y+=9;
+    for(const s of allData()){if(y>248){footer();doc.addPage();y=18}doc.setFillColor(230,246,248);doc.rect(M,y-5,W,8,'F');doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(22,117,127);doc.text(s.t.toUpperCase(),M+3,y);y+=9;
       for(const [k,v] of s.rows){doc.setFontSize(9.5);const L=doc.splitTextToSize(k,W),R=doc.splitTextToSize(v,W),need=(L.length+R.length)*4.6+6;if(y+need>280){footer();doc.addPage();y=18}
         doc.setFont('helvetica','bold');doc.setTextColor(11,37,69);doc.text(L,M,y);y+=L.length*4.6;doc.setFont('helvetica','normal');doc.setTextColor(40,52,68);doc.text(R,M,y);y+=R.length*4.6+5}y+=2}
     footer();return doc}
@@ -161,7 +157,7 @@
     catch(e){console.error(e);st.textContent='No se pudo generar el PDF. Recarga la página e inténtalo de nuevo.'}finally{b.disabled=false}}
   document.getElementById('downloadBtn').addEventListener('click',download);document.getElementById('downloadAgainBtn').addEventListener('click',download);
   document.getElementById('editBtn').addEventListener('click',()=>{document.getElementById('completion').hidden=true;document.getElementById('reviewContent').hidden=false;setStep(0)});
-  document.getElementById('year').textContent=new Date().getFullYear();
+  document.getElementById('year').textContent=new Date().getFullYear();setStep(0);window.scrollTo(0,0);
   </script>
 </body>
 </html>
