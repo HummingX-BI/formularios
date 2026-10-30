@@ -49,12 +49,13 @@ de la presentación (`docs/10-guion-demo.md`) y van primero. Si el tiempo no alc
 - [x] P17 Sectores, etiquetas y planes
 
 ## Hito 6 · Pulido y ensayo
-- [ ] Recorrer el guion completo 2 veces sin recargar y sin errores en consola
-- [ ] Revisar todas las pantallas a 390 px y 1280 px (capturas con Playwright en `app/screenshots/`)
-- [ ] Manifest PWA e ícono (para que se vea "instalable")
-- [ ] Estados vacíos, de carga simulada (300–600 ms) y de éxito en cada acción
-- [ ] `npm run typecheck && npm run lint && npm run build` sin errores
-- [ ] Actualizar `CHANGELOG.md` a v1.0.0
+- [x] Recorrer el guion completo 2 veces sin recargar y sin errores en consola
+- [x] Revisar todas las pantallas a 390 px y 1280 px (capturas con Playwright en `app/screenshots/`)
+- [x] Manifest PWA e ícono (para que se vea "instalable")
+- [x] Estados vacíos, de carga simulada (300–600 ms) y de éxito en cada acción
+- [x] `npm run typecheck && npm run lint && npm run build` sin errores
+- [x] Actualizar `CHANGELOG.md` a v1.0.0
 
 ## Siguiente paso
-Hito 0: crear el proyecto en `app/`.
+Demo v1.0.0 terminada. Antes de la llamada: ver "Antes de la llamada" en `README.md`.
+Después de la llamada: resolver las preguntas abiertas de `docs/11-preguntas-abiertas.md` con el cliente.
