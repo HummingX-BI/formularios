@@ -18,7 +18,7 @@ interface EstadoRetorno {
 
 function leerRetorno(estado: unknown): EstadoRetorno {
   if (typeof estado === 'object' && estado !== null && 'renovarVacanteId' in estado) {
-    const id = (estado).renovarVacanteId;
+    const id = estado.renovarVacanteId;
     if (typeof id === 'string') return { renovarVacanteId: id };
   }
   return {};
