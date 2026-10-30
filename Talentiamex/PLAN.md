@@ -39,7 +39,7 @@ de la presentación (`docs/10-guion-demo.md`) y van primero. Si el tiempo no alc
 - [x] P13 Buscar perfiles y contactar
 
 ## Hito 4 · Avisos por WhatsApp
-- [ ] P18 Simulador de WhatsApp (celular con conversación) **[guion]**
+- [x] P18 Simulador de WhatsApp (celular con conversación) **[guion]**
 - [ ] Disparadores: postulación nueva → aviso a empresa; vacante publicada que coincide → aviso a candidato;
       "avanzar días" en panel de demo → recordatorios 5, 3 y 0 días y suscripción por vencer
 

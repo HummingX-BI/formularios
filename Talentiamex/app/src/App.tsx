@@ -3,6 +3,7 @@ import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AdminLayout, CandidatoLayout, EmpresaLayout, PublicLayout } from '@/layouts';
 import { RequireRole } from '@/RequireRole';
 import { DemoPanel } from '@/demo/DemoPanel';
+import { WhatsAppSimulator } from '@/demo/WhatsAppSimulator';
 import { useDemoUi } from '@/demo/useDemoUi';
 import { PhoneFrame, ToastProvider } from '@/ui';
 
@@ -108,6 +109,7 @@ export default function App() {
     <ToastProvider>
       {vistaCelular && !enMarco ? <VistaCelular /> : <Rutas />}
       {!enMarco && <DemoPanel />}
+      {!enMarco && <WhatsAppSimulator />}
     </ToastProvider>
   );
 }

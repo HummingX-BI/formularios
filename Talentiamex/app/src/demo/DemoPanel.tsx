@@ -5,6 +5,7 @@ import {
   RotateCcw,
   Shield,
   Smartphone,
+  MessageCircle,
   Sparkles,
   UserRound,
   X,
@@ -30,7 +31,8 @@ export function DemoPanel() {
   const [confirmando, setConfirmando] = useState(false);
   const hoy = useDemoStore((s) => s.hoy);
   const avanzarDias = useDemoStore((s) => s.avanzarDias);
-  const { vistaCelular, panelVisible, alternarVistaCelular, alternarPanelVisible } = useDemoUi();
+  const { vistaCelular, panelVisible, alternarVistaCelular, alternarPanelVisible, abrirWhatsApp } =
+    useDemoUi();
   const toast = useToast();
 
   useEffect(() => {
@@ -126,6 +128,16 @@ export function DemoPanel() {
               >
                 <Smartphone size={18} aria-hidden="true" />
                 {vistaCelular ? 'Salir de vista celular' : 'Vista celular'}
+              </button>
+              <button
+                type="button"
+                className={BOTON_PANEL}
+                onClick={() => {
+                  setAbierto(false);
+                  abrirWhatsApp();
+                }}
+              >
+                <MessageCircle size={18} aria-hidden="true" /> Abrir WhatsApp
               </button>
               <button type="button" className={BOTON_PANEL} disabled>
                 <Sparkles size={18} aria-hidden="true" /> Autollenar (próximamente)

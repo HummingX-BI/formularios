@@ -10,13 +10,22 @@ interface PanelLateralProps {
   children: ReactNode;
   /** Botones fijos al pie del panel. */
   pie?: ReactNode;
+  /** Ancho máximo en escritorio (clase de Tailwind). */
+  ancho?: string;
 }
 
 const ENFOCABLES =
   'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
 
 /** Panel que entra por la derecha en escritorio y ocupa toda la pantalla en móvil. */
-export function PanelLateral({ abierto, onCerrar, titulo, children, pie }: PanelLateralProps) {
+export function PanelLateral({
+  abierto,
+  onCerrar,
+  titulo,
+  children,
+  pie,
+  ancho = 'md:max-w-3xl',
+}: PanelLateralProps) {
   const panel = useRef<HTMLDivElement>(null);
   const sinMovimiento = useReducedMotion();
 
@@ -79,7 +88,7 @@ export function PanelLateral({ abierto, onCerrar, titulo, children, pie }: Panel
             animate={{ x: 0, opacity: 1 }}
             exit={sinMovimiento ? { opacity: 0 } : { x: 48, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="relative flex h-full w-full flex-col bg-fondo shadow-2 outline-none md:max-w-3xl"
+            className={`relative flex h-full w-full flex-col bg-fondo shadow-2 outline-none ${ancho}`}
           >
             <div className="flex items-center justify-between gap-4 border-b border-borde bg-superficie p-4">
               <h2 className="min-w-0 truncate font-titulo text-lg font-semibold text-texto">
