@@ -51,6 +51,7 @@ describe('flujo del guion', () => {
     expect(
       acciones().publicarVacante({
         puesto: 'Enfermera general — turno nocturno',
+        sector: 'salud',
         zona: 'Iztapalapa',
         sueldo: 14500,
         turno: 'nocturno',
@@ -65,6 +66,7 @@ describe('flujo del guion', () => {
     expect(acciones().iniciarPrueba('basico')).toBe(true);
     const vacanteId = acciones().publicarVacante({
       puesto: 'Enfermera general — turno nocturno',
+      sector: 'salud',
       zona: 'Iztapalapa',
       sueldo: 14500,
       turno: 'nocturno',

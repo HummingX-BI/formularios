@@ -78,6 +78,7 @@ export interface DatosEmpresaNueva {
 
 export interface DatosVacante {
   puesto: string;
+  sector: Empresa['sector'];
   zona: string;
   sueldo: number;
   turno: Vacante['turno'];
@@ -313,7 +314,6 @@ export const useDemoStore = create<DemoStore>()(
         const vacante: Vacante = {
           id,
           empresaId: empresa.id,
-          sector: empresa.sector,
           ...datos,
           preguntas: datos.preguntas.map((p, i) => ({ id: `${id}-q${i + 1}`, ...p })),
           publicadaEl: s.hoy,
