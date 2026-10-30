@@ -5,7 +5,9 @@ import {
   CheckCircle2,
   ChevronDown,
   ChevronUp,
+  FileText,
   Inbox,
+  MessageCircle,
   Star,
   UserX,
   Undo2,
@@ -16,6 +18,8 @@ import { aniosExperiencia } from '@/store/reglas';
 import { useDemoStore } from '@/store/useDemoStore';
 import type { Candidato, EstadoPostulacion, Postulacion, Vacante } from '@/types';
 import { Avatar, BadgeDescarte, Button, Card, EmptyState, ScreenHeader, useToast } from '@/ui';
+import { ModalContactar } from './compartido/ModalContactar';
+import { PanelCv } from './compartido/PanelCv';
 
 type Pestana = 'nuevos' | 'revision' | 'preseleccionados' | 'descartados';
 
@@ -78,9 +82,19 @@ interface TarjetaProps {
   vacante: Vacante;
   hoy: string;
   onEstado: (estado: EstadoPostulacion) => void;
+  onVerCv: () => void;
+  onContactar: () => void;
 }
 
-function TarjetaPostulante({ postulacion: p, candidato: c, vacante, hoy, onEstado }: TarjetaProps) {
+function TarjetaPostulante({
+  postulacion: p,
+  candidato: c,
+  vacante,
+  hoy,
+  onEstado,
+  onVerCv,
+  onContactar,
+}: TarjetaProps) {
   const [abierto, setAbierto] = useState(false);
   const anios = aniosExperiencia(c, hoy);
   const experiencia = c.sinExperiencia
@@ -144,6 +158,12 @@ function TarjetaPostulante({ postulacion: p, candidato: c, vacante, hoy, onEstad
             Volver a revisión
           </Button>
         )}
+        <Button variante="fantasma" icono={FileText} onClick={onVerCv}>
+          Ver CV
+        </Button>
+        <Button variante="fantasma" icono={MessageCircle} onClick={onContactar}>
+          Contactar
+        </Button>
       </div>
     </Card>
   );
@@ -163,6 +183,8 @@ export default function P12Postulantes() {
   const inicial =
     PESTANAS.find((t) => delaVacante.some((p) => p.estado === t.estado))?.id ?? 'nuevos';
   const [pestana, setPestana] = useState<Pestana>(inicial);
+  const [verCvDe, setVerCvDe] = useState<string | null>(null);
+  const [contactarA, setContactarA] = useState<string | null>(null);
 
   if (!empresaId) return <Navigate to="/entrar" replace />;
   if (!vacante || vacante.empresaId !== empresaId) return <Navigate to="/empresa" replace />;
@@ -177,6 +199,15 @@ export default function P12Postulantes() {
     else if (estado === 'descartado') toast.info(`Descartaste a ${nombre}`);
     else toast.info(`${nombre} volvió a revisión`);
   };
+
+  // Al abrir el CV de alguien nuevo, pasa a "En revisión".
+  const abrirCv = (p: Postulacion) => {
+    if (p.estado === 'enviada') cambiarEstado(p.id, 'en_revision');
+    setVerCvDe(p.id);
+  };
+  const enPanel = delaVacante.find((p) => p.id === verCvDe);
+  const candidatoPanel = candidatos.find((c) => c.id === enPanel?.candidatoId);
+  const candidatoContacto = candidatos.find((c) => c.id === contactarA);
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -228,12 +259,54 @@ export default function P12Postulantes() {
                   vacante={vacante}
                   hoy={hoy}
                   onEstado={(estado) => cambiar(p, candidato.nombre, estado)}
+                  onVerCv={() => abrirCv(p)}
+                  onContactar={() => setContactarA(candidato.id)}
                 />
               </li>
             );
           })}
         </ul>
       )}
+
+      <PanelCv
+        candidato={candidatoPanel}
+        onCerrar={() => setVerCvDe(null)}
+        acciones={
+          enPanel && candidatoPanel ? (
+            <>
+              {enPanel.estado !== 'preseleccionado' && (
+                <Button
+                  icono={Star}
+                  onClick={() => cambiar(enPanel, candidatoPanel.nombre, 'preseleccionado')}
+                >
+                  Preseleccionar
+                </Button>
+              )}
+              {enPanel.estado !== 'descartado' && (
+                <Button
+                  variante="secundario"
+                  icono={UserX}
+                  onClick={() => cambiar(enPanel, candidatoPanel.nombre, 'descartado')}
+                >
+                  Descartar
+                </Button>
+              )}
+              <Button
+                variante="fantasma"
+                icono={MessageCircle}
+                onClick={() => setContactarA(candidatoPanel.id)}
+              >
+                Contactar
+              </Button>
+            </>
+          ) : undefined
+        }
+      />
+      <ModalContactar
+        candidato={candidatoContacto}
+        vacante={vacante}
+        onCerrar={() => setContactarA(null)}
+      />
     </div>
   );
 }

@@ -30,3 +30,4 @@ export { GrupoOpciones } from './GrupoOpciones';
 export { ChipsSeleccion } from './ChipsSeleccion';
 export { CheckAnimado } from './CheckAnimado';
 export { ModalPago } from './ModalPago';
+export { PanelLateral } from './PanelLateral';
