@@ -31,7 +31,7 @@ de la presentación (`docs/10-guion-demo.md`) y van primero. Si el tiempo no alc
 - [x] P08 Mis postulaciones
 
 ## Hito 3 · Empresa
-- [ ] P09 Planes y prueba gratis **[guion]**
+- [x] P09 Planes y prueba gratis **[guion]**
 - [ ] P10 Panel de la empresa **[guion]**
 - [ ] P11 Crear vacante con preguntas de descarte **[guion]**
 - [ ] P12 Postulantes de una vacante **[guion]**

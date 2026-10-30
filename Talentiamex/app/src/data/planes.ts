@@ -1,4 +1,4 @@
-import type { Plan } from '@/types';
+import type { Plan, PlanId } from '@/types';
 
 export const PLANES: Plan[] = [
   {
@@ -38,4 +38,15 @@ export const PLANES: Plan[] = [
       'Atención prioritaria',
     ],
   },
+];
+
+/**
+ * Filas de la tabla comparativa de P09 (provisional: depende de la pregunta abierta Q2).
+ * La fila de vacantes activas sale del límite de cada plan.
+ */
+export const COMPARATIVA: { etiqueta: string; incluido: Record<PlanId, boolean> }[] = [
+  { etiqueta: 'Búsqueda de perfiles', incluido: { basico: false, pro: true, empresa: true } },
+  { etiqueta: 'Preguntas de descarte', incluido: { basico: true, pro: true, empresa: true } },
+  { etiqueta: 'Avisos por WhatsApp', incluido: { basico: true, pro: true, empresa: true } },
+  { etiqueta: 'Headhunting con descuento', incluido: { basico: false, pro: false, empresa: true } },
 ];
