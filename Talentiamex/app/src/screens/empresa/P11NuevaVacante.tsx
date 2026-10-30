@@ -1,12 +1,16 @@
 // P11 · HU-3.1, HU-3.2
 import { useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Send } from 'lucide-react';
+import { cargaSimulada } from '@/lib/esperar';
 import { puedePublicar } from '@/store/reglas';
 import { useDemoStore } from '@/store/useDemoStore';
-import { Button, Modal, ProgressBar, ScreenHeader, Stepper, StickyAction } from '@/ui';
+import { Button, Modal, ProgressBar, ScreenHeader, Stepper, StickyAction, useToast } from '@/ui';
 import { Paso1DatosVacante } from './vacante/Paso1DatosVacante';
+import { Paso2Preguntas } from './vacante/Paso2Preguntas';
+import { Paso3Revisar } from './vacante/Paso3Revisar';
 import {
+  aDatosVacante,
   borradorDesde,
   borradorVacio,
   PASOS_VACANTE,
@@ -18,7 +22,10 @@ import {
 export default function P11NuevaVacante() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const toast = useToast();
   const hoy = useDemoStore((s) => s.hoy);
+  const publicarVacante = useDemoStore((s) => s.publicarVacante);
+  const editarVacante = useDemoStore((s) => s.editarVacante);
   const empresa = useDemoStore((s) =>
     s.sesion?.rol === 'empresa' ? s.empresas.find((e) => e.id === s.sesion?.id) : undefined,
   );
@@ -29,6 +36,8 @@ export default function P11NuevaVacante() {
     existente ? borradorDesde(existente) : borradorVacio(empresa?.sector ?? ''),
   );
   const [intento, setIntento] = useState(false);
+  const [publicando, setPublicando] = useState(false);
+  const [sinPlanAlPublicar, setSinPlanAlPublicar] = useState(false);
 
   if (!empresa) return <Navigate to="/entrar" replace />;
   if (id && (!existente || existente.empresaId !== empresa.id)) {
@@ -37,18 +46,42 @@ export default function P11NuevaVacante() {
 
   const editando = Boolean(existente);
   // RD-04: sin prueba ni plan activo no se puede publicar (editar sí).
-  const sinPlan = !editando && !puedePublicar(empresa, hoy);
+  const sinPlan = sinPlanAlPublicar || (!editando && !puedePublicar(empresa, hoy));
   const info = PASOS_VACANTE[paso - 1];
   const errores = validarDatos(borrador);
   const cambiar = (parte: Partial<BorradorVacante>) => setBorrador((b) => ({ ...b, ...parte }));
+  const esUltimo = paso === TOTAL_PASOS_VACANTE;
 
   const siguiente = () => {
     if (paso === 1) {
       setIntento(true);
       if (Object.keys(errores).length > 0) return;
     }
+    if (paso === 2) {
+      // Las preguntas en blanco no se publican.
+      cambiar({ preguntas: borrador.preguntas.filter((p) => p.texto.trim() !== '') });
+    }
     setIntento(false);
     setPaso((p) => Math.min(TOTAL_PASOS_VACANTE, p + 1));
+  };
+
+  const publicar = async () => {
+    setPublicando(true);
+    await cargaSimulada();
+    const datos = aDatosVacante(borrador);
+    if (existente) {
+      editarVacante(existente.id, datos);
+      toast.exito('Cambios guardados');
+      navigate('/empresa');
+      return;
+    }
+    if (publicarVacante(datos) === null) {
+      setPublicando(false);
+      setSinPlanAlPublicar(true);
+      return;
+    }
+    toast.exito('¡Vacante publicada! Ya la pueden ver los candidatos');
+    navigate('/empresa');
   };
 
   return (
@@ -78,18 +111,35 @@ export default function P11NuevaVacante() {
             errores={intento ? errores : {}}
           />
         )}
-        {paso > 1 && <p className="text-base text-texto-2">Próximamente</p>}
+        {paso === 2 && <Paso2Preguntas borrador={borrador} onCambio={cambiar} />}
+        {paso === 3 && <Paso3Revisar borrador={borrador} empresa={empresa} editando={editando} />}
       </div>
 
       <StickyAction>
         {paso > 1 && (
-          <Button variante="secundario" icono={ArrowLeft} onClick={() => setPaso((p) => p - 1)}>
+          <Button
+            variante="secundario"
+            icono={ArrowLeft}
+            disabled={publicando}
+            onClick={() => setPaso((p) => p - 1)}
+          >
             Atrás
           </Button>
         )}
-        <Button icono={ArrowRight} onClick={siguiente} className="flex-1 md:flex-none">
-          Siguiente
-        </Button>
+        {esUltimo ? (
+          <Button
+            icono={Send}
+            cargando={publicando}
+            onClick={() => void publicar()}
+            className="flex-1 md:flex-none"
+          >
+            {editando ? 'Guardar cambios' : 'Publicar vacante'}
+          </Button>
+        ) : (
+          <Button icono={ArrowRight} onClick={siguiente} className="flex-1 md:flex-none">
+            Siguiente
+          </Button>
+        )}
       </StickyAction>
 
       <Modal

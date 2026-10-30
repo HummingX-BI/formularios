@@ -33,7 +33,7 @@ de la presentación (`docs/10-guion-demo.md`) y van primero. Si el tiempo no alc
 ## Hito 3 · Empresa
 - [x] P09 Planes y prueba gratis **[guion]**
 - [x] P10 Panel de la empresa **[guion]**
-- [ ] P11 Crear vacante con preguntas de descarte **[guion]**
+- [x] P11 Crear vacante con preguntas de descarte **[guion]**
 - [ ] P12 Postulantes de una vacante **[guion]**
 - [ ] P14 Solicitar headhunting **[guion]**
 - [ ] P13 Buscar perfiles y contactar
