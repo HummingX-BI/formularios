@@ -10,7 +10,7 @@ export interface Miga {
 interface ScreenHeaderProps {
   titulo: string;
   /** Dice qué sigue o qué puede hacer la persona aquí. */
-  subtitulo?: string;
+  subtitulo?: string | undefined;
   migas?: Miga[];
   paso?: { actual: number; total: number };
   /** Contenido a la derecha del título (por ejemplo, un botón secundario). */

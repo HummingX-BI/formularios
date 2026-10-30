@@ -114,6 +114,7 @@ export interface Acciones {
   elegirPlantilla: (id: Candidato['plantilla']) => void;
   marcarCvPagado: () => void;
   alternarPerfilVisible: () => void;
+  quitarFotoCv: () => void;
   // vacantes
   publicarVacante: (datos: DatosVacante) => string | null;
   renovarVacante: (id: string) => boolean;
@@ -286,6 +287,18 @@ export const useDemoStore = create<DemoStore>()(
           candidatos: s.candidatos.map((c) =>
             c.id === sesion.id ? { ...c, perfilVisible: !c.perfilVisible } : c,
           ),
+        }));
+      },
+
+      quitarFotoCv: () => {
+        const { sesion } = get();
+        if (sesion?.rol !== 'candidato') return;
+        set((s) => ({
+          candidatos: s.candidatos.map((c) => {
+            if (c.id !== sesion.id) return c;
+            const { fotoUrl: _foto, ...sinFoto } = c;
+            return sinFoto;
+          }),
         }));
       },
 

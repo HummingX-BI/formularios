@@ -5,7 +5,7 @@ export type PlanId = 'basico' | 'pro' | 'empresa';
 
 export type Turno = 'matutino' | 'vespertino' | 'nocturno' | 'mixto' | 'rotativo';
 
-export type Disponibilidad = 'inmediata' | 'una_semana' | 'dos_semanas' | 'un_mes';
+export type Disponibilidad = 'inmediata' | 'quince_dias' | 'un_mes';
 
 export type PlantillaCv = 'clasica' | 'moderna' | 'compacta';
 

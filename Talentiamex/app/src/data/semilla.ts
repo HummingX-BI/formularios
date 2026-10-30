@@ -116,13 +116,7 @@ const DOCUMENTOS: Record<string, string[]> = {
   escuelas: ['Título', 'Cédula docente', 'Constancia de inglés', 'Carta de no antecedentes'],
 };
 const TURNOS: Turno[] = ['matutino', 'vespertino', 'nocturno', 'mixto', 'rotativo'];
-const DISPONIBILIDADES: Disponibilidad[] = [
-  'inmediata',
-  'inmediata',
-  'una_semana',
-  'dos_semanas',
-  'un_mes',
-];
+const DISPONIBILIDADES: Disponibilidad[] = ['inmediata', 'inmediata', 'quince_dias', 'un_mes'];
 const PLANTILLAS = ['clasica', 'moderna', 'compacta'] as const;
 const RANGO_SUELDO: Record<string, [number, number]> = {
   salud: [9500, 17000],

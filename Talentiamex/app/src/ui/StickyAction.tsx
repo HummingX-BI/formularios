@@ -18,7 +18,7 @@ export function StickyAction({ children, className }: StickyActionProps) {
           className,
         )}
       >
-        <div className="mx-auto flex max-w-xl flex-col gap-2 md:mx-0 md:max-w-none md:flex-row md:justify-end">
+        <div className="mx-auto flex max-w-xl flex-row gap-2 md:mx-0 md:max-w-none md:justify-end">
           {children}
         </div>
       </div>

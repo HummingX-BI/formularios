@@ -25,3 +25,5 @@ export { useToast } from './useToast';
 export { VigenciaBar } from './VigenciaBar';
 export { TransicionPantalla } from './TransicionPantalla';
 export { SelectorSector } from './SelectorSector';
+export { FotoCircular } from './FotoCircular';
+export { GrupoOpciones } from './GrupoOpciones';
