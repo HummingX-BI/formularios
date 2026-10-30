@@ -22,7 +22,7 @@ export function Clasica({ candidato: c }: { candidato: Candidato }) {
 
   return (
     <HojaA4>
-      <div className="flex h-full flex-col px-14 py-12">
+      <div className="flex h-full flex-col px-14 py-10">
         <header className="flex items-start justify-between gap-6 border-b-2 border-marca pb-5">
           <div className="min-w-0">
             <h1 className="font-titulo text-[32px] font-bold leading-tight text-marca">

@@ -28,8 +28,8 @@ export function iniciales(nombre: string): string {
 /** Límites para que los datos largos quepan en una hoja. */
 export const LIMITES = {
   experiencias: 4,
-  descripcion: 190,
-  resumen: 320,
+  descripcion: 150,
+  resumen: 280,
   habilidades: 12,
   documentos: 6,
 } as const;

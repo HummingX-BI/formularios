@@ -24,7 +24,7 @@ de la presentación (`docs/10-guion-demo.md`) y van primero. Si el tiempo no alc
 
 ## Hito 2 · Candidato
 - [x] P03 Constructor de CV por pasos **[guion]**
-- [ ] P04 Plantillas y vista previa (3 plantillas) **[guion]**
+- [x] P04 Plantillas y vista previa (3 plantillas) **[guion]**
 - [ ] P05 Pago y descarga del PDF **[guion]**
 - [ ] P06 Buscar vacantes **[guion]**
 - [ ] P07 Detalle de vacante y postulación con preguntas de descarte **[guion]**

@@ -7,11 +7,22 @@ export type Vigencia = 'verde' | 'ambar' | 'rojo';
 /** Días de aviso antes del vencimiento (RN-06), del más lejano al más cercano. */
 const UMBRALES_AVISO: readonly AvisoDias[] = [5, 3, 0];
 
-/** RD-01: datos personales, 1 experiencia o "sin experiencia", sector y zona. */
+/** RD-01: lo que le falta al CV (datos personales, experiencia o "sin experiencia", sector y zona). */
+export function cvFaltantes(c: Candidato): string[] {
+  const faltan: string[] = [];
+  if ([c.nombre, c.celular, c.correo].some((t) => t.trim() === ''))
+    faltan.push('Tus datos personales');
+  if (c.experiencias.length === 0 && !c.sinExperiencia) {
+    faltan.push('Tu experiencia (o marca "Aún no tengo experiencia")');
+  }
+  if (c.sector.trim() === '') faltan.push('El sector que te interesa');
+  if (c.zona.trim() === '') faltan.push('Tu alcaldía o municipio');
+  return faltan;
+}
+
+/** RD-01: el CV está completo cuando no le falta nada. */
 export function cvCompleto(c: Candidato): boolean {
-  const datosPersonales = [c.nombre, c.celular, c.correo].every((t) => t.trim() !== '');
-  const experiencia = c.experiencias.length > 0 || c.sinExperiencia;
-  return datosPersonales && experiencia && c.sector.trim() !== '' && c.zona.trim() !== '';
+  return cvFaltantes(c).length === 0;
 }
 
 /** RD-02: una vacante coincide si comparte sector y zona. */

@@ -11,6 +11,11 @@ export function moneda(monto: number): string {
   return `${MONEDA.format(monto)} MXN`;
 }
 
+/** $49 (sin decimales ni "MXN", para botones) */
+export function monedaCorta(monto: number): string {
+  return MONEDA.format(monto);
+}
+
 /** 28 oct 2026 */
 export function fechaCorta(iso: string): string {
   const [a = '', m = '1', d = '1'] = iso.slice(0, 10).split('-');
