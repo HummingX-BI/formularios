@@ -45,6 +45,7 @@
   --radio-chip: 999px;
   --sombra-1: 0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.08);
   --sombra-2: 0 8px 24px -8px rgba(15, 23, 42, 0.18);
+  --sombra-arriba: 0 -6px 16px -8px rgba(15, 23, 42, 0.2);
 
   /* Tipografía */
   --fuente-texto: 'Inter Variable', system-ui, sans-serif;

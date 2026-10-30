@@ -28,7 +28,7 @@ export const SECTORES: Sector[] = [
     nombre: 'Restaurantes y cocinas',
     color: 'var(--color-restaurantes)',
     colorSuave: 'var(--color-restaurantes-suave)',
-    icono: 'UtensilsCrossed',
+    icono: 'ChefHat',
     puestos: [
       'Cocinero(a)',
       'Ayudante de cocina',

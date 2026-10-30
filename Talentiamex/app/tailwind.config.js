@@ -46,6 +46,7 @@ export default {
       boxShadow: {
         1: token('sombra-1'),
         2: token('sombra-2'),
+        arriba: token('sombra-arriba'),
       },
       fontFamily: {
         sans: token('fuente-texto'),
