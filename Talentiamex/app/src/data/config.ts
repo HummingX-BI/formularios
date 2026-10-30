@@ -10,5 +10,9 @@ export const HOY_INICIAL = '2026-10-30';
 /** Días que dura publicada una vacante (RN-05). */
 export const VIGENCIA_VACANTE_DIAS = 30;
 
+/** Metas del piloto que se muestran en el tablero (P15). */
+export const META_EMPRESAS = 3;
+export const META_CANDIDATOS = 50;
+
 /** Clave de persistencia del store. */
 export const CLAVE_STORE = 'talentiamex-demo-v1';

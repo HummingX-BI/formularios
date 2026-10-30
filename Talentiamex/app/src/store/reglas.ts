@@ -48,6 +48,19 @@ export function cumpleDescarte(
 
 /** RD-04: se puede publicar con prueba o plan activos y sin vencer. */
 export function puedePublicar(e: Empresa, hoy: string): boolean {
-  if (e.plan.estado === 'vencido') return false;
+  if (e.plan.estado !== 'prueba' && e.plan.estado !== 'activo') return false;
   return diasEntre(hoy, e.plan.venceEl) >= 0;
+}
+
+/** Años completos de experiencia sumando todos los empleos (hasta `hoy` si siguen vigentes). */
+export function aniosExperiencia(c: Candidato, hoy: string): number {
+  const meses = (fecha: string): number => {
+    const [a = '0', m = '1'] = fecha.split('-');
+    return Number(a) * 12 + Number(m);
+  };
+  const total = c.experiencias.reduce(
+    (suma, x) => suma + Math.max(0, meses(x.hasta ?? hoy) - meses(x.desde)),
+    0,
+  );
+  return Math.floor(total / 12);
 }

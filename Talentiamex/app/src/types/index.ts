@@ -53,7 +53,7 @@ export interface Candidato {
 
 export type TipoEmpresa = 'pyme' | 'cadena' | 'hospital' | 'escuela';
 
-export type EstadoPlan = 'prueba' | 'activo' | 'vencido';
+export type EstadoPlan = 'sin_plan' | 'prueba' | 'activo' | 'vencido';
 
 export interface Empresa {
   id: string;
