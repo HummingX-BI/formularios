@@ -17,6 +17,12 @@ export function fechaCorta(iso: string): string {
   return `${Number(d)} ${MESES[Number(m) - 1] ?? ''} ${a}`;
 }
 
+/** feb 2021 (a partir de AAAA-MM) */
+export function mesAnio(valor: string): string {
+  const [a = '', m = '1'] = valor.split('-');
+  return `${MESES[Number(m) - 1] ?? ''} ${a}`.trim();
+}
+
 /** 55 1234 5678 */
 export function telefono(valor: string): string {
   const digitos = valor.replace(/\D/g, '').slice(-10);
