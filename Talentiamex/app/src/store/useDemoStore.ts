@@ -134,6 +134,7 @@ export interface Acciones {
   // admin
   asignarReclutador: (solicitudId: string, nombre: string) => void;
   agregarSector: (datos: DatosSector) => string;
+  actualizarSector: (id: string, datos: Partial<DatosSector>) => void;
   editarPlan: (plan: Plan) => void;
   alternarSuspension: (tipo: TipoSuspension, id: string) => void;
   // mensajes
@@ -492,6 +493,9 @@ export const useDemoStore = create<DemoStore>()(
         set({ sectores: [...s.sectores, { id, ...datos }] });
         return id;
       },
+
+      actualizarSector: (id, datos) =>
+        set((s) => ({ sectores: s.sectores.map((x) => (x.id === id ? { ...x, ...datos } : x)) })),
 
       editarPlan: (plan) =>
         set((s) => ({ planes: s.planes.map((p) => (p.id === plan.id ? plan : p)) })),

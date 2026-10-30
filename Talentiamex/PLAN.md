@@ -44,9 +44,9 @@ de la presentación (`docs/10-guion-demo.md`) y van primero. Si el tiempo no alc
       "avanzar días" en panel de demo → recordatorios 5, 3 y 0 días y suscripción por vencer
 
 ## Hito 5 · Administrador
-- [ ] P15 Tablero del piloto **[guion]**
+- [x] P15 Tablero del piloto **[guion]**
 - [x] P16 Gestión de empresas, usuarios y vacantes
-- [ ] P17 Sectores, etiquetas y planes
+- [x] P17 Sectores, etiquetas y planes
 
 ## Hito 6 · Pulido y ensayo
 - [ ] Recorrer el guion completo 2 veces sin recargar y sin errores en consola

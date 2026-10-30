@@ -16,6 +16,14 @@
   --color-escuelas: #7c3aed;
   --color-escuelas-suave: #ede9fe;
 
+  /* Colores para sectores nuevos (P17) */
+  --color-sector-1: #0f766e;
+  --color-sector-2: #be185d;
+  --color-sector-3: #4d7c0f;
+  --color-sector-4: #4338ca;
+  --color-sector-5: #92400e;
+  --color-sector-6: #475569;
+
   /* Estados */
   --color-exito: #15803d;
   --color-alerta: #b45309;
