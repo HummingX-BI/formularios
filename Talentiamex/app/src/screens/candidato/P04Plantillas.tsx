@@ -4,6 +4,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { PRECIO_CV } from '@/data/config';
 import { Miniatura } from '@/cv/Miniatura';
 import { INFO_PLANTILLAS } from '@/cv/plantillas';
+import { useDescargarCv } from '@/cv/useDescargarCv';
 import { VistaPrevia } from '@/cv/VistaPrevia';
 import { cn } from '@/lib/cn';
 import { monedaCorta } from '@/lib/formato';
@@ -13,6 +14,7 @@ import { Button, Card, ScreenHeader, StickyAction, Toggle, useToast } from '@/ui
 
 export default function P04Plantillas() {
   const toast = useToast();
+  const { descargar, descargando } = useDescargarCv();
   const candidato = useDemoStore((s) =>
     s.sesion?.rol === 'candidato' ? s.candidatos.find((c) => c.id === s.sesion?.id) : undefined,
   );
@@ -109,7 +111,16 @@ export default function P04Plantillas() {
       </div>
 
       <StickyAction>
-        {completo ? (
+        {completo && candidato.cvPagado ? (
+          <Button
+            icono={Download}
+            cargando={descargando}
+            onClick={() => void descargar(candidato)}
+            className="flex-1 md:flex-none"
+          >
+            Descargar de nuevo
+          </Button>
+        ) : completo ? (
           <Button icono={Download} to="/candidato/cv/pagar" className="flex-1 md:flex-none">
             Descargar PDF · {monedaCorta(PRECIO_CV)}
           </Button>
