@@ -13,7 +13,7 @@ export function StickyAction({ children, className }: StickyActionProps) {
       <div className="h-24 md:hidden" aria-hidden="true" />
       <div
         className={cn(
-          'fixed inset-x-0 bottom-0 z-30 bg-superficie px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 shadow-arriba',
+          'fixed inset-x-0 bottom-[var(--alto-nav-inferior,0px)] z-30 bg-superficie px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 shadow-arriba',
           'md:static md:z-auto md:bg-transparent md:px-0 md:pb-0 md:pt-6 md:shadow-none',
           className,
         )}

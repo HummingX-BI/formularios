@@ -8,6 +8,7 @@ export { GoalMeter } from './GoalMeter';
 export { Icono } from './Icono';
 export { ICONOS_SECTOR } from './iconos';
 export { Input } from './Input';
+export { Logo } from './Logo';
 export { KpiCard } from './KpiCard';
 export { BottomSheet, Modal } from './Modal';
 export { PhoneFrame } from './PhoneFrame';
