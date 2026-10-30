@@ -9,7 +9,7 @@ de la presentación (`docs/10-guion-demo.md`) y van primero. Si el tiempo no alc
 
 ## Hito 0 · Base del proyecto
 - [x] Crear `app/` con Vite + React 18 + TS + Tailwind 3 (ver `docs/09-arquitectura-demo.md`)
-- [ ] Tokens de diseño en `app/src/styles/tokens.css` y `tailwind.config.js` (`docs/07-diseno.md`)
+- [x] Tokens de diseño en `app/src/styles/tokens.css` y `tailwind.config.js` (`docs/07-diseno.md`)
 - [ ] Componentes base en `app/src/ui/`: Button, Card, Badge, SectorChip, Stepper, ProgressBar, Input, Select,
       Textarea, Modal, Toast, EmptyState, Avatar, PhoneFrame
 - [ ] Layouts por rol: público, candidato (barra inferior en móvil), empresa (barra lateral), administrador

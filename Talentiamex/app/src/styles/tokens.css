@@ -1,0 +1,52 @@
+:root {
+  /* Marca (provisional) */
+  --color-marca: #1e3a8a;
+  --color-marca-suave: #e0e7ff;
+
+  /* Acción principal: un solo color para "siguiente paso" */
+  --color-accion: #15803d;
+  --color-accion-hover: #166534;
+  --color-accion-suave: #dcfce7;
+
+  /* Sectores */
+  --color-salud: #0369a1;
+  --color-salud-suave: #e0f2fe;
+  --color-restaurantes: #c2410c;
+  --color-restaurantes-suave: #ffedd5;
+  --color-escuelas: #7c3aed;
+  --color-escuelas-suave: #ede9fe;
+
+  /* Estados */
+  --color-exito: #15803d;
+  --color-alerta: #b45309;
+  --color-alerta-suave: #fef3c7;
+  --color-error: #b91c1c;
+  --color-error-suave: #fee2e2;
+  --color-info: #1d4ed8;
+
+  /* Neutros */
+  --color-fondo: #f8fafc;
+  --color-superficie: #ffffff;
+  --color-borde: #e2e8f0;
+  --color-texto: #0f172a;
+  --color-texto-2: #475569;
+  --color-texto-3: #94a3b8;
+  --color-admin: #0f172a;
+
+  /* Simulador de WhatsApp (solo P18) */
+  --wa-encabezado: #075e54;
+  --wa-fondo: #ece5dd;
+  --wa-burbuja-salida: #dcf8c6;
+  --wa-burbuja-entrada: #ffffff;
+
+  /* Forma */
+  --radio-tarjeta: 16px;
+  --radio-boton: 12px;
+  --radio-chip: 999px;
+  --sombra-1: 0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.08);
+  --sombra-2: 0 8px 24px -8px rgba(15, 23, 42, 0.18);
+
+  /* Tipografía */
+  --fuente-texto: 'Inter Variable', system-ui, sans-serif;
+  --fuente-titulo: 'Plus Jakarta Sans', 'Inter Variable', system-ui, sans-serif;
+}
