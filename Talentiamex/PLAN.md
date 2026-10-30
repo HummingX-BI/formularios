@@ -8,7 +8,7 @@ de la presentación (`docs/10-guion-demo.md`) y van primero. Si el tiempo no alc
 **[guion]** pueden quedar más sencillas, pero deben existir y verse terminadas.
 
 ## Hito 0 · Base del proyecto
-- [ ] Crear `app/` con Vite + React 18 + TS + Tailwind 3 (ver `docs/09-arquitectura-demo.md`)
+- [x] Crear `app/` con Vite + React 18 + TS + Tailwind 3 (ver `docs/09-arquitectura-demo.md`)
 - [ ] Tokens de diseño en `app/src/styles/tokens.css` y `tailwind.config.js` (`docs/07-diseno.md`)
 - [ ] Componentes base en `app/src/ui/`: Button, Card, Badge, SectorChip, Stepper, ProgressBar, Input, Select,
       Textarea, Modal, Toast, EmptyState, Avatar, PhoneFrame
