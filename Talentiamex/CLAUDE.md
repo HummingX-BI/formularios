@@ -97,3 +97,13 @@ npm run lint
 2. Agrega a `DECISIONS.md` lo que decidiste.
 3. Agrega a `CHANGELOG.md` un resumen.
 4. Deja en `PLAN.md`, sección "Siguiente paso", qué toca después.
+
+
+## Modo ahorro (obligatorio)
+
+1. Lee solo los archivos y secciones que el prompt indique.
+2. No explores el repo ni ../demo-pantera salvo que se pida.
+3. No muestres código en la respuesta, solo resume.
+4. Corre typecheck y build una sola vez, al final.
+5. Al terminar cada prompt: marca PLAN.md, commit "feat(talentiamex): <qué>" y push.
+6. Responde en máximo 5 líneas: qué hiciste, archivos clave, pendiente.
