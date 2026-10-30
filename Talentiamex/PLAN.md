@@ -45,7 +45,7 @@ de la presentación (`docs/10-guion-demo.md`) y van primero. Si el tiempo no alc
 
 ## Hito 5 · Administrador
 - [ ] P15 Tablero del piloto **[guion]**
-- [ ] P16 Gestión de empresas, usuarios y vacantes
+- [x] P16 Gestión de empresas, usuarios y vacantes
 - [ ] P17 Sectores, etiquetas y planes
 
 ## Hito 6 · Pulido y ensayo
