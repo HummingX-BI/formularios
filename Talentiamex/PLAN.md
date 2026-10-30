@@ -35,7 +35,7 @@ de la presentación (`docs/10-guion-demo.md`) y van primero. Si el tiempo no alc
 - [x] P10 Panel de la empresa **[guion]**
 - [x] P11 Crear vacante con preguntas de descarte **[guion]**
 - [x] P12 Postulantes de una vacante **[guion]**
-- [ ] P14 Solicitar headhunting **[guion]**
+- [x] P14 Solicitar headhunting **[guion]**
 - [x] P13 Buscar perfiles y contactar
 
 ## Hito 4 · Avisos por WhatsApp
