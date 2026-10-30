@@ -1,0 +1,71 @@
+import type { Sector } from '@/types';
+
+export const SECTORES: Sector[] = [
+  {
+    id: 'salud',
+    nombre: 'Salud',
+    color: 'var(--color-salud)',
+    colorSuave: 'var(--color-salud-suave)',
+    icono: 'HeartPulse',
+    puestos: [
+      'Enfermera(o) general',
+      'Auxiliar de enfermería',
+      'Recepcionista de clínica',
+      'Camillero',
+      'Químico laboratorista',
+      'Cuidador(a) de adulto mayor',
+    ],
+    habilidades: [
+      'Toma de signos vitales',
+      'Aplicación de inyectables',
+      'Manejo de expediente clínico',
+      'Atención al paciente',
+      'Primeros auxilios',
+    ],
+  },
+  {
+    id: 'restaurantes',
+    nombre: 'Restaurantes y cocinas',
+    color: 'var(--color-restaurantes)',
+    colorSuave: 'var(--color-restaurantes-suave)',
+    icono: 'UtensilsCrossed',
+    puestos: [
+      'Cocinero(a)',
+      'Ayudante de cocina',
+      'Mesero(a)',
+      'Cajero(a)',
+      'Lavaloza',
+      'Barista',
+      'Repartidor(a)',
+    ],
+    habilidades: [
+      'Manejo higiénico de alimentos',
+      'Trabajo bajo presión',
+      'Atención al cliente',
+      'Manejo de caja',
+      'Cocina caliente / fría',
+    ],
+  },
+  {
+    id: 'escuelas',
+    nombre: 'Escuelas',
+    color: 'var(--color-escuelas)',
+    colorSuave: 'var(--color-escuelas-suave)',
+    icono: 'GraduationCap',
+    puestos: [
+      'Docente de primaria',
+      'Docente de inglés',
+      'Auxiliar educativo',
+      'Prefecto(a)',
+      'Personal de intendencia',
+      'Asistente administrativo escolar',
+    ],
+    habilidades: [
+      'Planeación didáctica',
+      'Manejo de grupo',
+      'Inglés intermedio',
+      'Paquetería Office',
+      'Atención a padres de familia',
+    ],
+  },
+];
