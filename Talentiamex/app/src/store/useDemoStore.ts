@@ -134,6 +134,7 @@ export interface Acciones {
   editarPlan: (plan: Plan) => void;
   alternarSuspension: (tipo: TipoSuspension, id: string) => void;
   // mensajes
+  agregarMensajes: (plantillas: PlantillaMensaje[]) => void;
   marcarLeidos: (para: MensajeWhatsApp['para'], destinatarioId: string) => void;
   // demo
   avanzarDias: (n: number) => void;
@@ -454,6 +455,9 @@ export const useDemoStore = create<DemoStore>()(
         })),
 
       // ── mensajes ──
+      agregarMensajes: (plantillas) =>
+        set((s) => ({ mensajes: conMensajes(s.mensajes, plantillas, s.hoy, horaActual()) })),
+
       marcarLeidos: (para, destinatarioId) =>
         set((s) => ({
           mensajes: s.mensajes.map((m) =>
