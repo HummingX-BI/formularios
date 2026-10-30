@@ -11,5 +11,7 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
+    // Las pruebas de Playwright (tests/) se corren con npm run test:e2e.
+    exclude: ['node_modules/**', 'dist/**', 'tests/**'],
   },
 });
