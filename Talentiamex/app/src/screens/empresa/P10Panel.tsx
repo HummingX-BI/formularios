@@ -5,10 +5,16 @@ import {
   CalendarClock,
   ClipboardCheck,
   Inbox,
+  Pause,
+  Pencil,
+  Play,
   PlusCircle,
+  RefreshCw,
   Star,
+  XCircle,
 } from 'lucide-react';
-import { Link, Navigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useShallow } from 'zustand/react/shallow';
 import { fechaCorta } from '@/lib/formato';
 import { diasRestantes } from '@/store/reglas';
@@ -21,9 +27,11 @@ import {
   Card,
   EmptyState,
   KpiCard,
+  Modal,
   ScreenHeader,
   SectorChip,
   StickyAction,
+  useToast,
   VigenciaBar,
 } from '@/ui';
 import type { TonoBadge } from '@/ui';
@@ -55,7 +63,52 @@ export default function P10Panel() {
     ),
   );
 
+  const toast = useToast();
+  const navigate = useNavigate();
+  const renovarVacante = useDemoStore((s) => s.renovarVacante);
+  const pausarVacante = useDemoStore((s) => s.pausarVacante);
+  const reanudarVacante = useDemoStore((s) => s.reanudarVacante);
+  const cerrarVacante = useDemoStore((s) => s.cerrarVacante);
+  // Vacante que se quiere renovar cuando la prueba o el plan terminaron (RD-04).
+  const [renovandoSinPlan, setRenovandoSinPlan] = useState<string | null>(null);
+  const [cerrando, setCerrando] = useState<string | null>(null);
+
   if (!empresa) return <Navigate to="/entrar" replace />;
+
+  const renovar = (id: string) => {
+    if (renovarVacante(id)) {
+      toast.exito('Vacante renovada: tiene 30 días otra vez');
+    } else {
+      setRenovandoSinPlan(id);
+    }
+  };
+
+  const renovarVarias = (ids: string[]) => {
+    const fallida = ids.find((id) => !renovarVacante(id));
+    if (fallida) {
+      setRenovandoSinPlan(fallida);
+    } else {
+      toast.exito(
+        ids.length === 1 ? 'Vacante renovada por 30 días' : 'Vacantes renovadas por 30 días',
+      );
+    }
+  };
+
+  const pausar = (id: string) => {
+    pausarVacante(id);
+    toast.info('Vacante pausada: ya no se muestra a los candidatos');
+  };
+
+  const reanudar = (id: string) => {
+    reanudarVacante(id);
+    toast.exito('Vacante activa otra vez');
+  };
+
+  const confirmarCierre = () => {
+    if (cerrando) cerrarVacante(cerrando);
+    setCerrando(null);
+    toast.info('Vacante cerrada');
+  };
 
   const propias = vacantes
     .filter((v) => v.empresaId === empresa.id)
@@ -111,6 +164,14 @@ export default function P10Panel() {
             {porVencer.length === 1
               ? '1 vacante vence'
               : `${porVencer.length} vacantes vencen`} en {DIAS_POR_VENCER} días o menos.
+            <Button
+              variante="secundario"
+              icono={RefreshCw}
+              className="ml-auto"
+              onClick={() => renovarVarias(porVencer.map((v) => v.id))}
+            >
+              Renovar
+            </Button>
           </p>
         )}
       </div>
@@ -171,10 +232,43 @@ export default function P10Panel() {
                         <VigenciaBar dias={diasRestantes(v, hoy)} />
                       </div>
                     ) : null}
-                    <div className="flex flex-wrap gap-2 lg:justify-end">
+                    <div className="flex flex-wrap gap-2 lg:max-w-xs lg:justify-end">
                       <Button variante="secundario" to={`/empresa/vacantes/${v.id}/postulantes`}>
                         Ver postulantes
                       </Button>
+                      {v.estado !== 'cerrada' && (
+                        <Button variante="fantasma" icono={RefreshCw} onClick={() => renovar(v.id)}>
+                          Renovar
+                        </Button>
+                      )}
+                      {v.estado === 'activa' && (
+                        <Button variante="fantasma" icono={Pause} onClick={() => pausar(v.id)}>
+                          Pausar
+                        </Button>
+                      )}
+                      {v.estado === 'pausada' && (
+                        <Button variante="fantasma" icono={Play} onClick={() => reanudar(v.id)}>
+                          Reanudar
+                        </Button>
+                      )}
+                      {v.estado !== 'cerrada' && (
+                        <Button
+                          variante="fantasma"
+                          icono={Pencil}
+                          to={`/empresa/vacantes/${v.id}/editar`}
+                        >
+                          Editar
+                        </Button>
+                      )}
+                      {v.estado !== 'cerrada' && (
+                        <Button
+                          variante="fantasma"
+                          icono={XCircle}
+                          onClick={() => setCerrando(v.id)}
+                        >
+                          Cerrar
+                        </Button>
+                      )}
                     </div>
                   </Card>
                 </li>
@@ -189,6 +283,58 @@ export default function P10Panel() {
           Publicar vacante
         </Button>
       </StickyAction>
+
+      <Modal
+        abierto={renovandoSinPlan !== null}
+        onCerrar={() => setRenovandoSinPlan(null)}
+        titulo={estado === 'sin_plan' ? 'Primero elige un plan' : 'Tu prueba terminó'}
+        pie={
+          <>
+            <Button
+              onClick={() =>
+                navigate('/empresa/planes', {
+                  state: renovandoSinPlan ? { renovarVacanteId: renovandoSinPlan } : undefined,
+                })
+              }
+            >
+              Elegir plan
+            </Button>
+            <Button variante="fantasma" onClick={() => setRenovandoSinPlan(null)}>
+              Ahora no
+            </Button>
+          </>
+        }
+      >
+        <p className="text-base text-texto">
+          {estado === 'sin_plan'
+            ? 'Empieza tu prueba gratis o contrata un plan para publicar y renovar vacantes.'
+            : 'Tu prueba terminó, elige un plan para seguir.'}
+        </p>
+        <p className="mt-2 text-sm text-texto-2">
+          Al contratar, tu vacante se renueva por 30 días automáticamente.
+        </p>
+      </Modal>
+
+      <Modal
+        abierto={cerrando !== null}
+        onCerrar={() => setCerrando(null)}
+        titulo="¿Cerrar esta vacante?"
+        pie={
+          <>
+            <Button variante="peligro" onClick={confirmarCierre}>
+              Sí, cerrar vacante
+            </Button>
+            <Button variante="secundario" onClick={() => setCerrando(null)}>
+              Cancelar
+            </Button>
+          </>
+        }
+      >
+        <p className="text-base text-texto-2">
+          Dejará de recibir postulaciones y ya no se mostrará a los candidatos. Esta acción no se
+          puede deshacer.
+        </p>
+      </Modal>
     </div>
   );
 }

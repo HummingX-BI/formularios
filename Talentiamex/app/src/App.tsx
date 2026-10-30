@@ -61,6 +61,7 @@ function Rutas() {
               <Route path="/empresa" element={<P10Panel />} />
               <Route path="/empresa/planes" element={<P09Planes />} />
               <Route path="/empresa/vacantes/nueva" element={<P11NuevaVacante />} />
+              <Route path="/empresa/vacantes/:id/editar" element={<P11NuevaVacante />} />
               <Route path="/empresa/vacantes/:id/postulantes" element={<P12Postulantes />} />
               <Route path="/empresa/perfiles" element={<P13Perfiles />} />
               <Route path="/empresa/headhunting" element={<P14Headhunting />} />

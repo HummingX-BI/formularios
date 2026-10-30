@@ -121,6 +121,7 @@ export interface Acciones {
   pausarVacante: (id: string) => void;
   reanudarVacante: (id: string) => void;
   cerrarVacante: (id: string) => void;
+  editarVacante: (id: string, datos: DatosVacante) => void;
   // postulación
   postularse: (vacanteId: string, respuestas: Record<string, boolean>) => ResultadoPostulacion;
   cambiarEstadoPostulacion: (id: string, estado: EstadoPostulacion) => void;
@@ -360,6 +361,19 @@ export const useDemoStore = create<DemoStore>()(
       cerrarVacante: (id) =>
         set((s) => ({
           vacantes: s.vacantes.map((v) => (v.id === id ? { ...v, estado: 'cerrada' } : v)),
+        })),
+
+      editarVacante: (id, datos) =>
+        set((s) => ({
+          vacantes: s.vacantes.map((v) =>
+            v.id === id
+              ? {
+                  ...v,
+                  ...datos,
+                  preguntas: datos.preguntas.map((p, i) => ({ id: `${id}-q${i + 1}`, ...p })),
+                }
+              : v,
+          ),
         })),
 
       // ── postulación ──
