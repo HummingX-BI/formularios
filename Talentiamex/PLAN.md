@@ -15,8 +15,8 @@ de la presentación (`docs/10-guion-demo.md`) y van primero. Si el tiempo no alc
 - [x] Layouts por rol: público, candidato (barra inferior en móvil), empresa (barra lateral), administrador
 - [x] Router (HashRouter) con todas las rutas de `docs/09` apuntando a pantallas vacías con su título
 - [x] Store Zustand con datos semilla (`docs/08-datos-mock.md`), persistencia en `localStorage` y acción `resetDemo()`
-- [ ] Panel de demo flotante: cambiar de rol, vista celular, abrir simulador de WhatsApp, avanzar días, reiniciar
-- [ ] Scripts `iniciar.sh` e `iniciar.bat` (como en `../demo-pantera`)
+- [ ] Panel de demo flotante: cambiar de rol, vista celular, abrir simulador de WhatsApp, avanzar días, reiniciar _(listo salvo el simulador de WhatsApp, prompt 37)_
+- [x] Scripts `iniciar.sh` e `iniciar.bat` (como en `../demo-pantera`)
 
 ## Hito 1 · Público y acceso
 - [ ] P01 Inicio **[guion]**
