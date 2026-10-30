@@ -5,7 +5,16 @@ import { cn } from '@/lib/cn';
 import { fechaCorta } from '@/lib/formato';
 import { cvCompleto, diasRestantes } from '@/store/reglas';
 import { useDemoStore, type TipoSuspension } from '@/store/useDemoStore';
-import { Badge, Button, EmptyState, Input, ScreenHeader, SectorChip, useToast } from '@/ui';
+import {
+  Badge,
+  Button,
+  EmptyState,
+  Input,
+  ScreenHeader,
+  SectorChip,
+  useAccion,
+  useToast,
+} from '@/ui';
 import { TablaGestion, type ColumnaGestion } from './TablaGestion';
 
 type Pestana = 'empresas' | 'candidatos' | 'vacantes';
@@ -38,6 +47,7 @@ export default function P16Gestion() {
   const suspendidos = useDemoStore((s) => s.suspendidos);
   const alternarSuspension = useDemoStore((s) => s.alternarSuspension);
 
+  const { ocupado, ejecutar } = useAccion();
   const [pestana, setPestana] = useState<Pestana>('empresas');
   const [busqueda, setBusqueda] = useState('');
   const [visibles, setVisibles] = useState(POR_PAGINA);
@@ -57,11 +67,21 @@ export default function P16Gestion() {
 
   const boton = (tipo: TipoSuspension, id: string, nombre: string) =>
     estaSuspendido(id) ? (
-      <Button variante="secundario" icono={CheckCircle2} onClick={() => alternar(tipo, id, nombre)}>
+      <Button
+        variante="secundario"
+        icono={CheckCircle2}
+        cargando={ocupado === id}
+        onClick={() => void ejecutar(id, () => alternar(tipo, id, nombre))}
+      >
         Activar
       </Button>
     ) : (
-      <Button variante="fantasma" icono={Ban} onClick={() => alternar(tipo, id, nombre)}>
+      <Button
+        variante="fantasma"
+        icono={Ban}
+        cargando={ocupado === id}
+        onClick={() => void ejecutar(id, () => alternar(tipo, id, nombre))}
+      >
         Suspender
       </Button>
     );

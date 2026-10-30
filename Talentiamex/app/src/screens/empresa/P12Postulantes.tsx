@@ -17,7 +17,16 @@ import { cn } from '@/lib/cn';
 import { aniosExperiencia } from '@/store/reglas';
 import { useDemoStore } from '@/store/useDemoStore';
 import type { Candidato, EstadoPostulacion, Postulacion, Vacante } from '@/types';
-import { Avatar, BadgeDescarte, Button, Card, EmptyState, ScreenHeader, useToast } from '@/ui';
+import {
+  Avatar,
+  BadgeDescarte,
+  Button,
+  Card,
+  EmptyState,
+  ScreenHeader,
+  useAccion,
+  useToast,
+} from '@/ui';
 import { ModalContactar } from './compartido/ModalContactar';
 import { PanelCv } from './compartido/PanelCv';
 
@@ -82,6 +91,8 @@ interface TarjetaProps {
   vacante: Vacante;
   hoy: string;
   onEstado: (estado: EstadoPostulacion) => void;
+  /** Clave de la acción en curso (para mostrar el botón ocupado). */
+  ocupado: string | null;
   onVerCv: () => void;
   onContactar: () => void;
 }
@@ -92,6 +103,7 @@ function TarjetaPostulante({
   vacante,
   hoy,
   onEstado,
+  ocupado,
   onVerCv,
   onContactar,
 }: TarjetaProps) {
@@ -147,6 +159,7 @@ function TarjetaPostulante({
         {p.estado !== 'preseleccionado' && (
           <Button
             icono={Star}
+            cargando={ocupado === `${p.id}:preseleccionado`}
             onClick={() => onEstado('preseleccionado')}
             className="col-span-3 sm:col-auto"
           >
@@ -157,6 +170,7 @@ function TarjetaPostulante({
           <Button
             variante="secundario"
             icono={UserX}
+            cargando={ocupado === `${p.id}:descartado`}
             onClick={() => onEstado('descartado')}
             className="!px-2 sm:!px-5"
           >
@@ -166,6 +180,7 @@ function TarjetaPostulante({
           <Button
             variante="secundario"
             icono={Undo2}
+            cargando={ocupado === `${p.id}:en_revision`}
             onClick={() => onEstado('en_revision')}
             className="!px-2 sm:!px-5"
           >
@@ -204,6 +219,7 @@ export default function P12Postulantes() {
   const [pestana, setPestana] = useState<Pestana>(inicial);
   const [verCvDe, setVerCvDe] = useState<string | null>(null);
   const [contactarA, setContactarA] = useState<string | null>(null);
+  const { ocupado, ejecutar } = useAccion();
 
   if (!empresaId) return <Navigate to="/entrar" replace />;
   if (!vacante || vacante.empresaId !== empresaId) return <Navigate to="/empresa" replace />;
@@ -277,7 +293,10 @@ export default function P12Postulantes() {
                   candidato={candidato}
                   vacante={vacante}
                   hoy={hoy}
-                  onEstado={(estado) => cambiar(p, candidato.nombre, estado)}
+                  ocupado={ocupado}
+                  onEstado={(estado) =>
+                    void ejecutar(`${p.id}:${estado}`, () => cambiar(p, candidato.nombre, estado))
+                  }
                   onVerCv={() => abrirCv(p)}
                   onContactar={() => setContactarA(candidato.id)}
                 />
@@ -296,7 +315,12 @@ export default function P12Postulantes() {
               {enPanel.estado !== 'preseleccionado' && (
                 <Button
                   icono={Star}
-                  onClick={() => cambiar(enPanel, candidatoPanel.nombre, 'preseleccionado')}
+                  cargando={ocupado === `${enPanel.id}:preseleccionado`}
+                  onClick={() =>
+                    void ejecutar(`${enPanel.id}:preseleccionado`, () =>
+                      cambiar(enPanel, candidatoPanel.nombre, 'preseleccionado'),
+                    )
+                  }
                 >
                   Preseleccionar
                 </Button>
@@ -305,7 +329,12 @@ export default function P12Postulantes() {
                 <Button
                   variante="secundario"
                   icono={UserX}
-                  onClick={() => cambiar(enPanel, candidatoPanel.nombre, 'descartado')}
+                  cargando={ocupado === `${enPanel.id}:descartado`}
+                  onClick={() =>
+                    void ejecutar(`${enPanel.id}:descartado`, () =>
+                      cambiar(enPanel, candidatoPanel.nombre, 'descartado'),
+                    )
+                  }
                 >
                   Descartar
                 </Button>

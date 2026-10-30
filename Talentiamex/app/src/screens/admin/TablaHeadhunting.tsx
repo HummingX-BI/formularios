@@ -4,11 +4,21 @@ import { RECLUTADORES } from '@/data/reclutadores';
 import { fechaCorta } from '@/lib/formato';
 import { useDemoStore } from '@/store/useDemoStore';
 import type { SolicitudHeadhunting } from '@/types';
-import { BadgeHeadhunting, Button, Card, EmptyState, Modal, Select, useToast } from '@/ui';
+import {
+  BadgeHeadhunting,
+  Button,
+  Card,
+  EmptyState,
+  Modal,
+  Select,
+  useAccion,
+  useToast,
+} from '@/ui';
 
 /** Solicitudes de headhunting de las empresas, con la acción "Asignar reclutador". */
 export function TablaHeadhunting() {
   const toast = useToast();
+  const { ocupado, ejecutar } = useAccion();
   const solicitudes = useDemoStore((s) => s.solicitudes);
   const empresas = useDemoStore((s) => s.empresas);
   const asignarReclutador = useDemoStore((s) => s.asignarReclutador);
@@ -129,7 +139,18 @@ export function TablaHeadhunting() {
         titulo="Asignar reclutador"
         pie={
           <>
-            <Button onClick={confirmar}>Asignar</Button>
+            <Button
+              cargando={ocupado === 'asignar'}
+              onClick={() => {
+                if (!nombre) {
+                  setIntento(true);
+                  return;
+                }
+                void ejecutar('asignar', confirmar);
+              }}
+            >
+              Asignar
+            </Button>
             <Button variante="fantasma" onClick={() => setAsignando(null)}>
               Cancelar
             </Button>

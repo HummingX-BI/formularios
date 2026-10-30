@@ -5,6 +5,12 @@
 @tailwind utilities;
 
 @layer base {
+  /* Foco visible en todo lo que se puede tocar o escribir. */
+  :focus-visible {
+    outline: 2px solid var(--color-marca);
+    outline-offset: 2px;
+  }
+
   body {
     @apply bg-fondo font-sans text-base text-texto antialiased;
   }

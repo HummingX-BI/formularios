@@ -31,3 +31,4 @@ export { ChipsSeleccion } from './ChipsSeleccion';
 export { CheckAnimado } from './CheckAnimado';
 export { ModalPago } from './ModalPago';
 export { PanelLateral } from './PanelLateral';
+export { useAccion } from './useAccion';

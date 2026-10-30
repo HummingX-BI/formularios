@@ -31,6 +31,7 @@ import {
   ScreenHeader,
   SectorChip,
   StickyAction,
+  useAccion,
   useToast,
   VigenciaBar,
 } from '@/ui';
@@ -72,6 +73,7 @@ export default function P10Panel() {
   // Vacante que se quiere renovar cuando la prueba o el plan terminaron (RD-04).
   const [renovandoSinPlan, setRenovandoSinPlan] = useState<string | null>(null);
   const [cerrando, setCerrando] = useState<string | null>(null);
+  const { ocupado, ejecutar } = useAccion();
 
   if (!empresa) return <Navigate to="/entrar" replace />;
 
@@ -168,7 +170,10 @@ export default function P10Panel() {
               variante="secundario"
               icono={RefreshCw}
               className="ml-auto"
-              onClick={() => renovarVarias(porVencer.map((v) => v.id))}
+              cargando={ocupado === 'renovar-varias'}
+              onClick={() =>
+                void ejecutar('renovar-varias', () => renovarVarias(porVencer.map((v) => v.id)))
+              }
             >
               Renovar
             </Button>
@@ -237,17 +242,32 @@ export default function P10Panel() {
                         Ver postulantes
                       </Button>
                       {v.estado !== 'cerrada' && (
-                        <Button variante="fantasma" icono={RefreshCw} onClick={() => renovar(v.id)}>
+                        <Button
+                          variante="fantasma"
+                          icono={RefreshCw}
+                          cargando={ocupado === `renovar-${v.id}`}
+                          onClick={() => void ejecutar(`renovar-${v.id}`, () => renovar(v.id))}
+                        >
                           Renovar
                         </Button>
                       )}
                       {v.estado === 'activa' && (
-                        <Button variante="fantasma" icono={Pause} onClick={() => pausar(v.id)}>
+                        <Button
+                          variante="fantasma"
+                          icono={Pause}
+                          cargando={ocupado === `pausar-${v.id}`}
+                          onClick={() => void ejecutar(`pausar-${v.id}`, () => pausar(v.id))}
+                        >
                           Pausar
                         </Button>
                       )}
                       {v.estado === 'pausada' && (
-                        <Button variante="fantasma" icono={Play} onClick={() => reanudar(v.id)}>
+                        <Button
+                          variante="fantasma"
+                          icono={Play}
+                          cargando={ocupado === `reanudar-${v.id}`}
+                          onClick={() => void ejecutar(`reanudar-${v.id}`, () => reanudar(v.id))}
+                        >
                           Reanudar
                         </Button>
                       )}
@@ -321,7 +341,11 @@ export default function P10Panel() {
         titulo="¿Cerrar esta vacante?"
         pie={
           <>
-            <Button variante="peligro" onClick={confirmarCierre}>
+            <Button
+              variante="peligro"
+              cargando={ocupado === 'cerrar'}
+              onClick={() => void ejecutar('cerrar', confirmarCierre)}
+            >
               Sí, cerrar vacante
             </Button>
             <Button variante="secundario" onClick={() => setCerrando(null)}>

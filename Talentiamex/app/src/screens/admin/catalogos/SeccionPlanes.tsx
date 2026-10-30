@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { Save } from 'lucide-react';
 import { useDemoStore } from '@/store/useDemoStore';
 import type { Plan, PlanId } from '@/types';
-import { Button, Card, Checkbox, GrupoOpciones, Input, Textarea, useToast } from '@/ui';
+import { Button, Card, Checkbox, GrupoOpciones, Input, Textarea, useAccion, useToast } from '@/ui';
 
 function FormularioPlan({ plan }: { plan: Plan }) {
   const toast = useToast();
+  const { ocupado, ejecutar } = useAccion();
   const editarPlan = useDemoStore((s) => s.editarPlan);
   const [nombre, setNombre] = useState(plan.nombre);
   const [precio, setPrecio] = useState(String(plan.precioMensual));
@@ -81,7 +82,16 @@ function FormularioPlan({ plan }: { plan: Plan }) {
         onChange={(e) => setIncluye(e.target.value)}
       />
       <div>
-        <Button icono={Save} onClick={guardar}>
+        <Button
+          variante="secundario"
+          icono={Save}
+          cargando={ocupado === 'guardar'}
+          onClick={() => {
+            setIntento(true);
+            if (Object.values(errores).some(Boolean)) return;
+            void ejecutar('guardar', guardar);
+          }}
+        >
           Guardar plan
         </Button>
       </div>
