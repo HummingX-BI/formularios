@@ -19,7 +19,7 @@ de la presentación (`docs/10-guion-demo.md`) y van primero. Si el tiempo no alc
 - [x] Scripts `iniciar.sh` e `iniciar.bat` (como en `../demo-pantera`)
 
 ## Hito 1 · Público y acceso
-- [ ] P01 Inicio **[guion]**
+- [x] P01 Inicio **[guion]**
 - [ ] P02 Registro e inicio de sesión por rol **[guion]**
 
 ## Hito 2 · Candidato
