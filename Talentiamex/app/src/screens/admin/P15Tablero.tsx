@@ -6,6 +6,7 @@ import { kpisAdmin, postulacionesPorDia, resumenPorSector } from '@/store/select
 import { useDemoStore } from '@/store/useDemoStore';
 import { Card, GoalMeter, KpiCard, ScreenHeader } from '@/ui';
 import { GraficaPorDia, GraficaPorSector } from './GraficasTablero';
+import { TablaHeadhunting } from './TablaHeadhunting';
 
 export default function P15Tablero() {
   // Todo se calcula en vivo con los selectors a partir del estado de la demo.
@@ -56,6 +57,8 @@ export default function P15Tablero() {
           <GraficaPorSector datos={porSector} sectores={estado.sectores} />
         </Card>
       </section>
+
+      <TablaHeadhunting />
     </div>
   );
 }

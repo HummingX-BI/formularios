@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { EstadoPostulacion } from '@/types';
+import type { EstadoHeadhunting, EstadoPostulacion } from '@/types';
 import { cn } from '@/lib/cn';
 
 export type TonoBadge = 'verde' | 'ambar' | 'rojo' | 'gris';
@@ -61,4 +61,16 @@ export function BadgeDescarte({ cumple }: { cumple: boolean }) {
   ) : (
     <Badge tono="rojo">No cumple</Badge>
   );
+}
+
+const HEADHUNTING: Record<EstadoHeadhunting, { tono: TonoBadge; texto: string }> = {
+  recibida: { tono: 'gris', texto: 'Recibida' },
+  en_busqueda: { tono: 'ambar', texto: 'En búsqueda' },
+  finalistas: { tono: 'verde', texto: 'Finalistas enviados' },
+};
+
+/** Estado de una solicitud de headhunting. */
+export function BadgeHeadhunting({ estado }: { estado: EstadoHeadhunting }) {
+  const { tono, texto } = HEADHUNTING[estado];
+  return <Badge tono={tono}>{texto}</Badge>;
 }

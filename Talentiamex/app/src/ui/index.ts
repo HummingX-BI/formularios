@@ -1,5 +1,5 @@
 export { Avatar } from './Avatar';
-export { Badge, BadgeDescarte, BadgePostulacion, type TonoBadge } from './Badge';
+export { Badge, BadgeDescarte, BadgeHeadhunting, BadgePostulacion, type TonoBadge } from './Badge';
 export { Button, type VarianteBoton } from './Button';
 export { Card } from './Card';
 export { Checkbox } from './Checkbox';
