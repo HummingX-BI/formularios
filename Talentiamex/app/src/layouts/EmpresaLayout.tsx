@@ -41,7 +41,7 @@ export function EmpresaLayout() {
       className="min-h-screen md:flex"
       style={{ '--alto-nav-inferior': ALTO_NAV_INFERIOR } as CSSProperties}
     >
-      <aside className="hidden w-64 shrink-0 flex-col gap-6 border-r border-borde bg-superficie p-4 md:flex">
+      <aside className="hidden w-64 shrink-0 flex-col gap-6 border-r border-borde bg-superficie p-4 pb-20 md:flex">
         <Logo to="/empresa" />
         {empresa && (
           <div className="rounded-tarjeta bg-fondo p-3">

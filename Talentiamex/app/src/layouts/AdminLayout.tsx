@@ -26,7 +26,7 @@ export function AdminLayout() {
       className="min-h-screen md:flex"
       style={{ '--alto-nav-inferior': ALTO_NAV_INFERIOR } as CSSProperties}
     >
-      <aside className="hidden w-64 shrink-0 flex-col gap-6 bg-admin p-4 md:flex">
+      <aside className="hidden w-64 shrink-0 flex-col gap-6 bg-admin p-4 pb-20 md:flex">
         <div>
           <Logo to="/admin" claro />
           <p className="mt-1 text-sm font-medium text-texto-3">Administración</p>
