@@ -45,5 +45,9 @@ export function BadgePostulacion({ estado }: { estado: EstadoPostulacion }) {
 
 /** Resultado de las preguntas de descarte (RD-03). */
 export function BadgeDescarte({ cumple }: { cumple: boolean }) {
-  return cumple ? <Badge tono="verde">Cumple descarte</Badge> : <Badge tono="rojo">No cumple</Badge>;
+  return cumple ? (
+    <Badge tono="verde">Cumple descarte</Badge>
+  ) : (
+    <Badge tono="rojo">No cumple</Badge>
+  );
 }

@@ -15,7 +15,12 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
 ) {
   const id = useId();
   return (
-    <Campo id={id} etiqueta={etiqueta} {...(ayuda !== undefined && { ayuda })} {...(error !== undefined && { error })}>
+    <Campo
+      id={id}
+      etiqueta={etiqueta}
+      {...(ayuda !== undefined && { ayuda })}
+      {...(error !== undefined && { error })}
+    >
       <textarea
         ref={ref}
         id={id}

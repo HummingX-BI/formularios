@@ -23,7 +23,12 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
 ) {
   const id = useId();
   return (
-    <Campo id={id} etiqueta={etiqueta} {...(ayuda !== undefined && { ayuda })} {...(error !== undefined && { error })}>
+    <Campo
+      id={id}
+      etiqueta={etiqueta}
+      {...(ayuda !== undefined && { ayuda })}
+      {...(error !== undefined && { error })}
+    >
       <select
         ref={ref}
         id={id}

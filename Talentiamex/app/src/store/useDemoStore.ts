@@ -196,7 +196,8 @@ function plantillasDeEventos(s: DatosDemo, eventos: EventoReloj[], empresas: Emp
     if (!empresa) continue;
     if (ev.regla === 'RN-06') {
       const vacante = s.vacantes.find((v) => v.id === ev.vacanteId);
-      if (vacante) salida.push({ fecha: ev.fecha, plantilla: plantillaRN06(empresa, vacante, ev.dias) });
+      if (vacante)
+        salida.push({ fecha: ev.fecha, plantilla: plantillaRN06(empresa, vacante, ev.dias) });
     } else {
       const nombre = s.planes.find((p) => p.id === ev.planId)?.nombre ?? '';
       salida.push({ fecha: ev.fecha, plantilla: plantillaRN09(empresa, nombre) });
@@ -241,7 +242,11 @@ export const useDemoStore = create<DemoStore>()(
       registrarEmpresa: (datos) => {
         const s = get();
         const id = siguienteId('emp', s.empresas.length);
-        const nueva: Empresa = { id, ...datos, plan: { id: 'basico', estado: 'sin_plan', venceEl: '' } };
+        const nueva: Empresa = {
+          id,
+          ...datos,
+          plan: { id: 'basico', estado: 'sin_plan', venceEl: '' },
+        };
         set({ empresas: [...s.empresas, nueva], sesion: { rol: 'empresa', id } });
         return id;
       },
@@ -287,7 +292,8 @@ export const useDemoStore = create<DemoStore>()(
       // ── vacantes ──
       publicarVacante: (datos) => {
         const s = get();
-        const empresa = s.sesion?.rol === 'empresa' ? s.empresas.find((e) => e.id === s.sesion?.id) : undefined;
+        const empresa =
+          s.sesion?.rol === 'empresa' ? s.empresas.find((e) => e.id === s.sesion?.id) : undefined;
         if (!empresa || !puedePublicar(empresa, s.hoy)) return null;
         const id = siguienteId('vac', s.vacantes.length);
         const vacante: Vacante = {
@@ -346,13 +352,19 @@ export const useDemoStore = create<DemoStore>()(
       // ── postulación ──
       postularse: (vacanteId, respuestas) => {
         const s = get();
-        const candidato = s.sesion?.rol === 'candidato' ? s.candidatos.find((c) => c.id === s.sesion?.id) : undefined;
+        const candidato =
+          s.sesion?.rol === 'candidato'
+            ? s.candidatos.find((c) => c.id === s.sesion?.id)
+            : undefined;
         if (!candidato) return { ok: false, motivo: 'sin_sesion' };
         const vacante = s.vacantes.find((v) => v.id === vacanteId);
         const empresa = s.empresas.find((e) => e.id === vacante?.empresaId);
-        if (!vacante || !empresa || vacante.estado !== 'activa') return { ok: false, motivo: 'no_disponible' };
+        if (!vacante || !empresa || vacante.estado !== 'activa')
+          return { ok: false, motivo: 'no_disponible' };
         if (!cvCompleto(candidato)) return { ok: false, motivo: 'cv_incompleto' };
-        if (s.postulaciones.some((p) => p.vacanteId === vacanteId && p.candidatoId === candidato.id)) {
+        if (
+          s.postulaciones.some((p) => p.vacanteId === vacanteId && p.candidatoId === candidato.id)
+        ) {
           return { ok: false, motivo: 'duplicada' };
         }
         const id = siguienteId('pos', s.postulaciones.length);
@@ -388,7 +400,11 @@ export const useDemoStore = create<DemoStore>()(
         if (s.sesion?.rol !== 'empresa') return false;
         const empresa = s.empresas.find((e) => e.id === s.sesion?.id);
         if (empresa?.plan.estado !== 'sin_plan') return false;
-        const plan = { id: planId, estado: 'prueba' as const, venceEl: sumarDias(s.hoy, PRUEBA_DIAS) };
+        const plan = {
+          id: planId,
+          estado: 'prueba' as const,
+          venceEl: sumarDias(s.hoy, PRUEBA_DIAS),
+        };
         set({ empresas: s.empresas.map((e) => (e.id === empresa.id ? { ...e, plan } : e)) });
         return true;
       },
@@ -396,7 +412,11 @@ export const useDemoStore = create<DemoStore>()(
       contratarPlan: (planId) => {
         const s = get();
         if (s.sesion?.rol !== 'empresa') return;
-        const plan = { id: planId, estado: 'activo' as const, venceEl: sumarDias(s.hoy, VIGENCIA_VACANTE_DIAS) };
+        const plan = {
+          id: planId,
+          estado: 'activo' as const,
+          venceEl: sumarDias(s.hoy, VIGENCIA_VACANTE_DIAS),
+        };
         set({ empresas: s.empresas.map((e) => (e.id === s.sesion?.id ? { ...e, plan } : e)) });
       },
 
@@ -439,7 +459,9 @@ export const useDemoStore = create<DemoStore>()(
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/^-|-$/g, '');
-        const id = s.sectores.some((x) => x.id === base) ? `${base}-${s.sectores.length + 1}` : base;
+        const id = s.sectores.some((x) => x.id === base)
+          ? `${base}-${s.sectores.length + 1}`
+          : base;
         set({ sectores: [...s.sectores, { id, ...datos }] });
         return id;
       },

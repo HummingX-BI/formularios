@@ -25,7 +25,11 @@ export function VigenciaBar({ dias }: VigenciaBarProps) {
   return (
     <div>
       <p className="mb-1 text-sm font-medium text-texto-2">{texto(dias)}</p>
-      <ProgressBar valor={pct} etiqueta={`Vigencia: ${texto(dias)}`} color={COLOR[estadoVigencia(dias)]} />
+      <ProgressBar
+        valor={pct}
+        etiqueta={`Vigencia: ${texto(dias)}`}
+        color={COLOR[estadoVigencia(dias)]}
+      />
     </div>
   );
 }

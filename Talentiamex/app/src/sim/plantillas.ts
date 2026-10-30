@@ -42,7 +42,11 @@ export function plantillaRN08(
 }
 
 /** RN-06: recordatorio de vencimiento de vacante (5, 3 y 0 días) → P10. */
-export function plantillaRN06(empresa: Empresa, vacante: Vacante, dias: AvisoDias): PlantillaMensaje {
+export function plantillaRN06(
+  empresa: Empresa,
+  vacante: Vacante,
+  dias: AvisoDias,
+): PlantillaMensaje {
   const cuando = dias === 0 ? 'vence hoy' : `vence en ${dias} días`;
   return {
     para: 'empresa',

@@ -23,3 +23,4 @@ export { ToastProvider } from './Toast';
 export { Toggle } from './Toggle';
 export { useToast } from './useToast';
 export { VigenciaBar } from './VigenciaBar';
+export { TransicionPantalla } from './TransicionPantalla';

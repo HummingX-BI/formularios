@@ -6,9 +6,7 @@ export const ESPERA_PAGO_MS = 1200;
 /** Tarjeta de prueba que siempre se rechaza. */
 const TERMINACION_RECHAZADA = '0002';
 
-export type ResultadoPago =
-  | { ok: true; folio: string }
-  | { ok: false; error: string };
+export type ResultadoPago = { ok: true; folio: string } | { ok: false; error: string };
 
 /** Simula un cobro: espera 1.2 s, aprueba y registra el ingreso para el tablero (P15). */
 export async function pagar(monto: number, concepto: string, tarjeta = ''): Promise<ResultadoPago> {

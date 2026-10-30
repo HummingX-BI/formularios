@@ -1,5 +1,6 @@
 import { Link, Outlet } from 'react-router-dom';
 import { Logo } from '@/ui/Logo';
+import { TransicionPantalla } from '@/ui/TransicionPantalla';
 
 const ENLACE =
   'rounded text-sm font-medium text-texto-2 hover:text-marca focus-visible:outline focus-visible:outline-2 focus-visible:outline-marca';
@@ -20,7 +21,9 @@ export function PublicLayout() {
         </div>
       </header>
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 md:px-8">
-        <Outlet />
+        <TransicionPantalla>
+          <Outlet />
+        </TransicionPantalla>
       </main>
       <footer className="border-t border-borde bg-superficie">
         <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-4 md:px-8">

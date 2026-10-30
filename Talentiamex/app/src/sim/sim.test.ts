@@ -37,7 +37,10 @@ describe('pagos', () => {
 
 describe('auth', () => {
   it('rechaza correo o contraseña inválidos', async () => {
-    expect(await entrar('no-es-correo', '123456', 'candidato')).toEqual({ ok: false, error: 'correo' });
+    expect(await entrar('no-es-correo', '123456', 'candidato')).toEqual({
+      ok: false,
+      error: 'correo',
+    });
     expect(await entrar('a@b.mx', '123', 'candidato')).toEqual({ ok: false, error: 'contrasena' });
   });
 
@@ -53,7 +56,12 @@ describe('auth', () => {
 describe('reloj', () => {
   it('avanza día por día y dispara 5, 3 y 0 una sola vez por vacante', () => {
     const s = useDemoStore.getState();
-    const base = { hoy: s.hoy, vacantes: s.vacantes, empresas: s.empresas, avisosPlan: s.avisosPlan };
+    const base = {
+      hoy: s.hoy,
+      vacantes: s.vacantes,
+      empresas: s.empresas,
+      avisosPlan: s.avisosPlan,
+    };
     const r = avanzarDias(base, 30);
     const deVacante = r.eventos.filter((e) => e.regla === 'RN-06' && e.vacanteId === 'vac-01');
     expect(deVacante.map((e) => (e.regla === 'RN-06' ? e.dias : -1))).toEqual([5, 3, 0]);
@@ -71,7 +79,9 @@ describe('plantillas', () => {
     if (!empresa || !vacante || !candidato) throw new Error('semilla');
     expect(plantillaRN06(empresa, vacante, 0).texto).toContain('vence hoy');
     expect(plantillaRN06(empresa, vacante, 3).texto).toContain('vence en 3 días');
-    expect(plantillaRN08(candidato, vacante, empresa).boton?.ruta).toBe(`/candidato/vacantes/${vacante.id}`);
+    expect(plantillaRN08(candidato, vacante, empresa).boton?.ruta).toBe(
+      `/candidato/vacantes/${vacante.id}`,
+    );
     expect(plantillaRN09(empresa, 'Básico').boton?.ruta).toBe('/empresa/planes');
   });
 });

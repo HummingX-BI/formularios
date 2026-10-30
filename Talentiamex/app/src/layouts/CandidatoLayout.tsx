@@ -5,6 +5,7 @@ import { cerrarSesion } from '@/sim/auth';
 import { useDemoStore } from '@/store/useDemoStore';
 import { Avatar } from '@/ui/Avatar';
 import { Logo } from '@/ui/Logo';
+import { TransicionPantalla } from '@/ui/TransicionPantalla';
 import { ALTO_NAV_INFERIOR, BarraInferior, NavSuperior, type ItemNav } from './nav';
 
 const ITEMS: ItemNav[] = [
@@ -56,7 +57,9 @@ export function CandidatoLayout() {
         </div>
       </header>
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 pb-24 md:px-8 md:py-8 md:pb-8">
-        <Outlet />
+        <TransicionPantalla>
+          <Outlet />
+        </TransicionPantalla>
       </main>
       <BarraInferior items={ITEMS} />
     </div>

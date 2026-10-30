@@ -37,9 +37,14 @@ export function ProgressBar({
         aria-valuenow={pct}
         className="h-2.5 w-full overflow-hidden rounded-chip bg-borde"
       >
-        <div className={cn('h-full rounded-chip transition-[width] duration-300', COLORES[color])} style={{ width: `${pct}%` }} />
+        <div
+          className={cn('h-full rounded-chip transition-[width] duration-300', COLORES[color])}
+          style={{ width: `${pct}%` }}
+        />
       </div>
-      {mostrarPorcentaje && <p className="mt-1 text-right text-sm font-medium text-texto-2">{pct}%</p>}
+      {mostrarPorcentaje && (
+        <p className="mt-1 text-right text-sm font-medium text-texto-2">{pct}%</p>
+      )}
     </div>
   );
 }

@@ -28,7 +28,10 @@ export function ScreenHeader({ titulo, subtitulo, migas, paso, acciones }: Scree
                 <li key={m.texto} className="flex items-center gap-1">
                   {i > 0 && <ChevronRight size={14} aria-hidden="true" />}
                   {m.to ? (
-                    <Link to={m.to} className="rounded hover:text-marca focus-visible:outline focus-visible:outline-2 focus-visible:outline-marca">
+                    <Link
+                      to={m.to}
+                      className="rounded hover:text-marca focus-visible:outline focus-visible:outline-2 focus-visible:outline-marca"
+                    >
                       {m.texto}
                     </Link>
                   ) : (
@@ -44,7 +47,9 @@ export function ScreenHeader({ titulo, subtitulo, migas, paso, acciones }: Scree
             Paso {paso.actual} de {paso.total}
           </p>
         )}
-        <h1 className="font-titulo text-[28px] font-bold leading-tight text-texto md:text-4xl">{titulo}</h1>
+        <h1 className="font-titulo text-[28px] font-bold leading-tight text-texto md:text-4xl">
+          {titulo}
+        </h1>
         {subtitulo && <p className="mt-2 text-base text-texto-2">{subtitulo}</p>}
       </div>
       {acciones && <div className="shrink-0">{acciones}</div>}

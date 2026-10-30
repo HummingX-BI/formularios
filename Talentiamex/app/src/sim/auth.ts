@@ -13,8 +13,7 @@ export function contrasenaValida(contrasena: string): boolean {
 }
 
 export type ResultadoAuth =
-  | { ok: true; sesion: Sesion }
-  | { ok: false; error: 'correo' | 'contrasena' };
+  { ok: true; sesion: Sesion } | { ok: false; error: 'correo' | 'contrasena' };
 
 /**
  * Cualquier correo y contraseña válidos entran. Si el correo coincide con una cuenta
@@ -29,7 +28,8 @@ export async function entrar(correo: string, contrasena: string, rol: Rol): Prom
   const buscado = correo.trim().toLowerCase();
   let id = 'admin';
   if (rol === 'candidato') {
-    id = (s.candidatos.find((c) => c.correo.toLowerCase() === buscado) ?? s.candidatos[0])?.id ?? '';
+    id =
+      (s.candidatos.find((c) => c.correo.toLowerCase() === buscado) ?? s.candidatos[0])?.id ?? '';
   } else if (rol === 'empresa') {
     id = (s.empresas.find((e) => e.correo.toLowerCase() === buscado) ?? s.empresas[0])?.id ?? '';
   }

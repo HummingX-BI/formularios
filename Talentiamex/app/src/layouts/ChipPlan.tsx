@@ -6,7 +6,9 @@ import { Badge, type TonoBadge } from '@/ui/Badge';
 export function ChipPlan({ empresaId }: { empresaId: string }) {
   const empresa = useDemoStore((s) => s.empresas.find((e) => e.id === empresaId));
   const hoy = useDemoStore((s) => s.hoy);
-  const nombrePlan = useDemoStore((s) => s.planes.find((p) => p.id === empresa?.plan.id)?.nombre ?? '');
+  const nombrePlan = useDemoStore(
+    (s) => s.planes.find((p) => p.id === empresa?.plan.id)?.nombre ?? '',
+  );
   if (!empresa) return null;
 
   const dias = empresa.plan.venceEl ? diasEntre(hoy, empresa.plan.venceEl) : 0;

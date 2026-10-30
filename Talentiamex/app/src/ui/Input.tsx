@@ -15,7 +15,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 ) {
   const id = useId();
   return (
-    <Campo id={id} etiqueta={etiqueta} {...(ayuda !== undefined && { ayuda })} {...(error !== undefined && { error })}>
+    <Campo
+      id={id}
+      etiqueta={etiqueta}
+      {...(ayuda !== undefined && { ayuda })}
+      {...(error !== undefined && { error })}
+    >
       <input
         ref={ref}
         id={id}

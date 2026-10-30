@@ -3,6 +3,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, ListChecks, LogOut, Users } from 'lucide-react';
 import { cerrarSesion } from '@/sim/auth';
 import { Logo } from '@/ui/Logo';
+import { TransicionPantalla } from '@/ui/TransicionPantalla';
 import { ALTO_NAV_INFERIOR, BarraInferior, NavLateral, type ItemNav } from './nav';
 
 const ITEMS: ItemNav[] = [
@@ -54,7 +55,9 @@ export function AdminLayout() {
           </button>
         </header>
         <main className="w-full max-w-6xl flex-1 px-4 py-6 pb-24 md:px-8 md:py-8 md:pb-8">
-          <Outlet />
+          <TransicionPantalla>
+            <Outlet />
+          </TransicionPantalla>
         </main>
       </div>
       <BarraInferior items={ITEMS} oscura />

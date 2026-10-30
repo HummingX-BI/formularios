@@ -22,31 +22,107 @@ import { preguntasPorSector } from './preguntasSugeridas';
 const SEMILLA_FIJA = 20261030;
 
 const NOMBRES_M = [
-  'Sofía', 'Valeria', 'Camila', 'Ximena', 'Daniela', 'Fernanda', 'Andrea', 'Paola', 'Itzel',
-  'Guadalupe', 'Rocío', 'Karla', 'Lucía', 'Berenice', 'Alejandra', 'Citlali', 'Yesenia', 'Nayeli',
+  'Sofía',
+  'Valeria',
+  'Camila',
+  'Ximena',
+  'Daniela',
+  'Fernanda',
+  'Andrea',
+  'Paola',
+  'Itzel',
+  'Guadalupe',
+  'Rocío',
+  'Karla',
+  'Lucía',
+  'Berenice',
+  'Alejandra',
+  'Citlali',
+  'Yesenia',
+  'Nayeli',
 ];
 const NOMBRES_H = [
-  'Luis', 'Carlos', 'Jorge', 'Miguel', 'Héctor', 'Diego', 'Javier', 'Raúl', 'Eduardo', 'Óscar',
-  'Iván', 'Ricardo', 'Fernando', 'Emiliano', 'Adrián', 'Mauricio',
+  'Luis',
+  'Carlos',
+  'Jorge',
+  'Miguel',
+  'Héctor',
+  'Diego',
+  'Javier',
+  'Raúl',
+  'Eduardo',
+  'Óscar',
+  'Iván',
+  'Ricardo',
+  'Fernando',
+  'Emiliano',
+  'Adrián',
+  'Mauricio',
 ];
 const APELLIDOS = [
-  'Hernández', 'García', 'Martínez', 'Rodríguez', 'Ramírez', 'Sánchez', 'Flores', 'Cruz', 'Morales',
-  'Ortiz', 'Reyes', 'Gutiérrez', 'Mendoza', 'Vargas', 'Castillo', 'Jiménez', 'Ruiz', 'Torres',
-  'Aguilar', 'Domínguez', 'Peña', 'Salazar', 'Navarro', 'Cabrera', 'Rangel',
+  'Hernández',
+  'García',
+  'Martínez',
+  'Rodríguez',
+  'Ramírez',
+  'Sánchez',
+  'Flores',
+  'Cruz',
+  'Morales',
+  'Ortiz',
+  'Reyes',
+  'Gutiérrez',
+  'Mendoza',
+  'Vargas',
+  'Castillo',
+  'Jiménez',
+  'Ruiz',
+  'Torres',
+  'Aguilar',
+  'Domínguez',
+  'Peña',
+  'Salazar',
+  'Navarro',
+  'Cabrera',
+  'Rangel',
 ];
 const EMPRESAS_PREVIAS = [
-  'Clínica Santa Elena', 'Farmacias del Valle', 'Hospital General Zona Norte', 'Fonda La Esquina',
-  'Restaurante El Fogón', 'Cafetería Aroma', 'Colegio Benito Juárez', 'Escuela Particular Sol',
-  'Estancia Infantil Pequeños Pasos', 'Laboratorio Análisis del Centro', 'Taquería Don Beto',
+  'Clínica Santa Elena',
+  'Farmacias del Valle',
+  'Hospital General Zona Norte',
+  'Fonda La Esquina',
+  'Restaurante El Fogón',
+  'Cafetería Aroma',
+  'Colegio Benito Juárez',
+  'Escuela Particular Sol',
+  'Estancia Infantil Pequeños Pasos',
+  'Laboratorio Análisis del Centro',
+  'Taquería Don Beto',
 ];
-const ESTUDIOS = ['Secundaria', 'Preparatoria', 'Carrera técnica', 'Licenciatura', 'Licenciatura trunca'];
+const ESTUDIOS = [
+  'Secundaria',
+  'Preparatoria',
+  'Carrera técnica',
+  'Licenciatura',
+  'Licenciatura trunca',
+];
 const DOCUMENTOS: Record<string, string[]> = {
   salud: ['Cédula profesional', 'Título', 'Cartilla de vacunación', 'Constancia de curso'],
-  restaurantes: ['Constancia de manejo higiénico de alimentos', 'Tarjeta de salud', 'Comprobante de estudios'],
+  restaurantes: [
+    'Constancia de manejo higiénico de alimentos',
+    'Tarjeta de salud',
+    'Comprobante de estudios',
+  ],
   escuelas: ['Título', 'Cédula docente', 'Constancia de inglés', 'Carta de no antecedentes'],
 };
 const TURNOS: Turno[] = ['matutino', 'vespertino', 'nocturno', 'mixto', 'rotativo'];
-const DISPONIBILIDADES: Disponibilidad[] = ['inmediata', 'inmediata', 'una_semana', 'dos_semanas', 'un_mes'];
+const DISPONIBILIDADES: Disponibilidad[] = [
+  'inmediata',
+  'inmediata',
+  'una_semana',
+  'dos_semanas',
+  'un_mes',
+];
 const PLANTILLAS = ['clasica', 'moderna', 'compacta'] as const;
 const RANGO_SUELDO: Record<string, [number, number]> = {
   salud: [9500, 17000],
@@ -67,29 +143,133 @@ interface EspecVacante {
 
 const ESPECS_VACANTES: EspecVacante[] = [
   // Hospital Santa Fe Norte (3 de Salud)
-  { empresa: 0, puesto: 'Enfermera(o) general', zona: 'Miguel Hidalgo', sueldo: 15500, turno: 'matutino', antiguedad: 6 },
-  { empresa: 0, puesto: 'Auxiliar de enfermería', zona: 'Miguel Hidalgo', sueldo: 11000, turno: 'vespertino', antiguedad: 9 },
-  { empresa: 0, puesto: 'Recepcionista de clínica', zona: 'Álvaro Obregón', sueldo: 10500, turno: 'mixto', antiguedad: 3 },
+  {
+    empresa: 0,
+    puesto: 'Enfermera(o) general',
+    zona: 'Miguel Hidalgo',
+    sueldo: 15500,
+    turno: 'matutino',
+    antiguedad: 6,
+  },
+  {
+    empresa: 0,
+    puesto: 'Auxiliar de enfermería',
+    zona: 'Miguel Hidalgo',
+    sueldo: 11000,
+    turno: 'vespertino',
+    antiguedad: 9,
+  },
+  {
+    empresa: 0,
+    puesto: 'Recepcionista de clínica',
+    zona: 'Álvaro Obregón',
+    sueldo: 10500,
+    turno: 'mixto',
+    antiguedad: 3,
+  },
   // Clínica Vida Plena
-  { empresa: 1, puesto: 'Cuidador(a) de adulto mayor', zona: 'Coyoacán', sueldo: 10000, turno: 'rotativo', antiguedad: 12 },
-  { empresa: 1, puesto: 'Químico laboratorista', zona: 'Tlalpan', sueldo: 14000, turno: 'matutino', antiguedad: 15 },
+  {
+    empresa: 1,
+    puesto: 'Cuidador(a) de adulto mayor',
+    zona: 'Coyoacán',
+    sueldo: 10000,
+    turno: 'rotativo',
+    antiguedad: 12,
+  },
+  {
+    empresa: 1,
+    puesto: 'Químico laboratorista',
+    zona: 'Tlalpan',
+    sueldo: 14000,
+    turno: 'matutino',
+    antiguedad: 15,
+  },
   // La Cocina de Doña Tere: una vence en 5 días y otra en 3
-  { empresa: 2, puesto: 'Cocinero(a)', zona: 'Iztapalapa', sueldo: 10500, turno: 'matutino', antiguedad: 25 },
-  { empresa: 2, puesto: 'Mesero(a)', zona: 'Iztapalapa', sueldo: 8200, turno: 'vespertino', antiguedad: 27 },
+  {
+    empresa: 2,
+    puesto: 'Cocinero(a)',
+    zona: 'Iztapalapa',
+    sueldo: 10500,
+    turno: 'matutino',
+    antiguedad: 25,
+  },
+  {
+    empresa: 2,
+    puesto: 'Mesero(a)',
+    zona: 'Iztapalapa',
+    sueldo: 8200,
+    turno: 'vespertino',
+    antiguedad: 27,
+  },
   // Grupo Sabor Capital (plan vencido)
-  { empresa: 3, puesto: 'Cajero(a)', zona: 'Cuauhtémoc', sueldo: 8800, turno: 'mixto', antiguedad: 18 },
-  { empresa: 3, puesto: 'Repartidor(a)', zona: 'Gustavo A. Madero', sueldo: 9000, turno: 'rotativo', antiguedad: 35, estado: 'vencida' },
+  {
+    empresa: 3,
+    puesto: 'Cajero(a)',
+    zona: 'Cuauhtémoc',
+    sueldo: 8800,
+    turno: 'mixto',
+    antiguedad: 18,
+  },
+  {
+    empresa: 3,
+    puesto: 'Repartidor(a)',
+    zona: 'Gustavo A. Madero',
+    sueldo: 9000,
+    turno: 'rotativo',
+    antiguedad: 35,
+    estado: 'vencida',
+  },
   // Colegio Monte Albán
-  { empresa: 4, puesto: 'Docente de primaria', zona: 'Benito Juárez', sueldo: 13500, turno: 'matutino', antiguedad: 8 },
-  { empresa: 4, puesto: 'Docente de inglés', zona: 'Benito Juárez', sueldo: 14500, turno: 'matutino', antiguedad: 11 },
-  { empresa: 4, puesto: 'Personal de intendencia', zona: 'Benito Juárez', sueldo: 8500, turno: 'vespertino', antiguedad: 14, estado: 'pausada' },
+  {
+    empresa: 4,
+    puesto: 'Docente de primaria',
+    zona: 'Benito Juárez',
+    sueldo: 13500,
+    turno: 'matutino',
+    antiguedad: 8,
+  },
+  {
+    empresa: 4,
+    puesto: 'Docente de inglés',
+    zona: 'Benito Juárez',
+    sueldo: 14500,
+    turno: 'matutino',
+    antiguedad: 11,
+  },
+  {
+    empresa: 4,
+    puesto: 'Personal de intendencia',
+    zona: 'Benito Juárez',
+    sueldo: 8500,
+    turno: 'vespertino',
+    antiguedad: 14,
+    estado: 'pausada',
+  },
   // Instituto Nuevo Amanecer
-  { empresa: 5, puesto: 'Prefecto(a)', zona: 'Naucalpan', sueldo: 9200, turno: 'matutino', antiguedad: 5 },
-  { empresa: 5, puesto: 'Asistente administrativo escolar', zona: 'Naucalpan', sueldo: 10200, turno: 'matutino', antiguedad: 10 },
+  {
+    empresa: 5,
+    puesto: 'Prefecto(a)',
+    zona: 'Naucalpan',
+    sueldo: 9200,
+    turno: 'matutino',
+    antiguedad: 5,
+  },
+  {
+    empresa: 5,
+    puesto: 'Asistente administrativo escolar',
+    zona: 'Naucalpan',
+    sueldo: 10200,
+    turno: 'matutino',
+    antiguedad: 10,
+  },
 ];
 
 function sinAcentos(texto: string): string {
-  return texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z]/g, '');
+  return texto
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z]/g, '');
 }
 
 function celular(rng: Rng): string {
@@ -105,33 +285,57 @@ function sectorDe(indice: number): SectorId {
 function crearEmpresas(hoy: string, rng: Rng): Empresa[] {
   const base: Omit<Empresa, 'celular'>[] = [
     {
-      id: 'emp-01', nombre: 'Hospital Santa Fe Norte', sector: 'salud', tipo: 'hospital',
-      contacto: 'Lic. Patricia Aldama', correo: 'rh@santafenorte.com.mx',
+      id: 'emp-01',
+      nombre: 'Hospital Santa Fe Norte',
+      sector: 'salud',
+      tipo: 'hospital',
+      contacto: 'Lic. Patricia Aldama',
+      correo: 'rh@santafenorte.com.mx',
       plan: { id: 'pro', estado: 'activo', venceEl: sumarDias(hoy, 21) },
     },
     {
-      id: 'emp-02', nombre: 'Clínica Vida Plena', sector: 'salud', tipo: 'hospital',
-      contacto: 'Dr. Arturo Beltrán', correo: 'contacto@vidaplena.com.mx',
+      id: 'emp-02',
+      nombre: 'Clínica Vida Plena',
+      sector: 'salud',
+      tipo: 'hospital',
+      contacto: 'Dr. Arturo Beltrán',
+      correo: 'contacto@vidaplena.com.mx',
       plan: { id: 'basico', estado: 'prueba', venceEl: sumarDias(hoy, 9) },
     },
     {
-      id: 'emp-03', nombre: 'La Cocina de Doña Tere', sector: 'restaurantes', tipo: 'pyme',
-      contacto: 'Teresa Salgado', correo: 'dona.tere@lacocinadetere.mx',
+      id: 'emp-03',
+      nombre: 'La Cocina de Doña Tere',
+      sector: 'restaurantes',
+      tipo: 'pyme',
+      contacto: 'Teresa Salgado',
+      correo: 'dona.tere@lacocinadetere.mx',
       plan: { id: 'basico', estado: 'prueba', venceEl: sumarDias(hoy, 6) },
     },
     {
-      id: 'emp-04', nombre: 'Grupo Sabor Capital', sector: 'restaurantes', tipo: 'cadena',
-      contacto: 'Ing. Rodrigo Estrada', correo: 'personal@saborcapital.com.mx',
+      id: 'emp-04',
+      nombre: 'Grupo Sabor Capital',
+      sector: 'restaurantes',
+      tipo: 'cadena',
+      contacto: 'Ing. Rodrigo Estrada',
+      correo: 'personal@saborcapital.com.mx',
       plan: { id: 'basico', estado: 'vencido', venceEl: sumarDias(hoy, -6) },
     },
     {
-      id: 'emp-05', nombre: 'Colegio Monte Albán', sector: 'escuelas', tipo: 'escuela',
-      contacto: 'Mtra. Sandra Ibarra', correo: 'direccion@montealban.edu.mx',
+      id: 'emp-05',
+      nombre: 'Colegio Monte Albán',
+      sector: 'escuelas',
+      tipo: 'escuela',
+      contacto: 'Mtra. Sandra Ibarra',
+      correo: 'direccion@montealban.edu.mx',
       plan: { id: 'basico', estado: 'activo', venceEl: sumarDias(hoy, 18) },
     },
     {
-      id: 'emp-06', nombre: 'Instituto Nuevo Amanecer', sector: 'escuelas', tipo: 'escuela',
-      contacto: 'Prof. Gabriel Ochoa', correo: 'rh@nuevoamanecer.edu.mx',
+      id: 'emp-06',
+      nombre: 'Instituto Nuevo Amanecer',
+      sector: 'escuelas',
+      tipo: 'escuela',
+      contacto: 'Prof. Gabriel Ochoa',
+      correo: 'rh@nuevoamanecer.edu.mx',
       plan: { id: 'basico', estado: 'prueba', venceEl: sumarDias(hoy, 4) },
     },
   ];
@@ -158,7 +362,11 @@ function crearVacantes(hoy: string, empresas: Empresa[]): Vacante[] {
       turno: spec.turno,
       contrato: 'Contrato indefinido, con prestaciones de ley',
       descripcion: `${empresa.nombre} busca ${spec.puesto.toLowerCase()} para incorporarse a su equipo en ${spec.zona}.`,
-      requisitos: ['Disponibilidad para el turno indicado', 'Buen trato y puntualidad', 'Comprobante de estudios'],
+      requisitos: [
+        'Disponibilidad para el turno indicado',
+        'Buen trato y puntualidad',
+        'Comprobante de estudios',
+      ],
       prestaciones: ['Prestaciones de ley', 'Vales de despensa', 'Capacitación inicial'],
       preguntas: preguntasPorSector(empresa.sector).map((p, n) => ({
         id: `${id}-q${n + 1}`,
@@ -214,7 +422,9 @@ function crearCandidatos(hoy: string, rng: Rng): Candidato[] {
       sueldoEsperado: Math.round(rng.entero(minS, maxS) / 500) * 500,
       turno: rng.elegir(TURNOS),
       disponibilidad: rng.elegir(DISPONIBILIDADES),
-      experiencias: experiencias.map(({ hasta, ...resto }) => (hasta ? { ...resto, hasta } : resto)),
+      experiencias: experiencias.map(({ hasta, ...resto }) =>
+        hasta ? { ...resto, hasta } : resto,
+      ),
       sinExperiencia,
       estudios: { nivel: rng.elegir(ESTUDIOS) },
       documentos: rng.mezclar(DOCUMENTOS[sectorId] ?? []).slice(0, rng.entero(1, 3)),
@@ -255,7 +465,8 @@ function crearPostulaciones(
     const cumple = vacante.preguntas.every((p) => respuestas[p.id] === p.respuestaEsperada);
     const tirada = rng.siguiente();
     let estado: EstadoPostulacion;
-    if (cumple) estado = tirada < 0.3 ? 'enviada' : tirada < 0.65 ? 'en_revision' : 'preseleccionado';
+    if (cumple)
+      estado = tirada < 0.3 ? 'enviada' : tirada < 0.65 ? 'en_revision' : 'preseleccionado';
     else estado = tirada < 0.4 ? 'enviada' : tirada < 0.6 ? 'en_revision' : 'descartado';
 
     lista.push({
@@ -281,7 +492,8 @@ function crearSolicitudes(hoy: string): SolicitudHeadhunting[] {
       vacantes: 1,
       urgencia: 'Alta',
       sueldoRango: '$28,000 – $35,000 MXN',
-      detalle: 'Perfil con 5 años de experiencia coordinando personal de enfermería en hospital privado.',
+      detalle:
+        'Perfil con 5 años de experiencia coordinando personal de enfermería en hospital privado.',
       estado: 'en_busqueda',
       reclutador: 'Andrea Solís',
       fecha: sumarDias(hoy, -4),
@@ -294,7 +506,8 @@ function crearSolicitudes(hoy: string): SolicitudHeadhunting[] {
       vacantes: 1,
       urgencia: 'Media',
       sueldoRango: '$20,000 – $26,000 MXN',
-      detalle: 'Coordinación de primaria y secundaria, con experiencia en planeación y atención a padres de familia.',
+      detalle:
+        'Coordinación de primaria y secundaria, con experiencia en planeación y atención a padres de familia.',
       estado: 'recibida',
       fecha: sumarDias(hoy, -1),
     },
@@ -306,7 +519,9 @@ function crearMensajes(
   vacantes: Vacante[],
   candidatos: Candidato[],
 ): MensajeWhatsApp[] {
-  const vencePronto = vacantes.find((v) => v.empresaId === 'emp-03' && v.avisosEnviados.includes(5));
+  const vencePronto = vacantes.find(
+    (v) => v.empresaId === 'emp-03' && v.avisosEnviados.includes(5),
+  );
   const paraCandidato = candidatos.find((c) => c.sector === 'salud');
   const vacSalud = vacantes.find((v) => v.empresaId === 'emp-01');
   const mensajes: MensajeWhatsApp[] = [
@@ -315,8 +530,12 @@ function crearMensajes(
       para: 'empresa',
       destinatarioId: 'emp-01',
       regla: 'RN-07',
-      texto: 'Hospital Santa Fe Norte: llegó un candidato nuevo a tu vacante de enfermería. Revísalo cuando quieras.',
-      boton: { texto: 'Ver postulantes', ruta: `/empresa/vacantes/${vacSalud?.id ?? 'vac-01'}/postulantes` },
+      texto:
+        'Hospital Santa Fe Norte: llegó un candidato nuevo a tu vacante de enfermería. Revísalo cuando quieras.',
+      boton: {
+        texto: 'Ver postulantes',
+        ruta: `/empresa/vacantes/${vacSalud?.id ?? 'vac-01'}/postulantes`,
+      },
       hora: `${sumarDias(hoy, -2)}T10:15`,
       leido: true,
     },

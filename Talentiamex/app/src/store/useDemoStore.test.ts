@@ -27,7 +27,11 @@ describe('estado inicial', () => {
 describe('flujo del guion', () => {
   it('Mariana y la clínica: registro, vacante, aviso y postulación', () => {
     const a = acciones();
-    const mariana = a.registrarCandidato({ nombre: 'Mariana López', celular: '55 1234 5678', correo: 'mariana@correo.mx' });
+    const mariana = a.registrarCandidato({
+      nombre: 'Mariana López',
+      celular: '55 1234 5678',
+      correo: 'mariana@correo.mx',
+    });
     acciones().guardarPasoCv(1, {
       zona: 'Iztapalapa',
       sector: 'salud',
@@ -80,18 +84,30 @@ describe('flujo del guion', () => {
     const q = vacante?.preguntas[0]?.id ?? '';
     const r = acciones().postularse(vacanteId ?? '', { [q]: true });
     expect(r.ok).toBe(true);
-    expect(acciones().postularse(vacanteId ?? '', { [q]: true })).toEqual({ ok: false, motivo: 'duplicada' });
-    expect(acciones().mensajes.filter((m) => m.regla === 'RN-07' && m.destinatarioId === clinica)).toHaveLength(1);
+    expect(acciones().postularse(vacanteId ?? '', { [q]: true })).toEqual({
+      ok: false,
+      motivo: 'duplicada',
+    });
+    expect(
+      acciones().mensajes.filter((m) => m.regla === 'RN-07' && m.destinatarioId === clinica),
+    ).toHaveLength(1);
 
     acciones().entrarComo('empresa', clinica);
     expect(kpisEmpresa(acciones(), clinica).postulantesNuevos).toBe(1);
   });
 
   it('no se postula con CV incompleto', () => {
-    const id = acciones().registrarCandidato({ nombre: 'Ana', celular: '55 0000 0000', correo: 'a@a.mx' });
+    const id = acciones().registrarCandidato({
+      nombre: 'Ana',
+      celular: '55 0000 0000',
+      correo: 'a@a.mx',
+    });
     expect(id).toBeTruthy();
     const vacante = acciones().vacantes.find((v) => v.estado === 'activa');
-    expect(acciones().postularse(vacante?.id ?? '', {})).toEqual({ ok: false, motivo: 'cv_incompleto' });
+    expect(acciones().postularse(vacante?.id ?? '', {})).toEqual({
+      ok: false,
+      motivo: 'cv_incompleto',
+    });
   });
 });
 

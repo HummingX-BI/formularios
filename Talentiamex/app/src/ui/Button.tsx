@@ -51,47 +51,46 @@ function Contenido({ cargando, icono: Icono, children }: ContenidoProps) {
 }
 
 /** Botón de la plataforma. Con `to` se comporta como enlace con el mismo aspecto. */
-export const Button = forwardRef<HTMLButtonElement, BotonProps | EnlaceProps>(function Button(
-  props,
-  ref,
-) {
-  const { variante = 'primario', icono, cargando, anchoCompleto, children, className } = props;
-  const clases = cn(BASE, VARIANTES[variante], anchoCompleto && 'w-full', className);
+export const Button = forwardRef<HTMLButtonElement, BotonProps | EnlaceProps>(
+  function Button(props, ref) {
+    const { variante = 'primario', icono, cargando, anchoCompleto, children, className } = props;
+    const clases = cn(BASE, VARIANTES[variante], anchoCompleto && 'w-full', className);
 
-  if (props.to !== undefined) {
+    if (props.to !== undefined) {
+      return (
+        <Link to={props.to} className={clases} onClick={props.onClick}>
+          <Contenido cargando={cargando} icono={icono}>
+            {children}
+          </Contenido>
+        </Link>
+      );
+    }
+
+    const {
+      variante: _v,
+      icono: _i,
+      cargando: _c,
+      anchoCompleto: _a,
+      className: _cn,
+      children: _ch,
+      to: _to,
+      type = 'button',
+      disabled,
+      ...resto
+    } = props;
     return (
-      <Link to={props.to} className={clases} onClick={props.onClick}>
+      <button
+        ref={ref}
+        type={type}
+        className={clases}
+        disabled={disabled === true || cargando === true}
+        aria-busy={cargando}
+        {...resto}
+      >
         <Contenido cargando={cargando} icono={icono}>
           {children}
         </Contenido>
-      </Link>
+      </button>
     );
-  }
-
-  const {
-    variante: _v,
-    icono: _i,
-    cargando: _c,
-    anchoCompleto: _a,
-    className: _cn,
-    children: _ch,
-    to: _to,
-    type = 'button',
-    disabled,
-    ...resto
-  } = props;
-  return (
-    <button
-      ref={ref}
-      type={type}
-      className={clases}
-      disabled={disabled === true || cargando === true}
-      aria-busy={cargando}
-      {...resto}
-    >
-      <Contenido cargando={cargando} icono={icono}>
-        {children}
-      </Contenido>
-    </button>
-  );
-});
+  },
+);
