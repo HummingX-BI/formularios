@@ -26,7 +26,7 @@ de la presentación (`docs/10-guion-demo.md`) y van primero. Si el tiempo no alc
 - [x] P03 Constructor de CV por pasos **[guion]**
 - [x] P04 Plantillas y vista previa (3 plantillas) **[guion]**
 - [x] P05 Pago y descarga del PDF **[guion]**
-- [ ] P06 Buscar vacantes **[guion]**
+- [x] P06 Buscar vacantes **[guion]**
 - [ ] P07 Detalle de vacante y postulación con preguntas de descarte **[guion]**
 - [ ] P08 Mis postulaciones
 
