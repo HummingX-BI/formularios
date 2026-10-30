@@ -163,6 +163,12 @@ export function WhatsAppSimulator({ onBoton }: SimuladorProps) {
   );
   const escribiendo = escribiendoPara === `${vista}:${destinatarioId}`;
 
+  // Lo que ya se ve en el chat abierto cuenta como leído.
+  const marcarLeidos = useDemoStore((s) => s.marcarLeidos);
+  useEffect(() => {
+    if (abierto && destinatarioId && !escribiendo) marcarLeidos(vista, destinatarioId);
+  }, [abierto, destinatarioId, vista, escribiendo, chat.length, marcarLeidos]);
+
   const fin = useRef<HTMLDivElement>(null);
   useEffect(() => {
     fin.current?.scrollIntoView({ block: 'end' });

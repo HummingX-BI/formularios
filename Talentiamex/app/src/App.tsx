@@ -2,7 +2,9 @@ import { lazy, Suspense } from 'react';
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AdminLayout, CandidatoLayout, EmpresaLayout, PublicLayout } from '@/layouts';
 import { RequireRole } from '@/RequireRole';
+import { AvisosWhatsApp } from '@/demo/AvisosWhatsApp';
 import { DemoPanel } from '@/demo/DemoPanel';
+import { abrirDesdeMensaje } from '@/demo/sesiones';
 import { WhatsAppSimulator } from '@/demo/WhatsAppSimulator';
 import { useDemoUi } from '@/demo/useDemoUi';
 import { PhoneFrame, ToastProvider } from '@/ui';
@@ -109,7 +111,8 @@ export default function App() {
     <ToastProvider>
       {vistaCelular && !enMarco ? <VistaCelular /> : <Rutas />}
       {!enMarco && <DemoPanel />}
-      {!enMarco && <WhatsAppSimulator />}
+      {!enMarco && <WhatsAppSimulator onBoton={abrirDesdeMensaje} />}
+      {!enMarco && <AvisosWhatsApp />}
     </ToastProvider>
   );
 }

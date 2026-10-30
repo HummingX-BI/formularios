@@ -30,6 +30,7 @@ export function DemoPanel() {
   const [abierto, setAbierto] = useState(false);
   const [confirmando, setConfirmando] = useState(false);
   const hoy = useDemoStore((s) => s.hoy);
+  const noLeidos = useDemoStore((s) => s.mensajes.filter((m) => !m.leido).length);
   const avanzarDias = useDemoStore((s) => s.avanzarDias);
   const { vistaCelular, panelVisible, alternarVistaCelular, alternarPanelVisible, abrirWhatsApp } =
     useDemoUi();
@@ -138,6 +139,11 @@ export function DemoPanel() {
                 }}
               >
                 <MessageCircle size={18} aria-hidden="true" /> Abrir WhatsApp
+                {noLeidos > 0 && (
+                  <span className="ml-auto rounded-chip bg-error px-2 py-0.5 text-xs font-bold text-white">
+                    {noLeidos}
+                  </span>
+                )}
               </button>
               <button type="button" className={BOTON_PANEL} disabled>
                 <Sparkles size={18} aria-hidden="true" /> Autollenar (próximamente)
@@ -154,9 +160,14 @@ export function DemoPanel() {
           onClick={() => setAbierto((v) => !v)}
           aria-label="Panel de demo"
           aria-expanded={abierto}
-          className="flex h-12 w-12 items-center justify-center rounded-chip bg-texto text-white opacity-70 shadow-2 hover:opacity-100 focus-visible:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-marca"
+          className="relative flex h-12 w-12 items-center justify-center rounded-chip bg-texto text-white opacity-70 shadow-2 hover:opacity-100 focus-visible:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-marca"
         >
           <Presentation size={22} aria-hidden="true" />
+          {noLeidos > 0 && (
+            <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-chip bg-error px-1 text-xs font-bold text-white">
+              {noLeidos}
+            </span>
+          )}
         </button>
       </div>
 

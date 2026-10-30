@@ -1,5 +1,7 @@
 import { CLINICA, MARIANA } from '@/data/personajes';
 import { useDemoStore } from '@/store/useDemoStore';
+import type { MensajeWhatsApp } from '@/types';
+import { useDemoUi } from './useDemoUi';
 
 /** Navega la app visible: la de la vista celular si está abierta, o la de la ventana. */
 export function navegarA(ruta: string): void {
@@ -56,4 +58,16 @@ export function entrarComoAdmin(): void {
 export function reiniciarDemo(): void {
   useDemoStore.getState().resetDemo();
   navegarA('/');
+}
+
+/** Toca el botón de un mensaje: entra como su destinatario si hace falta y abre su pantalla. */
+export function abrirDesdeMensaje(mensaje: MensajeWhatsApp): void {
+  const s = useDemoStore.getState();
+  const rol = mensaje.para === 'empresa' ? 'empresa' : 'candidato';
+  if (s.sesion?.rol !== rol || s.sesion.id !== mensaje.destinatarioId) {
+    s.entrarComo(rol, mensaje.destinatarioId);
+  }
+  useDemoStore.getState().marcarLeidos(mensaje.para, mensaje.destinatarioId);
+  useDemoUi.getState().cerrarWhatsApp();
+  if (mensaje.boton) navegarA(mensaje.boton.ruta);
 }

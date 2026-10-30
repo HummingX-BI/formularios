@@ -15,7 +15,7 @@ de la presentación (`docs/10-guion-demo.md`) y van primero. Si el tiempo no alc
 - [x] Layouts por rol: público, candidato (barra inferior en móvil), empresa (barra lateral), administrador
 - [x] Router (HashRouter) con todas las rutas de `docs/09` apuntando a pantallas vacías con su título
 - [x] Store Zustand con datos semilla (`docs/08-datos-mock.md`), persistencia en `localStorage` y acción `resetDemo()`
-- [ ] Panel de demo flotante: cambiar de rol, vista celular, abrir simulador de WhatsApp, avanzar días, reiniciar _(listo salvo el simulador de WhatsApp, prompt 37)_
+- [x] Panel de demo flotante: cambiar de rol, vista celular, abrir simulador de WhatsApp, avanzar días, reiniciar
 - [x] Scripts `iniciar.sh` e `iniciar.bat` (como en `../demo-pantera`)
 
 ## Hito 1 · Público y acceso
@@ -40,7 +40,7 @@ de la presentación (`docs/10-guion-demo.md`) y van primero. Si el tiempo no alc
 
 ## Hito 4 · Avisos por WhatsApp
 - [x] P18 Simulador de WhatsApp (celular con conversación) **[guion]**
-- [ ] Disparadores: postulación nueva → aviso a empresa; vacante publicada que coincide → aviso a candidato;
+- [x] Disparadores: postulación nueva → aviso a empresa; vacante publicada que coincide → aviso a candidato;
       "avanzar días" en panel de demo → recordatorios 5, 3 y 0 días y suscripción por vencer
 
 ## Hito 5 · Administrador
