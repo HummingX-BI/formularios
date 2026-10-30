@@ -10,11 +10,11 @@ de la presentación (`docs/10-guion-demo.md`) y van primero. Si el tiempo no alc
 ## Hito 0 · Base del proyecto
 - [x] Crear `app/` con Vite + React 18 + TS + Tailwind 3 (ver `docs/09-arquitectura-demo.md`)
 - [x] Tokens de diseño en `app/src/styles/tokens.css` y `tailwind.config.js` (`docs/07-diseno.md`)
-- [ ] Componentes base en `app/src/ui/`: Button, Card, Badge, SectorChip, Stepper, ProgressBar, Input, Select,
+- [x] Componentes base en `app/src/ui/`: Button, Card, Badge, SectorChip, Stepper, ProgressBar, Input, Select,
       Textarea, Modal, Toast, EmptyState, Avatar, PhoneFrame
 - [ ] Layouts por rol: público, candidato (barra inferior en móvil), empresa (barra lateral), administrador
 - [ ] Router (HashRouter) con todas las rutas de `docs/09` apuntando a pantallas vacías con su título
-- [ ] Store Zustand con datos semilla (`docs/08-datos-mock.md`), persistencia en `localStorage` y acción `resetDemo()`
+- [x] Store Zustand con datos semilla (`docs/08-datos-mock.md`), persistencia en `localStorage` y acción `resetDemo()`
 - [ ] Panel de demo flotante: cambiar de rol, vista celular, abrir simulador de WhatsApp, avanzar días, reiniciar
 - [ ] Scripts `iniciar.sh` e `iniciar.bat` (como en `../demo-pantera`)
 
