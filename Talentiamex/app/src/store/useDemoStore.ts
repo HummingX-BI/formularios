@@ -533,3 +533,10 @@ export const useDemoStore = create<DemoStore>()(
     },
   ),
 );
+
+// Mantiene sincronizadas las dos ventanas de la demo (la principal y la vista celular).
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', (e) => {
+    if (e.key === CLAVE_STORE) void useDemoStore.persist.rehydrate();
+  });
+}
