@@ -14,13 +14,12 @@ import type {
 } from '@/types';
 import { crearRng, type Rng } from '@/lib/rng';
 import { sumarDias } from '@/lib/fechas';
-import { HOY_INICIAL } from './config';
+import { HOY_INICIAL, VIGENCIA_VACANTE_DIAS } from './config';
 import { SECTORES } from './sectores';
 import { ZONAS } from './zonas';
 import { preguntasPorSector } from './preguntasSugeridas';
 
 const SEMILLA_FIJA = 20261030;
-const VIGENCIA_VACANTE_DIAS = 30;
 
 const NOMBRES_M = [
   'Sofía', 'Valeria', 'Camila', 'Ximena', 'Daniela', 'Fernanda', 'Andrea', 'Paola', 'Itzel',
