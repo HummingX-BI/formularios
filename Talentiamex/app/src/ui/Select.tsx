@@ -13,8 +13,8 @@ interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'id'
   opciones: OpcionSelect[];
   /** Texto de la opción vacía inicial. */
   placeholder?: string;
-  ayuda?: string;
-  error?: string;
+  ayuda?: string | undefined;
+  error?: string | undefined;
 }
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select(

@@ -3,7 +3,7 @@ import { cn } from '@/lib/cn';
 
 interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'id' | 'type'> {
   etiqueta: string;
-  ayuda?: string;
+  ayuda?: string | undefined;
 }
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(

@@ -19,13 +19,24 @@ export type ResultadoAuth =
  * Cualquier correo y contraseña válidos entran. Si el correo coincide con una cuenta
  * del rol, entra a ella; si no, entra a la primera cuenta de ese rol.
  */
-export async function entrar(correo: string, contrasena: string, rol: Rol): Promise<ResultadoAuth> {
+export async function entrar(
+  correo: string,
+  contrasena: string,
+  rolPedido?: Rol,
+): Promise<ResultadoAuth> {
   if (!correoValido(correo)) return { ok: false, error: 'correo' };
   if (!contrasenaValida(contrasena)) return { ok: false, error: 'contrasena' };
   await cargaSimulada();
 
   const s = useDemoStore.getState();
   const buscado = correo.trim().toLowerCase();
+  const rol: Rol =
+    rolPedido ??
+    (s.candidatos.some((c) => c.correo.toLowerCase() === buscado)
+      ? 'candidato'
+      : s.empresas.some((e) => e.correo.toLowerCase() === buscado)
+        ? 'empresa'
+        : 'candidato');
   let id = 'admin';
   if (rol === 'candidato') {
     id =

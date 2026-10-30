@@ -5,8 +5,8 @@ import { CLASE_CONTROL, describedBy } from './estilosCampo';
 
 interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'id'> {
   etiqueta: string;
-  ayuda?: string;
-  error?: string;
+  ayuda?: string | undefined;
+  error?: string | undefined;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(

@@ -4,8 +4,8 @@ import { cn } from '@/lib/cn';
 interface CampoProps {
   id: string;
   etiqueta: string;
-  ayuda?: string;
-  error?: string;
+  ayuda?: string | undefined;
+  error?: string | undefined;
   children: ReactNode;
   className?: string;
 }

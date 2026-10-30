@@ -20,7 +20,7 @@ de la presentación (`docs/10-guion-demo.md`) y van primero. Si el tiempo no alc
 
 ## Hito 1 · Público y acceso
 - [x] P01 Inicio **[guion]**
-- [ ] P02 Registro e inicio de sesión por rol **[guion]**
+- [x] P02 Registro e inicio de sesión por rol **[guion]**
 
 ## Hito 2 · Candidato
 - [ ] P03 Constructor de CV por pasos **[guion]**

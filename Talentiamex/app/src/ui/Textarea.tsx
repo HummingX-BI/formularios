@@ -5,8 +5,8 @@ import { CLASE_CONTROL, describedBy } from './estilosCampo';
 
 interface TextareaProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'id'> {
   etiqueta: string;
-  ayuda?: string;
-  error?: string;
+  ayuda?: string | undefined;
+  error?: string | undefined;
 }
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea(
