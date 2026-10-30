@@ -14,6 +14,7 @@ import {
 import { fechaCorta } from '@/lib/formato';
 import { useDemoStore } from '@/store/useDemoStore';
 import { Button, Modal, useToast } from '@/ui';
+import { autollenar } from './autollenar';
 import { entrarComoAdmin, entrarComoClinica, entrarComoMariana, reiniciarDemo } from './sesiones';
 import { useDemoUi } from './useDemoUi';
 
@@ -35,6 +36,7 @@ export function DemoPanel() {
   const { vistaCelular, panelVisible, alternarVistaCelular, alternarPanelVisible, abrirWhatsApp } =
     useDemoUi();
   const toast = useToast();
+  const [llenando, setLlenando] = useState(false);
 
   useEffect(() => {
     const alTeclear = (e: KeyboardEvent) => {
@@ -53,6 +55,15 @@ export function DemoPanel() {
   const avanzar = (dias: number) => {
     avanzarDias(dias);
     toast.info(dias === 1 ? 'Avanzó 1 día' : `Avanzaron ${dias} días`);
+  };
+
+  const rellenar = async () => {
+    setLlenando(true);
+    setAbierto(false);
+    const r = await autollenar();
+    setLlenando(false);
+    if (r.ok) toast.exito(r.mensaje);
+    else toast.info(r.mensaje);
   };
 
   const confirmarReinicio = () => {
@@ -145,8 +156,13 @@ export function DemoPanel() {
                   </span>
                 )}
               </button>
-              <button type="button" className={BOTON_PANEL} disabled>
-                <Sparkles size={18} aria-hidden="true" /> Autollenar (próximamente)
+              <button
+                type="button"
+                className={BOTON_PANEL}
+                disabled={llenando}
+                onClick={() => void rellenar()}
+              >
+                <Sparkles size={18} aria-hidden="true" /> Autollenar formulario
               </button>
               <button type="button" className={BOTON_PANEL} onClick={() => setConfirmando(true)}>
                 <RotateCcw size={18} aria-hidden="true" /> Reiniciar demo
