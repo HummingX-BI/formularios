@@ -27,3 +27,4 @@ export { TransicionPantalla } from './TransicionPantalla';
 export { SelectorSector } from './SelectorSector';
 export { FotoCircular } from './FotoCircular';
 export { GrupoOpciones } from './GrupoOpciones';
+export { ChipsSeleccion } from './ChipsSeleccion';

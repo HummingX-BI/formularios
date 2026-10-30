@@ -3,8 +3,10 @@ import { Navigate, useParams } from 'react-router-dom';
 import { useDemoStore } from '@/store/useDemoStore';
 import { Paso1Datos } from './cv/Paso1Datos';
 import { Paso2Busqueda } from './cv/Paso2Busqueda';
+import { Paso3Experiencia } from './cv/Paso3Experiencia';
+import { Paso4Estudios } from './cv/Paso4Estudios';
+import { Paso5Habilidades } from './cv/Paso5Habilidades';
 import { TOTAL_PASOS_CV } from './cv/pasosCv';
-import { ScreenHeader } from '@/ui';
 
 export default function P03ConstructorCv() {
   const { n } = useParams();
@@ -23,7 +25,11 @@ export default function P03ConstructorCv() {
       return <Paso1Datos key={candidato.id} candidato={candidato} />;
     case 2:
       return <Paso2Busqueda key={candidato.id} candidato={candidato} />;
+    case 3:
+      return <Paso3Experiencia key={candidato.id} candidato={candidato} />;
+    case 4:
+      return <Paso4Estudios key={candidato.id} candidato={candidato} />;
     default:
-      return <ScreenHeader titulo={`Paso ${paso} de ${TOTAL_PASOS_CV}`} subtitulo="Próximamente" />;
+      return <Paso5Habilidades key={candidato.id} candidato={candidato} />;
   }
 }

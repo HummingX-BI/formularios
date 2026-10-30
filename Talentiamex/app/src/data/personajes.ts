@@ -31,7 +31,7 @@ export const MARIANA = {
       },
     ],
     sinExperiencia: false,
-    estudios: { nivel: 'Licenciatura en Enfermería' },
+    estudios: { nivel: 'Licenciatura', institucion: 'Licenciatura en Enfermería' },
     documentos: ['Cédula profesional'],
     habilidades: ['Toma de signos vitales', 'Aplicación de inyectables', 'Atención al paciente'],
     resumen:

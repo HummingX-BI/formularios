@@ -23,7 +23,7 @@ de la presentación (`docs/10-guion-demo.md`) y van primero. Si el tiempo no alc
 - [x] P02 Registro e inicio de sesión por rol **[guion]**
 
 ## Hito 2 · Candidato
-- [ ] P03 Constructor de CV por pasos **[guion]**
+- [x] P03 Constructor de CV por pasos **[guion]**
 - [ ] P04 Plantillas y vista previa (3 plantillas) **[guion]**
 - [ ] P05 Pago y descarga del PDF **[guion]**
 - [ ] P06 Buscar vacantes **[guion]**
