@@ -28,7 +28,7 @@ de la presentación (`docs/10-guion-demo.md`) y van primero. Si el tiempo no alc
 - [x] P05 Pago y descarga del PDF **[guion]**
 - [x] P06 Buscar vacantes **[guion]**
 - [x] P07 Detalle de vacante y postulación con preguntas de descarte **[guion]**
-- [ ] P08 Mis postulaciones
+- [x] P08 Mis postulaciones
 
 ## Hito 3 · Empresa
 - [ ] P09 Planes y prueba gratis **[guion]**

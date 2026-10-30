@@ -38,9 +38,20 @@ const POSTULACION: Record<EstadoPostulacion, { tono: TonoBadge; texto: string }>
   descartado: { tono: 'rojo', texto: 'Descartado' },
 };
 
-export function BadgePostulacion({ estado }: { estado: EstadoPostulacion }) {
+/** Con `paraCandidato`, el descartado se muestra como "No seleccionado" (docs/06 §P08). */
+export function BadgePostulacion({
+  estado,
+  paraCandidato = false,
+}: {
+  estado: EstadoPostulacion;
+  paraCandidato?: boolean;
+}) {
   const { tono, texto } = POSTULACION[estado];
-  return <Badge tono={tono}>{texto}</Badge>;
+  return (
+    <Badge tono={tono}>
+      {paraCandidato && estado === 'descartado' ? 'No seleccionado' : texto}
+    </Badge>
+  );
 }
 
 /** Resultado de las preguntas de descarte (RD-03). */

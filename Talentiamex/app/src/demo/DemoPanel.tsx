@@ -61,7 +61,7 @@ export function DemoPanel() {
 
   return (
     <>
-      <div className="fixed bottom-4 left-4 z-50 flex flex-col items-start gap-2">
+      <div className="fixed bottom-36 left-2 z-50 md:bottom-4 md:left-4 flex flex-col items-start gap-2">
         {abierto && (
           <section
             aria-label="Panel de demo"
