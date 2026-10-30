@@ -57,6 +57,11 @@ export function DemoPanel() {
     toast.info(dias === 1 ? 'Avanzó 1 día' : `Avanzaron ${dias} días`);
   };
 
+  const cambiarRol = (entrar: () => void) => {
+    entrar();
+    setAbierto(false);
+  };
+
   const rellenar = async () => {
     setLlenando(true);
     setAbierto(false);
@@ -101,13 +106,25 @@ export function DemoPanel() {
               Cambiar de rol
             </h3>
             <div className="flex flex-col gap-2">
-              <button type="button" className={BOTON_PANEL} onClick={entrarComoMariana}>
+              <button
+                type="button"
+                className={BOTON_PANEL}
+                onClick={() => cambiarRol(entrarComoMariana)}
+              >
                 <UserRound size={18} aria-hidden="true" /> Candidata · Mariana
               </button>
-              <button type="button" className={BOTON_PANEL} onClick={entrarComoClinica}>
+              <button
+                type="button"
+                className={BOTON_PANEL}
+                onClick={() => cambiarRol(entrarComoClinica)}
+              >
                 <Building2 size={18} aria-hidden="true" /> Empresa · Clínica San Rafael
               </button>
-              <button type="button" className={BOTON_PANEL} onClick={entrarComoAdmin}>
+              <button
+                type="button"
+                className={BOTON_PANEL}
+                onClick={() => cambiarRol(entrarComoAdmin)}
+              >
                 <Shield size={18} aria-hidden="true" /> Administrador
               </button>
             </div>

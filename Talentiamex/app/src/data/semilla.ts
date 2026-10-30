@@ -285,7 +285,7 @@ function crearEmpresas(hoy: string, rng: Rng): Empresa[] {
       tipo: 'hospital',
       contacto: 'Lic. Patricia Aldama',
       correo: 'rh@santafenorte.com.mx',
-      plan: { id: 'pro', estado: 'activo', venceEl: sumarDias(hoy, 21) },
+      plan: { id: 'pro', estado: 'activo', venceEl: sumarDias(hoy, 75) },
     },
     {
       id: 'emp-02',
@@ -321,7 +321,7 @@ function crearEmpresas(hoy: string, rng: Rng): Empresa[] {
       tipo: 'escuela',
       contacto: 'Mtra. Sandra Ibarra',
       correo: 'direccion@montealban.edu.mx',
-      plan: { id: 'basico', estado: 'activo', venceEl: sumarDias(hoy, 18) },
+      plan: { id: 'basico', estado: 'activo', venceEl: sumarDias(hoy, 60) },
     },
     {
       id: 'emp-06',

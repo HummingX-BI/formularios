@@ -26,3 +26,4 @@ Agrega una fila por cada decisión no obvia: de producto, de diseño o técnica.
 | 2026-10-30 | Se agrega `@playwright/test` como dependencia de desarrollo (`npm run test:e2e`) | Prompt 45: probar el guion de la demo sobre `npm run preview` con el Chromium ya instalado | HummingX |
 | 2026-10-30 | Seis colores nuevos `--color-sector-1…6` en `tokens.css` para los sectores que agrega el administrador en P17 | Los colores van en los tokens (regla 12); el color suave se calcula con `color-mix` | HummingX |
 | 2026-10-30 | "Contactar" (P12 y P13) simula el envío por WhatsApp con un aviso; no se agrega al chat de P18 | P18 solo define las plantillas RN-06, RN-07, RN-08 y RN-09 | HummingX |
+| 2026-10-30 | Los planes activos de la semilla (Hospital Santa Fe Norte y Colegio Monte Albán) vencen a 75 y 60 días | Para que "Avanzar 30 días" (paso 7) no los venza y el paso 8 muestre empresas 3 de 3 | HummingX |

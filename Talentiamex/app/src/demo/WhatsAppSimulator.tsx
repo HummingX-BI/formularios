@@ -102,6 +102,7 @@ export function WhatsAppSimulator({ onBoton }: SimuladorProps) {
   const cola = useRef<MensajeWhatsApp[]>([]);
   const procesando = useRef(false);
   const ultimaLongitud = useRef(mensajes.length);
+  const chatActual = useRef('');
 
   useEffect(() => {
     const alRedimensionar = () => setAltoVentana(window.innerHeight);
@@ -114,6 +115,15 @@ export function WhatsAppSimulator({ onBoton }: SimuladorProps) {
   useEffect(() => {
     const procesar = () => {
       if (procesando.current) return;
+      // Los mensajes de otros chats se muestran enseguida; solo el chat abierto "escribe".
+      const deOtros: string[] = [];
+      while (cola.current.length > 0) {
+        const primero = cola.current[0];
+        if (!primero || `${primero.para}:${primero.destinatarioId}` === chatActual.current) break;
+        deOtros.push(primero.id);
+        cola.current.shift();
+      }
+      if (deOtros.length > 0) setRevelados((r) => new Set([...r, ...deOtros]));
       const siguiente = cola.current.shift();
       if (!siguiente) {
         setEscribiendoPara(null);
@@ -157,6 +167,10 @@ export function WhatsAppSimulator({ onBoton }: SimuladorProps) {
     vista === 'empresa'
       ? empresas.find((e) => e.id === destinatarioId)?.contacto
       : candidatos.find((c) => c.id === destinatarioId)?.nombre;
+
+  useEffect(() => {
+    chatActual.current = `${vista}:${destinatarioId ?? ''}`;
+  }, [vista, destinatarioId]);
 
   const chat = mensajes.filter(
     (m) => m.para === vista && m.destinatarioId === destinatarioId && revelados.has(m.id),
