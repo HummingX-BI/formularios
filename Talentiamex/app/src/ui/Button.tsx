@@ -43,7 +43,7 @@ function Contenido({ cargando, icono: Icono, children }: ContenidoProps) {
       {cargando ? (
         <Loader2 className="animate-spin" size={20} aria-hidden="true" />
       ) : (
-        Icono && <Icono size={20} aria-hidden="true" />
+        Icono && <Icono size={20} className="shrink-0" aria-hidden="true" />
       )}
       {children}
     </>

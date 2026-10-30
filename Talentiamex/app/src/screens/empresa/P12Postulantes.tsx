@@ -143,25 +143,44 @@ function TarjetaPostulante({
         )}
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap">
         {p.estado !== 'preseleccionado' && (
-          <Button icono={Star} onClick={() => onEstado('preseleccionado')}>
+          <Button
+            icono={Star}
+            onClick={() => onEstado('preseleccionado')}
+            className="col-span-3 sm:col-auto"
+          >
             Preseleccionar
           </Button>
         )}
         {p.estado !== 'descartado' ? (
-          <Button variante="secundario" icono={UserX} onClick={() => onEstado('descartado')}>
+          <Button
+            variante="secundario"
+            icono={UserX}
+            onClick={() => onEstado('descartado')}
+            className="!px-2 sm:!px-5"
+          >
             Descartar
           </Button>
         ) : (
-          <Button variante="secundario" icono={Undo2} onClick={() => onEstado('en_revision')}>
+          <Button
+            variante="secundario"
+            icono={Undo2}
+            onClick={() => onEstado('en_revision')}
+            className="!px-2 sm:!px-5"
+          >
             Volver a revisión
           </Button>
         )}
-        <Button variante="fantasma" icono={FileText} onClick={onVerCv}>
+        <Button variante="fantasma" icono={FileText} onClick={onVerCv} className="!px-2 sm:!px-5">
           Ver CV
         </Button>
-        <Button variante="fantasma" icono={MessageCircle} onClick={onContactar}>
+        <Button
+          variante="fantasma"
+          icono={MessageCircle}
+          onClick={onContactar}
+          className="!px-2 sm:!px-5"
+        >
           Contactar
         </Button>
       </div>

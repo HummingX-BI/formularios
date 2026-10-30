@@ -232,7 +232,7 @@ export default function P10Panel() {
                         <VigenciaBar dias={diasRestantes(v, hoy)} />
                       </div>
                     ) : null}
-                    <div className="flex flex-wrap gap-2 lg:max-w-xs lg:justify-end">
+                    <div className="flex flex-wrap gap-2 lg:max-w-md lg:justify-end">
                       <Button variante="secundario" to={`/empresa/vacantes/${v.id}/postulantes`}>
                         Ver postulantes
                       </Button>

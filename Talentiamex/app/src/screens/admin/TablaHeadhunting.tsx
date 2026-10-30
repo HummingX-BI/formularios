@@ -108,7 +108,7 @@ export function TablaHeadhunting() {
                   </div>
                   <p className="text-base text-texto-2">{empresaDe(s)}</p>
                   <p className="text-base text-texto">
-                    {s.urgencia} · enviada el {fechaCorta(s.fecha)}
+                    Urgencia: {s.urgencia} · enviada el {fechaCorta(s.fecha)}
                   </p>
                   {s.reclutador && (
                     <p className="text-base text-texto">

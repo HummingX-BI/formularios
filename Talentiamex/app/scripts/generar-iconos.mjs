@@ -50,7 +50,10 @@ function png(tamano) {
       const suma = [0, 0, 0];
       for (let sy = 0; sy < SUBMUESTRAS; sy++) {
         for (let sx = 0; sx < SUBMUESTRAS; sx++) {
-          const c = colorEn((px + (sx + 0.5) / SUBMUESTRAS) / tamano, (py + (sy + 0.5) / SUBMUESTRAS) / tamano);
+          const c = colorEn(
+            (px + (sx + 0.5) / SUBMUESTRAS) / tamano,
+            (py + (sy + 0.5) / SUBMUESTRAS) / tamano,
+          );
           suma[0] += c[0];
           suma[1] += c[1];
           suma[2] += c[2];

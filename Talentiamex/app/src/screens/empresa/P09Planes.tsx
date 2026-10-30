@@ -139,17 +139,17 @@ export default function P09Planes() {
       <section aria-label="Comparación de planes" className="mt-8">
         <h2 className="mb-3 font-titulo text-xl font-semibold text-texto">Compara los planes</h2>
         <div className="overflow-x-auto rounded-tarjeta bg-superficie shadow-1">
-          <table className="w-full min-w-[30rem] border-collapse text-left text-base">
+          <table className="w-full border-collapse text-left text-sm md:text-base">
             <thead>
               <tr className="border-b border-borde">
-                <th scope="col" className="p-3 text-sm font-semibold text-texto-2">
+                <th scope="col" className="p-2 md:p-3 text-sm font-semibold text-texto-2">
                   Incluye
                 </th>
                 {planes.map((p) => (
                   <th
                     key={p.id}
                     scope="col"
-                    className="p-3 text-center font-titulo font-semibold text-texto"
+                    className="p-2 md:p-3 text-center font-titulo font-semibold text-texto"
                   >
                     {p.nombre}
                   </th>
@@ -158,22 +158,22 @@ export default function P09Planes() {
             </thead>
             <tbody>
               <tr className="border-b border-borde">
-                <th scope="row" className="p-3 font-medium text-texto">
+                <th scope="row" className="p-2 md:p-3 font-medium text-texto">
                   Vacantes activas
                 </th>
                 {planes.map((p) => (
-                  <td key={p.id} className="p-3 text-center font-semibold text-texto">
+                  <td key={p.id} className="p-2 md:p-3 text-center font-semibold text-texto">
                     {limite(p)}
                   </td>
                 ))}
               </tr>
               {COMPARATIVA.map((fila) => (
                 <tr key={fila.etiqueta} className="border-b border-borde last:border-b-0">
-                  <th scope="row" className="p-3 font-medium text-texto">
+                  <th scope="row" className="p-2 md:p-3 font-medium text-texto">
                     {fila.etiqueta}
                   </th>
                   {planes.map((p) => (
-                    <td key={p.id} className="p-3 text-center">
+                    <td key={p.id} className="p-2 md:p-3 text-center">
                       {fila.incluido[p.id] ? (
                         <Check size={20} className="mx-auto text-accion" aria-label="Incluido" />
                       ) : (

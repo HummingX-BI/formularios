@@ -33,7 +33,7 @@ export function BarraInferior({ items, oscura = false }: { items: ItemNav[]; osc
           end={exacto === true}
           className={({ isActive }) =>
             cn(
-              'flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 px-1 text-xs font-medium',
+              'flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 px-0.5 text-[11px] font-medium',
               FOCO,
               oscura
                 ? isActive

@@ -1,7 +1,7 @@
 // P15 · HU-8.1, HU-8.4
 import { useMemo } from 'react';
 import { Briefcase, Download, Send, Wallet } from 'lucide-react';
-import { moneda } from '@/lib/formato';
+import { monedaCorta } from '@/lib/formato';
 import { kpisAdmin, postulacionesPorDia, resumenPorSector } from '@/store/selectors';
 import { useDemoStore } from '@/store/useDemoStore';
 import { Card, GoalMeter, KpiCard, ScreenHeader } from '@/ui';
@@ -40,7 +40,7 @@ export default function P15Tablero() {
           icono={Send}
         />
         <KpiCard valor={kpis.cvDescargados} etiqueta="CV descargados" icono={Download} />
-        <KpiCard valor={moneda(kpis.ingresos)} etiqueta="Ingresos de la demo" icono={Wallet} />
+        <KpiCard valor={monedaCorta(kpis.ingresos)} etiqueta="Ingresos (MXN)" icono={Wallet} />
       </section>
 
       <section aria-label="Gráficas" className="mt-6 grid gap-4 lg:grid-cols-5">
