@@ -17,3 +17,4 @@ Agrega una fila por cada decisión no obvia: de producto, de diseño o técnica.
 | 2026-10-28 | El guion cuenta una sola historia: la clínica publica, Mariana recibe el aviso, se postula y la clínica la preselecciona | Conecta todos los módulos y termina con la meta de empresas cumplida en el tablero | HummingX |
 | 2026-10-28 | Panel de demo con autollenado, avanzar días y vista celular | Que el recorrido quepa en 20 min sin teclear en vivo | HummingX |
 | 2026-10-28 | Botón principal siempre verde; colores fijos por sector (Salud azul, Restaurantes naranja, Escuelas violeta) | Responde a "botones con colores y título que va guiando" | HummingX |
+| 2026-10-30 | Tipos auxiliares provisionales: Turno (matutino, vespertino, nocturno, mixto, rotativo), Disponibilidad (inmediata, una semana, dos semanas, un mes), Experiencia (puesto, empresa, desde, hasta, descripción) y PlanId (basico, pro, empresa) | docs/08 los menciona pero no los define | HummingX |
