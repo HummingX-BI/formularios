@@ -11,6 +11,7 @@ Talentiamex/
 ├── PLAN.md                        Plan de trabajo por hitos
 ├── DECISIONS.md                   Registro de decisiones
 ├── CHANGELOG.md                   Cambios por versión
+├── DEPLOY.md                      Cómo publicar la demo
 ├── cuestionario-talentiamex.html  Cuestionario diagnóstico enviado al cliente
 ├── docs/                          Requerimientos, diseño, datos, arquitectura, guion
 │   └── fuentes/                   Convocatoria y respuestas del cliente (originales)
