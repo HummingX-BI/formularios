@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cuestionario | IL Preciso Beauty · HummingX BI</title>
+  <meta name="description" content="Cuestionario para dar a conocer IL Preciso Beauty en internet.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+  <script src="./jspdf.umd.min.js?v=2"></script>
+  <style>
+    :root{--ink:#14202b;--ink-soft:#56626e;--paper:#f5f9fc;--panel:#fff;--line:#dfe7ee;--blue:#0f3550;--blue-dark:#0a2538;--gold:#c9a227;--gold-soft:#fbf5e1;--danger:#c0392b}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 'Montserrat',sans-serif}
+    button,input,textarea,select{font:inherit}
+
+    .top{position:sticky;top:0;z-index:5;background:rgba(245,249,252,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+    .top-in{max-width:760px;margin:auto;padding:13px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+    .brand img{width:28px;max-height:28px;object-fit:contain}
+    .counter{font-size:12px;font-weight:600;color:var(--ink-soft);letter-spacing:.06em}
+    .progress{height:3px;background:var(--line)}.progress i{display:block;height:100%;width:0;background:var(--gold);transition:width .35s}
+
+    main{max-width:760px;margin:auto;padding:0 24px 70px}
+    .hero{text-align:center;padding:60px 12px 38px}
+    .eyebrow{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:0 0 14px}
+    .hero h1{font:500 clamp(36px,7vw,56px)/1.08 'Playfair Display',serif;color:var(--blue);margin:0 auto 16px;letter-spacing:-.01em}
+    .hero h1 em{color:var(--gold)}
+    .hero p{max-width:540px;margin:auto;color:var(--ink-soft);font-size:16px}
+    .intro{background:var(--blue);color:#eaf1f7;padding:22px 26px;margin-bottom:22px;border-radius:10px;border-left:5px solid var(--gold)}
+    .intro strong{color:#fff}.intro p{margin:0}
+
+    .step{display:none;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:32px 32px 28px;box-shadow:0 14px 34px rgba(15,53,80,.06)}
+    .step.active{display:block;animation:rise .35s ease}
+    @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+    .step-head{border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:4px}
+    .step-no{font-size:11px;font-weight:600;color:var(--gold);letter-spacing:.16em;text-transform:uppercase}
+    .step h2{font:500 29px/1.15 'Playfair Display',serif;color:var(--blue);margin:6px 0}
+    .step-head p{color:var(--ink-soft);margin:0;font-size:14px}
+
+    .q{padding:20px 0;border-bottom:1px solid #eef2f6}.q:last-of-type{border-bottom:0}
+    .label{display:block;font-weight:600;margin-bottom:9px}
+    .hint{font-size:12.5px;color:var(--ink-soft);margin:-4px 0 10px}
+    .req{color:var(--danger)}.star{color:var(--gold);margin-right:2px}
+    input[type=text],input[type=tel],input[type=number],textarea{width:100%;border:1px solid #d6e0e8;background:#fafcfd;color:var(--ink);border-radius:8px;padding:12px 13px;outline:none;transition:border .2s,background .2s,box-shadow .2s}
+    textarea{min-height:92px;resize:vertical}
+    input:focus,textarea:focus{border-color:var(--gold);background:#fff;box-shadow:0 0 0 3px rgba(201,162,39,.16)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .sub{font-size:12px;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:6px}
+    .options{display:flex;flex-wrap:wrap;gap:8px}
+    .options label{border:1px solid var(--line);border-radius:999px;padding:9px 15px;cursor:pointer;display:flex;gap:8px;align-items:center;background:#fafcfd;color:var(--ink-soft);font-size:14px;transition:all .15s}
+    .options label:hover{border-color:#c4d2dd}
+    .options label:has(input:checked){border-color:var(--gold);background:var(--gold-soft);color:var(--blue-dark);font-weight:500}
+    .options input{accent-color:var(--gold);margin:0}
+    .options.stack{flex-direction:column}.options.stack label{border-radius:10px}
+    .options + textarea,.options + input{margin-top:10px}
+
+    .nav{display:flex;justify-content:space-between;gap:12px;padding-top:24px}
+    .btn{border:1px solid var(--blue);background:var(--blue);color:#fff;padding:12px 20px;border-radius:8px;cursor:pointer;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+    .btn:hover{background:var(--gold);border-color:var(--gold);color:var(--blue-dark)}
+    .btn.secondary{background:transparent;color:var(--blue)}.btn.secondary:hover{background:var(--gold-soft);color:var(--blue-dark)}
+    .btn:disabled{opacity:.45;cursor:not-allowed}
+    .finish{background:var(--gold-soft);padding:16px 18px;margin:20px 0;color:var(--blue-dark);border-left:4px solid var(--gold);border-radius:6px;font-size:14px}
+    .summary h3{margin:22px 0 8px;font-size:15px;border-bottom:1px solid var(--line);padding-bottom:5px;color:var(--gold);font-weight:600}
+    .summary-row{display:grid;grid-template-columns:38% 62%;gap:15px;padding:10px 0;border-bottom:1px solid #eef2f6;font-size:14px}
+    .summary-row b{font-size:12px;color:var(--ink-soft);font-weight:600}.summary-row span{white-space:pre-wrap}
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+    .completion{text-align:center;padding:22px 8px 10px}.completion img{width:64px;margin:6px auto 18px;display:block}
+    .completion p{max-width:500px;margin:0 auto 18px;color:var(--ink-soft)}.completion .actions{justify-content:center}
+    .note{font-size:13px;color:var(--ink-soft);margin-top:12px}
+    .footer{text-align:center;color:var(--ink-soft);font-size:12px;padding-top:26px}
+
+    @media(max-width:620px){main{padding:0 14px 60px}.top-in{padding:11px 14px}.hero{padding-top:40px}.step{padding:24px 18px}.grid,.grid3{grid-template-columns:1fr}.nav{flex-direction:column-reverse}.nav .btn,.actions .btn{width:100%}.summary-row{grid-template-columns:1fr;gap:3px}}
+  </style>
+</head>
+<body>
+  <header class="top"><div class="top-in"><div class="brand"><img src="logo-hummingx.png" alt="HummingX BI">HummingX BI</div><span id="counter" class="counter">1 / 8</span></div><div class="progress"><i id="progressFill"></i></div></header>
+  <main>
+    <section class="hero">
+      <p class="eyebrow" id="heroEyebrow">Cuestionario · IL Preciso Beauty</p>
+      <h1>Que más gente <em>las conozca.</em></h1>
+      <p>Con sus respuestas armamos su página, sus redes y sus anuncios a la medida de su salón.</p>
+    </section>
+
+    <div class="intro">
+      <p><strong>Tiempo estimado: 10 minutos.</strong> Las preguntas con <span class="star">★</span> son las más importantes. Si algo no lo saben, escriban «no sé» y lo vemos juntos. Sus respuestas se guardan solas en este dispositivo, pueden pausar y regresar después.</p>
+    </div>
+
+    <form id="form">
+      <!-- 1 -->
+      <section class="step active" data-title="01 · Su salón">
+        <div class="step-head">
+          <span class="step-no">01 · Su salón</span>
+          <h2>Conozcamos su salón</h2>
+          <p>Para la sección "Quiénes somos" y la confianza que transmite la página.</p>
+        </div>
+        <div class="q"><label class="label">Su nombre y el de su socia <span class="req">*</span></label><input type="text" required name="nombres" placeholder="Ej. Laura Méndez y Ana Ruiz"></div>
+        <div class="q"><label class="label">¿Desde qué año tienen el salón?</label><input type="number" name="anio" min="1950" max="2100" placeholder="Ej. 2015"></div>
+        <div class="q"><label class="label">Su historia en pocas líneas: cómo empezó</label><textarea name="historia" placeholder="Ej. Empezamos atendiendo a domicilio y en 2018 abrimos el local..."></textarea></div>
+        <div class="q grid">
+          <div><label class="label">WhatsApp del salón <span class="req">*</span></label><input type="tel" required name="whatsapp" placeholder="10 dígitos"></div>
+          <div><label class="label">Horario de atención</label><input type="text" name="horario" placeholder="Ej. Mar a Sáb 10am – 8pm"></div>
+        </div>
+        <div class="q"><label class="label">¿Cuántas personas trabajan en el salón?</label><div class="options">
+          <label><input type="radio" name="personal" value="Solo nosotras dos"> Solo nosotras dos</label>
+          <label><input type="radio" name="personal" value="3 a 4"> 3 a 4</label>
+          <label><input type="radio" name="personal" value="5 a 8"> 5 a 8</label>
+          <label><input type="radio" name="personal" value="Más de 8"> Más de 8</label>
+        </div></div>
+        <div class="nav"><span></span><button class="btn" type="button" data-next>Continuar →</button></div>
+      </section>
+
+      <!-- 2 -->
+      <section class="step" data-title="02 · Sus servicios">
+        <div class="step-head">
+          <span class="step-no">02 · Sus servicios</span>
+          <h2>Lo que ofrecen</h2>
+          <p>Para decidir qué mostrar primero en la página y qué anunciar.</p>
+        </div>
+        <div class="q"><label class="label">¿Qué servicios ofrecen?</label><div class="options">
+          <label><input type="checkbox" name="servicios" value="Uñas"> Uñas</label>
+          <label><input type="checkbox" name="servicios" value="Corte y peinado"> Corte y peinado</label>
+          <label><input type="checkbox" name="servicios" value="Color y tintes"> Color y tintes</label>
+          <label><input type="checkbox" name="servicios" value="Tratamientos capilares"> Tratamientos capilares</label>
+          <label><input type="checkbox" name="servicios" value="Pestañas y cejas"> Pestañas y cejas</label>
+          <label><input type="checkbox" name="servicios" value="Faciales y aparatología"> Faciales y aparatología</label>
+          <label><input type="checkbox" name="servicios" value="Maquillaje"> Maquillaje</label>
+          <label><input type="checkbox" name="servicios" value="Depilación"> Depilación</label>
+          <label><input type="checkbox" name="servicios" value="Otro"> Otro</label>
+        </div><input type="text" name="servicios_otro" data-label="Otros servicios" placeholder="¿Otro? Escríbalo aquí"></div>
+        <div class="q"><label class="label"><span class="star">★</span>¿Qué servicio quieren que más gente conozca?</label><input type="text" name="servicio_empujar" placeholder="Ej. Nuestro facial Mi piel"></div>
+        <div class="q"><label class="label">¿Qué servicio les deja mejor ganancia?</label><input type="text" name="servicio_ganancia" placeholder="Ej. Uñas acrílicas"></div>
+        <div class="q"><label class="label">¿Mostrarían precios en la página, por ejemplo "desde $X"?</label><div class="options">
+          <label><input type="radio" name="mostrar_precios" value="Sí"> Sí</label>
+          <label><input type="radio" name="mostrar_precios" value="No, solo por WhatsApp"> No, solo por WhatsApp</label>
+          <label><input type="radio" name="mostrar_precios" value="Solo de algunos servicios"> Solo de algunos</label>
+        </div></div>
+        <div class="q"><label class="label">¿Algún servicio que NO quieran promover?</label><input type="text" name="no_promover" placeholder="Ej. Ya casi no hacemos alaciados"></div>
+        <div class="nav"><button class="btn secondary" type="button" data-prev>← Atrás</button><button class="btn" type="button" data-next>Continuar →</button></div>
+      </section>
+
+      <!-- 3 -->
+      <section class="step" data-title="03 · Sus clientas">
+        <div class="step-head">
+          <span class="step-no">03 · Sus clientas</span>
+          <h2>A quién quieren atraer</h2>
+          <p>Para mostrar los anuncios a las personas correctas y en la zona correcta.</p>
+        </div>
+        <div class="q"><label class="label"><span class="star">★</span>¿Cómo es su clienta ideal?</label><div class="options">
+          <label><input type="checkbox" name="edad_ideal" value="18 a 25 años"> 18–25</label>
+          <label><input type="checkbox" name="edad_ideal" value="26 a 35 años"> 26–35</label>
+          <label><input type="checkbox" name="edad_ideal" value="36 a 50 años"> 36–50</label>
+          <label><input type="checkbox" name="edad_ideal" value="Más de 50 años"> Más de 50</label>
+        </div><textarea name="clienta_ideal" data-label="Descripción de la clienta ideal" placeholder="Cuéntenos cómo es: qué le gusta, qué busca, por qué regresa..."></textarea></div>
+        <div class="q"><label class="label">¿De qué colonias o zonas vienen sus clientas?</label><input type="text" name="zonas" placeholder="Ej. Lindavista, Tepeyac, Indios Verdes, Ecatepec..."></div>
+        <div class="q"><label class="label">¿Cómo las conocieron sus clientas actuales?</label><div class="options">
+          <label><input type="checkbox" name="origen" value="Recomendación"> Recomendación</label>
+          <label><input type="checkbox" name="origen" value="Pasaban por el local"> Pasaban por el local</label>
+          <label><input type="checkbox" name="origen" value="Instagram"> Instagram</label>
+          <label><input type="checkbox" name="origen" value="Facebook"> Facebook</label>
+          <label><input type="checkbox" name="origen" value="Google Maps"> Google Maps</label>
+          <label><input type="checkbox" name="origen" value="Otro"> Otro</label>
+        </div></div>
+        <div class="q"><label class="label">¿Cada cuánto regresa una clienta?</label><div class="options">
+          <label><input type="radio" name="frecuencia" value="Cada 2 a 3 semanas"> Cada 2–3 semanas</label>
+          <label><input type="radio" name="frecuencia" value="Cada mes"> Cada mes</label>
+          <label><input type="radio" name="frecuencia" value="Cada 2 a 3 meses"> Cada 2–3 meses</label>
+          <label><input type="radio" name="frecuencia" value="Solo en ocasiones especiales"> Solo en ocasiones especiales</label>
+        </div></div>
+        <div class="q"><label class="label">¿Tienen temporadas fuertes?</label><div class="options">
+          <label><input type="checkbox" name="temporadas" value="XV años y bodas"> XV años y bodas</label>
+          <label><input type="checkbox" name="temporadas" value="Diciembre"> Diciembre</label>
+          <label><input type="checkbox" name="temporadas" value="14 de febrero"> 14 de febrero</label>
+          <label><input type="checkbox" name="temporadas" value="10 de mayo"> 10 de mayo</label>
+          <label><input type="checkbox" name="temporadas" value="Graduaciones"> Graduaciones</label>
+          <label><input type="checkbox" name="temporadas" value="Otra"> Otra</label>
+        </div></div>
+        <div class="nav"><button class="btn secondary" type="button" data-prev>← Atrás</button><button class="btn" type="button" data-next>Continuar →</button></div>
+      </section>
+
+      <!-- 4 -->
+      <section class="step" data-title="04 · Lo que las hace diferentes">
+        <div class="step-head">
+          <span class="step-no">04 · Lo que las hace diferentes</span>
+          <h2>Por qué elegirlas a ustedes</h2>
+          <p>Esto es lo que va a convencer a una clienta nueva. Es la parte más importante.</p>
+        </div>
+        <div class="q"><label class="label"><span class="star">★</span>¿Qué hacen ustedes mejor que los salones que tienen más presencia en redes?</label><textarea name="mejor_que" placeholder="Ej. Usamos productos profesionales, no tenemos prisa con la clienta, el resultado dura más..."></textarea></div>
+        <div class="q"><label class="label">¿Qué les dicen sus clientas cuando les gusta el resultado?</label><textarea name="frases_clientas" placeholder="Ej. 'Nunca me habían durado tanto las uñas', 'aquí sí me escuchan'..."></textarea></div>
+        <div class="q"><label class="label"><span class="star">★</span>Certificaciones y cursos: ¿cuántos tienen más o menos y de qué?</label><p class="hint">No necesitan enviarlos ahora. Más adelante les pediremos las fotos para la página.</p><textarea name="certificaciones" placeholder="Ej. Unos 15, de uñas, aparatología facial y colorimetría..."></textarea></div>
+        <div class="q"><label class="label">Salones o cuentas de la zona que les quitan clientas</label><p class="hint">Opcional. Nombre o @ de Instagram/TikTok.</p><input type="text" name="competencia" placeholder="Ej. @salonx, Estética Y"></div>
+        <div class="nav"><button class="btn secondary" type="button" data-prev>← Atrás</button><button class="btn" type="button" data-next>Continuar →</button></div>
+      </section>
+
+      <!-- 5 -->
+      <section class="step" data-title="05 · Su presencia hoy">
+        <div class="step-head">
+          <span class="step-no">05 · Su presencia hoy</span>
+          <h2>Dónde las encuentran hoy</h2>
+          <p>Para aprovechar lo que ya tienen y no empezar de cero.</p>
+        </div>
+        <div class="q"><label class="label">Sus redes sociales (si tienen)</label><div class="grid3">
+          <div><span class="sub">Instagram</span><input type="text" name="instagram" data-label="Instagram" placeholder="@usuario"></div>
+          <div><span class="sub">Facebook</span><input type="text" name="facebook" data-label="Facebook" placeholder="Nombre de la página"></div>
+          <div><span class="sub">TikTok</span><input type="text" name="tiktok" data-label="TikTok" placeholder="@usuario"></div>
+        </div></div>
+        <div class="q"><label class="label">¿Tienen ficha en Google Maps?</label><div class="options">
+          <label><input type="radio" name="google_maps" value="Sí, y la manejamos nosotras"> Sí, la manejamos nosotras</label>
+          <label><input type="radio" name="google_maps" value="Sí, pero no sabemos quién la maneja"> Sí, pero no sabemos quién la maneja</label>
+          <label><input type="radio" name="google_maps" value="No"> No</label>
+          <label><input type="radio" name="google_maps" value="No sé"> No sé</label>
+        </div></div>
+        <div class="q"><label class="label">¿Quién publica en sus redes y cada cuánto?</label><div class="options">
+          <label><input type="radio" name="frecuencia_redes" value="Casi diario"> Casi diario</label>
+          <label><input type="radio" name="frecuencia_redes" value="Cada semana"> Cada semana</label>
+          <label><input type="radio" name="frecuencia_redes" value="De vez en cuando"> De vez en cuando</label>
+          <label><input type="radio" name="frecuencia_redes" value="Casi nunca"> Casi nunca</label>
+        </div><input type="text" name="quien_publica" data-label="Quién publica" placeholder="¿Quién lo hace? Ej. Una de nosotras, una sobrina..."></div>
+        <div class="q"><label class="label"><span class="star">★</span>Para mostrar sus trabajos en la página y redes, ¿con qué nos podrían apoyar?</label><p class="hint">Pueden elegir varias.</p><div class="options stack">
+          <label><input type="checkbox" name="apoyo_fotos" value="Tenemos fotos y videos guardados que podemos compartir"> Tenemos fotos y videos guardados que podemos compartir</label>
+          <label><input type="checkbox" name="apoyo_fotos" value="Podemos tomar fotos de cada trabajo si nos dicen cómo"> Podemos tomar fotos de cada trabajo si nos dicen cómo</label>
+          <label><input type="checkbox" name="apoyo_fotos" value="Preferimos que alguien vaya al salón a tomarlas"> Preferimos que alguien vaya al salón a tomarlas</label>
+          <label><input type="checkbox" name="apoyo_fotos" value="Por ahora casi no podríamos"> Por ahora casi no podríamos</label>
+        </div></div>
+        <div class="q"><label class="label">¿Han pagado publicidad antes? ¿Dónde y cómo les fue?</label><textarea name="publicidad_antes" placeholder="Ej. Pagamos anuncios en Facebook una vez, $500, llegaron mensajes pero pocas citas..."></textarea></div>
+        <div class="nav"><button class="btn secondary" type="button" data-prev>← Atrás</button><button class="btn" type="button" data-next>Continuar →</button></div>
+      </section>
+
+      <!-- 6 -->
+      <section class="step" data-title="06 · Citas">
+        <div class="step-head">
+          <span class="step-no">06 · Citas</span>
+          <h2>Cómo agendan hoy</h2>
+          <p>Para que agendar desde la página sea fácil para sus clientas y para ustedes.</p>
+        </div>
+        <div class="q"><label class="label">¿Cómo agendan hoy sus citas?</label><div class="options">
+          <label><input type="checkbox" name="agenda" value="WhatsApp"> WhatsApp</label>
+          <label><input type="checkbox" name="agenda" value="Llamada"> Llamada</label>
+          <label><input type="checkbox" name="agenda" value="Llegan sin cita"> Llegan sin cita</label>
+          <label><input type="checkbox" name="agenda" value="Libreta o agenda de papel"> Libreta</label>
+          <label><input type="checkbox" name="agenda" value="Una aplicación"> Una aplicación</label>
+        </div></div>
+        <div class="q"><label class="label">¿Piden anticipo para apartar la cita?</label><div class="options">
+          <label><input type="radio" name="anticipo" value="Sí, siempre"> Sí, siempre</label>
+          <label><input type="radio" name="anticipo" value="Solo en algunos servicios"> Solo en algunos</label>
+          <label><input type="radio" name="anticipo" value="No"> No</label>
+        </div></div>
+        <div class="q"><label class="label">¿Qué es lo que más les molesta de agendar hoy?</label><div class="options">
+          <label><input type="checkbox" name="molestias_agenda" value="Clientas que no llegan"> Clientas que no llegan</label>
+          <label><input type="checkbox" name="molestias_agenda" value="Mensajes a deshoras"> Mensajes a deshoras</label>
+          <label><input type="checkbox" name="molestias_agenda" value="Citas que se cruzan"> Citas que se cruzan</label>
+          <label><input type="checkbox" name="molestias_agenda" value="Contestar lo mismo muchas veces"> Contestar lo mismo muchas veces</label>
+          <label><input type="checkbox" name="molestias_agenda" value="Nada, funciona bien"> Nada, funciona bien</label>
+        </div></div>
+        <div class="nav"><button class="btn secondary" type="button" data-prev>← Atrás</button><button class="btn" type="button" data-next>Continuar →</button></div>
+      </section>
+
+      <!-- 7 -->
+      <section class="step" data-title="07 · Inversión y metas">
+        <div class="step-head">
+          <span class="step-no">07 · Inversión y metas</span>
+          <h2>Hasta dónde quieren llegar</h2>
+          <p>Para no gastar de más ni de menos, y saber qué es un buen resultado para ustedes.</p>
+        </div>
+        <div class="q"><label class="label"><span class="star">★</span>¿Cuánto podrían invertir al mes en anuncios?</label><p class="hint">Este dinero va directo a Facebook, Instagram o Google, aparte de nuestro trabajo.</p><div class="options stack">
+          <label><input type="radio" name="presupuesto" value="Menos de $1,000 al mes"> Menos de $1,000 al mes</label>
+          <label><input type="radio" name="presupuesto" value="$1,000 a $2,500 al mes"> $1,000 a $2,500 al mes</label>
+          <label><input type="radio" name="presupuesto" value="$2,500 a $5,000 al mes"> $2,500 a $5,000 al mes</label>
+          <label><input type="radio" name="presupuesto" value="Más de $5,000 al mes"> Más de $5,000 al mes</label>
+          <label><input type="radio" name="presupuesto" value="No sé, quiero una recomendación"> No sé, quiero una recomendación</label>
+        </div></div>
+        <div class="q grid">
+          <div><label class="label"><span class="star">★</span>¿Cuántas clientas nuevas al mes les gustaría recibir?</label><input type="number" name="meta_clientas" min="0" placeholder="Ej. 30"></div>
+          <div><label class="label"><span class="star">★</span>¿Cuántas clientas nuevas pueden atender sin saturarse?</label><input type="number" name="capacidad" min="0" placeholder="Ej. 40"></div>
+        </div>
+        <div class="q"><label class="label">¿Tienen su logo en archivo?</label><div class="options">
+          <label><input type="radio" name="logo" value="Sí, en buena calidad"> Sí, en buena calidad</label>
+          <label><input type="radio" name="logo" value="Solo en foto"> Solo en foto</label>
+          <label><input type="radio" name="logo" value="No tenemos logo"> No tenemos</label>
+        </div></div>
+        <div class="q"><label class="label">¿Hay algo que no les preguntamos y deberíamos saber?</label><textarea name="extra" placeholder="Cualquier cosa que nos ayude..."></textarea></div>
+        <div class="nav"><button class="btn secondary" type="button" data-prev>← Atrás</button><button class="btn" type="button" data-next>Revisar →</button></div>
+      </section>
+
+      <!-- 8 -->
+      <section class="step" data-review>
+        <div id="reviewContent">
+          <div class="step-head">
+            <span class="step-no">08 · Confirmación</span>
+            <h2>Revisen antes de descargar</h2>
+            <p>Generaremos un PDF con sus respuestas. Si quieren cambiar algo, regresen a la sección.</p>
+          </div>
+          <div id="summary" class="summary"></div>
+          <div class="finish"><strong>Privacidad:</strong> esta información solo se usa para preparar su página, redes y anuncios.</div>
+          <div class="actions"><button class="btn" type="button" id="downloadBtn">Descargar PDF</button><button class="btn secondary" type="button" data-prev>← Editar respuestas</button><button class="btn secondary" type="button" id="clearBtn" style="color:var(--danger)">Borrar mis respuestas</button></div>
+          <p id="status" class="note">Descarguen el PDF y después envíenlo por WhatsApp como archivo.</p>
+        </div>
+        <div id="completion" class="completion" hidden>
+          <img src="logo-hummingx.png" alt="HummingX BI">
+          <h2>¡Gracias!</h2>
+          <p>Su cuestionario está listo. Envíenos el PDF por WhatsApp y les contamos el siguiente paso.</p>
+          <div class="actions"><a class="btn" id="whatsappBtn" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a><button class="btn secondary" type="button" id="downloadAgainBtn">Volver a descargar PDF</button><button class="btn secondary" type="button" id="editBtn">Editar respuestas</button></div>
+          <p class="note">Adjunten el PDF descargado en el chat de WhatsApp.</p>
+        </div>
+      </section>
+    </form>
+
+    <div class="footer">Cuestionario confidencial · IL Preciso Beauty · HummingX BI · <span id="year"></span></div>
+  </main>
+
+  <script>
+    const CLIENT_NAME = "IL Preciso Beauty";
+    const WHATSAPP_NUMBER = "525575084267";
+    const PDF_FILE = "cuestionario_il_preciso_beauty.pdf";
+    const STORAGE_KEY = "cuestionario_il_preciso_beauty";
+
+    const form = document.getElementById('form');
+    const steps = [...document.querySelectorAll('.step')], total = steps.length;
+    let current = 0;
+
+    // ---- Etiquetas para resumen y PDF, tomadas del propio formulario ----
+    function cleanLabel(t){return t.replace(/[★*]/g,'').replace(/\s+/g,' ').trim()}
+    function labelFor(el){
+      if (el.dataset.label) return el.dataset.label;
+      let p = el.parentElement;
+      while (p && p !== form){
+        const l = p.querySelector(':scope > .label') || (p.classList.contains('q') && p.querySelector('.label'));
+        if (l) return cleanLabel(l.textContent);
+        p = p.parentElement;
+      }
+      return el.name;
+    }
+    function isPriority(el){
+      if (el.dataset.label) return false;
+      let p = el.parentElement;
+      while (p && p !== form){
+        const l = p.querySelector(':scope > .label');
+        if (l) return !!l.querySelector('.star');
+        p = p.parentElement;
+      }
+      return false;
+    }
+    const groups = steps.filter(s=>s.dataset.title).map(s=>{
+      const seen = new Set(), fields = [];
+      s.querySelectorAll('[name]').forEach(el=>{
+        if (seen.has(el.name)) return; seen.add(el.name);
+        fields.push({name:el.name, label:labelFor(el), priority:isPriority(el)});
+      });
+      return {title:s.dataset.title, fields};
+    });
+
+    function value(name){
+      const els = [...form.querySelectorAll(`[name="${name}"]`)];
+      if (els[0]?.type==='checkbox') return els.filter(x=>x.checked).map(x=>x.value).join(', ');
+      if (els[0]?.type==='radio') return els.find(x=>x.checked)?.value || '';
+      return els[0]?.value.trim() || '';
+    }
+
+    // ---- Guardado automático ----
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+      if (saved?.data){
+        Object.entries(saved.data).forEach(([k,v])=>{
+          const els=[...form.querySelectorAll(`[name="${k}"]`)]; if(!els.length) return;
+          if (els[0].type==='checkbox'||els[0].type==='radio'){const arr=Array.isArray(v)?v:[v]; els.forEach(e=>e.checked=arr.includes(e.value));}
+          else els[0].value=v;
+        });
+      }
+      if (typeof saved?.step==='number') current=Math.max(0,Math.min(total-1,saved.step));
+    } catch(e){}
+
+    let t;
+    function saveData(){
+      const data={};
+      for (const [k,v] of new FormData(form).entries()){
+        if (k in data){ if(!Array.isArray(data[k])) data[k]=[data[k]]; data[k].push(v); } else data[k]=v;
+      }
+      try{ localStorage.setItem(STORAGE_KEY, JSON.stringify({data, step:current})); }catch(e){}
+    }
+    ['input','change'].forEach(ev=>form.addEventListener(ev,()=>{clearTimeout(t);t=setTimeout(saveData,400)}));
+
+    // ---- Navegación ----
+    function setStep(n){
+      current=Math.max(0,Math.min(total-1,n));
+      steps.forEach((s,i)=>s.classList.toggle('active',i===current));
+      document.getElementById('counter').textContent=`${current+1} / ${total}`;
+      document.getElementById('progressFill').style.width=`${(current+1)/total*100}%`;
+      window.scrollTo({top:0,behavior:'smooth'});
+      if (current===total-1) renderSummary();
+      saveData();
+    }
+    function validate(){
+      for (const el of steps[current].querySelectorAll('[required]')){
+        if (!el.checkValidity()){ el.reportValidity(); return false; }
+      }
+      return true;
+    }
+    document.querySelectorAll('[data-next]').forEach(b=>b.addEventListener('click',()=>{ if(validate()) setStep(current+1) }));
+    document.querySelectorAll('[data-prev]').forEach(b=>b.addEventListener('click',()=>setStep(current-1)));
+    setStep(current);
+
+    document.getElementById('clearBtn').addEventListener('click',()=>{
+      if (confirm('¿Seguro que desean borrar todas sus respuestas? No se puede deshacer.')){
+        try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+        location.reload();
+      }
+    });
+
+    // ---- Resumen ----
+    function grouped(){
+      const out=[], missing=[];
+      for (const g of groups){
+        const data=[];
+        for (const f of g.fields){
+          const v=value(f.name);
+          if (v) data.push({label:f.label, val:v});
+          else if (f.priority) missing.push(f.label);
+        }
+        if (data.length) out.push({title:g.title, data});
+      }
+      return {out, missing};
+    }
+    const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    function renderSummary(){
+      const {out}=grouped();
+      document.getElementById('summary').innerHTML = out.map(g=>
+        `<h3>${g.title}</h3>`+g.data.map(d=>`<div class="summary-row"><b>${esc(d.label)}</b><span>${esc(d.val)}</span></div>`).join('')
+      ).join('') || '<p>Todavía no hay respuestas.</p>';
+    }
+
+    // ---- PDF ----
+    const BLUE=[15,53,80], GOLD=[201,162,39];
+    function loadImage(url){return new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=url})}
+    async function makePdf(){
+      const PDF=window.jspdf?.jsPDF; if(!PDF) return null;
+      const doc=new PDF({unit:'mm',format:'a4'}), m=16, w=210-m*2;
+      let y=16;
+      doc.setFillColor(...BLUE); doc.rect(0,0,210,40,'F');
+      const logo=await loadImage('logo-hummingx.png');
+      doc.setFillColor(255,255,255); doc.roundedRect(m,9,18,18,3,3,'F');
+      if (logo){ try{ doc.addImage(logo,'PNG',m+1,10,16,16); }catch(e){ console.warn('Logo no insertado en PDF',e); } }
+      doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(17);
+      doc.text('Cuestionario de arranque', m+22, 17);
+      doc.setFont('helvetica','normal'); doc.setFontSize(10.5); doc.setTextColor(220,230,238);
+      doc.text(`${CLIENT_NAME}  ·  HummingX BI`, m+22, 23.5);
+      doc.text(new Date().toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'}), m+22, 29);
+      doc.setDrawColor(...GOLD); doc.setLineWidth(1.4); doc.line(0,40,210,40);
+      y=52;
+
+      const {out, missing}=grouped();
+      const page=n=>{ if(y+n>277){ doc.addPage(); y=20; } };
+      for (const g of out){
+        page(16);
+        doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.setTextColor(...BLUE);
+        doc.text(g.title, m, y); y+=2;
+        doc.setDrawColor(...GOLD); doc.setLineWidth(.5); doc.line(m,y,210-m,y); y+=7;
+        for (const d of g.data){
+          const L=doc.splitTextToSize(d.label,w), V=doc.splitTextToSize(d.val,w);
+          page(5*L.length+5);
+          doc.setFont('helvetica','bold'); doc.setFontSize(9.5); doc.setTextColor(86,98,110);
+          L.forEach(l=>{ page(5); doc.text(l,m,y); y+=4.6; });
+          doc.setFont('helvetica','normal'); doc.setFontSize(10.5); doc.setTextColor(20,32,43);
+          V.forEach(l=>{ page(5); doc.text(l,m,y); y+=5; });
+          y+=4;
+        }
+        y+=3;
+      }
+      if (missing.length){
+        page(20); y+=4;
+        doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.setTextColor(192,57,43);
+        doc.text('Preguntas importantes sin responder', m, y); y+=7;
+        doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(20,32,43);
+        missing.forEach(q=>{ const l=doc.splitTextToSize('• '+q,w); page(l.length*5+2); doc.text(l,m,y); y+=l.length*5+1.5; });
+      }
+      const n=doc.internal.getNumberOfPages();
+      for (let i=1;i<=n;i++){
+        doc.setPage(i); doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(120,130,140);
+        doc.text(`Documento confidencial · ${CLIENT_NAME} · Página ${i} de ${n}`, m, 289);
+      }
+      return doc;
+    }
+
+    function showCompletion(){
+      document.getElementById('reviewContent').hidden=true;
+      document.getElementById('completion').hidden=false;
+      document.getElementById('whatsappBtn').href=`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hola, les comparto el cuestionario de ${CLIENT_NAME}. Adjunto el PDF con nuestras respuestas.`)}`;
+    }
+    async function download(){
+      const status=document.getElementById('status'), btn=document.getElementById('downloadBtn');
+      btn.disabled=true; status.textContent='Preparando su PDF...';
+      try{
+        const doc=await makePdf(); if(!doc) throw new Error('jsPDF no cargó');
+        const blob=doc.output('blob'), a=document.createElement('a');
+        a.href=URL.createObjectURL(blob); a.download=PDF_FILE; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(()=>URL.revokeObjectURL(a.href),500);
+        showCompletion();
+      }catch(e){ console.error(e); status.textContent='No se pudo generar el PDF. Recarguen la página e intenten de nuevo.'; }
+      finally{ btn.disabled=false; }
+    }
+    document.getElementById('downloadBtn').addEventListener('click',download);
+    document.getElementById('downloadAgainBtn').addEventListener('click',download);
+    document.getElementById('editBtn').addEventListener('click',()=>{
+      document.getElementById('completion').hidden=true;
+      document.getElementById('reviewContent').hidden=false;
+      setStep(total-2);
+    });
+    document.getElementById('year').textContent=new Date().getFullYear();
+  </script>
+</body>
+</html>
